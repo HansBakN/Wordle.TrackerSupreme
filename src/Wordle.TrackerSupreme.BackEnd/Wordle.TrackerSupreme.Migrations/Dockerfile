@@ -7,11 +7,11 @@ COPY Wordle.TrackerSupreme.Domain/Wordle.TrackerSupreme.Domain.csproj Wordle.Tra
 COPY Wordle.TrackerSupreme.Infrastructure/Wordle.TrackerSupreme.Infrastructure.csproj Wordle.TrackerSupreme.Infrastructure/
 COPY Wordle.TrackerSupreme.Migrations/Wordle.TrackerSupreme.Migrations.csproj Wordle.TrackerSupreme.Migrations/
 
-RUN dotnet restore Wordle.TrackerSupreme.Migrations/Wordle.TrackerSupreme.Migrations.csproj
+RUN dotnet restore Wordle.TrackerSupreme.sln
 
 COPY . .
 
 RUN dotnet tool install --global dotnet-ef --version 10.0.0
 ENV PATH="${PATH}:/root/.dotnet/tools"
 
-ENTRYPOINT ["dotnet","ef","database","update","--project","./Wordle.TrackerSupreme.Migrations/Wordle.TrackerSupreme.Migrations.csproj","--startup-project","./Wordle.TrackerSupreme.Api/Wordle.TrackerSupreme.Api.csproj","--context","WordleTrackerSupremeDbContext"]
+ENTRYPOINT ["sh","-c","dotnet build Wordle.TrackerSupreme.Api/Wordle.TrackerSupreme.Api.csproj && dotnet ef database update --no-build --project ./Wordle.TrackerSupreme.Migrations/Wordle.TrackerSupreme.Migrations.csproj --startup-project ./Wordle.TrackerSupreme.Api/Wordle.TrackerSupreme.Api.csproj --context WordleTrackerSupremeDbContext"]

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Wordle.TrackerSupreme.Infrastructure.Database;
@@ -11,9 +12,11 @@ using Wordle.TrackerSupreme.Infrastructure.Database;
 namespace Wordle.TrackerSupreme.Migrations.Migrations
 {
     [DbContext(typeof(WordleTrackerSupremeDbContext))]
-    partial class WordleTrackerSupremeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251218203348_AddPlayerPassword")]
+    partial class AddPlayerPassword
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -113,11 +116,6 @@ namespace Wordle.TrackerSupreme.Migrations.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(320)
-                        .HasColumnType("character varying(320)");
-
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -126,9 +124,6 @@ namespace Wordle.TrackerSupreme.Migrations.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DisplayName")
-                        .IsUnique();
-
-                    b.HasIndex("Email")
                         .IsUnique();
 
                     b.ToTable("Players");
