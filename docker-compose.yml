@@ -1,46 +1,101 @@
 services:
+  traefik:
+    image: traefik:v3.2
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      # Enable ACME when you have a domain:
+      # - --certificatesresolvers.le.acme.httpchallenge=true
+      # - --certificatesresolvers.le.acme.httpchallenge.entrypoint=web
+      # - --certificatesresolvers.le.acme.email=${TRAEFIK_ACME_EMAIL}
+      # - --certificatesresolvers.le.acme.storage=/letsencrypt/acme.json
+    ports:
+      - "80:80"
+      - "443:443"
+    # Optional: enable this service via `--profile proxy`. On Windows/Linux, adjust the docker socket mount as needed.
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - letsencrypt:/letsencrypt
+    networks:
+      - internal
+    profiles:
+      - proxy
+
   db:
     image: postgres:16-alpine
     environment:
-      POSTGRES_DB: wordle_trackersupreme
-      POSTGRES_USER: wordle_user
-      POSTGRES_PASSWORD: devpassword
-    ports:
-      - "5432:5432"
+      POSTGRES_DB: ${POSTGRES_DB:-wordle_trackersupreme}
+      POSTGRES_USER: ${POSTGRES_USER:-wordle_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-devpassword}
     volumes:
       - wordle_db_data:/var/lib/postgresql/data
+    networks:
+      - internal
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-wordle_user} -d ${POSTGRES_DB:-wordle_trackersupreme}"]
       interval: 5s
       timeout: 5s
       retries: 20
 
   api:
     build:
-      context: .
-      dockerfile: src/Wordle.TrackerSupreme.Api/Dockerfile
+      context: ./src/Wordle.TrackerSupreme.BackEnd
+      dockerfile: Wordle.TrackerSupreme.Api/Dockerfile
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      ASPNETCORE_URLS: http://+:8080
-      ConnectionStrings__WordleTrackerSupremeDbContext: Host=db;Database=wordle_trackersupreme;Username=wordle_user;Password=devpassword
-    ports:
-      - "8080:8080"
+      ASPNETCORE_URLS: http://0.0.0.0:8080
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Production}
+      ConnectionStrings__WordleTrackerSupremeDbContext: Host=db;Database=${POSTGRES_DB:-wordle_trackersupreme};Username=${POSTGRES_USER:-wordle_user};Password=${POSTGRES_PASSWORD:-devpassword}
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      - internal
+    ports:
+      - "8080:8080"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.wordle-api.rule=Host(`${APP_HOST:-localhost}`) && PathPrefix(`/api`)
+      - traefik.http.routers.wordle-api.entrypoints=web
+      # - traefik.http.routers.wordle-api.tls.certresolver=le
+      - traefik.http.services.wordle-api.loadbalancer.server.port=8080
 
   migrator:
     build:
-      context: .
-      dockerfile: src/Wordle.TrackerSupreme.Migrations/Dockerfile
+      context: ./src/Wordle.TrackerSupreme.BackEnd
+      dockerfile: Wordle.TrackerSupreme.Migrations/Dockerfile
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      ConnectionStrings__WordleTrackerSupremeDbContext: Host=db;Database=wordle_trackersupreme;Username=wordle_user;Password=devpassword
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__WordleTrackerSupremeDbContext: Host=db;Database=${POSTGRES_DB:-wordle_trackersupreme};Username=${POSTGRES_USER:-wordle_user};Password=${POSTGRES_PASSWORD:-devpassword}
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      - internal
     profiles:
       - migrate
 
+  web:
+    build:
+      context: ./src/Wordle.TrackerSupreme.Web
+      dockerfile: Dockerfile
+    depends_on:
+      - api
+    networks:
+      - internal
+    ports:
+      - "3000:3000"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.wordle-web.rule=Host(`${APP_HOST:-localhost}`)
+      - traefik.http.routers.wordle-web.entrypoints=web
+      # - traefik.http.routers.wordle-web.tls.certresolver=le
+      - traefik.http.services.wordle-web.loadbalancer.server.port=3000
+
+networks:
+  internal:
+
 volumes:
   wordle_db_data:
+  letsencrypt:
