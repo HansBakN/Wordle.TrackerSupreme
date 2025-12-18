@@ -1,0 +1,46 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: wordle_trackersupreme
+      POSTGRES_USER: wordle_user
+      POSTGRES_PASSWORD: devpassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - wordle_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  api:
+    build:
+      context: .
+      dockerfile: src/Wordle.TrackerSupreme.Api/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__WordleTrackerSupremeDbContext: Host=db;Database=wordle_trackersupreme;Username=wordle_user;Password=devpassword
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  migrator:
+    build:
+      context: .
+      dockerfile: src/Wordle.TrackerSupreme.Migrations/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__WordleTrackerSupremeDbContext: Host=db;Database=wordle_trackersupreme;Username=wordle_user;Password=devpassword
+    depends_on:
+      db:
+        condition: service_healthy
+    profiles:
+      - migrate
+
+volumes:
+  wordle_db_data:
