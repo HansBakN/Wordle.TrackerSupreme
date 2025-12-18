@@ -1,11 +1,12 @@
 using Wordle.TrackerSupreme.Infrastructure;
+using Wordle.TrackerSupreme.Migrations;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddWordleTrackerSupremeInfrastructure(builder.Configuration);
+builder.Services.AddWordleTrackerSupremeInfrastructure(builder.Configuration, configureNpgsql: npgsql => npgsql.AllowMigrationManagement());
 builder.Services.AddAuthorization();
 
 var app = builder.Build();

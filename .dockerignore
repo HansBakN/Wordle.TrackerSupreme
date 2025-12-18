@@ -1,0 +1,15 @@
+**/.git
+**/.idea
+**/.vs
+**/.vscode
+
+**/bin
+**/obj
+**/TestResults
+**/*.user
+**/*.suo
+**/node_modules
+**/.svelte-kit
+**/dist
+**/build
+**/.env
