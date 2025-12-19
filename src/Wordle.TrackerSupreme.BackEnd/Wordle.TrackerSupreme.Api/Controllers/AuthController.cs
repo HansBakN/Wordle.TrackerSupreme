@@ -24,13 +24,17 @@ public class AuthController(
         var displayName = request.DisplayName.Trim();
         var email = request.Email.Trim().ToLowerInvariant();
 
-        var exists = await dbContext.Players.AnyAsync(p => p.DisplayName == displayName);
+        var exists = await dbContext.Players
+            .AsNoTracking()
+            .AnyAsync(p => p.DisplayName == displayName);
         if (exists)
         {
             return Conflict(new { message = "Display name is already taken." });
         }
 
-        var emailExists = await dbContext.Players.AnyAsync(p => p.Email == email);
+        var emailExists = await dbContext.Players
+            .AsNoTracking()
+            .AnyAsync(p => p.Email == email);
         if (emailExists)
         {
             return Conflict(new { message = "Email is already registered." });
@@ -58,7 +62,9 @@ public class AuthController(
     {
         var email = request.Email.Trim().ToLowerInvariant();
 
-        var player = await dbContext.Players.FirstOrDefaultAsync(p => p.Email == email);
+        var player = await dbContext.Players
+            .AsNoTracking()
+            .FirstOrDefaultAsync(p => p.Email == email);
 
         if (player is null)
         {
@@ -85,7 +91,9 @@ public class AuthController(
             return Unauthorized();
         }
 
-        var player = await dbContext.Players.FirstOrDefaultAsync(p => p.Id == playerId);
+        var player = await dbContext.Players
+            .AsNoTracking()
+            .FirstOrDefaultAsync(p => p.Id == playerId);
         if (player is null)
         {
             return Unauthorized();

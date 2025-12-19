@@ -1,42 +1,42 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { auth, signUp } from '$lib/auth/store';
-	import { onMount } from 'svelte';
+import { goto } from '$app/navigation';
+import { auth, signUp } from '$lib/auth/store';
+import { onMount } from 'svelte';
 
 let displayName = '';
 let email = '';
 let password = '';
 let confirmPassword = '';
-	let error: string | null = null;
-	let loading = false;
+let error: string | null = null;
+let loading = false;
 
-	onMount(() => {
-		const unsubscribe = auth.subscribe((state) => {
-			if (!state.ready) return;
-			if (state.user) {
-				goto('/');
-			}
-		});
-		return () => unsubscribe();
-	});
+onMount(() => {
+  const unsubscribe = auth.subscribe((state) => {
+    if (!state.ready) return;
+    if (state.user) {
+      goto('/');
+    }
+  });
+  return () => unsubscribe();
+});
 
-	const handleSubmit = async () => {
-		error = null;
-		if (password !== confirmPassword) {
-			error = 'Passwords do not match.';
-			return;
-		}
+const handleSubmit = async () => {
+  error = null;
+  if (password !== confirmPassword) {
+    error = 'Passwords do not match.';
+    return;
+  }
 
-		loading = true;
-		try {
-			await signUp(displayName, email, password);
-			goto('/');
-		} catch (err) {
-			error = err instanceof Error ? err.message : 'Unable to sign up.';
-		} finally {
-			loading = false;
-		}
-	};
+  loading = true;
+  try {
+    await signUp(displayName, email, password);
+    goto('/');
+  } catch (err) {
+    error = err instanceof Error ? err.message : 'Unable to sign up.';
+  } finally {
+    loading = false;
+  }
+};
 </script>
 
 <div class="mx-auto max-w-lg rounded-3xl border border-white/10 bg-white/5 p-10 shadow-2xl">
