@@ -1,20 +1,23 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import { auth, signUp } from '$lib/auth/store';
 	import { onMount } from 'svelte';
 
-let displayName = '';
-let email = '';
-let password = '';
-let confirmPassword = '';
+	let displayName = '';
+	let email = '';
+	let password = '';
+	let confirmPassword = '';
 	let error: string | null = null;
 	let loading = false;
 
 	onMount(() => {
 		const unsubscribe = auth.subscribe((state) => {
-			if (!state.ready) return;
+			if (!state.ready) {
+				return;
+			}
 			if (state.user) {
-				goto('/');
+				goto(resolve('/'));
 			}
 		});
 		return () => unsubscribe();
@@ -30,7 +33,7 @@ let confirmPassword = '';
 		loading = true;
 		try {
 			await signUp(displayName, email, password);
-			goto('/');
+			goto(resolve('/'));
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Unable to sign up.';
 		} finally {
@@ -40,16 +43,14 @@ let confirmPassword = '';
 </script>
 
 <div class="mx-auto max-w-lg rounded-3xl border border-white/10 bg-white/5 p-10 shadow-2xl">
-	<p class="text-sm uppercase tracking-[0.2em] text-emerald-200/80">Create account</p>
+	<p class="text-sm tracking-[0.2em] text-emerald-200/80 uppercase">Create account</p>
 	<h1 class="mt-2 text-3xl font-semibold text-white">Join Wordle Tracker</h1>
 	<p class="mt-2 text-sm text-slate-200/80">
-		Pick a display name and a password. You’ll use this combo to sign back in and keep your streaks synced.
+		Pick a display name and a password. You’ll use this combo to sign back in and keep your streaks
+		synced.
 	</p>
 
-	<form
-		class="mt-6 space-y-5"
-		on:submit|preventDefault={handleSubmit}
-	>
+	<form class="mt-6 space-y-5" on:submit|preventDefault={handleSubmit}>
 		<label class="block space-y-2">
 			<span class="text-sm font-semibold text-white">Display name</span>
 			<input
@@ -57,7 +58,7 @@ let confirmPassword = '';
 				bind:value={displayName}
 				required
 				minlength="2"
-				class="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition focus:border-emerald-300 focus:bg-black/40"
+				class="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-white transition outline-none focus:border-emerald-300 focus:bg-black/40"
 				placeholder="wordle-wizard"
 			/>
 		</label>
@@ -69,7 +70,7 @@ let confirmPassword = '';
 				type="email"
 				bind:value={email}
 				required
-				class="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition focus:border-emerald-300 focus:bg-black/40"
+				class="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-white transition outline-none focus:border-emerald-300 focus:bg-black/40"
 				placeholder="you@example.com"
 			/>
 		</label>
@@ -82,7 +83,7 @@ let confirmPassword = '';
 				bind:value={password}
 				required
 				minlength="6"
-				class="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition focus:border-emerald-300 focus:bg-black/40"
+				class="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-white transition outline-none focus:border-emerald-300 focus:bg-black/40"
 				placeholder="••••••••"
 			/>
 		</label>
@@ -95,7 +96,7 @@ let confirmPassword = '';
 				bind:value={confirmPassword}
 				required
 				minlength="6"
-				class="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition focus:border-emerald-300 focus:bg-black/40"
+				class="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-white transition outline-none focus:border-emerald-300 focus:bg-black/40"
 				placeholder="••••••••"
 			/>
 		</label>
@@ -117,6 +118,8 @@ let confirmPassword = '';
 
 	<p class="mt-4 text-sm text-slate-200/80">
 		Already have an account?
-		<a class="font-semibold text-emerald-200 hover:text-emerald-100" href="/signin">Sign in</a>.
+		<a class="font-semibold text-emerald-200 hover:text-emerald-100" href={resolve('/signin')}
+			>Sign in</a
+		>.
 	</p>
 </div>

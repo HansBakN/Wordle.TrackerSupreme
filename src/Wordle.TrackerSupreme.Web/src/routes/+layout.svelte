@@ -2,6 +2,7 @@
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import { auth, bootstrapAuth, signOut } from '$lib/auth/store';
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 
 	let { children } = $props();
@@ -15,11 +16,13 @@
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
 
-<div class="min-h-screen bg-surface text-slate-50">
+<div class="bg-surface min-h-screen text-slate-50">
 	<header class="border-b border-white/10 bg-white/5 backdrop-blur">
 		<div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
 			<div class="flex items-center gap-3">
-				<div class="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-400 to-cyan-500 text-black font-semibold">
+				<div
+					class="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-400 to-cyan-500 font-semibold text-black"
+				>
 					WT
 				</div>
 				<div>
@@ -41,12 +44,12 @@
 					</button>
 				{:else}
 					<a
-						href="/signin"
+						href={resolve('/signin')}
 						class="rounded-full border border-white/20 bg-white/5 px-4 py-2 font-medium text-white transition hover:border-white/40 hover:bg-white/10"
 						>Sign in</a
 					>
 					<a
-						href="/signup"
+						href={resolve('/signup')}
 						class="rounded-full bg-emerald-400 px-4 py-2 font-semibold text-slate-900 transition hover:bg-emerald-300"
 						>Sign up</a
 					>
@@ -63,7 +66,9 @@
 
 	<main class="mx-auto max-w-6xl px-4 py-10">
 		{#if booting}
-			<div class="rounded-2xl border border-white/10 bg-white/5 p-8 text-center text-slate-200/80 shadow-xl">
+			<div
+				class="rounded-2xl border border-white/10 bg-white/5 p-8 text-center text-slate-200/80 shadow-xl"
+			>
 				Loading your session...
 			</div>
 		{:else}

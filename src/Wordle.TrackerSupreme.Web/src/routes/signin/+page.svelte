@@ -1,18 +1,21 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-import { auth, signIn } from '$lib/auth/store';
-import { onMount } from 'svelte';
+	import { resolve } from '$app/paths';
+	import { auth, signIn } from '$lib/auth/store';
+	import { onMount } from 'svelte';
 
-let email = '';
-let password = '';
-let error: string | null = null;
-let loading = false;
+	let email = '';
+	let password = '';
+	let error: string | null = null;
+	let loading = false;
 
 	onMount(() => {
 		const unsubscribe = auth.subscribe((state) => {
-			if (!state.ready) return;
+			if (!state.ready) {
+				return;
+			}
 			if (state.user) {
-				goto('/');
+				goto(resolve('/'));
 			}
 		});
 		return () => unsubscribe();
@@ -27,7 +30,7 @@ let loading = false;
 		loading = true;
 		try {
 			await signIn(email, password);
-			goto('/');
+			goto(resolve('/'));
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Unable to sign in.';
 		} finally {
@@ -37,14 +40,13 @@ let loading = false;
 </script>
 
 <div class="mx-auto max-w-lg rounded-3xl border border-white/10 bg-white/5 p-10 shadow-2xl">
-	<p class="text-sm uppercase tracking-[0.2em] text-emerald-200/80">Welcome back</p>
+	<p class="text-sm tracking-[0.2em] text-emerald-200/80 uppercase">Welcome back</p>
 	<h1 class="mt-2 text-3xl font-semibold text-white">Sign in</h1>
-	<p class="mt-2 text-sm text-slate-200/80">Use your email to access your Wordle tracking dashboard.</p>
+	<p class="mt-2 text-sm text-slate-200/80">
+		Use your email to access your Wordle tracking dashboard.
+	</p>
 
-	<form
-		class="mt-6 space-y-5"
-		on:submit|preventDefault={handleSubmit}
-	>
+	<form class="mt-6 space-y-5" on:submit|preventDefault={handleSubmit}>
 		<label class="block space-y-2">
 			<span class="text-sm font-semibold text-white">Email</span>
 			<input
@@ -52,7 +54,7 @@ let loading = false;
 				type="email"
 				bind:value={email}
 				required
-				class="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition focus:border-emerald-300 focus:bg-black/40"
+				class="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-white transition outline-none focus:border-emerald-300 focus:bg-black/40"
 				placeholder="you@example.com"
 			/>
 		</label>
@@ -65,7 +67,7 @@ let loading = false;
 				bind:value={password}
 				required
 				minlength="6"
-				class="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition focus:border-emerald-300 focus:bg-black/40"
+				class="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-white transition outline-none focus:border-emerald-300 focus:bg-black/40"
 				placeholder="••••••••"
 			/>
 		</label>
@@ -87,6 +89,8 @@ let loading = false;
 
 	<p class="mt-4 text-sm text-slate-200/80">
 		New here?
-		<a class="font-semibold text-emerald-200 hover:text-emerald-100" href="/signup">Create an account</a>.
+		<a class="font-semibold text-emerald-200 hover:text-emerald-100" href={resolve('/signup')}
+			>Create an account</a
+		>.
 	</p>
 </div>

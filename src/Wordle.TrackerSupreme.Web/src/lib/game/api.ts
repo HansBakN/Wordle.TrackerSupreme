@@ -1,10 +1,6 @@
 import { getApiBase } from '$lib/api';
 import { OpenAPI } from '$lib/api-client';
-import type {
-	GameStateResponse,
-	PlayerStatsResponse,
-	SolutionsResponse
-} from './types';
+import type { GameStateResponse, PlayerStatsResponse, SolutionsResponse } from './types';
 
 async function apiFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
 	const base = getApiBase();

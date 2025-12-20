@@ -16,7 +16,9 @@ const fallbackApiBase = (() => {
 })();
 
 function ensureBaseConfigured() {
-	if (baseConfigured) return;
+	if (baseConfigured) {
+		return;
+	}
 	OpenAPI.BASE = (import.meta.env.VITE_API_BASE as string | undefined) ?? fallbackApiBase;
 	baseConfigured = true;
 }

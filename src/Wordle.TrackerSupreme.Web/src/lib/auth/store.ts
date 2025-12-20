@@ -6,12 +6,16 @@ import type { AuthResponse, AuthState } from './types';
 const TOKEN_STORAGE_KEY = 'wts_auth_token';
 
 function loadStoredToken(): string | null {
-	if (typeof localStorage === 'undefined') return null;
+	if (typeof localStorage === 'undefined') {
+		return null;
+	}
 	return localStorage.getItem(TOKEN_STORAGE_KEY);
 }
 
 function persistToken(token: string | null) {
-	if (typeof localStorage === 'undefined') return;
+	if (typeof localStorage === 'undefined') {
+		return;
+	}
 	if (token) {
 		localStorage.setItem(TOKEN_STORAGE_KEY, token);
 	} else {
@@ -39,7 +43,7 @@ function setAuthenticated(result: AuthResponse) {
 }
 
 export async function bootstrapAuth() {
-	let token = loadStoredToken();
+	const token = loadStoredToken();
 	if (!token) {
 		auth.set({ user: null, token: null, ready: true });
 		return;
@@ -65,7 +69,9 @@ export async function signIn(email: string, password: string) {
 }
 
 export async function signUp(displayName: string, email: string, password: string) {
-	const result = await AuthService.postApiAuthSignup({ requestBody: { displayName, email, password } });
+	const result = await AuthService.postApiAuthSignup({
+		requestBody: { displayName, email, password }
+	});
 	setAuthenticated(result);
 }
 

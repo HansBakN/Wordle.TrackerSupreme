@@ -1,28 +1,29 @@
 <script lang="ts">
-import { goto } from '$app/navigation';
-import { auth, signOut } from '$lib/auth/store';
-import { fetchGameState, fetchMyStats, submitGuess } from '$lib/game/api';
-import type { GameStateResponse, LetterResult, PlayerStatsResponse } from '$lib/game/types';
-import { onDestroy, onMount } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
+	import { auth } from '$lib/auth/store';
+	import { fetchGameState, submitGuess } from '$lib/game/api';
+	import type { GameStateResponse, LetterResult } from '$lib/game/types';
+	import { onDestroy, onMount } from 'svelte';
 
 	let checking = true;
 	let loadingState = true;
-	let loadingGuess = false;
 	let state: GameStateResponse | null = null;
-	let stats: PlayerStatsResponse | null = null;
 	let guess = '';
 	let message: string | null = null;
 	let error: string | null = null;
 	let initialized = false;
 	const keyboardRows = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'];
 
-onMount(() => {
-	const unsubscribe = auth.subscribe(async (current) => {
-		if (!current.ready) return;
-		checking = false;
+	onMount(() => {
+		const unsubscribe = auth.subscribe(async (current) => {
+			if (!current.ready) {
+				return;
+			}
+			checking = false;
 
 			if (!current.user) {
-				goto('/signin');
+				goto(resolve('/signin'));
 				return;
 			}
 
@@ -30,37 +31,38 @@ onMount(() => {
 				initialized = true;
 				await loadEverything();
 			}
+		});
+
+		const keyHandler = (evt: KeyboardEvent) => {
+			if (!state) {
+				return;
+			}
+			if (evt.key === 'Enter') {
+				evt.preventDefault();
+				void handleGuess();
+				return;
+			}
+			if (evt.key === 'Backspace') {
+				evt.preventDefault();
+				removeLetter();
+				return;
+			}
+			if (/^[a-zA-Z]$/.test(evt.key)) {
+				evt.preventDefault();
+				pushLetter(evt.key.toUpperCase());
+			}
+		};
+
+		window.addEventListener('keydown', keyHandler);
+
+		onDestroy(() => {
+			window.removeEventListener('keydown', keyHandler);
+			unsubscribe();
+		});
 	});
-
-	const keyHandler = (evt: KeyboardEvent) => {
-		if (!state) return;
-		if (evt.key === 'Enter') {
-			evt.preventDefault();
-			void handleGuess();
-			return;
-		}
-		if (evt.key === 'Backspace') {
-			evt.preventDefault();
-			removeLetter();
-			return;
-		}
-		if (/^[a-zA-Z]$/.test(evt.key)) {
-			evt.preventDefault();
-			pushLetter(evt.key.toUpperCase());
-		}
-	};
-
-	window.addEventListener('keydown', keyHandler);
-
-	onDestroy(() => {
-		window.removeEventListener('keydown', keyHandler);
-		unsubscribe();
-	});
-});
 
 	async function loadEverything() {
 		await loadState();
-		await loadStats();
 	}
 
 	async function loadState() {
@@ -76,16 +78,10 @@ onMount(() => {
 		}
 	}
 
-	async function loadStats() {
-		try {
-			stats = await fetchMyStats();
-		} catch (err) {
-			console.debug('Stats unavailable', err);
-		}
-	}
-
 	async function handleGuess() {
-		if (!state) return;
+		if (!state) {
+			return;
+		}
 		const targetLength = state.wordLength ?? 5;
 
 		const normalized = guess.trim().toUpperCase();
@@ -97,66 +93,73 @@ onMount(() => {
 
 		error = null;
 		message = null;
-		loadingGuess = true;
 		try {
 			state = await submitGuess(normalized);
 			guess = '';
 			message = null;
-			await loadStats();
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Unable to submit guess.';
-		} finally {
-			loadingGuess = false;
 		}
 	}
 
 	function pushLetter(letter: string) {
-		if (!state || !state.canGuess) return;
-		if (guess.length >= state.wordLength) return;
+		if (!state || !state.canGuess) {
+			return;
+		}
+		if (guess.length >= state.wordLength) {
+			return;
+		}
 		guess = `${guess}${letter}`;
 	}
 
 	function removeLetter() {
-		if (!state || !guess.length) return;
+		if (!state || !guess.length) {
+			return;
+		}
 		guess = guess.slice(0, -1);
 	}
 
 	function submitFromKeyboard() {
-		if (!state || !state.canGuess) return;
+		if (!state || !state.canGuess) {
+			return;
+		}
 		void handleGuess();
 	}
 
 	function tileClass(result: LetterResult | null) {
-		const base = 'flex h-14 w-14 items-center justify-center rounded-xl border text-lg font-semibold transition';
-		if (result === 'Correct') return `${base} border-emerald-400 bg-emerald-400 text-slate-900 shadow-lg`;
-		if (result === 'Present') return `${base} border-amber-300/70 bg-amber-300 text-slate-900 shadow`;
-		if (result === 'Absent') return `${base} border-white/15 bg-white/5 text-white/60`;
+		const base =
+			'flex h-14 w-14 items-center justify-center rounded-xl border text-lg font-semibold transition';
+		if (result === 'Correct') {
+			return `${base} border-emerald-400 bg-emerald-400 text-slate-900 shadow-lg`;
+		}
+		if (result === 'Present') {
+			return `${base} border-amber-300/70 bg-amber-300 text-slate-900 shadow`;
+		}
+		if (result === 'Absent') {
+			return `${base} border-white/15 bg-white/5 text-white/60`;
+		}
 		return `${base} border-white/10 bg-white/5 text-white/30`;
 	}
 
-	function statusCopy(status: string | undefined) {
-		if (!status) return 'In progress';
-		if (status === 'Solved') return 'Solved';
-		if (status === 'Failed') return 'Failed';
-		return 'In progress';
-	}
-
-	function statusBadge(status: string | undefined) {
-		if (status === 'Solved') return 'bg-emerald-500/20 text-emerald-100 border-emerald-300/40';
-		if (status === 'Failed') return 'bg-rose-500/15 text-rose-100 border-rose-400/30';
-		return 'bg-white/5 text-white border-white/15';
-	}
-
 	function keyState(letter: string): LetterResult | 'Used' | null {
-		if (!state?.attempt?.guesses?.length) return null;
+		if (!state?.attempt?.guesses?.length) {
+			return null;
+		}
 		let best: LetterResult | 'Used' | null = null;
 
 		for (const guessItem of state.attempt.guesses) {
 			for (const fb of guessItem.feedback) {
-				if (fb.letter !== letter) continue;
-				if (fb.result === 'Correct') return 'Correct';
-				if (fb.result === 'Present') best = 'Present';
-				else if (!best) best = 'Used';
+				if (fb.letter !== letter) {
+					continue;
+				}
+				if (fb.result === 'Correct') {
+					return 'Correct';
+				}
+				if (fb.result === 'Present') {
+					best = 'Present';
+				} else if (!best) {
+					best = 'Used';
+				}
 			}
 			if (!best && guessItem.guessWord.includes(letter)) {
 				best = 'Used';
@@ -170,9 +173,15 @@ onMount(() => {
 		const base =
 			'flex h-11 items-center justify-center rounded-xl border px-3 text-sm font-semibold uppercase transition';
 		const stateKey = keyState(letter);
-		if (stateKey === 'Correct') return `${base} border-emerald-400 bg-emerald-400 text-slate-900`;
-		if (stateKey === 'Present') return `${base} border-amber-300/70 bg-amber-300 text-slate-900`;
-		if (stateKey === 'Used') return `${base} border-white/25 bg-white/50 text-slate-900`;
+		if (stateKey === 'Correct') {
+			return `${base} border-emerald-400 bg-emerald-400 text-slate-900`;
+		}
+		if (stateKey === 'Present') {
+			return `${base} border-amber-300/70 bg-amber-300 text-slate-900`;
+		}
+		if (stateKey === 'Used') {
+			return `${base} border-white/25 bg-white/50 text-slate-900`;
+		}
 		return `${base} border-white/60 bg-white/90 text-slate-900 shadow hover:border-white hover:bg-white`;
 	}
 
@@ -184,6 +193,122 @@ onMount(() => {
 		return `${day}/${month}-${year}`;
 	}
 </script>
+
+{#if checking}
+	<div
+		class="rounded-2xl border border-white/10 bg-white/5 p-10 text-center text-slate-200/80 shadow-xl"
+	>
+		Checking your session...
+	</div>
+{:else if $auth.user}
+	<div class="mx-auto grid max-w-6xl gap-6">
+		<section
+			class="rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-8 shadow-2xl"
+		>
+			<div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+				<div>
+					<p class="text-sm tracking-[0.2em] text-emerald-200/80 uppercase">Daily Wordle</p>
+					<h1 class="mt-2 text-3xl font-semibold text-white">
+						Puzzle for {formatPuzzleDate(state?.puzzleDate)}
+					</h1>
+					<p class="mt-2 max-w-2xl text-sm text-slate-200/80">
+						Solve today’s word before noon to keep your streak alive. After 12:00 PM you can still
+						play, but those practice runs will be tracked separately and won’t change your stats.
+					</p>
+				</div>
+			</div>
+
+			{#if loadingState}
+				<div
+					class="mt-8 rounded-2xl border border-white/10 bg-black/20 p-6 text-center text-slate-200/70"
+				>
+					Loading today’s puzzle...
+				</div>
+			{:else if state}
+				<div class="mt-6">
+					<div class="space-y-4 rounded-2xl border border-white/10 bg-black/20 p-6 shadow-inner">
+						<div class="grid grid-rows-6 gap-1.5">
+							{#each Array(state.maxGuesses).keys() as rowIndex (rowIndex)}
+								<div
+									class="grid justify-center gap-1.5"
+									style={`grid-template-columns: repeat(${state.wordLength}, 3.5rem);`}
+								>
+									{#if state.attempt?.guesses[rowIndex]}
+										{#each state.attempt.guesses[rowIndex].feedback as fb (fb.position)}
+											<div
+												class={`${tileClass(fb.result)} ${rowIndex === (state.attempt?.guesses.length ?? 0) - 1 ? `animate-reveal reveal-${fb.result.toLowerCase()}` : ''}`}
+												style={`${rowIndex === (state.attempt?.guesses.length ?? 0) - 1 ? `animation-delay:${fb.position * 220}ms` : ''}`}
+											>
+												{fb.letter}
+											</div>
+										{/each}
+									{:else}
+										{#each Array(state.wordLength).keys() as col (col)}
+											{#if rowIndex === (state.attempt?.guesses.length ?? 0)}
+												<div class={tileClass(null)}>{(guess[col] ?? '').toUpperCase()}</div>
+											{:else}
+												<div class={tileClass(null)}></div>
+											{/if}
+										{/each}
+									{/if}
+								</div>
+							{/each}
+						</div>
+
+						{#if message}
+							<div
+								class="rounded-xl border border-emerald-300/40 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-50"
+							>
+								{message}
+							</div>
+						{/if}
+						{#if error}
+							<div
+								class="rounded-xl border border-rose-400/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-50"
+							>
+								{error}
+							</div>
+						{/if}
+
+						<div class="space-y-3 pt-3">
+							{#each keyboardRows as row, rowIndex (rowIndex)}
+								<div class="flex items-center justify-center gap-2">
+									{#if rowIndex === 2}
+										<button
+											class="flex h-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 text-xs font-semibold tracking-[0.15em] text-white/80 uppercase transition hover:border-white/30"
+											onclick={removeLetter}
+											disabled={!state.canGuess}
+										>
+											Back
+										</button>
+									{/if}
+									{#each row.split('') as letter (letter)}
+										<button
+											class={keyClass(letter)}
+											onclick={() => pushLetter(letter)}
+											disabled={!state.canGuess}
+										>
+											{letter}
+										</button>
+									{/each}
+									{#if rowIndex === 2}
+										<button
+											class="flex h-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 text-xs font-semibold tracking-[0.15em] text-white/80 uppercase transition hover:border-white/30"
+											onclick={submitFromKeyboard}
+											disabled={!state.canGuess}
+										>
+											Enter
+										</button>
+									{/if}
+								</div>
+							{/each}
+						</div>
+					</div>
+				</div>
+			{/if}
+		</section>
+	</div>
+{/if}
 
 <style>
 	:global(.animate-reveal) {
@@ -242,103 +367,3 @@ onMount(() => {
 		}
 	}
 </style>
-
-{#if checking}
-	<div class="rounded-2xl border border-white/10 bg-white/5 p-10 text-center text-slate-200/80 shadow-xl">
-		Checking your session...
-	</div>
-{:else if $auth.user}
-	<div class="mx-auto grid max-w-6xl gap-6">
-		<section class="rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-8 shadow-2xl">
-			<div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-				<div>
-					<p class="text-sm uppercase tracking-[0.2em] text-emerald-200/80">Daily Wordle</p>
-					<h1 class="mt-2 text-3xl font-semibold text-white">Puzzle for {formatPuzzleDate(state?.puzzleDate)}</h1>
-					<p class="mt-2 max-w-2xl text-sm text-slate-200/80">
-						Solve today’s word before noon to keep your streak alive. After 12:00 PM you can still play, but
-						those practice runs will be tracked separately and won’t change your stats.
-					</p>
-				</div>
-			</div>
-
-			{#if loadingState}
-				<div class="mt-8 rounded-2xl border border-white/10 bg-black/20 p-6 text-center text-slate-200/70">
-					Loading today’s puzzle...
-				</div>
-			{:else if state}
-				<div class="mt-6">
-					<div class="space-y-4 rounded-2xl border border-white/10 bg-black/20 p-6 shadow-inner">
-						<div class="grid grid-rows-6 gap-1.5">
-							{#each Array(state.maxGuesses) as _, rowIndex}
-								<div
-									class="grid justify-center gap-1.5"
-									style={`grid-template-columns: repeat(${state.wordLength}, 3.5rem);`}
-								>
-									{#if state.attempt?.guesses[rowIndex]}
-										{#each state.attempt.guesses[rowIndex].feedback as fb}
-											<div
-												class={`${tileClass(fb.result)} ${rowIndex === (state.attempt?.guesses.length ?? 0) - 1 ? `animate-reveal reveal-${fb.result.toLowerCase()}` : ''}`}
-												style={`${rowIndex === (state.attempt?.guesses.length ?? 0) - 1 ? `animation-delay:${fb.position * 220}ms` : ''}`}
-											>
-												{fb.letter}
-											</div>
-										{/each}
-									{:else}
-										{#each Array(state.wordLength) as __, col}
-											{#if rowIndex === (state.attempt?.guesses.length ?? 0)}
-												<div class={tileClass(null)}>{(guess[col] ?? '').toUpperCase()}</div>
-											{:else}
-												<div class={tileClass(null)}></div>
-											{/if}
-										{/each}
-									{/if}
-								</div>
-							{/each}
-						</div>
-
-						{#if message}
-							<div class="rounded-xl border border-emerald-300/40 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-50">
-								{message}
-							</div>
-						{/if}
-						{#if error}
-							<div class="rounded-xl border border-rose-400/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-50">
-								{error}
-							</div>
-						{/if}
-
-						<div class="space-y-3 pt-3">
-							{#each keyboardRows as row, rowIndex}
-								<div class="flex items-center justify-center gap-2">
-									{#if rowIndex === 2}
-										<button
-											class="flex h-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 text-xs font-semibold uppercase tracking-[0.15em] text-white/80 transition hover:border-white/30"
-											onclick={removeLetter}
-											disabled={!state.canGuess}
-										>
-											Back
-										</button>
-									{/if}
-									{#each row.split('') as letter}
-										<button class={keyClass(letter)} onclick={() => pushLetter(letter)} disabled={!state.canGuess}>
-											{letter}
-										</button>
-									{/each}
-									{#if rowIndex === 2}
-										<button
-											class="flex h-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 text-xs font-semibold uppercase tracking-[0.15em] text-white/80 transition hover:border-white/30"
-											onclick={submitFromKeyboard}
-											disabled={!state.canGuess}
-										>
-											Enter
-										</button>
-									{/if}
-								</div>
-							{/each}
-						</div>
-					</div>
-				</div>
-			{/if}
-		</section>
-	</div>
-{/if}

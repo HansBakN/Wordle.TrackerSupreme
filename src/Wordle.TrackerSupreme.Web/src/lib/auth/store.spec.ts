@@ -18,17 +18,17 @@ vi.mock('$lib/api', () => ({
 const { auth, signIn, signUp, signOut, bootstrapAuth } = await import('./store');
 
 describe('auth store', () => {
-beforeEach(() => {
-	localStorage.clear();
-	vi.resetAllMocks();
-	vi.spyOn(console, 'error').mockImplementation(() => {});
-	auth.set({ user: null, token: null, ready: true });
-});
+	beforeEach(() => {
+		localStorage.clear();
+		vi.resetAllMocks();
+		vi.spyOn(console, 'error').mockImplementation(() => {});
+		auth.set({ user: null, token: null, ready: true });
+	});
 
-afterEach(() => {
-	localStorage.clear();
-	vi.restoreAllMocks();
-});
+	afterEach(() => {
+		localStorage.clear();
+		vi.restoreAllMocks();
+	});
 
 	it('signIn stores token and user', async () => {
 		mockAuthService.postApiAuthSignin.mockResolvedValue({

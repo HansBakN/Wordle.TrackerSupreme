@@ -20,7 +20,11 @@ describe('api helpers', () => {
 
 	it('includes bearer token when present', async () => {
 		openApiMock.TOKEN = 'abc123';
-		const mockResponse = { ok: true, status: 200, json: () => Promise.resolve({ puzzleDate: '2025-01-01' }) } as Response;
+		const mockResponse = {
+			ok: true,
+			status: 200,
+			json: () => Promise.resolve({ puzzleDate: '2025-01-01' })
+		} as Response;
 		const fetchSpy = vi.spyOn(globalThis, 'fetch' as never).mockResolvedValue(mockResponse);
 
 		await fetchGameState();
