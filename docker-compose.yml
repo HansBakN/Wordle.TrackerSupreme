@@ -22,6 +22,7 @@ services:
       - internal
     profiles:
       - proxy
+      - app
 
   db:
     image: postgres:16-alpine
@@ -38,6 +39,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 20
+    profiles:
+      - app
 
   api:
     build:
@@ -61,6 +64,8 @@ services:
       - traefik.http.routers.wordle-api.entrypoints=web
       # - traefik.http.routers.wordle-api.tls.certresolver=le
       - traefik.http.services.wordle-api.loadbalancer.server.port=8080
+    profiles:
+      - app
 
   migrator:
     build:
@@ -93,6 +98,32 @@ services:
       - traefik.http.routers.wordle-web.entrypoints=web
       # - traefik.http.routers.wordle-web.tls.certresolver=le
       - traefik.http.services.wordle-web.loadbalancer.server.port=3000
+    profiles:
+      - app
+
+  tests-backend:
+    image: mcr.microsoft.com/dotnet/sdk:10.0.101
+    working_dir: /workspace/src/Wordle.TrackerSupreme.BackEnd
+    volumes:
+      - .:/workspace
+    entrypoint: ["/bin/bash"]
+    command: ["-lc", "dotnet test Wordle.TrackerSupreme.sln"]
+    profiles:
+      - tests
+      - tests-all
+
+  tests-frontend:
+    image: mcr.microsoft.com/playwright:v1.49.1-jammy
+    working_dir: /workspace/src/Wordle.TrackerSupreme.Web
+    environment:
+      CI: "1"
+    volumes:
+      - .:/workspace
+    entrypoint: ["/bin/bash"]
+    command: ["-lc", "npm ci && npx playwright install chromium && npm test -- --run && npx playwright test"]
+    profiles:
+      - tests
+      - tests-all
 
 networks:
   internal:

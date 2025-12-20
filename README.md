@@ -17,7 +17,7 @@ This project uses Docker Compose to run:
    - `ASPNETCORE_ENVIRONMENT=Development` (enables Swagger locally)
 2) Start the stack (API on :8080, frontend on :3000):
    ```bash
-   docker compose --env-file .env.local up -d --build
+   docker compose --env-file .env.local --profile app up -d --build
    ```
    - Frontend: `http://localhost:3000/`
    - API: `http://localhost:8080/api/status`
@@ -30,6 +30,20 @@ This project uses Docker Compose to run:
    docker compose down
    ```
    Add `-v` to also remove the Postgres volume.
+
+## Run all tests via Docker
+Use the `tests` profile to run backend (.NET), frontend (Vitest), and UI (Playwright) suites without local SDKs:
+```bash
+docker compose --profile tests run --rm tests-backend
+docker compose --profile tests run --rm tests-frontend
+```
+Each command mounts the repo into a container, restores dependencies, and executes the respective test suite.
+
+To run both suites in one go, use the `tests-all` profile with compose up:
+```bash
+docker compose --profile tests-all up --abort-on-container-exit --remove-orphans
+```
+This starts both test containers; exit codes from either will stop the stack when `--abort-on-container-exit` is set.
 
 ## Config files
 - `docker-compose.yml` – all services; Traefik is optional via the `proxy` profile.
