@@ -4,15 +4,18 @@ namespace Wordle.TrackerSupreme.Domain.Services;
 
 public class PlayerStatisticsService
 {
-    public PlayerStatistics Calculate(Player player)
+    public PlayerStatistics Calculate(Player player, Func<PlayerPuzzleAttempt, bool>? isAfterReveal = null)
     {
         var attempts = player.Attempts ?? [];
 
-        var totalAttempts = attempts.Count;
-        var wins = attempts.Count(a => a.Status == AttemptStatus.Solved);
-        var failures = attempts.Count(a => a.Status == AttemptStatus.Failed);
+        var practiceAttempts = attempts.Where(a => isAfterReveal?.Invoke(a) ?? false).ToList();
+        var countedAttempts = attempts.Where(a => !(isAfterReveal?.Invoke(a) ?? false)).ToList();
 
-        var guessCounts = attempts
+        var totalAttempts = countedAttempts.Count;
+        var wins = countedAttempts.Count(a => a.Status == AttemptStatus.Solved);
+        var failures = countedAttempts.Count(a => a.Status == AttemptStatus.Failed);
+
+        var guessCounts = countedAttempts
             .Where(a => a.GuessCount.HasValue)
             .Select(a => (double)a.GuessCount!.Value)
             .ToList();
@@ -21,7 +24,7 @@ public class PlayerStatisticsService
             ? guessCounts.Average()
             : null;
 
-        var (currentStreak, longestStreak) = CalculateStreaks(attempts);
+        var (currentStreak, longestStreak) = CalculateStreaks(countedAttempts);
 
         return new PlayerStatistics
         {
@@ -31,6 +34,7 @@ public class PlayerStatisticsService
             CurrentStreak = currentStreak,
             LongestStreak = longestStreak,
             AverageGuessCount = averageGuesses,
+            PracticeAttempts = practiceAttempts.Count
         };
     }
 
