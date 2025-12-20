@@ -39,6 +39,7 @@
 - Testing: add/adjust unit tests in `Wordle.TrackerSupreme.Tests` for backend changes; mirror API changes with frontend unit/UI tests where applicable.
 - Env/config: use `.env.local` for local defaults (APP_HOST, POSTGRES_*, JWT secret, ASPNETCORE_ENVIRONMENT). Avoid committing secrets.
 - CI discipline: before handing off changes, always run the full test suite (backend + frontend/UI), run frontend formatter + linter (must be clean), and manually exercise the project to verify any newly implemented feature end-to-end.
+- Test coverage requirement: every new feature must be covered at all levels—backend unit/integration tests, frontend unit tests, and UI (Playwright) tests where behavior surfaces in the UI.
 
 ## Style nudges
 - C#: stick to current nullability/records/classes conventions; keep mapping helpers in controllers small and deterministic.
