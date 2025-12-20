@@ -2,10 +2,13 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Wordle.TrackerSupreme.Api.Auth;
-using Wordle.TrackerSupreme.Api.Services.Game;
+using Wordle.TrackerSupreme.Application.Services.Game;
+using Wordle.TrackerSupreme.Application.Services;
 using Wordle.TrackerSupreme.Domain.Services;
+using Wordle.TrackerSupreme.Domain.Services.Game;
 using Wordle.TrackerSupreme.Infrastructure;
 using Wordle.TrackerSupreme.Migrations;
 
@@ -85,13 +88,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection(JwtSettings.SectionName));
 builder.Services.Configure<GameOptions>(builder.Configuration.GetSection(GameOptions.SectionName));
+builder.Services.AddSingleton(sp => sp.GetRequiredService<IOptions<GameOptions>>().Value);
 builder.Services.AddScoped<JwtTokenService>();
 builder.Services.AddScoped<PasswordHasher<Wordle.TrackerSupreme.Domain.Models.Player>>();
-builder.Services.AddSingleton<GameClock>();
-builder.Services.AddSingleton<WordSelector>();
-builder.Services.AddScoped<GameplayService>();
-builder.Services.AddScoped<DailyPuzzleService>();
-builder.Services.AddScoped<PlayerStatisticsService>();
+builder.Services.AddSingleton<IGameClock, GameClock>();
+builder.Services.AddSingleton<IWordSelector, WordSelector>();
+builder.Services.AddScoped<IGameplayService, GameplayService>();
+builder.Services.AddScoped<IDailyPuzzleService, DailyPuzzleService>();
+builder.Services.AddScoped<IPlayerStatisticsService, PlayerStatisticsService>();
 
 var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ??
     ["http://localhost:5173", "http://localhost:3000"];
@@ -112,7 +116,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseCors();
 app.UseAuthentication();

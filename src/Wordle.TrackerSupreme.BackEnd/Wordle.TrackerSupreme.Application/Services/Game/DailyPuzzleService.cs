@@ -1,22 +1,23 @@
-using Microsoft.EntityFrameworkCore;
 using Wordle.TrackerSupreme.Domain.Models;
-using Wordle.TrackerSupreme.Infrastructure.Database;
+using Wordle.TrackerSupreme.Domain.Repositories;
+using Wordle.TrackerSupreme.Domain.Services.Game;
 
-namespace Wordle.TrackerSupreme.Api.Services.Game;
+namespace Wordle.TrackerSupreme.Application.Services.Game;
 
 public class DailyPuzzleService(
-    WordleTrackerSupremeDbContext dbContext,
-    WordSelector wordSelector)
+    IGameRepository gameRepository,
+    IWordSelector wordSelector)
+    : IDailyPuzzleService
 {
     public async Task<DailyPuzzle> GetOrCreatePuzzle(DateOnly puzzleDate, CancellationToken cancellationToken)
     {
-        var existing = await dbContext.DailyPuzzles.FirstOrDefaultAsync(p => p.PuzzleDate == puzzleDate, cancellationToken);
+        var existing = await gameRepository.GetPuzzleByDate(puzzleDate, cancellationToken);
         if (existing is not null)
         {
             if (string.IsNullOrWhiteSpace(existing.Solution))
             {
                 existing.Solution = wordSelector.GetSolutionFor(puzzleDate);
-                await dbContext.SaveChangesAsync(cancellationToken);
+                await gameRepository.SaveChanges(cancellationToken);
             }
 
             return existing;
@@ -30,8 +31,8 @@ public class DailyPuzzleService(
             IsArchived = false
         };
 
-        dbContext.DailyPuzzles.Add(puzzle);
-        await dbContext.SaveChangesAsync(cancellationToken);
+        await gameRepository.AddPuzzle(puzzle, cancellationToken);
+        await gameRepository.SaveChanges(cancellationToken);
         return puzzle;
     }
 }

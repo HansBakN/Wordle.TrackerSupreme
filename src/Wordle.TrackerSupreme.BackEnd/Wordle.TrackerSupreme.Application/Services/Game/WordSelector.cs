@@ -1,6 +1,8 @@
-namespace Wordle.TrackerSupreme.Api.Services.Game;
+using Wordle.TrackerSupreme.Domain.Services.Game;
 
-public class WordSelector
+namespace Wordle.TrackerSupreme.Application.Services.Game;
+
+public class WordSelector : IWordSelector
 {
     private static readonly string[] Words =
     [

@@ -6,6 +6,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wordle.TrackerSupreme.Domain", "Wordle.TrackerSupreme.Domain\\Wordle.TrackerSupreme.Domain.csproj", "{48AC5A55-73FD-4E24-BAAC-1288491EA17A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wordle.TrackerSupreme.Application", "Wordle.TrackerSupreme.Application\\Wordle.TrackerSupreme.Application.csproj", "{149DE865-375C-4C8A-9E9F-C4AA05364DF2}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wordle.TrackerSupreme.Infrastructure", "Wordle.TrackerSupreme.Infrastructure\\Wordle.TrackerSupreme.Infrastructure.csproj", "{ED328A49-F272-4DE7-AA9F-C6DC7352C320}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wordle.TrackerSupreme.Migrations", "Wordle.TrackerSupreme.Migrations\\Wordle.TrackerSupreme.Migrations.csproj", "{90F4AEB3-8ECD-45A3-9D46-99E2FAA5E7EF}"
@@ -22,6 +24,10 @@ Global
         {48AC5A55-73FD-4E24-BAAC-1288491EA17A}.Debug|Any CPU.Build.0 = Debug|Any CPU
         {48AC5A55-73FD-4E24-BAAC-1288491EA17A}.Release|Any CPU.ActiveCfg = Release|Any CPU
         {48AC5A55-73FD-4E24-BAAC-1288491EA17A}.Release|Any CPU.Build.0 = Release|Any CPU
+        {149DE865-375C-4C8A-9E9F-C4AA05364DF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+        {149DE865-375C-4C8A-9E9F-C4AA05364DF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+        {149DE865-375C-4C8A-9E9F-C4AA05364DF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+        {149DE865-375C-4C8A-9E9F-C4AA05364DF2}.Release|Any CPU.Build.0 = Release|Any CPU
         {ED328A49-F272-4DE7-AA9F-C6DC7352C320}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
         {ED328A49-F272-4DE7-AA9F-C6DC7352C320}.Debug|Any CPU.Build.0 = Debug|Any CPU
         {ED328A49-F272-4DE7-AA9F-C6DC7352C320}.Release|Any CPU.ActiveCfg = Release|Any CPU

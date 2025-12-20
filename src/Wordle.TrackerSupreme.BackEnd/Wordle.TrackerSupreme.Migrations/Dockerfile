@@ -3,6 +3,7 @@ WORKDIR /workspace
 
 COPY Wordle.TrackerSupreme.sln ./
 COPY Wordle.TrackerSupreme.Api/Wordle.TrackerSupreme.Api.csproj Wordle.TrackerSupreme.Api/
+COPY Wordle.TrackerSupreme.Application/Wordle.TrackerSupreme.Application.csproj Wordle.TrackerSupreme.Application/
 COPY Wordle.TrackerSupreme.Domain/Wordle.TrackerSupreme.Domain.csproj Wordle.TrackerSupreme.Domain/
 COPY Wordle.TrackerSupreme.Infrastructure/Wordle.TrackerSupreme.Infrastructure.csproj Wordle.TrackerSupreme.Infrastructure/
 COPY Wordle.TrackerSupreme.Migrations/Wordle.TrackerSupreme.Migrations.csproj Wordle.TrackerSupreme.Migrations/

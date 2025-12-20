@@ -16,6 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\\Wordle.TrackerSupreme.Application\\Wordle.TrackerSupreme.Application.csproj" />
       <ProjectReference Include="..\\Wordle.TrackerSupreme.Domain\\Wordle.TrackerSupreme.Domain.csproj" />
       <ProjectReference Include="..\\Wordle.TrackerSupreme.Infrastructure\\Wordle.TrackerSupreme.Infrastructure.csproj" />
       <ProjectReference Include="..\\Wordle.TrackerSupreme.Migrations\\Wordle.TrackerSupreme.Migrations.csproj" />

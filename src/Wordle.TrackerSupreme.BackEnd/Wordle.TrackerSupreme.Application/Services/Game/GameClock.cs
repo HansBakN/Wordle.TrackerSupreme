@@ -1,11 +1,12 @@
-using Microsoft.Extensions.Options;
 using Wordle.TrackerSupreme.Domain.Models;
 
-namespace Wordle.TrackerSupreme.Api.Services.Game;
+using Wordle.TrackerSupreme.Domain.Services.Game;
 
-public class GameClock(IOptions<GameOptions> options)
+namespace Wordle.TrackerSupreme.Application.Services.Game;
+
+public class GameClock(GameOptions options) : IGameClock
 {
-    private readonly GameOptions _options = options.Value;
+    private readonly GameOptions _options = options;
 
     public DateOnly Today => DateOnly.FromDateTime(DateTimeOffset.Now.Date);
 

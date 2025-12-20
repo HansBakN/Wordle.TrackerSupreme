@@ -1,31 +1,17 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Wordle.TrackerSupreme.Domain.Models;
-using Wordle.TrackerSupreme.Infrastructure.Database;
+using Wordle.TrackerSupreme.Domain.Repositories;
+using Wordle.TrackerSupreme.Domain.Services.Game;
 
-namespace Wordle.TrackerSupreme.Api.Services.Game;
-
-public record GameplayState(
-    DailyPuzzle Puzzle,
-    PlayerPuzzleAttempt? Attempt,
-    bool CutoffPassed,
-    bool SolutionRevealed,
-    bool AllowLatePlay,
-    int WordLength,
-    int MaxGuesses);
-
-public record SolutionsSnapshot(
-    DailyPuzzle Puzzle,
-    bool CutoffPassed,
-    IReadOnlyCollection<PlayerPuzzleAttempt> Attempts);
+namespace Wordle.TrackerSupreme.Application.Services.Game;
 
 public class GameplayService(
-    WordleTrackerSupremeDbContext dbContext,
-    DailyPuzzleService puzzleService,
-    GameClock gameClock,
-    IOptions<GameOptions> options)
+    IGameRepository gameRepository,
+    IDailyPuzzleService puzzleService,
+    IGameClock gameClock,
+    GameOptions options)
+    : IGameplayService
 {
-    private readonly GameOptions _options = options.Value;
+    private readonly GameOptions _options = options;
 
     public async Task<GameplayState> GetState(Guid playerId, CancellationToken cancellationToken = default)
     {
@@ -62,14 +48,8 @@ public class GameplayService(
                 CreatedOn = DateTime.UtcNow,
                 PlayedInHardMode = false
             };
-            dbContext.Attempts.Add(attempt);
+            await gameRepository.AddAttempt(attempt, cancellationToken);
         }
-
-        await dbContext.Entry(attempt)
-            .Collection(a => a.Guesses)
-            .Query()
-            .Include(g => g.Feedback)
-            .LoadAsync(cancellationToken);
 
         if (attempt.Status is AttemptStatus.Solved or AttemptStatus.Failed)
         {
@@ -80,7 +60,7 @@ public class GameplayService(
         {
             attempt.Status = AttemptStatus.Failed;
             attempt.CompletedOn = attempt.CompletedOn ?? DateTime.UtcNow;
-            await dbContext.SaveChangesAsync(cancellationToken);
+            await gameRepository.SaveChanges(cancellationToken);
             throw new InvalidOperationException("No guesses remaining.");
         }
 
@@ -103,8 +83,7 @@ public class GameplayService(
         }
 
         attempt.Guesses.Add(guessAttempt);
-        dbContext.Guesses.Add(guessAttempt);
-        dbContext.LetterEvaluations.AddRange(feedback);
+        await gameRepository.AddGuess(guessAttempt, feedback, cancellationToken);
 
         var solved = feedback.All(e => e.Result == LetterResult.Correct);
         if (solved)
@@ -118,17 +97,7 @@ public class GameplayService(
             attempt.CompletedOn = DateTime.UtcNow;
         }
 
-        try
-        {
-            await dbContext.SaveChangesAsync(cancellationToken);
-        }
-        catch (DbUpdateConcurrencyException ex)
-        {
-            var details = ex.Entries
-                .Select(e => $"{e.Entity.GetType().Name} (state: {e.State})")
-                .ToList();
-            throw new InvalidOperationException($"Could not save guess due to a stale game state. Entities: {string.Join(", ", details)}", ex);
-        }
+        await gameRepository.SaveChanges(cancellationToken);
 
         var cutoffPassed = gameClock.HasRevealPassed(puzzle.PuzzleDate);
         var solutionRevealed = cutoffPassed || attempt.Status != AttemptStatus.InProgress;
@@ -148,21 +117,14 @@ public class GameplayService(
         var puzzle = await puzzleService.GetOrCreatePuzzle(gameClock.Today, cancellationToken);
         var cutoffPassed = gameClock.HasRevealPassed(puzzle.PuzzleDate);
 
-        var attempts = await dbContext.Attempts
-            .Include(a => a.Player)
-            .Include(a => a.Guesses)
-            .Where(a => a.DailyPuzzleId == puzzle.Id)
-            .ToListAsync(cancellationToken);
+        var attempts = await gameRepository.GetAttemptsForPuzzle(puzzle.Id, cancellationToken);
 
         return new SolutionsSnapshot(puzzle, cutoffPassed, attempts);
     }
 
     private async Task<PlayerPuzzleAttempt?> LoadAttempt(Guid playerId, Guid puzzleId, CancellationToken cancellationToken)
     {
-        return await dbContext.Attempts
-            .Include(a => a.Guesses)
-                .ThenInclude(g => g.Feedback)
-            .FirstOrDefaultAsync(a => a.PlayerId == playerId && a.DailyPuzzleId == puzzleId, cancellationToken);
+        return await gameRepository.GetAttempt(playerId, puzzleId, cancellationToken);
     }
 
     private string NormalizeGuess(string guessWord)

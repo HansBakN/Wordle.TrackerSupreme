@@ -2,8 +2,8 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Wordle.TrackerSupreme.Api.Models.Game;
-using Wordle.TrackerSupreme.Api.Services.Game;
 using Wordle.TrackerSupreme.Domain.Models;
+using Wordle.TrackerSupreme.Domain.Services.Game;
 
 namespace Wordle.TrackerSupreme.Api.Controllers;
 
@@ -11,8 +11,8 @@ namespace Wordle.TrackerSupreme.Api.Controllers;
 [Route("api/[controller]")]
 [Authorize]
 public class GameController(
-    GameplayService gameplayService,
-    GameClock gameClock) : ControllerBase
+    IGameplayService gameplayService,
+    IGameClock gameClock) : ControllerBase
 {
     [HttpGet("state")]
     public async Task<ActionResult<GameStateResponse>> GetState(CancellationToken cancellationToken)

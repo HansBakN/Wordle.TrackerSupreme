@@ -1,4 +1,4 @@
-namespace Wordle.TrackerSupreme.Api.Services.Game;
+namespace Wordle.TrackerSupreme.Application.Services.Game;
 
 public class GameOptions
 {

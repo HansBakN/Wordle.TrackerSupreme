@@ -1,11 +1,10 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Wordle.TrackerSupreme.Api.Models.Game;
-using Wordle.TrackerSupreme.Api.Services.Game;
+using Wordle.TrackerSupreme.Domain.Repositories;
 using Wordle.TrackerSupreme.Domain.Services;
-using Wordle.TrackerSupreme.Infrastructure.Database;
+using Wordle.TrackerSupreme.Domain.Services.Game;
 
 namespace Wordle.TrackerSupreme.Api.Controllers;
 
@@ -13,9 +12,9 @@ namespace Wordle.TrackerSupreme.Api.Controllers;
 [Route("api/[controller]")]
 [Authorize]
 public class StatsController(
-    WordleTrackerSupremeDbContext dbContext,
-    PlayerStatisticsService statisticsService,
-    GameClock gameClock) : ControllerBase
+    IPlayerRepository playerRepository,
+    IPlayerStatisticsService statisticsService,
+    IGameClock gameClock) : ControllerBase
 {
     [HttpGet("me")]
     public async Task<ActionResult<PlayerStatsResponse>> GetMine(CancellationToken cancellationToken)
@@ -26,10 +25,7 @@ public class StatsController(
             return Unauthorized();
         }
 
-        var player = await dbContext.Players
-            .Include(p => p.Attempts)
-                .ThenInclude(a => a.DailyPuzzle)
-            .FirstOrDefaultAsync(p => p.Id == playerId, cancellationToken);
+        var player = await playerRepository.GetPlayerWithAttempts(playerId, cancellationToken);
 
         if (player is null)
         {

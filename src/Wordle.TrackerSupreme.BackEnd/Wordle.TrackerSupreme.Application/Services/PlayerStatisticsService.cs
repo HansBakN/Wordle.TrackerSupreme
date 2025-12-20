@@ -1,8 +1,10 @@
 using Wordle.TrackerSupreme.Domain.Models;
 
-namespace Wordle.TrackerSupreme.Domain.Services;
+using Wordle.TrackerSupreme.Domain.Services;
 
-public class PlayerStatisticsService
+namespace Wordle.TrackerSupreme.Application.Services;
+
+public class PlayerStatisticsService : IPlayerStatisticsService
 {
     public PlayerStatistics Calculate(Player player, Func<PlayerPuzzleAttempt, bool>? isAfterReveal = null)
     {
