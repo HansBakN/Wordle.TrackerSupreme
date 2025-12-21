@@ -93,6 +93,7 @@ builder.Services.AddScoped<JwtTokenService>();
 builder.Services.AddScoped<PasswordHasher<Wordle.TrackerSupreme.Domain.Models.Player>>();
 builder.Services.AddSingleton<IGameClock, GameClock>();
 builder.Services.AddSingleton<IWordSelector, WordSelector>();
+builder.Services.AddSingleton<IGuessEvaluationService, GuessEvaluationService>();
 builder.Services.AddScoped<IGameplayService, GameplayService>();
 builder.Services.AddScoped<IDailyPuzzleService, DailyPuzzleService>();
 builder.Services.AddScoped<IPlayerStatisticsService, PlayerStatisticsService>();

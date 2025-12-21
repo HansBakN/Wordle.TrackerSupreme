@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:10.0 AS migrator
+FROM mcr.microsoft.com/dotnet/sdk:10.0.101 AS migrator
 WORKDIR /workspace
 
 COPY Wordle.TrackerSupreme.sln ./
@@ -8,7 +8,7 @@ COPY Wordle.TrackerSupreme.Domain/Wordle.TrackerSupreme.Domain.csproj Wordle.Tra
 COPY Wordle.TrackerSupreme.Infrastructure/Wordle.TrackerSupreme.Infrastructure.csproj Wordle.TrackerSupreme.Infrastructure/
 COPY Wordle.TrackerSupreme.Migrations/Wordle.TrackerSupreme.Migrations.csproj Wordle.TrackerSupreme.Migrations/
 
-RUN dotnet restore Wordle.TrackerSupreme.sln
+RUN dotnet restore Wordle.TrackerSupreme.Migrations/Wordle.TrackerSupreme.Migrations.csproj
 
 COPY . .
 

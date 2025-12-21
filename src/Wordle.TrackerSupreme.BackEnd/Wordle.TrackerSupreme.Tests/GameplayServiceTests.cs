@@ -12,7 +12,7 @@ public class GameplayServiceTests
     {
         var puzzleService = new DailyPuzzleService(repo, new FakeWordSelector(solution));
         var options = new GameOptions { MaxGuesses = 6, WordLength = 5 };
-        return new GameplayService(repo, puzzleService, clock, options);
+        return new GameplayService(repo, puzzleService, clock, new GuessEvaluationService(options), options);
     }
 
     [Fact]

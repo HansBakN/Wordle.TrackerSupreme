@@ -25,7 +25,25 @@ This project uses Docker Compose to run:
    ```bash
    docker compose --env-file .env.local --profile migrate up --build migrator
    ```
-4) Stop everything:
+4) Seed local dev data (optional):
+   ```bash
+   docker compose --env-file .env.local --profile seed run --rm seeder
+   ```
+   The seeder is deterministic and configurable via environment variables or appsettings. Example overrides
+   (can be added to `.env.local` for repeatable runs):
+   - `Seeder__RandomSeed=4242`
+   - `Seeder__PlayerCount=20`
+   - `Seeder__MinSolvedPuzzles=30`
+   - `Seeder__MaxSolvedPuzzles=200`
+   - `Seeder__FailedPuzzlesMin=2`
+   - `Seeder__FailedPuzzlesMax=12`
+   - `Seeder__InProgressPuzzlesMin=1`
+   - `Seeder__InProgressPuzzlesMax=4`
+   - `Seeder__PuzzleDays=280`
+   - `Seeder__DefaultPassword=dev-password`
+   - `Seeder__AllowReseed=false`
+   - `Seeder__AnchorDate=2025-02-01`
+5) Stop everything:
    ```bash
    docker compose down
    ```

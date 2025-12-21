@@ -15,7 +15,12 @@ public class GameControllerTests
     private static GameController CreateController(FakeGameRepository repo, FakeGameClock clock, string solution = "CRANE")
     {
         var options = new GameOptions { WordLength = 5, MaxGuesses = 6 };
-        var gameplay = new GameplayService(repo, new DailyPuzzleService(repo, new FakeWordSelector(solution)), clock, options);
+        var gameplay = new GameplayService(
+            repo,
+            new DailyPuzzleService(repo, new FakeWordSelector(solution)),
+            clock,
+            new GuessEvaluationService(options),
+            options);
         var controller = new GameController(gameplay, clock)
         {
             ControllerContext = new ControllerContext

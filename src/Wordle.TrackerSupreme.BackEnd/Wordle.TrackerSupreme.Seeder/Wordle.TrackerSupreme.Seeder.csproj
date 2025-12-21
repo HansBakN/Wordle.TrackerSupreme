@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\\Wordle.TrackerSupreme.Application\\Wordle.TrackerSupreme.Application.csproj" />
+        <ProjectReference Include="..\\Wordle.TrackerSupreme.Domain\\Wordle.TrackerSupreme.Domain.csproj" />
+        <ProjectReference Include="..\\Wordle.TrackerSupreme.Infrastructure\\Wordle.TrackerSupreme.Infrastructure.csproj" />
+    </ItemGroup>
+
+</Project>

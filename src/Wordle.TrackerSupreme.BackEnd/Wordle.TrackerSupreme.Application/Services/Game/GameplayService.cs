@@ -8,10 +8,12 @@ public class GameplayService(
     IGameRepository gameRepository,
     IDailyPuzzleService puzzleService,
     IGameClock gameClock,
+    IGuessEvaluationService guessEvaluationService,
     GameOptions options)
     : IGameplayService
 {
     private readonly GameOptions _options = options;
+    private readonly IGuessEvaluationService _guessEvaluationService = guessEvaluationService;
 
     public async Task<GameplayState> GetState(Guid playerId, CancellationToken cancellationToken = default)
     {
@@ -33,7 +35,7 @@ public class GameplayService(
 
     public async Task<GameplayState> SubmitGuess(Guid playerId, string guessWord, CancellationToken cancellationToken = default)
     {
-        var normalizedGuess = NormalizeGuess(guessWord);
+        var normalizedGuess = _guessEvaluationService.NormalizeGuess(guessWord);
         var puzzle = await puzzleService.GetOrCreatePuzzle(gameClock.Today, cancellationToken);
 
         var attempt = await LoadAttempt(playerId, puzzle.Id, cancellationToken);
@@ -65,7 +67,8 @@ public class GameplayService(
         }
 
         var guessNumber = attempt.Guesses.Count + 1;
-        var feedback = EvaluateGuess(puzzle.Solution ?? string.Empty, normalizedGuess);
+        var feedback = _guessEvaluationService.EvaluateGuess(puzzle.Solution ?? string.Empty, normalizedGuess)
+            .ToList();
 
         var guessAttempt = new GuessAttempt
         {
@@ -127,78 +130,4 @@ public class GameplayService(
         return await gameRepository.GetAttempt(playerId, puzzleId, cancellationToken);
     }
 
-    private string NormalizeGuess(string guessWord)
-    {
-        if (string.IsNullOrWhiteSpace(guessWord))
-        {
-            throw new ArgumentException("Guess cannot be empty.", nameof(guessWord));
-        }
-
-        var cleaned = guessWord.Trim().ToUpperInvariant();
-        if (cleaned.Length != _options.WordLength)
-        {
-            throw new ArgumentException($"Guess must be {_options.WordLength} letters long.", nameof(guessWord));
-        }
-
-        if (!cleaned.All(char.IsLetter))
-        {
-            throw new ArgumentException("Guess must contain only letters.", nameof(guessWord));
-        }
-
-        return cleaned;
-    }
-
-    private List<LetterEvaluation> EvaluateGuess(string solution, string guess)
-    {
-        solution = solution.ToUpperInvariant();
-        guess = guess.ToUpperInvariant();
-
-        var feedback = new LetterEvaluation[_options.WordLength];
-        var solutionChars = solution.ToCharArray();
-        var guessChars = guess.ToCharArray();
-
-        // First pass: correct positions.
-        for (int i = 0; i < _options.WordLength; i++)
-        {
-            if (guessChars[i] == solutionChars[i])
-            {
-                feedback[i] = new LetterEvaluation
-                {
-                    Id = Guid.NewGuid(),
-                    Position = i,
-                    Letter = guessChars[i],
-                    Result = LetterResult.Correct
-                };
-                solutionChars[i] = '*';
-            }
-        }
-
-        // Second pass: present vs absent.
-        for (int i = 0; i < _options.WordLength; i++)
-        {
-            if (feedback[i] is not null)
-            {
-                continue;
-            }
-
-            var letter = guessChars[i];
-            var index = Array.IndexOf(solutionChars, letter);
-            var result = index >= 0 ? LetterResult.Present : LetterResult.Absent;
-
-            feedback[i] = new LetterEvaluation
-            {
-                Id = Guid.NewGuid(),
-                Position = i,
-                Letter = letter,
-                Result = result
-            };
-
-            if (index >= 0)
-            {
-                solutionChars[index] = '*';
-            }
-        }
-
-        return feedback.ToList();
-    }
 }

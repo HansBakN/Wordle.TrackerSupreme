@@ -21,6 +21,7 @@
 - Start stack (API :8080, web :3000): `docker compose --env-file .env.local --profile app up -d --build`
 - Stop stack: `docker compose down` (add `-v` to drop Postgres volume `wordle_db_data`).
 - Apply migrations only when needed: `docker compose --env-file .env.local --profile migrate up --build migrator`
+- Seed local dev data (after migrations): `docker compose --env-file .env.local --profile seed run --rm seeder`
 - Tests (preferred):
   - Backend: `docker compose --profile tests run --rm tests-backend`
   - Frontend + UI: `docker compose --profile tests run --rm tests-frontend`
@@ -37,8 +38,9 @@
 - Adding/changing API endpoints: adjust Domain interfaces/services, update Application implementations, wire through API controllers/DTOs, then refresh frontend client typings/openapi and Svelte usage.
 - Data access: go through repositories (`GameRepository`, `PlayerRepository`); keep `SaveChanges` calls consistent with existing patterns.
 - Testing: add/adjust unit tests in `Wordle.TrackerSupreme.Tests` for backend changes; mirror API changes with frontend unit/UI tests where applicable.
+- When adding new features with data/UX impact, extend the local seeding data in `src/Wordle.TrackerSupreme.BackEnd/Wordle.TrackerSupreme.Seeder`.
 - Env/config: use `.env.local` for local defaults (APP_HOST, POSTGRES_*, JWT secret, ASPNETCORE_ENVIRONMENT). Avoid committing secrets.
-- CI discipline: before handing off changes, always run the full test suite (backend + frontend/UI), run frontend formatter + linter (must be clean), and manually exercise the project to verify any newly implemented feature end-to-end.
+- CI discipline: before handing off changes, always run the full test suite (backend + frontend/UI), run frontend formatter + linter (must be clean), and manually exercise the project to verify any newly implemented feature end-to-end. Always run and validate new features locally using the most relevant workflow (e.g., run the seeder after seeding changes).
 - Test coverage requirement: every new feature must be covered at all levels—backend unit/integration tests, frontend unit tests, and UI (Playwright) tests where behavior surfaces in the UI.
 
 ## Style nudges

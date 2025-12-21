@@ -41,6 +41,8 @@ services:
       retries: 20
     profiles:
       - app
+      - seed
+      - migrate
 
   api:
     build:
@@ -81,6 +83,20 @@ services:
       - internal
     profiles:
       - migrate
+  seeder:
+    build:
+      context: ./src/Wordle.TrackerSupreme.BackEnd
+      dockerfile: Wordle.TrackerSupreme.Seeder/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__WordleTrackerSupremeDbContext: Host=db;Database=${POSTGRES_DB:-wordle_trackersupreme};Username=${POSTGRES_USER:-wordle_user};Password=${POSTGRES_PASSWORD:-please-change-me}
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - internal
+    profiles:
+      - seed
 
   web:
     build:
