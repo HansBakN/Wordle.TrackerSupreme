@@ -11,8 +11,8 @@ export type StatsFilterState = {
 	countPracticeAttempts: boolean;
 	fromDate: string;
 	toDate: string;
-	minGuessCount: string;
-	maxGuessCount: string;
+	minGuessCount: string | number;
+	maxGuessCount: string | number;
 };
 
 export const defaultStatsFilterState: StatsFilterState = {
@@ -30,7 +30,16 @@ export const defaultStatsFilterState: StatsFilterState = {
 	maxGuessCount: ''
 };
 
-function toOptionalNumber(value: string): number | undefined {
+function toOptionalNumber(value: string | number | null | undefined): number | undefined {
+	if (value === null || value === undefined) {
+		return undefined;
+	}
+	if (typeof value === 'number') {
+		if (Number.isNaN(value)) {
+			return undefined;
+		}
+		return value;
+	}
 	if (!value.trim()) {
 		return undefined;
 	}

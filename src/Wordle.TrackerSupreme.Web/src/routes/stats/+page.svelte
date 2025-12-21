@@ -102,15 +102,17 @@
 				<div class="flex flex-wrap items-center gap-3">
 					<button
 						class="rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold tracking-[0.2em] text-white/80 uppercase transition hover:border-white/40 hover:bg-white/15"
-						onclick={loadStats}
+						on:click={loadStats}
 						disabled={loading}
+						data-testid="stats-apply"
 					>
 						{loading ? 'Loading...' : 'Apply filters'}
 					</button>
 					<button
 						class="rounded-full border border-white/20 px-4 py-2 text-xs font-semibold tracking-[0.2em] text-white/70 uppercase transition hover:border-white/40 hover:text-white"
-						onclick={resetFilters}
+						on:click={resetFilters}
 						disabled={loading}
+						data-testid="stats-reset"
 					>
 						Reset defaults
 					</button>
@@ -125,11 +127,19 @@
 					<div class="space-y-3">
 						<p class="text-xs tracking-[0.2em] text-slate-200/60 uppercase">Mode</p>
 						<label class="flex items-center gap-2">
-							<input type="checkbox" bind:checked={filters.includeHardMode} />
+							<input
+								type="checkbox"
+								bind:checked={filters.includeHardMode}
+								data-testid="filter-hard-mode"
+							/>
 							Hard mode attempts
 						</label>
 						<label class="flex items-center gap-2">
-							<input type="checkbox" bind:checked={filters.includeEasyMode} />
+							<input
+								type="checkbox"
+								bind:checked={filters.includeEasyMode}
+								data-testid="filter-easy-mode"
+							/>
 							Easy mode attempts
 						</label>
 					</div>
@@ -137,15 +147,27 @@
 					<div class="space-y-3">
 						<p class="text-xs tracking-[0.2em] text-slate-200/60 uppercase">Timing</p>
 						<label class="flex items-center gap-2">
-							<input type="checkbox" bind:checked={filters.includeBeforeReveal} />
+							<input
+								type="checkbox"
+								bind:checked={filters.includeBeforeReveal}
+								data-testid="filter-before-reveal"
+							/>
 							Before 12 PM reveal
 						</label>
 						<label class="flex items-center gap-2">
-							<input type="checkbox" bind:checked={filters.includeAfterReveal} />
+							<input
+								type="checkbox"
+								bind:checked={filters.includeAfterReveal}
+								data-testid="filter-after-reveal"
+							/>
 							After 12 PM practice
 						</label>
 						<label class="flex items-center gap-2">
-							<input type="checkbox" bind:checked={filters.countPracticeAttempts} />
+							<input
+								type="checkbox"
+								bind:checked={filters.countPracticeAttempts}
+								data-testid="filter-count-practice"
+							/>
 							Count practice in totals
 						</label>
 					</div>
@@ -153,15 +175,27 @@
 					<div class="space-y-3">
 						<p class="text-xs tracking-[0.2em] text-slate-200/60 uppercase">Status</p>
 						<label class="flex items-center gap-2">
-							<input type="checkbox" bind:checked={filters.includeSolved} />
+							<input
+								type="checkbox"
+								bind:checked={filters.includeSolved}
+								data-testid="filter-solved"
+							/>
 							Solved
 						</label>
 						<label class="flex items-center gap-2">
-							<input type="checkbox" bind:checked={filters.includeFailed} />
+							<input
+								type="checkbox"
+								bind:checked={filters.includeFailed}
+								data-testid="filter-failed"
+							/>
 							Failed
 						</label>
 						<label class="flex items-center gap-2">
-							<input type="checkbox" bind:checked={filters.includeInProgress} />
+							<input
+								type="checkbox"
+								bind:checked={filters.includeInProgress}
+								data-testid="filter-in-progress"
+							/>
 							In progress
 						</label>
 					</div>
@@ -174,6 +208,7 @@
 								type="date"
 								class="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white"
 								bind:value={filters.fromDate}
+								data-testid="filter-from-date"
 							/>
 						</label>
 						<label class="grid gap-2">
@@ -182,6 +217,7 @@
 								type="date"
 								class="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white"
 								bind:value={filters.toDate}
+								data-testid="filter-to-date"
 							/>
 						</label>
 					</div>
@@ -195,6 +231,7 @@
 								min="1"
 								class="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white"
 								bind:value={filters.minGuessCount}
+								data-testid="filter-min-guesses"
 							/>
 						</label>
 						<label class="grid gap-2">
@@ -204,6 +241,7 @@
 								min="1"
 								class="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white"
 								bind:value={filters.maxGuessCount}
+								data-testid="filter-max-guesses"
 							/>
 						</label>
 					</div>
@@ -228,9 +266,12 @@
 						No players match the current filters.
 					</div>
 				{:else}
-					<div class="grid gap-4">
+					<div class="grid gap-4" data-testid="stats-results">
 						{#each entries as entry (entry.playerId)}
-							<div class="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl">
+							<div
+								class="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl"
+								data-testid="stats-card"
+							>
 								<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 									<div>
 										<div class="text-lg font-semibold text-white">{entry.displayName}</div>
