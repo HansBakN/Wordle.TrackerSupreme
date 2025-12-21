@@ -12,4 +12,10 @@ public class PlayerRepository(WordleTrackerSupremeDbContext dbContext) : IPlayer
             .Include(p => p.Attempts)
                 .ThenInclude(a => a.DailyPuzzle)
             .FirstOrDefaultAsync(p => p.Id == playerId, cancellationToken);
+
+    public Task<List<Player>> GetPlayersWithAttempts(CancellationToken cancellationToken)
+        => dbContext.Players
+            .Include(p => p.Attempts)
+                .ThenInclude(a => a.DailyPuzzle)
+            .ToListAsync(cancellationToken);
 }

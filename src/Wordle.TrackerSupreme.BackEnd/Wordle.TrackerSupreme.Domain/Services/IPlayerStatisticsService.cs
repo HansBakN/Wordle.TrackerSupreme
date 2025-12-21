@@ -4,5 +4,8 @@ namespace Wordle.TrackerSupreme.Domain.Services;
 
 public interface IPlayerStatisticsService
 {
-    PlayerStatistics Calculate(Player player, Func<PlayerPuzzleAttempt, bool>? isAfterReveal = null);
+    PlayerStatistics Calculate(
+        Player player,
+        PlayerStatisticsFilter? filter = null,
+        Func<PlayerPuzzleAttempt, bool>? isAfterReveal = null);
 }
