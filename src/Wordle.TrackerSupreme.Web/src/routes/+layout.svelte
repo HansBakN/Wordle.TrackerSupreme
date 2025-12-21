@@ -7,8 +7,15 @@
 
 	let { children } = $props();
 	let booting = $state(true);
+	const isTestMode = import.meta.env.MODE === 'test';
 
 	onMount(async () => {
+		if (isTestMode) {
+			booting = false;
+			void bootstrapAuth();
+			return;
+		}
+
 		await bootstrapAuth();
 		booting = false;
 	});

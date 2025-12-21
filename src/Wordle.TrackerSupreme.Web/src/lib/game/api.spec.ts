@@ -61,4 +61,19 @@ describe('api helpers', () => {
 		expect(call[0]).toBe('http://api.test/api/game/easy-mode');
 		expect((call[1] as RequestInit)?.method).toBe('POST');
 	});
+
+	it('submits guesses with a JSON payload', async () => {
+		const mockResponse = {
+			ok: true,
+			status: 200,
+			json: () => Promise.resolve({ puzzleDate: '2025-01-01' })
+		} as Response;
+		const fetchSpy = vi.spyOn(globalThis, 'fetch' as never).mockResolvedValue(mockResponse);
+
+		await submitGuess('CRANE');
+
+		const [, init] = fetchSpy.mock.calls[0];
+		expect((init as RequestInit)?.method).toBe('POST');
+		expect((init as RequestInit)?.body).toBe(JSON.stringify({ guess: 'CRANE' }));
+	});
 });

@@ -1,6 +1,14 @@
 import { test, expect } from '@playwright/test';
 
 test('submitting a guess only calls the API once', async ({ page }) => {
+	page.on('pageerror', (error) => {
+		console.error('pageerror', error);
+	});
+	page.on('console', (message) => {
+		if (message.type() === 'error') {
+			console.error('console', message.text());
+		}
+	});
 	await page.addInitScript(() => {
 		window.localStorage.setItem('wts_auth_token', 'test-token');
 	});
@@ -78,8 +86,10 @@ test('submitting a guess only calls the API once', async ({ page }) => {
 		});
 	});
 
-	await page.goto('/');
+	await page.goto('/', { waitUntil: 'domcontentloaded' });
+	await page.getByText('Loading your session...').waitFor({ state: 'hidden' });
 
+	await page.click('body');
 	await page.keyboard.type('CRANE');
 	await page.keyboard.press('Enter');
 

@@ -1,6 +1,17 @@
 import { test, expect } from '@playwright/test';
 
 test('sign-up form shows validation and backend error', async ({ page }) => {
+	page.on('pageerror', (error) => {
+		console.error('pageerror', error);
+	});
+	page.on('console', (message) => {
+		if (message.type() === 'error') {
+			console.error('console', message.text());
+		}
+	});
+	await page.addInitScript(() => {
+		window.localStorage.clear();
+	});
 	await page.route('**/api/Auth/signup', async (route) => {
 		await route.fulfill({
 			status: 409,
@@ -9,7 +20,8 @@ test('sign-up form shows validation and backend error', async ({ page }) => {
 		});
 	});
 
-	await page.goto('/signup');
+	await page.goto('/signup', { waitUntil: 'domcontentloaded' });
+	await page.getByText('Loading your session...').waitFor({ state: 'hidden' });
 
 	await page.getByLabel('Display name').fill('Wordler');
 	await page.getByLabel('Email').fill('player@example.com');

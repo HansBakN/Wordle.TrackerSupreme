@@ -1,6 +1,17 @@
 import { test, expect } from '@playwright/test';
 
 test('sign-in form shows validation and handles failed auth', async ({ page }) => {
+	page.on('pageerror', (error) => {
+		console.error('pageerror', error);
+	});
+	page.on('console', (message) => {
+		if (message.type() === 'error') {
+			console.error('console', message.text());
+		}
+	});
+	await page.addInitScript(() => {
+		window.localStorage.clear();
+	});
 	await page.route('**/api/Auth/me', async (route) => {
 		await route.fulfill({
 			status: 401,
@@ -16,7 +27,11 @@ test('sign-in form shows validation and handles failed auth', async ({ page }) =
 		});
 	});
 
-	await page.goto('/signin');
+	await page.goto('/signin', { waitUntil: 'domcontentloaded' });
+	await page.getByText('Loading your session...').waitFor({ state: 'hidden' });
+
+	const bodyText = await page.evaluate(() => document.body.innerText ?? '');
+	console.log('signin body', bodyText.slice(0, 200));
 
 	await expect(page.getByRole('heading', { name: 'Sign in' })).toBeVisible();
 

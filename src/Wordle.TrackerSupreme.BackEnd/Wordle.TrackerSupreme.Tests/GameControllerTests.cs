@@ -12,14 +12,19 @@ namespace Wordle.TrackerSupreme.Tests;
 
 public class GameControllerTests
 {
-    private static GameController CreateController(FakeGameRepository repo, FakeGameClock clock, string solution = "CRANE")
+    private static GameController CreateController(
+        FakeGameRepository repo,
+        FakeGameClock clock,
+        string solution = "CRANE",
+        FakeWordValidator? wordValidator = null)
     {
         var options = new GameOptions { WordLength = 5, MaxGuesses = 6 };
+        var validator = wordValidator ?? new FakeWordValidator();
         var gameplay = new GameplayService(
             repo,
             new DailyPuzzleService(repo, new FakeWordSelector(solution)),
             clock,
-            new GuessEvaluationService(options, new FakeWordValidator()),
+            new GuessEvaluationService(options, validator),
             options);
         var controller = new GameController(gameplay, clock)
         {
@@ -65,6 +70,21 @@ public class GameControllerTests
         var second = await controller.SubmitGuess(new Api.Models.Game.SubmitGuessRequest { Guess = "PLANT" }, CancellationToken.None);
 
         second.Result.Should().BeOfType<ConflictObjectResult>();
+    }
+
+    [Fact]
+    public async Task SubmitGuess_returns_bad_request_for_unknown_word()
+    {
+        var clock = new FakeGameClock(new DateOnly(2025, 1, 11));
+        var repo = new FakeGameRepository();
+        var validator = new FakeWordValidator(["CRANE"]);
+        var controller = CreateController(repo, clock, "CRANE", validator);
+
+        var result = await controller.SubmitGuess(
+            new Api.Models.Game.SubmitGuessRequest { Guess = "ZZZZZ" },
+            CancellationToken.None);
+
+        result.Result.Should().BeOfType<BadRequestObjectResult>();
     }
 
     [Fact]
