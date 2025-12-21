@@ -11,7 +11,7 @@ export default defineConfig({
 		environment: 'jsdom',
 		globals: true,
 		setupFiles: ['./vitest.setup.ts'],
-		exclude: ['tests/ui/**', '**/node_modules/**'],
+		exclude: ['tests/e2e/**', 'tests/ui/**', '**/node_modules/**'],
 		resolveSnapshotPath: (testPath, snapExt) => testPath + snapExt,
 		alias: {
 			$lib: path.resolve('./src/lib')

@@ -89,6 +89,7 @@ services:
       dockerfile: Wordle.TrackerSupreme.Seeder/Dockerfile
     environment:
       ASPNETCORE_ENVIRONMENT: Development
+      DOTNET_ENVIRONMENT: Development
       ConnectionStrings__WordleTrackerSupremeDbContext: Host=db;Database=${POSTGRES_DB:-wordle_trackersupreme};Username=${POSTGRES_USER:-wordle_user};Password=${POSTGRES_PASSWORD:-please-change-me}
       Seeder__RandomSeed: 4242
       Seeder__PlayerCount: 20

@@ -63,6 +63,35 @@ docker compose --profile tests-all up --abort-on-container-exit --remove-orphans
 ```
 This starts both test containers; exit codes from either will stop the stack when `--abort-on-container-exit` is set.
 
+## End-to-end (E2E) tests
+The E2E runner starts the backend + frontend, resets deterministic seed data, and runs Playwright headlessly.
+
+Prereqs:
+- Docker (for API + DB + web containers)
+- Node 20+ and npm
+- Playwright browsers installed in the frontend workspace: `cd src/Wordle.TrackerSupreme.Web && npx playwright install chromium`
+
+Run the full E2E suite from the repo root:
+```bash
+./scripts/e2e.sh
+```
+
+Environment overrides:
+- `BACKEND_URL` (default `http://localhost:8080`)
+- `FRONTEND_URL` (default `http://localhost:3000`)
+- `E2E_BASE_URL` (defaults to `FRONTEND_URL`)
+- `ARTIFACT_DIR` (default `artifacts/e2e`)
+- `ENV_FILE` (default `.env.local` if present)
+
+Artifacts:
+- Backend logs: `artifacts/e2e/backend.log`
+- Frontend logs: `artifacts/e2e/frontend.log`
+- Playwright artifacts and report: `artifacts/e2e/playwright/`
+
+Reset safety:
+- The seeder reset is gated. The script sets `E2E_RESET_ENABLED=true` and `Seeder__ResetDatabase=true`.
+- Resets are blocked in Production environments.
+
 ## Config files
 - `docker-compose.yml` – all services; Traefik is optional via the `proxy` profile.
 - `.env.local` – local defaults (ignored by git).

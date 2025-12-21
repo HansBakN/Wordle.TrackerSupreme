@@ -2,6 +2,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Wordle.TrackerSupreme.Api.Auth;
@@ -10,6 +11,7 @@ using Wordle.TrackerSupreme.Application.Services;
 using Wordle.TrackerSupreme.Domain.Services;
 using Wordle.TrackerSupreme.Domain.Services.Game;
 using Wordle.TrackerSupreme.Infrastructure;
+using Wordle.TrackerSupreme.Infrastructure.Database;
 using Wordle.TrackerSupreme.Migrations;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -102,7 +104,7 @@ builder.Services.AddScoped<IDailyPuzzleService, DailyPuzzleService>();
 builder.Services.AddScoped<IPlayerStatisticsService, PlayerStatisticsService>();
 
 var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ??
-    ["http://localhost:5173", "http://localhost:3000"];
+    ["http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173", "http://127.0.0.1:3000"];
 
 builder.Services.AddCors(options =>
 {
@@ -128,6 +130,25 @@ if (!app.Environment.IsDevelopment())
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
+app.MapGet("/health/ready", async (WordleTrackerSupremeDbContext dbContext, CancellationToken cancellationToken) =>
+{
+    try
+    {
+        var canConnect = await dbContext.Database.CanConnectAsync(cancellationToken);
+        if (!canConnect)
+        {
+            return Results.StatusCode(503);
+        }
+
+        return Results.Ok(new { status = "ready" });
+    }
+    catch
+    {
+        return Results.StatusCode(503);
+    }
+});
 
 app.MapControllers();
 

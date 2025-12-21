@@ -15,5 +15,6 @@ public class SeederOptions
     public int PuzzleDays { get; set; } = 280;
     public string DefaultPassword { get; set; } = "dev-password";
     public bool AllowReseed { get; set; }
+    public bool ResetDatabase { get; set; }
     public string? AnchorDate { get; set; }
 }

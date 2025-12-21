@@ -364,6 +364,7 @@
 								<div
 									class="grid justify-center gap-1.5"
 									style={`grid-template-columns: repeat(${state.wordLength}, 3.5rem);`}
+									data-testid={`board-row-${rowIndex}`}
 								>
 									{#if state.attempt?.guesses[rowIndex]}
 										{#each state.attempt.guesses[rowIndex].feedback as fb (fb.position)}

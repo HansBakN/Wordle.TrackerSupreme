@@ -8,6 +8,8 @@
 		"build": "svelte-kit sync && vite build",
 		"preview": "vite preview",
 		"test": "vitest",
+		"e2e": "playwright test --config playwright.e2e.config.ts",
+		"e2e:ui": "playwright test --ui --config playwright.e2e.config.ts",
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",

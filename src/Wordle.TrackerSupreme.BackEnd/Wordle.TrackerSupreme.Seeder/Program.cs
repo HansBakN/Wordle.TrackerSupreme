@@ -28,4 +28,5 @@ var builder = Host.CreateDefaultBuilder(args)
 
 using var host = builder.Build();
 
-await host.Services.GetRequiredService<SeederRunner>().SeedAsync();
+using var scope = host.Services.CreateScope();
+await scope.ServiceProvider.GetRequiredService<SeederRunner>().SeedAsync();

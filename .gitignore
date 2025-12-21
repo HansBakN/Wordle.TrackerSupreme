@@ -2,3 +2,5 @@
 .vscode/
 .env
 .env.local
+/artifacts/
+/src/Wordle.TrackerSupreme.Web/test-results/

@@ -28,6 +28,15 @@
   - Both suites together: `docker compose --profile tests-all up --abort-on-container-exit --remove-orphans`
 - Format/lint frontend (should be clean): `npm run format` then `npm run lint` in `src/Wordle.TrackerSupreme.Web`.
 
+## E2E workflow (required for feature work)
+- Use the single entrypoint: `./scripts/e2e.sh` (starts backend/frontend, resets data, runs headless Playwright, writes artifacts).
+- After any user-visible change, you MUST:
+  1) Update existing E2E tests and/or add new E2E tests covering the new behavior.
+  2) Run the full E2E suite (existing + new) via `./scripts/e2e.sh`.
+  3) Ensure the full suite passes before considering the work complete.
+- Prefer stable selectors (`data-testid`) for new UI behaviors to keep E2E tests maintainable.
+- If a change intentionally breaks existing E2E tests, update them in the same changeset.
+
 ## Domain quick-reference
 - One daily puzzle keyed by date; `DailyPuzzleService` creates or fills missing solutions.
 - Gameplay defaults: word length 5, max guesses 6 (`GameOptions`).
