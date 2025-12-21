@@ -13,6 +13,7 @@
 	let message: string | null = null;
 	let error: string | null = null;
 	let initialized = false;
+	let submitting = false;
 	const keyboardRows = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'];
 
 	onMount(() => {
@@ -79,7 +80,10 @@
 	}
 
 	async function handleGuess() {
-		if (!state) {
+		if (!state || submitting) {
+			return;
+		}
+		if (!state.canGuess) {
 			return;
 		}
 		const targetLength = state.wordLength ?? 5;
@@ -93,12 +97,15 @@
 
 		error = null;
 		message = null;
+		submitting = true;
 		try {
 			state = await submitGuess(normalized);
 			guess = '';
 			message = null;
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Unable to submit guess.';
+		} finally {
+			submitting = false;
 		}
 	}
 
@@ -120,7 +127,7 @@
 	}
 
 	function submitFromKeyboard() {
-		if (!state || !state.canGuess) {
+		if (!state || !state.canGuess || submitting) {
 			return;
 		}
 		void handleGuess();

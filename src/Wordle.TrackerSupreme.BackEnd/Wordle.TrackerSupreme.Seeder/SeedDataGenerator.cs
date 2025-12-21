@@ -9,12 +9,14 @@ public class SeedDataGenerator(
     SeederOptions options,
     GameOptions gameOptions,
     IWordSelector wordSelector,
+    IWordListProvider wordListProvider,
     IGuessEvaluationService guessEvaluationService,
     PasswordHasher<Player> passwordHasher)
 {
     private readonly SeederOptions _options = options;
     private readonly GameOptions _gameOptions = gameOptions;
     private readonly IWordSelector _wordSelector = wordSelector;
+    private readonly IWordListProvider _wordListProvider = wordListProvider;
     private readonly IGuessEvaluationService _guessEvaluationService = guessEvaluationService;
     private readonly PasswordHasher<Player> _passwordHasher = passwordHasher;
 
@@ -264,17 +266,12 @@ public class SeedDataGenerator(
 
     private string GenerateGuessWord(Random random, string solution)
     {
-        var letters = new char[_gameOptions.WordLength];
         string guessWord;
+        var words = _wordListProvider.Words;
 
         do
         {
-            for (int i = 0; i < letters.Length; i++)
-            {
-                letters[i] = (char)('A' + random.Next(0, 26));
-            }
-
-            guessWord = new string(letters);
+            guessWord = words[random.Next(words.Count)];
         } while (guessWord.Equals(solution, StringComparison.OrdinalIgnoreCase));
 
         return guessWord;

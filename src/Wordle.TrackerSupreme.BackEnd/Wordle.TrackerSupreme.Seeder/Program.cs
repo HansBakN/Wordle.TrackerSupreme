@@ -17,6 +17,9 @@ var builder = Host.CreateDefaultBuilder(args)
         services.Configure<SeederOptions>(context.Configuration.GetSection(SeederOptions.SectionName));
         services.AddSingleton(sp => sp.GetRequiredService<IOptions<SeederOptions>>().Value);
         services.AddSingleton<IWordSelector, WordSelector>();
+        services.AddSingleton<WordListValidator>();
+        services.AddSingleton<IWordValidator>(sp => sp.GetRequiredService<WordListValidator>());
+        services.AddSingleton<IWordListProvider>(sp => sp.GetRequiredService<WordListValidator>());
         services.AddSingleton<IGuessEvaluationService, GuessEvaluationService>();
         services.AddScoped<PasswordHasher<Player>>();
         services.AddScoped<SeedDataGenerator>();

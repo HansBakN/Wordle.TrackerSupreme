@@ -35,9 +35,10 @@ public class SeederRunnerTests
 
         using var dbContext = new WordleTrackerSupremeDbContext(dbOptions);
         var wordSelector = new WordSelector();
-        var guessEvaluator = new GuessEvaluationService(gameOptions);
+        var wordList = new WordListValidator();
+        var guessEvaluator = new GuessEvaluationService(gameOptions, wordList);
         var passwordHasher = new PasswordHasher<Player>();
-        var generator = new SeedDataGenerator(options, gameOptions, wordSelector, guessEvaluator, passwordHasher);
+        var generator = new SeedDataGenerator(options, gameOptions, wordSelector, wordList, guessEvaluator, passwordHasher);
         var logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<SeederRunner>();
         var runner = new SeederRunner(dbContext, options, generator, logger);
 

@@ -19,7 +19,7 @@ public class GameControllerTests
             repo,
             new DailyPuzzleService(repo, new FakeWordSelector(solution)),
             clock,
-            new GuessEvaluationService(options),
+            new GuessEvaluationService(options, new FakeWordValidator()),
             options);
         var controller = new GameController(gameplay, clock)
         {

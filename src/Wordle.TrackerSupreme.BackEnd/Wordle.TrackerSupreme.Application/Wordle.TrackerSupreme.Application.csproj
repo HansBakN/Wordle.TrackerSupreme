@@ -10,4 +10,8 @@
         <ProjectReference Include="..\\Wordle.TrackerSupreme.Domain\\Wordle.TrackerSupreme.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <EmbeddedResource Include="Services\\Game\\wordlist-nyt.txt" />
+    </ItemGroup>
+
 </Project>

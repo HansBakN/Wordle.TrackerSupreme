@@ -8,11 +8,12 @@ namespace Wordle.TrackerSupreme.Tests;
 
 public class GameplayServiceTests
 {
-    private GameplayService CreateService(FakeGameRepository repo, FakeGameClock clock, string solution = "APPLE")
+    private GameplayService CreateService(FakeGameRepository repo, FakeGameClock clock, string solution = "APPLE", FakeWordValidator? wordValidator = null)
     {
         var puzzleService = new DailyPuzzleService(repo, new FakeWordSelector(solution));
         var options = new GameOptions { MaxGuesses = 6, WordLength = 5 };
-        return new GameplayService(repo, puzzleService, clock, new GuessEvaluationService(options), options);
+        var validator = wordValidator ?? new FakeWordValidator();
+        return new GameplayService(repo, puzzleService, clock, new GuessEvaluationService(options, validator), options);
     }
 
     [Fact]
@@ -84,6 +85,20 @@ public class GameplayServiceTests
 
         await act.Should().ThrowAsync<ArgumentException>()
             .WithMessage("Guess must be 5 letters long.*");
+    }
+
+    [Fact]
+    public async Task SubmitGuess_rejects_unknown_words()
+    {
+        var repo = new FakeGameRepository();
+        var validator = new FakeWordValidator(["CRANE"]);
+        var gameplay = CreateService(repo, new FakeGameClock(new DateOnly(2025, 1, 6)), "CRANE", validator);
+        var playerId = Guid.NewGuid();
+
+        var act = async () => await gameplay.SubmitGuess(playerId, "ZZZZZ");
+
+        await act.Should().ThrowAsync<ArgumentException>()
+            .WithMessage("Guess must be a valid English word.*");
     }
 
     [Fact]

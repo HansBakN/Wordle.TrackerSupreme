@@ -1,10 +1,12 @@
 using Wordle.TrackerSupreme.Domain.Models;
+using Wordle.TrackerSupreme.Domain.Services.Game;
 
 namespace Wordle.TrackerSupreme.Application.Services.Game;
 
-public class GuessEvaluationService(GameOptions options) : IGuessEvaluationService
+public class GuessEvaluationService(GameOptions options, IWordValidator wordValidator) : IGuessEvaluationService
 {
     private readonly GameOptions _options = options;
+    private readonly IWordValidator _wordValidator = wordValidator;
 
     public string NormalizeGuess(string guessWord)
     {
@@ -22,6 +24,11 @@ public class GuessEvaluationService(GameOptions options) : IGuessEvaluationServi
         if (!cleaned.All(char.IsLetter))
         {
             throw new ArgumentException("Guess must contain only letters.", nameof(guessWord));
+        }
+
+        if (!_wordValidator.IsValid(cleaned))
+        {
+            throw new ArgumentException("Guess must be a valid English word.", nameof(guessWord));
         }
 
         return cleaned;
