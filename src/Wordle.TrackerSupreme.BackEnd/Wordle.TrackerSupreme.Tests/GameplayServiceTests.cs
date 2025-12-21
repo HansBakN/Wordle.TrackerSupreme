@@ -27,6 +27,7 @@ public class GameplayServiceTests
 
         state.Attempt.Should().NotBeNull();
         state.Attempt!.Status.Should().Be(AttemptStatus.Solved);
+        state.Attempt.PlayedInHardMode.Should().BeTrue();
         state.Attempt.Guesses.Should().ContainSingle();
         state.Attempt.Guesses.First().GuessWord.Should().Be("PLANT");
         repo.Attempts.Should().ContainSingle(a => a.PlayerId == playerId);
@@ -100,5 +101,54 @@ public class GameplayServiceTests
         feedback[2].Result.Should().Be(LetterResult.Absent);  // second L absent after first consumed
         feedback[3].Result.Should().Be(LetterResult.Present); // E present
         feedback[4].Result.Should().Be(LetterResult.Absent);  // Y absent
+    }
+
+    [Fact]
+    public async Task SubmitGuess_rejects_guess_that_ignores_revealed_positions_in_hard_mode()
+    {
+        var repo = new FakeGameRepository();
+        var gameplay = CreateService(repo, new FakeGameClock(new DateOnly(2025, 1, 8)), "APPLE");
+        var playerId = Guid.NewGuid();
+
+        await gameplay.SubmitGuess(playerId, "ALLEY");
+
+        var act = async () => await gameplay.SubmitGuess(playerId, "PASTE");
+
+        await act.Should().ThrowAsync<ArgumentException>()
+            .WithMessage("Hard mode: guess must keep revealed letters in their exact positions.");
+    }
+
+    [Fact]
+    public async Task SubmitGuess_rejects_guess_that_omits_revealed_letters_in_hard_mode()
+    {
+        var repo = new FakeGameRepository();
+        var gameplay = CreateService(repo, new FakeGameClock(new DateOnly(2025, 1, 9)), "APPLE");
+        var playerId = Guid.NewGuid();
+
+        await gameplay.SubmitGuess(playerId, "ALLEY");
+
+        var act = async () => await gameplay.SubmitGuess(playerId, "AMASS");
+
+        await act.Should().ThrowAsync<ArgumentException>()
+            .WithMessage("Hard mode: guess must include all revealed letters.");
+    }
+
+    [Fact]
+    public async Task EnableEasyMode_disables_hard_mode_for_current_attempt()
+    {
+        var repo = new FakeGameRepository();
+        var gameplay = CreateService(repo, new FakeGameClock(new DateOnly(2025, 1, 10)), "APPLE");
+        var playerId = Guid.NewGuid();
+
+        await gameplay.SubmitGuess(playerId, "ALLEY");
+        var state = await gameplay.EnableEasyMode(playerId);
+
+        state.Attempt.Should().NotBeNull();
+        state.Attempt!.PlayedInHardMode.Should().BeFalse();
+
+        var relaxed = await gameplay.SubmitGuess(playerId, "PASTE");
+
+        relaxed.Attempt!.Guesses.Should().HaveCount(2);
+        relaxed.Attempt.PlayedInHardMode.Should().BeFalse();
     }
 }

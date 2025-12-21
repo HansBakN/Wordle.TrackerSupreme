@@ -68,6 +68,21 @@ public class GameControllerTests
     }
 
     [Fact]
+    public async Task EnableEasyMode_returns_state_with_hard_mode_disabled()
+    {
+        var clock = new FakeGameClock(new DateOnly(2025, 1, 12));
+        var repo = new FakeGameRepository();
+        var controller = CreateController(repo, clock, "CRANE");
+
+        var result = await controller.EnableEasyMode(CancellationToken.None);
+
+        result.Result.Should().BeOfType<OkObjectResult>();
+        var state = (result.Result as OkObjectResult)!.Value as Api.Models.Game.GameStateResponse;
+        state.Should().NotBeNull();
+        state!.IsHardMode.Should().BeFalse();
+    }
+
+    [Fact]
     public async Task GetSolutions_returns_forbidden_before_cutoff()
     {
         var clock = new FakeGameClock(new DateOnly(2025, 1, 12), revealPassed: false);

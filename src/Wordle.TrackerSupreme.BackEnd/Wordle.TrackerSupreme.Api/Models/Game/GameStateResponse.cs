@@ -7,6 +7,7 @@ public record GameStateResponse(
     bool AllowLatePlay,
     int WordLength,
     int MaxGuesses,
+    bool IsHardMode,
     bool CanGuess,
     AttemptResponse? Attempt,
     string? Solution);

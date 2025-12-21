@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { auth } from '$lib/auth/store';
-	import { fetchGameState, submitGuess } from '$lib/game/api';
+	import { enableEasyMode, fetchGameState, submitGuess } from '$lib/game/api';
 	import type { GameStateResponse, LetterResult } from '$lib/game/types';
 	import { onDestroy, onMount } from 'svelte';
 
@@ -126,6 +126,23 @@
 		void handleGuess();
 	}
 
+	async function handleEnableEasyMode() {
+		if (!state || !state.isHardMode) {
+			return;
+		}
+		if (state.attempt && state.attempt.status !== 'InProgress') {
+			return;
+		}
+		error = null;
+		message = null;
+		try {
+			state = await enableEasyMode();
+			message = 'Easy mode enabled for this puzzle.';
+		} catch (err) {
+			error = err instanceof Error ? err.message : 'Unable to switch to easy mode.';
+		}
+	}
+
 	function tileClass(result: LetterResult | null) {
 		const base =
 			'flex h-14 w-14 items-center justify-center rounded-xl border text-lg font-semibold transition';
@@ -215,6 +232,20 @@
 						Solve today’s word before noon to keep your streak alive. After 12:00 PM you can still
 						play, but those practice runs will be tracked separately and won’t change your stats.
 					</p>
+				</div>
+				<div class="flex flex-col items-start gap-3 sm:items-end">
+					<span
+						class={`rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] ${(state?.isHardMode ?? true) ? 'border-emerald-300/60 bg-emerald-400/10 text-emerald-100' : 'border-amber-300/50 bg-amber-400/10 text-amber-50'}`}
+					>
+						{(state?.isHardMode ?? true) ? 'Hard mode' : 'Easy mode'}
+					</span>
+					<button
+						class="rounded-full border border-white/20 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-white/80 transition hover:border-white/40 hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
+						onclick={handleEnableEasyMode}
+						disabled={!state || !state.isHardMode || (state.attempt && state.attempt.status !== 'InProgress')}
+					>
+						I am a little bitch boi
+					</button>
 				</div>
 			</div>
 

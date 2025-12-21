@@ -38,6 +38,7 @@
 - Adding/changing API endpoints: adjust Domain interfaces/services, update Application implementations, wire through API controllers/DTOs, then refresh frontend client typings/openapi and Svelte usage.
 - Data access: go through repositories (`GameRepository`, `PlayerRepository`); keep `SaveChanges` calls consistent with existing patterns.
 - Testing: add/adjust unit tests in `Wordle.TrackerSupreme.Tests` for backend changes; mirror API changes with frontend unit/UI tests where applicable.
+- Commit work periodically with sensible default messages unless instructed otherwise.
 - When adding new features with data/UX impact, extend the local seeding data in `src/Wordle.TrackerSupreme.BackEnd/Wordle.TrackerSupreme.Seeder`.
 - Env/config: use `.env.local` for local defaults (APP_HOST, POSTGRES_*, JWT secret, ASPNETCORE_ENVIRONMENT). Avoid committing secrets.
 - CI discipline: before handing off changes, always run the full test suite (backend + frontend/UI), run frontend formatter + linter (must be clean), and manually exercise the project to verify any newly implemented feature end-to-end. Always run and validate new features locally using the most relevant workflow (e.g., run the seeder after seeding changes).

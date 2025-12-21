@@ -10,7 +10,7 @@ vi.mock('$lib/api-client', () => ({
 }));
 
 // Lazy import after mocks so the module picks them up.
-const { fetchGameState, submitGuess } = await import('./api');
+const { enableEasyMode, fetchGameState, submitGuess } = await import('./api');
 
 describe('api helpers', () => {
 	beforeEach(() => {
@@ -45,5 +45,20 @@ describe('api helpers', () => {
 		vi.spyOn(globalThis, 'fetch' as never).mockResolvedValue(mockResponse);
 
 		await expect(submitGuess('crane')).rejects.toThrowError('Nope');
+	});
+
+	it('posts to easy mode endpoint', async () => {
+		const mockResponse = {
+			ok: true,
+			status: 200,
+			json: () => Promise.resolve({ puzzleDate: '2025-01-01', isHardMode: false })
+		} as Response;
+		const fetchSpy = vi.spyOn(globalThis, 'fetch' as never).mockResolvedValue(mockResponse);
+
+		await enableEasyMode();
+
+		const call = fetchSpy.mock.calls[0];
+		expect(call[0]).toBe('http://api.test/api/game/easy-mode');
+		expect((call[1] as RequestInit)?.method).toBe('POST');
 	});
 });

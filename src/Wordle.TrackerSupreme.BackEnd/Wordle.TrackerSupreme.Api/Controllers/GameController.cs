@@ -51,6 +51,26 @@ public class GameController(
         }
     }
 
+    [HttpPost("easy-mode")]
+    public async Task<ActionResult<GameStateResponse>> EnableEasyMode(CancellationToken cancellationToken)
+    {
+        var playerId = GetPlayerId();
+        if (playerId is null)
+        {
+            return Unauthorized();
+        }
+
+        try
+        {
+            var state = await gameplayService.EnableEasyMode(playerId.Value, cancellationToken);
+            return Ok(MapState(state));
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Conflict(new { message = ex.Message });
+        }
+    }
+
     [HttpGet("solutions")]
     public async Task<ActionResult<SolutionsResponse>> GetSolutions(CancellationToken cancellationToken)
     {
@@ -97,6 +117,7 @@ public class GameController(
         var canGuess = state.Attempt is null ||
                        (state.Attempt.Status == AttemptStatus.InProgress && state.Attempt.Guesses.Count < state.MaxGuesses);
 
+        var isHardMode = state.Attempt?.PlayedInHardMode ?? true;
         var solution = state.SolutionRevealed ? state.Puzzle.Solution : null;
 
         return new GameStateResponse(
@@ -106,6 +127,7 @@ public class GameController(
             state.AllowLatePlay,
             state.WordLength,
             state.MaxGuesses,
+            isHardMode,
             canGuess,
             attemptResponse,
             solution);

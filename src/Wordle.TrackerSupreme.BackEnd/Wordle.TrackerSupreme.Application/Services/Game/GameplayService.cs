@@ -48,7 +48,7 @@ public class GameplayService(
                 DailyPuzzleId = puzzle.Id,
                 Status = AttemptStatus.InProgress,
                 CreatedOn = DateTime.UtcNow,
-                PlayedInHardMode = false
+                PlayedInHardMode = true
             };
             await gameRepository.AddAttempt(attempt, cancellationToken);
         }
@@ -64,6 +64,11 @@ public class GameplayService(
             attempt.CompletedOn = attempt.CompletedOn ?? DateTime.UtcNow;
             await gameRepository.SaveChanges(cancellationToken);
             throw new InvalidOperationException("No guesses remaining.");
+        }
+
+        if (attempt.PlayedInHardMode)
+        {
+            ValidateHardModeGuess(attempt, normalizedGuess);
         }
 
         var guessNumber = attempt.Guesses.Count + 1;
@@ -115,6 +120,48 @@ public class GameplayService(
             _options.MaxGuesses);
     }
 
+    public async Task<GameplayState> EnableEasyMode(Guid playerId, CancellationToken cancellationToken = default)
+    {
+        var puzzle = await puzzleService.GetOrCreatePuzzle(gameClock.Today, cancellationToken);
+        var attempt = await LoadAttempt(playerId, puzzle.Id, cancellationToken);
+
+        if (attempt is null)
+        {
+            attempt = new PlayerPuzzleAttempt
+            {
+                Id = Guid.NewGuid(),
+                PlayerId = playerId,
+                DailyPuzzleId = puzzle.Id,
+                Status = AttemptStatus.InProgress,
+                CreatedOn = DateTime.UtcNow,
+                PlayedInHardMode = false
+            };
+            await gameRepository.AddAttempt(attempt, cancellationToken);
+        }
+        else if (attempt.Status is AttemptStatus.Solved or AttemptStatus.Failed)
+        {
+            throw new InvalidOperationException("Puzzle already completed for today.");
+        }
+        else
+        {
+            attempt.PlayedInHardMode = false;
+        }
+
+        await gameRepository.SaveChanges(cancellationToken);
+
+        var cutoffPassed = gameClock.HasRevealPassed(puzzle.PuzzleDate);
+        var solutionRevealed = cutoffPassed || attempt.Status != AttemptStatus.InProgress;
+
+        return new GameplayState(
+            puzzle,
+            attempt,
+            cutoffPassed,
+            solutionRevealed,
+            AllowLatePlay: true,
+            _options.WordLength,
+            _options.MaxGuesses);
+    }
+
     public async Task<SolutionsSnapshot> GetSolutions(CancellationToken cancellationToken = default)
     {
         var puzzle = await puzzleService.GetOrCreatePuzzle(gameClock.Today, cancellationToken);
@@ -128,6 +175,65 @@ public class GameplayService(
     private async Task<PlayerPuzzleAttempt?> LoadAttempt(Guid playerId, Guid puzzleId, CancellationToken cancellationToken)
     {
         return await gameRepository.GetAttempt(playerId, puzzleId, cancellationToken);
+    }
+
+    private static void ValidateHardModeGuess(PlayerPuzzleAttempt attempt, string guessWord)
+    {
+        if (attempt.Guesses.Count == 0)
+        {
+            return;
+        }
+
+        var requiredPositions = new Dictionary<int, char>();
+        var requiredLetterCounts = new Dictionary<char, int>();
+
+        foreach (var guess in attempt.Guesses)
+        {
+            var perGuessCounts = new Dictionary<char, int>();
+
+            foreach (var feedback in guess.Feedback)
+            {
+                if (feedback.Result == LetterResult.Correct)
+                {
+                    requiredPositions[feedback.Position] = feedback.Letter;
+                    perGuessCounts[feedback.Letter] = perGuessCounts.GetValueOrDefault(feedback.Letter) + 1;
+                }
+                else if (feedback.Result == LetterResult.Present)
+                {
+                    perGuessCounts[feedback.Letter] = perGuessCounts.GetValueOrDefault(feedback.Letter) + 1;
+                }
+            }
+
+            foreach (var (letter, count) in perGuessCounts)
+            {
+                if (!requiredLetterCounts.TryGetValue(letter, out var existing) || count > existing)
+                {
+                    requiredLetterCounts[letter] = count;
+                }
+            }
+        }
+
+        foreach (var (position, letter) in requiredPositions)
+        {
+            if (position < 0 || position >= guessWord.Length)
+            {
+                continue;
+            }
+
+            if (guessWord[position] != letter)
+            {
+                throw new ArgumentException("Hard mode: guess must keep revealed letters in their exact positions.");
+            }
+        }
+
+        foreach (var (letter, count) in requiredLetterCounts)
+        {
+            var actualCount = guessWord.Count(c => c == letter);
+            if (actualCount < count)
+            {
+                throw new ArgumentException("Hard mode: guess must include all revealed letters.");
+            }
+        }
     }
 
 }

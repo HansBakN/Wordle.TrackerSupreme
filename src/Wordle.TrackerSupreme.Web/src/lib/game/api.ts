@@ -49,6 +49,12 @@ export function submitGuess(guess: string): Promise<GameStateResponse> {
 	});
 }
 
+export function enableEasyMode(): Promise<GameStateResponse> {
+	return apiFetch<GameStateResponse>('/api/game/easy-mode', {
+		method: 'POST'
+	});
+}
+
 export function fetchSolutions(): Promise<SolutionsResponse> {
 	return apiFetch<SolutionsResponse>('/api/game/solutions');
 }

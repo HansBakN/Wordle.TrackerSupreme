@@ -29,6 +29,7 @@ export type GameStateResponse = {
 	allowLatePlay: boolean;
 	wordLength: number;
 	maxGuesses: number;
+	isHardMode: boolean;
 	canGuess: boolean;
 	attempt?: AttemptResponse | null;
 	solution?: string | null;

@@ -124,6 +124,136 @@
 				}
 			}
 		},
+		"/api/game/state": {
+			"get": {
+				"tags": ["Game"],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"$ref": "#/components/schemas/GameStateResponse"
+								}
+							},
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GameStateResponse"
+								}
+							},
+							"text/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GameStateResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/game/guess": {
+			"post": {
+				"tags": ["Game"],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/SubmitGuessRequest"
+							}
+						},
+						"text/json": {
+							"schema": {
+								"$ref": "#/components/schemas/SubmitGuessRequest"
+							}
+						},
+						"application/*+json": {
+							"schema": {
+								"$ref": "#/components/schemas/SubmitGuessRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"$ref": "#/components/schemas/GameStateResponse"
+								}
+							},
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GameStateResponse"
+								}
+							},
+							"text/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GameStateResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/game/easy-mode": {
+			"post": {
+				"tags": ["Game"],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"$ref": "#/components/schemas/GameStateResponse"
+								}
+							},
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GameStateResponse"
+								}
+							},
+							"text/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GameStateResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/game/solutions": {
+			"get": {
+				"tags": ["Game"],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"$ref": "#/components/schemas/SolutionsResponse"
+								}
+							},
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SolutionsResponse"
+								}
+							},
+							"text/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SolutionsResponse"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden"
+					}
+				}
+			}
+		},
 		"/api/Status": {
 			"get": {
 				"tags": ["Status"],
@@ -150,6 +280,117 @@
 				},
 				"additionalProperties": false
 			},
+			"AttemptResponse": {
+				"type": "object",
+				"properties": {
+					"attemptId": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"status": {
+						"type": "string"
+					},
+					"isAfterReveal": {
+						"type": "boolean"
+					},
+					"createdOn": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"completedOn": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"guesses": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/GuessResponse"
+						}
+					}
+				},
+				"additionalProperties": false
+			},
+			"GameStateResponse": {
+				"type": "object",
+				"properties": {
+					"puzzleDate": {
+						"type": "string",
+						"format": "date"
+					},
+					"cutoffPassed": {
+						"type": "boolean"
+					},
+					"solutionRevealed": {
+						"type": "boolean"
+					},
+					"allowLatePlay": {
+						"type": "boolean"
+					},
+					"wordLength": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"maxGuesses": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"isHardMode": {
+						"type": "boolean"
+					},
+					"canGuess": {
+						"type": "boolean"
+					},
+					"attempt": {
+						"$ref": "#/components/schemas/AttemptResponse",
+						"nullable": true
+					},
+					"solution": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"additionalProperties": false
+			},
+			"GuessResponse": {
+				"type": "object",
+				"properties": {
+					"guessId": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"guessNumber": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"guessWord": {
+						"type": "string"
+					},
+					"feedback": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/LetterFeedbackResponse"
+						}
+					}
+				},
+				"additionalProperties": false
+			},
+			"LetterFeedbackResponse": {
+				"type": "object",
+				"properties": {
+					"position": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"letter": {
+						"type": "string"
+					},
+					"result": {
+						"type": "string"
+					}
+				},
+				"additionalProperties": false
+			},
 			"PlayerResponse": {
 				"type": "object",
 				"properties": {
@@ -168,6 +409,63 @@
 					"createdOn": {
 						"type": "string",
 						"format": "date-time"
+					}
+				},
+				"additionalProperties": false
+			},
+			"SolutionEntryResponse": {
+				"type": "object",
+				"properties": {
+					"playerId": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"displayName": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"guessCount": {
+						"type": "integer",
+						"format": "int32",
+						"nullable": true
+					},
+					"isAfterReveal": {
+						"type": "boolean"
+					},
+					"completedOn": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"guesses": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					}
+				},
+				"additionalProperties": false
+			},
+			"SolutionsResponse": {
+				"type": "object",
+				"properties": {
+					"puzzleDate": {
+						"type": "string",
+						"format": "date"
+					},
+					"solution": {
+						"type": "string"
+					},
+					"cutoffPassed": {
+						"type": "boolean"
+					},
+					"entries": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/SolutionEntryResponse"
+						}
 					}
 				},
 				"additionalProperties": false
@@ -215,6 +513,17 @@
 					"password": {
 						"maxLength": 100,
 						"minLength": 6,
+						"type": "string"
+					}
+				},
+				"additionalProperties": false
+			},
+			"SubmitGuessRequest": {
+				"required": ["guess"],
+				"type": "object",
+				"properties": {
+					"guess": {
+						"minLength": 1,
 						"type": "string"
 					}
 				},
