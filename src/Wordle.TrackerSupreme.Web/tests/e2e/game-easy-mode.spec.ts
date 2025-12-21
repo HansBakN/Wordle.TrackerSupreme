@@ -10,6 +10,6 @@ test('player can enable easy mode for the daily puzzle', async ({ page }) => {
 	});
 
 	await page.getByText('Loading today’s puzzle...').waitFor({ state: 'hidden' });
-	await page.getByRole('button', { name: 'I am a little bitch boi' }).click();
+	await page.getByTestId('enable-easy-mode').click();
 	await expect(page.getByText('Easy mode enabled for this puzzle.')).toBeVisible();
 });

@@ -1,14 +1,6 @@
 import { test, expect } from '@playwright/test';
 
 test('players can switch to easy mode mid-game', async ({ page }) => {
-	page.on('pageerror', (error) => {
-		console.error('pageerror', error);
-	});
-	page.on('console', (message) => {
-		if (message.type() === 'error') {
-			console.error('console', message.text());
-		}
-	});
 	await page.addInitScript(() => {
 		window.localStorage.setItem('wts_auth_token', 'test-token');
 	});
@@ -68,13 +60,9 @@ test('players can switch to easy mode mid-game', async ({ page }) => {
 	await page.goto('/', { waitUntil: 'domcontentloaded' });
 	await page.getByText('Loading your session...').waitFor({ state: 'hidden' });
 
-	const bodyText = await page.evaluate(() => document.body.innerText ?? '');
-	console.log('game url', page.url());
-	console.log('game body', bodyText.slice(0, 200));
-
 	await expect(page.getByText('Hard mode')).toBeVisible();
 
-	const easyModeButton = page.getByRole('button', { name: 'I am a little bitch boi' });
+	const easyModeButton = page.getByTestId('enable-easy-mode');
 	await expect(easyModeButton).toBeEnabled();
 	await easyModeButton.click();
 

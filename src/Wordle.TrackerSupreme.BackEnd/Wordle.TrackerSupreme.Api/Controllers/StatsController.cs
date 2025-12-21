@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Wordle.TrackerSupreme.Api.Models.Game;
+using Wordle.TrackerSupreme.Domain.Models;
 using Wordle.TrackerSupreme.Domain.Repositories;
 using Wordle.TrackerSupreme.Domain.Services;
 using Wordle.TrackerSupreme.Domain.Services.Game;
@@ -34,14 +35,7 @@ public class StatsController(
 
         var stats = statisticsService.Calculate(player, null, attempt => gameClock.IsAfterReveal(attempt));
 
-        return Ok(new PlayerStatsResponse(
-            stats.TotalAttempts,
-            stats.Wins,
-            stats.Failures,
-            stats.PracticeAttempts,
-            stats.CurrentStreak,
-            stats.LongestStreak,
-            stats.AverageGuessCount));
+        return Ok(MapStats(stats));
     }
 
     [HttpPost("players")]
@@ -55,14 +49,7 @@ public class StatsController(
             .Select(player =>
             {
                 var stats = statisticsService.Calculate(player, filter, attempt => gameClock.IsAfterReveal(attempt));
-                var response = new PlayerStatsResponse(
-                    stats.TotalAttempts,
-                    stats.Wins,
-                    stats.Failures,
-                    stats.PracticeAttempts,
-                    stats.CurrentStreak,
-                    stats.LongestStreak,
-                    stats.AverageGuessCount);
+                var response = MapStats(stats);
                 return new PlayerStatsEntryResponse(player.Id, player.DisplayName, response);
             })
             .OrderBy(entry => entry.DisplayName)
@@ -126,5 +113,17 @@ public class StatsController(
         }
 
         return Ok(leaderboard);
+    }
+
+    private static PlayerStatsResponse MapStats(PlayerStatistics stats)
+    {
+        return new PlayerStatsResponse(
+            stats.TotalAttempts,
+            stats.Wins,
+            stats.Failures,
+            stats.PracticeAttempts,
+            stats.CurrentStreak,
+            stats.LongestStreak,
+            stats.AverageGuessCount);
     }
 }

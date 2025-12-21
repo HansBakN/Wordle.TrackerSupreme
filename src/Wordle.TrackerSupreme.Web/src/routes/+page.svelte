@@ -344,8 +344,9 @@
 						disabled={!state ||
 							!state.isHardMode ||
 							(state.attempt && state.attempt.status !== 'InProgress')}
+						data-testid="enable-easy-mode"
 					>
-						I am a little bitch boi
+						Enable easy mode
 					</button>
 				</div>
 			</div>

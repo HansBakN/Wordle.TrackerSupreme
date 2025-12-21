@@ -39,4 +39,15 @@ describe('stats filter helpers', () => {
 		expect(request.minGuessCount).toBeUndefined();
 		expect(request.maxGuessCount).toBeUndefined();
 	});
+
+	it('accepts numeric inputs for guess counts', () => {
+		const request = buildStatsFilterRequest({
+			...defaultStatsFilterState,
+			minGuessCount: 3,
+			maxGuessCount: Number.NaN
+		});
+
+		expect(request.minGuessCount).toBe(3);
+		expect(request.maxGuessCount).toBeUndefined();
+	});
 });
