@@ -4,9 +4,8 @@
 /* eslint-disable */
 import type { SolutionEntryResponse } from './SolutionEntryResponse';
 export type SolutionsResponse = {
-  puzzleDate?: string;
-  solution?: string;
-  cutoffPassed?: boolean;
-  entries?: Array<SolutionEntryResponse>;
+	puzzleDate?: string;
+	solution?: string;
+	cutoffPassed?: boolean;
+	entries?: Array<SolutionEntryResponse>;
 };
-

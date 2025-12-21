@@ -4,9 +4,8 @@
 /* eslint-disable */
 import type { LetterFeedbackResponse } from './LetterFeedbackResponse';
 export type GuessResponse = {
-  guessId?: string;
-  guessNumber?: number;
-  guessWord?: string;
-  feedback?: Array<LetterFeedbackResponse>;
+	guessId?: string;
+	guessNumber?: number;
+	guessWord?: string;
+	feedback?: Array<LetterFeedbackResponse>;
 };
-

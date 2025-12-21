@@ -1,5 +1,6 @@
 import { getApiBase } from '$lib/api';
 import { OpenAPI } from '$lib/api-client';
+import { StatsService } from '$lib/api-client/services/StatsService';
 import type { GameStateResponse, PlayerStatsResponse, SolutionsResponse } from './types';
 
 async function apiFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
@@ -60,5 +61,5 @@ export function fetchSolutions(): Promise<SolutionsResponse> {
 }
 
 export function fetchMyStats(): Promise<PlayerStatsResponse> {
-	return apiFetch<PlayerStatsResponse>('/api/stats/me');
+	return StatsService.getApiStatsMe();
 }

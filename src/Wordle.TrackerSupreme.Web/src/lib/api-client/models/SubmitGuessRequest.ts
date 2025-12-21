@@ -3,6 +3,5 @@
 /* tslint:disable */
 /* eslint-disable */
 export type SubmitGuessRequest = {
-  guess: string;
+	guess: string;
 };
-

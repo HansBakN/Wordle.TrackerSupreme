@@ -254,6 +254,124 @@
 				}
 			}
 		},
+		"/api/stats/me": {
+			"get": {
+				"tags": ["Stats"],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"$ref": "#/components/schemas/PlayerStatsResponse"
+								}
+							},
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PlayerStatsResponse"
+								}
+							},
+							"text/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PlayerStatsResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/stats/players": {
+			"post": {
+				"tags": ["Stats"],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/PlayerStatsFilterRequest"
+							}
+						},
+						"text/json": {
+							"schema": {
+								"$ref": "#/components/schemas/PlayerStatsFilterRequest"
+							}
+						},
+						"application/*+json": {
+							"schema": {
+								"$ref": "#/components/schemas/PlayerStatsFilterRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/PlayerStatsEntryResponse"
+									}
+								}
+							},
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/PlayerStatsEntryResponse"
+									}
+								}
+							},
+							"text/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/PlayerStatsEntryResponse"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/stats/leaderboard": {
+			"get": {
+				"tags": ["Stats"],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/LeaderboardEntryResponse"
+									}
+								}
+							},
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/LeaderboardEntryResponse"
+									}
+								}
+							},
+							"text/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/LeaderboardEntryResponse"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/api/Status": {
 			"get": {
 				"tags": ["Status"],
@@ -387,6 +505,158 @@
 					},
 					"result": {
 						"type": "string"
+					}
+				},
+				"additionalProperties": false
+			},
+			"LeaderboardEntryResponse": {
+				"type": "object",
+				"properties": {
+					"rank": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"playerId": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"displayName": {
+						"type": "string"
+					},
+					"totalAttempts": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"wins": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"failures": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"currentStreak": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"longestStreak": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"practiceAttempts": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"averageGuessCount": {
+						"type": "number",
+						"format": "double",
+						"nullable": true
+					},
+					"winRate": {
+						"type": "number",
+						"format": "double",
+						"nullable": true
+					}
+				},
+				"additionalProperties": false
+			},
+			"PlayerStatsEntryResponse": {
+				"type": "object",
+				"properties": {
+					"playerId": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"displayName": {
+						"type": "string"
+					},
+					"stats": {
+						"$ref": "#/components/schemas/PlayerStatsResponse"
+					}
+				},
+				"additionalProperties": false
+			},
+			"PlayerStatsFilterRequest": {
+				"type": "object",
+				"properties": {
+					"includeHardMode": {
+						"type": "boolean"
+					},
+					"includeEasyMode": {
+						"type": "boolean"
+					},
+					"includeBeforeReveal": {
+						"type": "boolean"
+					},
+					"includeAfterReveal": {
+						"type": "boolean"
+					},
+					"includeSolved": {
+						"type": "boolean"
+					},
+					"includeFailed": {
+						"type": "boolean"
+					},
+					"includeInProgress": {
+						"type": "boolean"
+					},
+					"countPracticeAttempts": {
+						"type": "boolean"
+					},
+					"fromDate": {
+						"type": "string",
+						"format": "date",
+						"nullable": true
+					},
+					"toDate": {
+						"type": "string",
+						"format": "date",
+						"nullable": true
+					},
+					"minGuessCount": {
+						"type": "integer",
+						"format": "int32",
+						"nullable": true
+					},
+					"maxGuessCount": {
+						"type": "integer",
+						"format": "int32",
+						"nullable": true
+					}
+				},
+				"additionalProperties": false
+			},
+			"PlayerStatsResponse": {
+				"type": "object",
+				"properties": {
+					"totalAttempts": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"wins": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"failures": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"practiceAttempts": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"currentStreak": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"longestStreak": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"averageGuessCount": {
+						"type": "number",
+						"format": "double",
+						"nullable": true
 					}
 				},
 				"additionalProperties": false

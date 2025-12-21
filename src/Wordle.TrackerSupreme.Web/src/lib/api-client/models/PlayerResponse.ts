@@ -3,9 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 export type PlayerResponse = {
-  id?: string;
-  displayName?: string | null;
-  email?: string | null;
-  createdOn?: string;
+	id?: string;
+	displayName?: string | null;
+	email?: string | null;
+	createdOn?: string;
 };
-

@@ -242,14 +242,16 @@
 				</div>
 				<div class="flex flex-col items-start gap-3 sm:items-end">
 					<span
-						class={`rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] ${(state?.isHardMode ?? true) ? 'border-emerald-300/60 bg-emerald-400/10 text-emerald-100' : 'border-amber-300/50 bg-amber-400/10 text-amber-50'}`}
+						class={`rounded-full border px-3 py-1 text-xs font-semibold tracking-[0.2em] uppercase ${(state?.isHardMode ?? true) ? 'border-emerald-300/60 bg-emerald-400/10 text-emerald-100' : 'border-amber-300/50 bg-amber-400/10 text-amber-50'}`}
 					>
 						{(state?.isHardMode ?? true) ? 'Hard mode' : 'Easy mode'}
 					</span>
 					<button
-						class="rounded-full border border-white/20 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-white/80 transition hover:border-white/40 hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
+						class="rounded-full border border-white/20 bg-white/5 px-4 py-2 text-xs font-semibold tracking-[0.2em] text-white/80 uppercase transition hover:border-white/40 hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
 						onclick={handleEnableEasyMode}
-						disabled={!state || !state.isHardMode || (state.attempt && state.attempt.status !== 'InProgress')}
+						disabled={!state ||
+							!state.isHardMode ||
+							(state.attempt && state.attempt.status !== 'InProgress')}
 					>
 						I am a little bitch boi
 					</button>

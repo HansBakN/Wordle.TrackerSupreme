@@ -37,6 +37,15 @@
 					<div class="text-xs text-slate-200/70">Keep your streaks honest.</div>
 				</div>
 			</div>
+			{#if $auth.user}
+				<nav
+					class="hidden items-center gap-4 text-xs font-semibold tracking-[0.2em] text-slate-200/70 uppercase md:flex"
+				>
+					<a href={resolve('/')} class="transition hover:text-white">Play</a>
+					<a href={resolve('/stats')} class="transition hover:text-white">Stats</a>
+					<a href={resolve('/leaderboard')} class="transition hover:text-white">Leaderboard</a>
+				</nav>
+			{/if}
 			<div class="flex items-center gap-3 text-sm">
 				{#if $auth.user}
 					<div class="hidden text-right sm:block">

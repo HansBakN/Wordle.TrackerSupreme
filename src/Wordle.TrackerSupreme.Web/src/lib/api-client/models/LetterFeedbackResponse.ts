@@ -3,8 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export type LetterFeedbackResponse = {
-  position?: number;
-  letter?: string;
-  result?: string;
+	position?: number;
+	letter?: string;
+	result?: string;
 };
-

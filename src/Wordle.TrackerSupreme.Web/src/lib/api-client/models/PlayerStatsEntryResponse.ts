@@ -2,12 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type SolutionEntryResponse = {
+import type { PlayerStatsResponse } from './PlayerStatsResponse';
+export type PlayerStatsEntryResponse = {
 	playerId?: string;
 	displayName?: string;
-	status?: string;
-	guessCount?: number | null;
-	isAfterReveal?: boolean;
-	completedOn?: string | null;
-	guesses?: Array<string>;
+	stats?: PlayerStatsResponse;
 };

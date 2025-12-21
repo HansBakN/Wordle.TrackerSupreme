@@ -4,11 +4,10 @@
 /* eslint-disable */
 import type { GuessResponse } from './GuessResponse';
 export type AttemptResponse = {
-  attemptId?: string;
-  status?: string;
-  isAfterReveal?: boolean;
-  createdOn?: string;
-  completedOn?: string | null;
-  guesses?: Array<GuessResponse>;
+	attemptId?: string;
+	status?: string;
+	isAfterReveal?: boolean;
+	createdOn?: string;
+	completedOn?: string | null;
+	guesses?: Array<GuessResponse>;
 };
-
