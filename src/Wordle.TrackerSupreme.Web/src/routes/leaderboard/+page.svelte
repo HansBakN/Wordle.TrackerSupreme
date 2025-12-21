@@ -86,7 +86,7 @@
 			</div>
 		{:else}
 			<div class="overflow-hidden rounded-3xl border border-white/10 bg-black/30 shadow-xl">
-				<table class="w-full text-left text-sm text-slate-200/80">
+				<table class="w-full text-left text-sm text-slate-200/80" data-testid="leaderboard-table">
 					<thead class="bg-white/5 text-xs tracking-[0.2em] text-slate-200/70 uppercase">
 						<tr>
 							<th class="px-6 py-4">Rank</th>
@@ -100,7 +100,7 @@
 					</thead>
 					<tbody>
 						{#each entries as entry (entry.playerId)}
-							<tr class="border-t border-white/5">
+							<tr class="border-t border-white/5" data-testid="leaderboard-row">
 								<td class="px-6 py-4 text-base font-semibold text-white">{entry.rank}</td>
 								<td class="px-6 py-4">
 									<div class="text-base font-semibold text-white">{entry.displayName}</div>
