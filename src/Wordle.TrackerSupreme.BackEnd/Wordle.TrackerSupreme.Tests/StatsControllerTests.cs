@@ -61,6 +61,58 @@ public class StatsControllerTests
         payload.Last().Rank.Should().Be(2);
     }
 
+    [Fact]
+    public async Task GetPlayers_respects_easy_mode_and_after_reveal_filters()
+    {
+        var easyPlayer = CreatePlayer("Easy");
+        easyPlayer.Attempts.Add(CreateAttempt(easyPlayer, new DateOnly(2025, 1, 1), AttemptStatus.Solved, false, 3));
+
+        var repo = new FakePlayerRepository([easyPlayer]);
+        var controller = new StatsController(
+            repo,
+            new PlayerStatisticsService(),
+            new FakeGameClock(new DateOnly(2025, 1, 2), revealPassed: true));
+
+        var request = new PlayerStatsFilterRequest(
+            IncludeHardMode: false,
+            IncludeEasyMode: true,
+            IncludeBeforeReveal: false,
+            IncludeAfterReveal: true,
+            IncludeSolved: true,
+            IncludeFailed: true,
+            IncludeInProgress: false,
+            CountPracticeAttempts: true);
+
+        var result = await controller.GetPlayers(request, CancellationToken.None);
+        var okResult = result.Result as OkObjectResult;
+
+        okResult.Should().NotBeNull();
+        var payload = okResult!.Value.Should().BeAssignableTo<IReadOnlyList<PlayerStatsEntryResponse>>().Subject;
+
+        payload.Should().ContainSingle();
+        payload.Single().Stats.TotalAttempts.Should().Be(1);
+    }
+
+    [Fact]
+    public async Task GetLeaderboard_excludes_players_without_attempts()
+    {
+        var emptyPlayer = CreatePlayer("Idle");
+        var activePlayer = CreatePlayer("Active");
+        activePlayer.Attempts.Add(CreateAttempt(activePlayer, new DateOnly(2025, 1, 1), AttemptStatus.Solved, true, 2));
+
+        var repo = new FakePlayerRepository([emptyPlayer, activePlayer]);
+        var controller = new StatsController(repo, new PlayerStatisticsService(), new FakeGameClock(new DateOnly(2025, 1, 2)));
+
+        var result = await controller.GetLeaderboard(CancellationToken.None);
+        var okResult = result.Result as OkObjectResult;
+
+        okResult.Should().NotBeNull();
+        var payload = okResult!.Value.Should().BeAssignableTo<IReadOnlyList<LeaderboardEntryResponse>>().Subject;
+
+        payload.Should().HaveCount(1);
+        payload.Single().DisplayName.Should().Be("Active");
+    }
+
     private static Player CreatePlayer(string name)
     {
         return new Player

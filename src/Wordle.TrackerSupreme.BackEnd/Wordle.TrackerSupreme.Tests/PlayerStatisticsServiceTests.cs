@@ -130,6 +130,52 @@ public class PlayerStatisticsServiceTests
         stats.Wins.Should().Be(1);
     }
 
+    [Fact]
+    public void Calculate_excludes_in_progress_when_disabled()
+    {
+        var player = CreatePlayer();
+        player.Attempts =
+        [
+            CreateAttempt(player, new DateOnly(2025, 2, 1), AttemptStatus.InProgress, true, 1),
+            CreateAttempt(player, new DateOnly(2025, 2, 2), AttemptStatus.Solved, true, 3)
+        ];
+
+        var filter = new PlayerStatisticsFilter
+        {
+            IncludeInProgress = false
+        };
+
+        var service = new PlayerStatisticsService();
+        var stats = service.Calculate(player, filter, _ => false);
+
+        stats.TotalAttempts.Should().Be(1);
+        stats.Wins.Should().Be(1);
+    }
+
+    [Fact]
+    public void Calculate_excludes_practice_from_totals_by_default()
+    {
+        var afterRevealId = Guid.NewGuid();
+        var player = CreatePlayer();
+        player.Attempts =
+        [
+            CreateAttempt(player, new DateOnly(2025, 2, 3), AttemptStatus.Solved, true, 2),
+            CreateAttempt(player, new DateOnly(2025, 2, 4), AttemptStatus.Solved, true, 4, afterRevealId)
+        ];
+
+        var filter = new PlayerStatisticsFilter
+        {
+            IncludeAfterReveal = true,
+            IncludeBeforeReveal = true
+        };
+
+        var service = new PlayerStatisticsService();
+        var stats = service.Calculate(player, filter, attempt => attempt.Id == afterRevealId);
+
+        stats.TotalAttempts.Should().Be(1);
+        stats.PracticeAttempts.Should().Be(1);
+    }
+
     private static PlayerPuzzleAttempt CreateAttempt(
         Player player,
         DateOnly puzzleDate,
