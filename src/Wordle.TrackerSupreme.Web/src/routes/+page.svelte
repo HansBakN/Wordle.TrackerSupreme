@@ -2,8 +2,9 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { auth } from '$lib/auth/store';
-	import { enableEasyMode, fetchGameState, submitGuess } from '$lib/game/api';
-	import type { GameStateResponse, LetterResult } from '$lib/game/types';
+	import { enableEasyMode, fetchGameState, fetchMyStats, submitGuess } from '$lib/game/api';
+	import { getRevealDurationMs, shouldTriggerSolveCelebration } from '$lib/game/celebration';
+	import type { GameStateResponse, LetterResult, PlayerStatsResponse } from '$lib/game/types';
 	import { onDestroy, onMount } from 'svelte';
 
 	let checking = true;
@@ -14,7 +15,26 @@
 	let error: string | null = null;
 	let initialized = false;
 	let submitting = false;
+	let showConfetti = false;
+	let showWinStats = false;
+	let winStats: PlayerStatsResponse | null = null;
+	let statsError: string | null = null;
+	let confettiPieces: ConfettiPiece[] = [];
+	let confettiTimer: ReturnType<typeof setTimeout> | null = null;
+	let statsTimer: ReturnType<typeof setTimeout> | null = null;
 	const keyboardRows = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'];
+	const confettiDurationMs = 1200;
+
+	type ConfettiPiece = {
+		id: number;
+		dx: number;
+		dy: number;
+		rotation: number;
+		hue: number;
+		delay: number;
+		duration: number;
+		size: number;
+	};
 
 	onMount(() => {
 		const unsubscribe = auth.subscribe(async (current) => {
@@ -97,11 +117,16 @@
 
 		error = null;
 		message = null;
+		const previousStatus = state.attempt?.status ?? null;
 		submitting = true;
 		try {
 			state = await submitGuess(normalized);
 			guess = '';
 			message = null;
+			const nextStatus = state.attempt?.status ?? null;
+			if (shouldTriggerSolveCelebration(previousStatus, nextStatus)) {
+				void triggerWinCelebration();
+			}
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Unable to submit guess.';
 		} finally {
@@ -216,6 +241,63 @@
 		const year = date.getFullYear();
 		return `${day}/${month}-${year}`;
 	}
+
+	function resetCelebration() {
+		if (confettiTimer) {
+			clearTimeout(confettiTimer);
+			confettiTimer = null;
+		}
+		if (statsTimer) {
+			clearTimeout(statsTimer);
+			statsTimer = null;
+		}
+		showConfetti = false;
+		showWinStats = false;
+		winStats = null;
+		statsError = null;
+	}
+
+	function buildConfettiPieces(count: number): ConfettiPiece[] {
+		const pieces: ConfettiPiece[] = [];
+		for (let i = 0; i < count; i += 1) {
+			const dx = Math.round((Math.random() - 0.5) * 320);
+			const dy = Math.round((Math.random() - 0.2) * 260);
+			pieces.push({
+				id: i,
+				dx,
+				dy,
+				rotation: Math.round(Math.random() * 360),
+				hue: Math.round(Math.random() * 360),
+				delay: Math.round(Math.random() * 150),
+				duration: 800 + Math.round(Math.random() * 500),
+				size: 6 + Math.round(Math.random() * 6)
+			});
+		}
+		return pieces;
+	}
+
+	async function triggerWinCelebration() {
+		if (!state) {
+			return;
+		}
+		resetCelebration();
+		confettiPieces = buildConfettiPieces(36);
+		const revealDelayMs = getRevealDurationMs(state.wordLength ?? 5);
+		const statsPromise = fetchMyStats().catch((err) => {
+			statsError = err instanceof Error ? err.message : 'Unable to load stats.';
+			return null;
+		});
+
+		confettiTimer = setTimeout(() => {
+			showConfetti = true;
+		}, revealDelayMs);
+
+		statsTimer = setTimeout(async () => {
+			showConfetti = false;
+			winStats = await statsPromise;
+			showWinStats = true;
+		}, revealDelayMs + confettiDurationMs);
+	}
 </script>
 
 {#if checking}
@@ -227,8 +309,18 @@
 {:else if $auth.user}
 	<div class="mx-auto grid max-w-6xl gap-6">
 		<section
-			class="rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-8 shadow-2xl"
+			class="relative rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-8 shadow-2xl"
 		>
+			{#if showConfetti}
+				<div class="confetti-layer" data-testid="confetti">
+					{#each confettiPieces as piece (piece.id)}
+						<span
+							class="confetti-piece"
+							style={`--dx:${piece.dx}px; --dy:${piece.dy}px; --rot:${piece.rotation}deg; --hue:${piece.hue}; --delay:${piece.delay}ms; --dur:${piece.duration}ms; --size:${piece.size}px;`}
+						></span>
+					{/each}
+				</div>
+			{/if}
 			<div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
 				<div>
 					<p class="text-sm tracking-[0.2em] text-emerald-200/80 uppercase">Daily Wordle</p>
@@ -343,6 +435,36 @@
 								</div>
 							{/each}
 						</div>
+						{#if showWinStats}
+							<div
+								class="mt-6 rounded-2xl border border-emerald-300/40 bg-emerald-500/10 p-5 text-white shadow-xl"
+								data-testid="win-stats"
+							>
+								<h2 class="text-sm font-semibold tracking-[0.2em] text-emerald-100 uppercase">
+									Victory stats
+								</h2>
+								{#if winStats}
+									<div class="mt-4 grid gap-3 sm:grid-cols-3">
+										<div>
+											<div class="text-xs text-emerald-100/80 uppercase">Wins</div>
+											<div class="text-xl font-semibold">{winStats.wins}</div>
+										</div>
+										<div>
+											<div class="text-xs text-emerald-100/80 uppercase">Current streak</div>
+											<div class="text-xl font-semibold">{winStats.currentStreak}</div>
+										</div>
+										<div>
+											<div class="text-xs text-emerald-100/80 uppercase">Avg guesses</div>
+											<div class="text-xl font-semibold">
+												{winStats.averageGuessCount?.toFixed(2) ?? '—'}
+											</div>
+										</div>
+									</div>
+								{:else if statsError}
+									<div class="mt-3 text-sm text-emerald-50/80">{statsError}</div>
+								{/if}
+							</div>
+						{/if}
 					</div>
 				</div>
 			{/if}
@@ -404,6 +526,41 @@
 			background: var(--end-bg);
 			border-color: var(--end-border);
 			color: var(--end-text);
+		}
+	}
+
+	.confetti-layer {
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		overflow: hidden;
+	}
+
+	.confetti-piece {
+		position: absolute;
+		left: 50%;
+		top: 35%;
+		width: var(--size);
+		height: calc(var(--size) * 0.7);
+		background: hsl(var(--hue) 80% 60%);
+		border-radius: 999px;
+		opacity: 0;
+		transform: translate(-50%, -50%) rotate(var(--rot));
+		animation: confetti-burst var(--dur) ease-out forwards;
+		animation-delay: var(--delay);
+	}
+
+	@keyframes confetti-burst {
+		0% {
+			transform: translate(-50%, -50%) scale(0.8) rotate(var(--rot));
+			opacity: 0;
+		}
+		15% {
+			opacity: 1;
+		}
+		100% {
+			transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(var(--rot));
+			opacity: 0;
 		}
 	}
 </style>
