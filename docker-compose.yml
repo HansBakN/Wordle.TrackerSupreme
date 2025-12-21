@@ -90,6 +90,18 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ConnectionStrings__WordleTrackerSupremeDbContext: Host=db;Database=${POSTGRES_DB:-wordle_trackersupreme};Username=${POSTGRES_USER:-wordle_user};Password=${POSTGRES_PASSWORD:-please-change-me}
+      Seeder__RandomSeed: 4242
+      Seeder__PlayerCount: 20
+      Seeder__MinSolvedPuzzles: 30
+      Seeder__MaxSolvedPuzzles: 200
+      Seeder__FailedPuzzlesMin: 2
+      Seeder__FailedPuzzlesMax: 12
+      Seeder__InProgressPuzzlesMin: 1
+      Seeder__InProgressPuzzlesMax: 4
+      Seeder__PuzzleDays: 280
+      Seeder__DefaultPassword: dev-password
+      Seeder__AllowReseed: "false"
+      Seeder__AnchorDate: 2025-02-01
     depends_on:
       db:
         condition: service_healthy

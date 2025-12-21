@@ -25,6 +25,18 @@ public class SeederRunner(
             return;
         }
 
+        _logger.LogInformation(
+            "Seeder options: PlayerCount={PlayerCount}, PuzzleDays={PuzzleDays}, SolvedRange={MinSolved}-{MaxSolved}, FailedRange={FailedMin}-{FailedMax}, InProgressRange={InProgressMin}-{InProgressMax}, AnchorDate={AnchorDate}.",
+            _options.PlayerCount,
+            _options.PuzzleDays,
+            _options.MinSolvedPuzzles,
+            _options.MaxSolvedPuzzles,
+            _options.FailedPuzzlesMin,
+            _options.FailedPuzzlesMax,
+            _options.InProgressPuzzlesMin,
+            _options.InProgressPuzzlesMax,
+            _options.AnchorDate ?? "(auto)");
+
         var anchorDate = ResolveAnchorDate();
         var data = _generator.Generate(anchorDate);
 

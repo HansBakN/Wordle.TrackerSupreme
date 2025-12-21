@@ -39,6 +39,7 @@ public class SeedDataGenerator(
         var players = BuildPlayers(random, anchorDate);
         var puzzles = BuildPuzzles(anchorDate, random);
         var attempts = BuildAttempts(random, anchorDate, players, puzzles);
+        EnsureFeaturedAttempts(attempts, players, puzzles);
 
         return new SeedData(players, puzzles, attempts);
     }
@@ -60,7 +61,7 @@ public class SeedDataGenerator(
                 DisplayName = displayName,
                 Email = $"{displayName.ToLowerInvariant()}@example.com",
                 PasswordHash = string.Empty,
-                CreatedOn = createdOn
+                CreatedOn = DateTime.SpecifyKind(createdOn, DateTimeKind.Utc)
             };
 
             player.PasswordHash = _passwordHasher.HashPassword(player, _options.DefaultPassword);
@@ -149,6 +150,119 @@ public class SeedDataGenerator(
         }
 
         return attempts;
+    }
+
+    private void EnsureFeaturedAttempts(
+        List<PlayerPuzzleAttempt> attempts,
+        IReadOnlyList<Player> players,
+        IReadOnlyList<DailyPuzzle> puzzles)
+    {
+        if (players.Count == 0 || puzzles.Count == 0)
+        {
+            return;
+        }
+
+        var featuredCount = Math.Min(3, players.Count);
+
+        for (int index = 0; index < featuredCount; index++)
+        {
+            var player = players[index];
+            var puzzle = FindUnusedPuzzleForPlayer(player, puzzles, attempts, index);
+            if (puzzle is null)
+            {
+                continue;
+            }
+
+            PlayerPuzzleAttempt attempt;
+            if (index == 0)
+            {
+                attempt = BuildFeaturedAttempt(
+                    player,
+                    puzzle,
+                    AttemptStatus.Solved,
+                    playedInHardMode: true,
+                    createdOn: puzzle.PuzzleDate.ToDateTime(new TimeOnly(9, 15)),
+                    completedOn: puzzle.PuzzleDate.ToDateTime(new TimeOnly(9, 35)),
+                    guessCount: 3);
+            }
+            else if (index == 1)
+            {
+                attempt = BuildFeaturedAttempt(
+                    player,
+                    puzzle,
+                    AttemptStatus.Failed,
+                    playedInHardMode: true,
+                    createdOn: puzzle.PuzzleDate.ToDateTime(new TimeOnly(10, 5)),
+                    completedOn: puzzle.PuzzleDate.ToDateTime(new TimeOnly(10, 50)),
+                    guessCount: _gameOptions.MaxGuesses);
+            }
+            else
+            {
+                attempt = BuildFeaturedAttempt(
+                    player,
+                    puzzle,
+                    AttemptStatus.Solved,
+                    playedInHardMode: false,
+                    createdOn: puzzle.PuzzleDate.ToDateTime(new TimeOnly(15, 20)),
+                    completedOn: puzzle.PuzzleDate.ToDateTime(new TimeOnly(15, 45)),
+                    guessCount: 4);
+            }
+
+            attempts.Add(attempt);
+        }
+    }
+
+    private DailyPuzzle? FindUnusedPuzzleForPlayer(
+        Player player,
+        IReadOnlyList<DailyPuzzle> puzzles,
+        IReadOnlyCollection<PlayerPuzzleAttempt> attempts,
+        int preferredIndexFromEnd)
+    {
+        var usedPuzzleIds = new HashSet<Guid>(
+            attempts.Where(attempt => attempt.PlayerId == player.Id)
+                .Select(attempt => attempt.DailyPuzzleId));
+
+        var startIndex = Math.Max(0, puzzles.Count - 1 - preferredIndexFromEnd);
+        for (int i = startIndex; i >= 0; i--)
+        {
+            var puzzle = puzzles[i];
+            if (!usedPuzzleIds.Contains(puzzle.Id))
+            {
+                return puzzle;
+            }
+        }
+
+        return null;
+    }
+
+    private PlayerPuzzleAttempt BuildFeaturedAttempt(
+        Player player,
+        DailyPuzzle puzzle,
+        AttemptStatus status,
+        bool playedInHardMode,
+        DateTime createdOn,
+        DateTime completedOn,
+        int guessCount)
+    {
+        var attemptId = Guid.NewGuid();
+        var guesses = BuildGuessAttempts(attemptId, puzzle, new Random(_options.RandomSeed + attemptId.GetHashCode()), guessCount, status == AttemptStatus.Solved);
+
+        var attempt = new PlayerPuzzleAttempt
+        {
+            Id = attemptId,
+            PlayerId = player.Id,
+            Player = player,
+            DailyPuzzleId = puzzle.Id,
+            DailyPuzzle = puzzle,
+            Status = status,
+            CreatedOn = DateTime.SpecifyKind(createdOn, DateTimeKind.Utc),
+            CompletedOn = status == AttemptStatus.InProgress ? null : DateTime.SpecifyKind(completedOn, DateTimeKind.Utc),
+            PlayedInHardMode = playedInHardMode,
+            Guesses = guesses
+        };
+
+        AttachAttemptReferences(attempt);
+        return attempt;
     }
 
     private PlayerPuzzleAttempt BuildSolvedAttempt(Player player, DailyPuzzle puzzle, Random random, int maxGuesses)
@@ -280,7 +394,7 @@ public class SeedDataGenerator(
     private static DateTime BuildAttemptCreatedOn(DateOnly puzzleDate, Random random)
     {
         var baseTime = puzzleDate.ToDateTime(TimeOnly.MinValue).AddHours(7);
-        return baseTime.AddMinutes(random.Next(0, 600));
+        return DateTime.SpecifyKind(baseTime.AddMinutes(random.Next(0, 600)), DateTimeKind.Utc);
     }
 
     private static void AttachAttemptReferences(PlayerPuzzleAttempt attempt)
