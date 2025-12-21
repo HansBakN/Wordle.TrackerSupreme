@@ -23,13 +23,15 @@ function persistToken(token: string | null) {
 	}
 }
 
+const initialToken = loadStoredToken();
+
 export const auth = writable<AuthState>({
 	user: null,
-	token: loadStoredToken(),
+	token: initialToken,
 	ready: false
 });
 
-configureApiClient(loadStoredToken());
+configureApiClient(initialToken);
 
 function setAuthenticated(result: AuthResponse) {
 	persistToken(result.token);
