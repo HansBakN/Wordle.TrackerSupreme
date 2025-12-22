@@ -19,6 +19,9 @@ rm -rf "$ARTIFACT_DIR"
 mkdir -p "$ARTIFACT_DIR"
 
 compose=(docker compose)
+if [[ "${CI:-}" == "1" ]]; then
+  compose+=(-f "$ROOT_DIR/docker-compose.yml")
+fi
 if [[ -f "$ENV_FILE" ]]; then
   compose+=(--env-file "$ENV_FILE")
 fi
@@ -67,6 +70,13 @@ export E2E_ARTIFACT_DIR="$ARTIFACT_DIR/playwright"
 export CI=1
 
 if [[ "${CI:-}" == "1" ]]; then
+  if [[ -d "$ROOT_DIR/src/Wordle.TrackerSupreme.Web/node_modules" ]]; then
+    if command -v sudo >/dev/null 2>&1; then
+      sudo rm -rf "$ROOT_DIR/src/Wordle.TrackerSupreme.Web/node_modules"
+    else
+      rm -rf "$ROOT_DIR/src/Wordle.TrackerSupreme.Web/node_modules"
+    fi
+  fi
   (cd "$ROOT_DIR/src/Wordle.TrackerSupreme.Web" && npm ci)
 elif [[ ! -d "$ROOT_DIR/src/Wordle.TrackerSupreme.Web/node_modules" ]]; then
   (cd "$ROOT_DIR/src/Wordle.TrackerSupreme.Web" && npm ci)
