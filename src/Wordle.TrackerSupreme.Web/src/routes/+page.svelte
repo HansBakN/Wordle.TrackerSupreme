@@ -320,6 +320,13 @@
 						></span>
 					{/each}
 				</div>
+			{:else}
+				<div
+					class="mt-8 rounded-2xl border border-rose-400/50 bg-rose-500/10 p-6 text-center text-sm text-rose-100"
+					data-testid="daily-puzzle-error"
+				>
+					{error ?? 'Unable to load today’s puzzle.'}
+				</div>
 			{/if}
 			<div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
 				<div>
