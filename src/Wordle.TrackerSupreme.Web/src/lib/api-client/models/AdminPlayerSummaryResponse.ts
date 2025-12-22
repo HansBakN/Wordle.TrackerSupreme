@@ -2,10 +2,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type PlayerResponse = {
+export type AdminPlayerSummaryResponse = {
 	id?: string;
 	displayName?: string | null;
 	email?: string | null;
 	createdOn?: string;
 	isAdmin?: boolean;
+	attemptCount?: number;
 };

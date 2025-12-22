@@ -3,11 +3,7 @@ export type Player = {
 	displayName: string;
 	email: string;
 	createdOn: string;
-};
-
-export type AuthResponse = {
-	player: Player;
-	token: string;
+	isAdmin: boolean;
 };
 
 export type AuthState = {

@@ -33,7 +33,13 @@ describe('auth store', () => {
 	it('signIn stores token and user', async () => {
 		mockAuthService.postApiAuthSignin.mockResolvedValue({
 			token: 'abc123',
-			player: { id: '1', displayName: 'Tester', email: 't@example.com' }
+			player: {
+				id: '1',
+				displayName: 'Tester',
+				email: 't@example.com',
+				isAdmin: false,
+				createdOn: ''
+			}
 		});
 
 		await signIn('t@example.com', 'secret');
@@ -47,7 +53,13 @@ describe('auth store', () => {
 	it('signUp stores token and user', async () => {
 		mockAuthService.postApiAuthSignup.mockResolvedValue({
 			token: 'xyz789',
-			player: { id: '2', displayName: 'Newbie', email: 'n@example.com' }
+			player: {
+				id: '2',
+				displayName: 'Newbie',
+				email: 'n@example.com',
+				isAdmin: false,
+				createdOn: ''
+			}
 		});
 
 		await signUp('Newbie', 'n@example.com', 'secret');
@@ -72,5 +84,20 @@ describe('auth store', () => {
 		expect(localStorage.getItem('wts_auth_token')).toBeNull();
 		expect(get(auth).user).toBeNull();
 		expect(get(auth).token).toBeNull();
+	});
+
+	it('bootstrapAuth maps admin flag', async () => {
+		localStorage.setItem('wts_auth_token', 'keep');
+		mockAuthService.getApiAuthMe.mockResolvedValue({
+			id: '99',
+			displayName: 'Admin',
+			email: 'admin@example.com',
+			createdOn: '2025-01-01T00:00:00Z',
+			isAdmin: true
+		});
+
+		await bootstrapAuth();
+
+		expect(get(auth).user?.isAdmin).toBe(true);
 	});
 });

@@ -7,6 +7,13 @@ export { CancelablePromise, CancelError } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
+export type { AdminPlayerAttemptResponse } from './models/AdminPlayerAttemptResponse';
+export type { AdminPlayerDetailResponse } from './models/AdminPlayerDetailResponse';
+export type { AdminPlayerSummaryResponse } from './models/AdminPlayerSummaryResponse';
+export type { AdminResetPasswordRequest } from './models/AdminResetPasswordRequest';
+export type { AdminSetAdminStatusRequest } from './models/AdminSetAdminStatusRequest';
+export type { AdminUpdateAttemptRequest } from './models/AdminUpdateAttemptRequest';
+export type { AdminUpdatePlayerRequest } from './models/AdminUpdatePlayerRequest';
 export type { AttemptResponse } from './models/AttemptResponse';
 export type { AuthResponse } from './models/AuthResponse';
 export type { GameStateResponse } from './models/GameStateResponse';
@@ -23,6 +30,7 @@ export type { SolutionEntryResponse } from './models/SolutionEntryResponse';
 export type { SolutionsResponse } from './models/SolutionsResponse';
 export type { SubmitGuessRequest } from './models/SubmitGuessRequest';
 
+export { AdminService } from './services/AdminService';
 export { AuthService } from './services/AuthService';
 export { GameService } from './services/GameService';
 export { StatsService } from './services/StatsService';

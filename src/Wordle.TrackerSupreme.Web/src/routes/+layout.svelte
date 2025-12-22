@@ -44,6 +44,9 @@
 					<a href={resolve('/')} class="transition hover:text-white">Play</a>
 					<a href={resolve('/stats')} class="transition hover:text-white">Stats</a>
 					<a href={resolve('/leaderboard')} class="transition hover:text-white">Leaderboard</a>
+					{#if $auth.user?.isAdmin}
+						<a href={resolve('/admin')} class="transition hover:text-white">Admin</a>
+					{/if}
 				</nav>
 			{/if}
 			<div class="flex items-center gap-3 text-sm">

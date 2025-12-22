@@ -1,7 +1,9 @@
 import { AuthService } from '$lib/api-client/services/AuthService';
 import { configureApiClient } from '$lib/api';
 import { writable } from 'svelte/store';
-import type { AuthResponse, AuthState } from './types';
+import type { AuthResponse as ApiAuthResponse } from '$lib/api-client/models/AuthResponse';
+import type { PlayerResponse as ApiPlayerResponse } from '$lib/api-client/models/PlayerResponse';
+import type { AuthState, Player } from './types';
 
 const TOKEN_STORAGE_KEY = 'wts_auth_token';
 
@@ -33,15 +35,25 @@ export const auth = writable<AuthState>({
 
 configureApiClient(initialToken);
 
-function setAuthenticated(result: AuthResponse) {
+function setAuthenticated(result: ApiAuthResponse) {
 	persistToken(result.token);
 	configureApiClient(result.token);
 	auth.set({
-		user: result.player,
+		user: mapPlayer(result.player),
 		token: result.token,
 		ready: true,
 		error: null
 	});
+}
+
+function mapPlayer(player: ApiPlayerResponse): Player {
+	return {
+		id: player.id ?? '',
+		displayName: player.displayName ?? '',
+		email: player.email ?? '',
+		createdOn: player.createdOn ?? '',
+		isAdmin: player.isAdmin ?? false
+	};
 }
 
 export async function bootstrapAuth() {
@@ -55,7 +67,7 @@ export async function bootstrapAuth() {
 
 	try {
 		const player = await AuthService.getApiAuthMe();
-		auth.set({ user: player, token, ready: true, error: null });
+		auth.set({ user: mapPlayer(player), token, ready: true, error: null });
 	} catch (error) {
 		console.error('Auth bootstrap failed', error);
 		persistToken(null);

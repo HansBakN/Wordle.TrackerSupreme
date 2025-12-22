@@ -124,6 +124,308 @@
 				}
 			}
 		},
+		"/api/Admin/players": {
+			"get": {
+				"tags": ["Admin"],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/AdminPlayerSummaryResponse"
+									}
+								}
+							},
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/AdminPlayerSummaryResponse"
+									}
+								}
+							},
+							"text/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/AdminPlayerSummaryResponse"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/Admin/players/{playerId}": {
+			"get": {
+				"tags": ["Admin"],
+				"parameters": [
+					{
+						"name": "playerId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"format": "uuid"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminPlayerDetailResponse"
+								}
+							},
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminPlayerDetailResponse"
+								}
+							},
+							"text/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminPlayerDetailResponse"
+								}
+							}
+						}
+					}
+				}
+			},
+			"put": {
+				"tags": ["Admin"],
+				"parameters": [
+					{
+						"name": "playerId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"format": "uuid"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminUpdatePlayerRequest"
+							}
+						},
+						"text/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminUpdatePlayerRequest"
+							}
+						},
+						"application/*+json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminUpdatePlayerRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminPlayerDetailResponse"
+								}
+							},
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminPlayerDetailResponse"
+								}
+							},
+							"text/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminPlayerDetailResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/Admin/players/{playerId}/password": {
+			"put": {
+				"tags": ["Admin"],
+				"parameters": [
+					{
+						"name": "playerId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"format": "uuid"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminResetPasswordRequest"
+							}
+						},
+						"text/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminResetPasswordRequest"
+							}
+						},
+						"application/*+json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminResetPasswordRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"204": {
+						"description": "No Content"
+					}
+				}
+			}
+		},
+		"/api/Admin/players/{playerId}/admin": {
+			"put": {
+				"tags": ["Admin"],
+				"parameters": [
+					{
+						"name": "playerId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"format": "uuid"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminSetAdminStatusRequest"
+							}
+						},
+						"text/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminSetAdminStatusRequest"
+							}
+						},
+						"application/*+json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminSetAdminStatusRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminPlayerDetailResponse"
+								}
+							},
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminPlayerDetailResponse"
+								}
+							},
+							"text/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminPlayerDetailResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/Admin/attempts/{attemptId}": {
+			"put": {
+				"tags": ["Admin"],
+				"parameters": [
+					{
+						"name": "attemptId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"format": "uuid"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminUpdateAttemptRequest"
+							}
+						},
+						"text/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminUpdateAttemptRequest"
+							}
+						},
+						"application/*+json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminUpdateAttemptRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminPlayerAttemptResponse"
+								}
+							},
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminPlayerAttemptResponse"
+								}
+							},
+							"text/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminPlayerAttemptResponse"
+								}
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": ["Admin"],
+				"parameters": [
+					{
+						"name": "attemptId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"format": "uuid"
+						}
+					}
+				],
+				"responses": {
+					"204": {
+						"description": "No Content"
+					}
+				}
+			}
+		},
 		"/api/game/state": {
 			"get": {
 				"tags": ["Game"],
@@ -394,6 +696,150 @@
 					"token": {
 						"type": "string",
 						"nullable": true
+					}
+				},
+				"additionalProperties": false
+			},
+			"AdminPlayerAttemptResponse": {
+				"type": "object",
+				"properties": {
+					"attemptId": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"puzzleDate": {
+						"type": "string",
+						"format": "date"
+					},
+					"status": {
+						"type": "string"
+					},
+					"playedInHardMode": {
+						"type": "boolean"
+					},
+					"createdOn": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"completedOn": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"guesses": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/GuessResponse"
+						}
+					}
+				},
+				"additionalProperties": false
+			},
+			"AdminPlayerDetailResponse": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"displayName": {
+						"type": "string",
+						"nullable": true
+					},
+					"email": {
+						"type": "string",
+						"nullable": true
+					},
+					"createdOn": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"isAdmin": {
+						"type": "boolean"
+					},
+					"attempts": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/AdminPlayerAttemptResponse"
+						}
+					}
+				},
+				"additionalProperties": false
+			},
+			"AdminPlayerSummaryResponse": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"displayName": {
+						"type": "string",
+						"nullable": true
+					},
+					"email": {
+						"type": "string",
+						"nullable": true
+					},
+					"createdOn": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"isAdmin": {
+						"type": "boolean"
+					},
+					"attemptCount": {
+						"type": "integer",
+						"format": "int32"
+					}
+				},
+				"additionalProperties": false
+			},
+			"AdminResetPasswordRequest": {
+				"required": ["password"],
+				"type": "object",
+				"properties": {
+					"password": {
+						"type": "string"
+					}
+				},
+				"additionalProperties": false
+			},
+			"AdminSetAdminStatusRequest": {
+				"required": ["isAdmin"],
+				"type": "object",
+				"properties": {
+					"isAdmin": {
+						"type": "boolean"
+					}
+				},
+				"additionalProperties": false
+			},
+			"AdminUpdateAttemptRequest": {
+				"required": ["guesses", "playedInHardMode"],
+				"type": "object",
+				"properties": {
+					"guesses": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					"playedInHardMode": {
+						"type": "boolean"
+					}
+				},
+				"additionalProperties": false
+			},
+			"AdminUpdatePlayerRequest": {
+				"required": ["displayName", "email"],
+				"type": "object",
+				"properties": {
+					"displayName": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
 					}
 				},
 				"additionalProperties": false
@@ -679,6 +1125,9 @@
 					"createdOn": {
 						"type": "string",
 						"format": "date-time"
+					},
+					"isAdmin": {
+						"type": "boolean"
 					}
 				},
 				"additionalProperties": false
