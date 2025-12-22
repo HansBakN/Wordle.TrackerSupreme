@@ -311,23 +311,16 @@
 		<section
 			class="relative rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-8 shadow-2xl"
 		>
-			{#if showConfetti}
-				<div class="confetti-layer" data-testid="confetti">
-					{#each confettiPieces as piece (piece.id)}
-						<span
-							class="confetti-piece"
-							style={`--dx:${piece.dx}px; --dy:${piece.dy}px; --rot:${piece.rotation}deg; --hue:${piece.hue}; --delay:${piece.delay}ms; --dur:${piece.duration}ms; --size:${piece.size}px;`}
-						></span>
-					{/each}
-				</div>
-			{:else}
-				<div
-					class="mt-8 rounded-2xl border border-rose-400/50 bg-rose-500/10 p-6 text-center text-sm text-rose-100"
-					data-testid="daily-puzzle-error"
-				>
-					{error ?? 'Unable to load today’s puzzle.'}
-				</div>
-			{/if}
+				{#if showConfetti}
+					<div class="confetti-layer" data-testid="confetti">
+						{#each confettiPieces as piece (piece.id)}
+							<span
+								class="confetti-piece"
+								style={`--dx:${piece.dx}px; --dy:${piece.dy}px; --rot:${piece.rotation}deg; --hue:${piece.hue}; --delay:${piece.delay}ms; --dur:${piece.duration}ms; --size:${piece.size}px;`}
+							></span>
+						{/each}
+					</div>
+				{/if}
 			<div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
 				<div>
 					<p class="text-sm tracking-[0.2em] text-emerald-200/80 uppercase">Daily Wordle</p>
@@ -364,9 +357,9 @@
 				>
 					Loading today’s puzzle...
 				</div>
-			{:else if state}
-				<div class="mt-6">
-					<div class="space-y-4 rounded-2xl border border-white/10 bg-black/20 p-6 shadow-inner">
+				{:else if state}
+					<div class="mt-6">
+						<div class="space-y-4 rounded-2xl border border-white/10 bg-black/20 p-6 shadow-inner">
 						<div class="grid grid-rows-6 gap-1.5">
 							{#each Array(state.maxGuesses).keys() as rowIndex (rowIndex)}
 								<div
@@ -475,6 +468,15 @@
 							</div>
 						{/if}
 					</div>
+				</div>
+			{/if}
+
+			{#if !loadingState && !state && error}
+				<div
+					class="mt-8 rounded-2xl border border-rose-400/50 bg-rose-500/10 p-6 text-center text-sm text-rose-100"
+					data-testid="daily-puzzle-error"
+				>
+					{error ?? 'Unable to load today’s puzzle.'}
 				</div>
 			{/if}
 		</section>
