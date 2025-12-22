@@ -49,6 +49,8 @@ FRONTEND_LOG_PID=$!
 "$ROOT_DIR/scripts/wait-for-url.sh" "$BACKEND_HEALTH_URL" 180
 "$ROOT_DIR/scripts/wait-for-url.sh" "$FRONTEND_HEALTH_URL" 180
 
+"${compose[@]}" --profile migrate run --rm --build migrator
+
 E2E_RESET_ENABLED=true \
   Seeder__AllowReseed=true \
   Seeder__ResetDatabase=true \
