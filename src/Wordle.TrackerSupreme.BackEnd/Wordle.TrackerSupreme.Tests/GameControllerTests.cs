@@ -2,7 +2,6 @@ using System.Security.Claims;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging.Abstractions;
 using Wordle.TrackerSupreme.Api.Controllers;
 using Wordle.TrackerSupreme.Application.Services.Game;
@@ -22,7 +21,6 @@ public class GameControllerTests
     {
         var options = new GameOptions { WordLength = 5, MaxGuesses = 6 };
         var validator = wordValidator ?? new FakeWordValidator();
-        var hostEnvironment = new FakeHostEnvironment { EnvironmentName = Environments.Development };
         var officialWordProvider = new FakeOfficialWordProvider(solution);
         var gameplay = new GameplayService(
             repo,
@@ -30,7 +28,6 @@ public class GameControllerTests
                 repo,
                 new FakeWordSelector(solution),
                 officialWordProvider,
-                hostEnvironment,
                 NullLogger<DailyPuzzleService>.Instance),
             clock,
             new GuessEvaluationService(options, validator),

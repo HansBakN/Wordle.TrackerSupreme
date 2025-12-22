@@ -106,11 +106,18 @@ builder.Services.AddSingleton<WordListValidator>();
 builder.Services.AddSingleton<IWordValidator>(sp => sp.GetRequiredService<WordListValidator>());
 builder.Services.AddSingleton<IWordListProvider>(sp => sp.GetRequiredService<WordListValidator>());
 builder.Services.AddSingleton<IGuessEvaluationService, GuessEvaluationService>();
-builder.Services.AddHttpClient<OfficialWordProvider>(client =>
+if (builder.Environment.IsDevelopment())
 {
-    client.BaseAddress = new Uri("https://www.nytimes.com/");
-});
-builder.Services.AddScoped<IOfficialWordProvider>(sp => sp.GetRequiredService<OfficialWordProvider>());
+    builder.Services.AddSingleton<IOfficialWordProvider, DevelopmentOfficialWordProvider>();
+}
+else
+{
+    builder.Services.AddHttpClient<OfficialWordProvider>(client =>
+    {
+        client.BaseAddress = new Uri("https://www.nytimes.com/");
+    });
+    builder.Services.AddScoped<IOfficialWordProvider>(sp => sp.GetRequiredService<OfficialWordProvider>());
+}
 builder.Services.AddScoped<IGameplayService, GameplayService>();
 builder.Services.AddScoped<IDailyPuzzleService, DailyPuzzleService>();
 builder.Services.AddScoped<IPlayerStatisticsService, PlayerStatisticsService>();

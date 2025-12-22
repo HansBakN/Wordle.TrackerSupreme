@@ -1,7 +1,6 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Wordle.TrackerSupreme.Domain.Models;
 using Wordle.TrackerSupreme.Domain.Repositories;
@@ -15,20 +14,17 @@ public class DailyPuzzleService : IDailyPuzzleService
     private readonly IWordSelector _wordSelector;
     private readonly IOfficialWordProvider _officialWordProvider;
     private readonly ILogger<DailyPuzzleService> _logger;
-    private readonly bool _useOfficialWords;
 
     public DailyPuzzleService(
         IGameRepository gameRepository,
         IWordSelector wordSelector,
         IOfficialWordProvider officialWordProvider,
-        IHostEnvironment hostEnvironment,
         ILogger<DailyPuzzleService> logger)
     {
         _gameRepository = gameRepository;
         _wordSelector = wordSelector;
         _officialWordProvider = officialWordProvider;
         _logger = logger;
-        _useOfficialWords = !hostEnvironment.IsDevelopment();
     }
 
     public async Task<DailyPuzzle> GetOrCreatePuzzle(DateOnly puzzleDate, CancellationToken cancellationToken)
@@ -60,22 +56,18 @@ public class DailyPuzzleService : IDailyPuzzleService
 
     private async Task<string> ResolveSolution(DateOnly puzzleDate, CancellationToken cancellationToken)
     {
-        if (_useOfficialWords)
+        try
         {
-            try
-            {
-                return await _officialWordProvider.GetSolutionForDateAsync(puzzleDate, cancellationToken);
-            }
-            catch (OperationCanceledException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogWarning(ex, "Failed to retrieve the official solution for {PuzzleDate}; using the deterministic dictionary instead.", puzzleDate);
-            }
+            return await _officialWordProvider.GetSolutionForDateAsync(puzzleDate, cancellationToken);
         }
-
-        return _wordSelector.GetSolutionFor(puzzleDate);
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Failed to retrieve the official solution for {PuzzleDate}; using the deterministic dictionary instead.", puzzleDate);
+            return _wordSelector.GetSolutionFor(puzzleDate);
+        }
     }
 }
