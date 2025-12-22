@@ -1,4 +1,6 @@
 using FluentAssertions;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging.Abstractions;
 using Wordle.TrackerSupreme.Application.Services.Game;
 using Wordle.TrackerSupreme.Domain.Models;
 using Wordle.TrackerSupreme.Tests.Fakes;
@@ -10,7 +12,13 @@ public class GameplayServiceTests
 {
     private GameplayService CreateService(FakeGameRepository repo, FakeGameClock clock, string solution = "APPLE", FakeWordValidator? wordValidator = null)
     {
-        var puzzleService = new DailyPuzzleService(repo, new FakeWordSelector(solution));
+        var hostEnvironment = new FakeHostEnvironment { EnvironmentName = Environments.Development };
+        var puzzleService = new DailyPuzzleService(
+            repo,
+            new FakeWordSelector(solution),
+            new FakeOfficialWordProvider(solution),
+            hostEnvironment,
+            NullLogger<DailyPuzzleService>.Instance);
         var options = new GameOptions { MaxGuesses = 6, WordLength = 5 };
         var validator = wordValidator ?? new FakeWordValidator();
         return new GameplayService(repo, puzzleService, clock, new GuessEvaluationService(options, validator), options);
