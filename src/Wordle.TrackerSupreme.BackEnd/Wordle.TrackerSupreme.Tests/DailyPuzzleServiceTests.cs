@@ -48,15 +48,16 @@ public class DailyPuzzleServiceTests
     }
 
     [Fact]
-    public async Task Falls_back_to_selector_when_official_provider_fails()
+    public async Task Throws_when_official_provider_fails()
     {
         var repo = new FakeGameRepository();
         var officialProvider = new FakeOfficialWordProvider((_, _) => throw new InvalidOperationException("boom"));
-        var service = CreateService(repo, officialProvider, new FakeWordSelector("SHINE"));
+        var service = CreateService(repo, officialProvider);
 
-        var puzzle = await service.GetOrCreatePuzzle(new DateOnly(2025, 1, 3), CancellationToken.None);
+        var act = async () => await service.GetOrCreatePuzzle(new DateOnly(2025, 1, 3), CancellationToken.None);
 
-        puzzle.Solution.Should().Be("SHINE");
+        await act.Should().ThrowAsync<DailyPuzzleUnavailableException>()
+            .WithMessage("Unable to retrieve today's puzzle. Please try again later.");
         officialProvider.CallCount.Should().Be(1);
     }
 

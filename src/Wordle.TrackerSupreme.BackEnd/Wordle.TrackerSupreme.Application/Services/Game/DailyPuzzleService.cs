@@ -66,8 +66,8 @@ public class DailyPuzzleService : IDailyPuzzleService
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Failed to retrieve the official solution for {PuzzleDate}; using the deterministic dictionary instead.", puzzleDate);
-            return _wordSelector.GetSolutionFor(puzzleDate);
+            _logger.LogError(ex, "Failed to retrieve the official solution for {PuzzleDate}.", puzzleDate);
+            throw new DailyPuzzleUnavailableException("Unable to retrieve today's puzzle. Please try again later.", ex);
         }
     }
 }

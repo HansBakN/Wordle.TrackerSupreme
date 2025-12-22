@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Wordle.TrackerSupreme.Api.Models.Game;
+using Wordle.TrackerSupreme.Application.Services.Game;
 using Wordle.TrackerSupreme.Domain.Models;
 using Wordle.TrackerSupreme.Domain.Services.Game;
 
@@ -23,8 +24,15 @@ public class GameController(
             return Unauthorized();
         }
 
-        var state = await gameplayService.GetState(playerId.Value, cancellationToken);
-        return Ok(MapState(state));
+        try
+        {
+            var state = await gameplayService.GetState(playerId.Value, cancellationToken);
+            return Ok(MapState(state));
+        }
+        catch (DailyPuzzleUnavailableException ex)
+        {
+            return StatusCode(StatusCodes.Status503ServiceUnavailable, new { message = ex.Message });
+        }
     }
 
     [HttpPost("guess")]
@@ -40,6 +48,10 @@ public class GameController(
         {
             var state = await gameplayService.SubmitGuess(playerId.Value, request.Guess, cancellationToken);
             return Ok(MapState(state));
+        }
+        catch (DailyPuzzleUnavailableException ex)
+        {
+            return StatusCode(StatusCodes.Status503ServiceUnavailable, new { message = ex.Message });
         }
         catch (ArgumentException ex)
         {
@@ -65,6 +77,10 @@ public class GameController(
             var state = await gameplayService.EnableEasyMode(playerId.Value, cancellationToken);
             return Ok(MapState(state));
         }
+        catch (DailyPuzzleUnavailableException ex)
+        {
+            return StatusCode(StatusCodes.Status503ServiceUnavailable, new { message = ex.Message });
+        }
         catch (InvalidOperationException ex)
         {
             return Conflict(new { message = ex.Message });
@@ -74,13 +90,20 @@ public class GameController(
     [HttpGet("solutions")]
     public async Task<ActionResult<SolutionsResponse>> GetSolutions(CancellationToken cancellationToken)
     {
-        var snapshot = await gameplayService.GetSolutions(cancellationToken);
-        if (!snapshot.CutoffPassed)
+        try
         {
-            return StatusCode(StatusCodes.Status403Forbidden, new { message = "Solutions unlock after 12:00 PM local time." });
-        }
+            var snapshot = await gameplayService.GetSolutions(cancellationToken);
+            if (!snapshot.CutoffPassed)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, new { message = "Solutions unlock after 12:00 PM local time." });
+            }
 
-        return Ok(MapSolutions(snapshot));
+            return Ok(MapSolutions(snapshot));
+        }
+        catch (DailyPuzzleUnavailableException ex)
+        {
+            return StatusCode(StatusCodes.Status503ServiceUnavailable, new { message = ex.Message });
+        }
     }
 
     private Guid? GetPlayerId()

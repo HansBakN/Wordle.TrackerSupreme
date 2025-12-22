@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Wordle.TrackerSupreme.Api.Controllers;
 using Wordle.TrackerSupreme.Application.Services.Game;
 using Wordle.TrackerSupreme.Domain.Models;
+using Wordle.TrackerSupreme.Domain.Services.Game;
 using Wordle.TrackerSupreme.Tests.Fakes;
 using Xunit;
 
@@ -17,11 +18,12 @@ public class GameControllerTests
         FakeGameRepository repo,
         FakeGameClock clock,
         string solution = "CRANE",
-        FakeWordValidator? wordValidator = null)
+        FakeWordValidator? wordValidator = null,
+        IOfficialWordProvider? officialWordProvider = null)
     {
         var options = new GameOptions { WordLength = 5, MaxGuesses = 6 };
         var validator = wordValidator ?? new FakeWordValidator();
-        var officialWordProvider = new FakeOfficialWordProvider(solution);
+        officialWordProvider ??= new FakeOfficialWordProvider(solution);
         var gameplay = new GameplayService(
             repo,
             new DailyPuzzleService(
@@ -63,6 +65,21 @@ public class GameControllerTests
         state!.PuzzleDate.Should().Be(clock.Today);
         state.WordLength.Should().Be(5);
         state.MaxGuesses.Should().Be(6);
+    }
+
+    [Fact]
+    public async Task GetState_returns_service_unavailable_when_official_provider_fails()
+    {
+        var clock = new FakeGameClock(new DateOnly(2025, 1, 12));
+        var repo = new FakeGameRepository();
+        var failingProvider = new FakeOfficialWordProvider((_, _) => throw new InvalidOperationException("boom"));
+        var controller = CreateController(repo, clock, officialWordProvider: failingProvider);
+
+        var result = await controller.GetState(CancellationToken.None);
+
+        var objectResult = result.Result.Should().BeOfType<ObjectResult>().Which;
+        objectResult.StatusCode.Should().Be(StatusCodes.Status503ServiceUnavailable);
+        objectResult.Value.Should().BeEquivalentTo(new { message = "Unable to retrieve today's puzzle. Please try again later." });
     }
 
     [Fact]
