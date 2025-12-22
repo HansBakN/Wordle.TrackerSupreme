@@ -33,6 +33,20 @@ public class FakeGameRepository : IGameRepository
         return Task.FromResult<PlayerPuzzleAttempt?>(attempt);
     }
 
+    public Task<PlayerPuzzleAttempt?> GetAttemptWithDetails(Guid attemptId, CancellationToken cancellationToken)
+    {
+        var attempt = _attempts.FirstOrDefault(a => a.Id == attemptId);
+        if (attempt is not null)
+        {
+            attempt.Guesses = _guesses
+                .Where(g => g.PlayerPuzzleAttemptId == attempt.Id)
+                .OrderBy(g => g.GuessNumber)
+                .ToList();
+        }
+
+        return Task.FromResult<PlayerPuzzleAttempt?>(attempt);
+    }
+
     public Task<List<PlayerPuzzleAttempt>> GetAttemptsForPuzzle(Guid puzzleId, CancellationToken cancellationToken)
     {
         var attempts = _attempts.Where(a => a.DailyPuzzleId == puzzleId).ToList();
@@ -48,6 +62,22 @@ public class FakeGameRepository : IGameRepository
     {
         var puzzle = _puzzles.FirstOrDefault(p => p.PuzzleDate == puzzleDate);
         return Task.FromResult<DailyPuzzle?>(puzzle);
+    }
+
+    public Task RemoveGuesses(IReadOnlyCollection<GuessAttempt> guesses, CancellationToken cancellationToken)
+    {
+        foreach (var guess in guesses)
+        {
+            _guesses.Remove(guess);
+        }
+
+        return Task.CompletedTask;
+    }
+
+    public Task RemoveAttempt(PlayerPuzzleAttempt attempt, CancellationToken cancellationToken)
+    {
+        _attempts.Remove(attempt);
+        return Task.CompletedTask;
     }
 
     public Task SaveChanges(CancellationToken cancellationToken) => Task.CompletedTask;

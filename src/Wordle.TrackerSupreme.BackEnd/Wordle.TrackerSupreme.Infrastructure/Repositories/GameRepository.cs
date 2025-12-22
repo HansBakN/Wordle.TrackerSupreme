@@ -22,6 +22,13 @@ public class GameRepository(WordleTrackerSupremeDbContext dbContext) : IGameRepo
                 .ThenInclude(g => g.Feedback)
             .FirstOrDefaultAsync(a => a.PlayerId == playerId && a.DailyPuzzleId == puzzleId, cancellationToken);
 
+    public Task<PlayerPuzzleAttempt?> GetAttemptWithDetails(Guid attemptId, CancellationToken cancellationToken)
+        => dbContext.Attempts
+            .Include(a => a.DailyPuzzle)
+            .Include(a => a.Guesses)
+                .ThenInclude(g => g.Feedback)
+            .FirstOrDefaultAsync(a => a.Id == attemptId, cancellationToken);
+
     public Task AddAttempt(PlayerPuzzleAttempt attempt, CancellationToken cancellationToken)
     {
         dbContext.Attempts.Add(attempt);
@@ -41,6 +48,25 @@ public class GameRepository(WordleTrackerSupremeDbContext dbContext) : IGameRepo
             .Include(a => a.Guesses)
             .Where(a => a.DailyPuzzleId == puzzleId)
             .ToListAsync(cancellationToken);
+
+    public Task RemoveGuesses(IReadOnlyCollection<GuessAttempt> guesses, CancellationToken cancellationToken)
+    {
+        if (guesses.Count == 0)
+        {
+            return Task.CompletedTask;
+        }
+
+        var feedback = guesses.SelectMany(g => g.Feedback).ToList();
+        dbContext.LetterEvaluations.RemoveRange(feedback);
+        dbContext.Guesses.RemoveRange(guesses);
+        return Task.CompletedTask;
+    }
+
+    public Task RemoveAttempt(PlayerPuzzleAttempt attempt, CancellationToken cancellationToken)
+    {
+        dbContext.Attempts.Remove(attempt);
+        return Task.CompletedTask;
+    }
 
     public async Task SaveChanges(CancellationToken cancellationToken)
     {

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Wordle.TrackerSupreme.Api.Auth;
+using Wordle.TrackerSupreme.Application.Services.Admin;
 using Wordle.TrackerSupreme.Application.Services.Game;
 using Wordle.TrackerSupreme.Application.Services;
 using Wordle.TrackerSupreme.Domain.Services;
@@ -56,7 +57,13 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 builder.Services.AddWordleTrackerSupremeInfrastructure(builder.Configuration, configureNpgsql: npgsql => npgsql.AllowMigrationManagement());
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy =>
+    {
+        policy.RequireClaim("isAdmin", "true");
+    });
+});
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -102,6 +109,7 @@ builder.Services.AddSingleton<IGuessEvaluationService, GuessEvaluationService>()
 builder.Services.AddScoped<IGameplayService, GameplayService>();
 builder.Services.AddScoped<IDailyPuzzleService, DailyPuzzleService>();
 builder.Services.AddScoped<IPlayerStatisticsService, PlayerStatisticsService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 
 var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ??
     ["http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173", "http://127.0.0.1:3000"];

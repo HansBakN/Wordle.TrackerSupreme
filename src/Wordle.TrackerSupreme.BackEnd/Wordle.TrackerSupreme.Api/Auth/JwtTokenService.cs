@@ -25,7 +25,8 @@ public class JwtTokenService(IOptions<JwtSettings> options)
         {
             new(JwtRegisteredClaimNames.Sub, player.Id.ToString()),
             new(JwtRegisteredClaimNames.UniqueName, player.DisplayName),
-            new("playerId", player.Id.ToString())
+            new("playerId", player.Id.ToString()),
+            new("isAdmin", player.IsAdmin ? "true" : "false")
         };
 
         var handler = new JwtSecurityTokenHandler();

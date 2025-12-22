@@ -47,10 +47,11 @@ public class SeederRunnerTests
 
         await runner.SeedAsync();
 
-        dbContext.Players.Should().HaveCount(options.PlayerCount);
+        var totalPlayers = options.PlayerCount + 1;
+        dbContext.Players.Should().HaveCount(totalPlayers);
         dbContext.DailyPuzzles.Should().HaveCount(options.PuzzleDays);
-        var featuredCount = Math.Min(3, options.PlayerCount);
-        dbContext.Attempts.Should().HaveCount(options.PlayerCount * 5 + featuredCount);
+        var featuredCount = Math.Min(3, totalPlayers);
+        dbContext.Attempts.Should().HaveCount(totalPlayers * 5 + featuredCount);
 
         var attempts = await dbContext.Attempts
             .Include(a => a.DailyPuzzle)
@@ -77,8 +78,8 @@ public class SeederRunnerTests
 
         await runner.SeedAsync();
 
-        dbContext.Players.Should().HaveCount(options.PlayerCount);
-        dbContext.Attempts.Should().HaveCount(options.PlayerCount * 5 + featuredCount);
+        dbContext.Players.Should().HaveCount(totalPlayers);
+        dbContext.Attempts.Should().HaveCount(totalPlayers * 5 + featuredCount);
     }
 
     [Fact]
@@ -126,12 +127,13 @@ public class SeederRunnerTests
             Environment.SetEnvironmentVariable("E2E_RESET_ENABLED", originalReset);
         }
 
-        var featuredCount = Math.Min(3, options.PlayerCount);
+        var totalPlayers = options.PlayerCount + 1;
+        var featuredCount = Math.Min(3, totalPlayers);
         var expectedPerPlayer = Math.Min(
             options.PuzzleDays,
             options.MinSolvedPuzzles + options.FailedPuzzlesMin + options.InProgressPuzzlesMin);
-        dbContext.Players.Count().Should().Be(options.PlayerCount);
-        dbContext.Attempts.Count().Should().Be(options.PlayerCount * expectedPerPlayer + featuredCount);
+        dbContext.Players.Count().Should().Be(totalPlayers);
+        dbContext.Attempts.Count().Should().Be(totalPlayers * expectedPerPlayer + featuredCount);
     }
 
     [Fact]

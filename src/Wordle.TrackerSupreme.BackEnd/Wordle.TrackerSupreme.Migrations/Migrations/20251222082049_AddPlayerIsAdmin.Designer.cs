@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Wordle.TrackerSupreme.Infrastructure.Database;
@@ -11,9 +12,11 @@ using Wordle.TrackerSupreme.Infrastructure.Database;
 namespace Wordle.TrackerSupreme.Migrations.Migrations
 {
     [DbContext(typeof(WordleTrackerSupremeDbContext))]
-    partial class WordleTrackerSupremeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251222082049_AddPlayerIsAdmin")]
+    partial class AddPlayerIsAdmin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

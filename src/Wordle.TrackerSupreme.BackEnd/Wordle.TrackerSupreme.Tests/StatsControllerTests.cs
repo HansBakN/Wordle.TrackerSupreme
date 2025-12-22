@@ -168,14 +168,46 @@ public class StatsControllerTests
             _players = players;
         }
 
+        public Task<Player?> GetPlayer(Guid playerId, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(_players.FirstOrDefault(player => player.Id == playerId));
+        }
+
         public Task<Player?> GetPlayerWithAttempts(Guid playerId, CancellationToken cancellationToken)
         {
             return Task.FromResult(_players.FirstOrDefault(player => player.Id == playerId));
         }
 
+        public Task<Player?> GetPlayerWithAttemptsAndGuesses(Guid playerId, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(_players.FirstOrDefault(player => player.Id == playerId));
+        }
+
+        public Task<List<Player>> GetPlayers(CancellationToken cancellationToken)
+        {
+            return Task.FromResult(_players.ToList());
+        }
+
         public Task<List<Player>> GetPlayersWithAttempts(CancellationToken cancellationToken)
         {
             return Task.FromResult(_players);
+        }
+
+        public Task<bool> IsDisplayNameTaken(string displayName, Guid? excludePlayerId, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(_players.Any(player =>
+                player.DisplayName == displayName && (excludePlayerId == null || player.Id != excludePlayerId)));
+        }
+
+        public Task<bool> IsEmailTaken(string email, Guid? excludePlayerId, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(_players.Any(player =>
+                player.Email == email && (excludePlayerId == null || player.Id != excludePlayerId)));
+        }
+
+        public Task SaveChanges(CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
         }
     }
 }

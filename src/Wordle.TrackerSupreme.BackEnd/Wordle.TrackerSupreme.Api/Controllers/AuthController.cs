@@ -41,7 +41,8 @@ public class AuthController(
             Id = Guid.NewGuid(),
             DisplayName = displayName,
             Email = email,
-            PasswordHash = string.Empty
+            PasswordHash = string.Empty,
+            IsAdmin = false
         };
 
         player.PasswordHash = passwordHasher.HashPassword(player, request.Password);
@@ -95,5 +96,5 @@ public class AuthController(
     }
 
     private static PlayerResponse MapPlayer(Player player)
-        => new(player.Id, player.DisplayName, player.Email, player.CreatedOn);
+        => new(player.Id, player.DisplayName, player.Email, player.CreatedOn, player.IsAdmin);
 }

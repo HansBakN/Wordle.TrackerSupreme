@@ -50,6 +50,20 @@ public class SeedDataGenerator(
         var createdOnBase = anchorDate.ToDateTime(TimeOnly.MinValue).AddDays(-60);
         var usedNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
+        var adminCreatedOn = createdOnBase.AddDays(1).AddHours(2);
+        var adminPlayer = new Player
+        {
+            Id = Guid.NewGuid(),
+            DisplayName = "AdminSupreme",
+            Email = "admin@wordle.supreme",
+            PasswordHash = string.Empty,
+            IsAdmin = true,
+            CreatedOn = DateTime.SpecifyKind(adminCreatedOn, DateTimeKind.Utc)
+        };
+        adminPlayer.PasswordHash = _passwordHasher.HashPassword(adminPlayer, _options.DefaultPassword);
+        players.Add(adminPlayer);
+        usedNames.Add(adminPlayer.DisplayName);
+
         for (int i = 0; i < _options.PlayerCount; i++)
         {
             var displayName = BuildDisplayName(random, usedNames, i);
@@ -61,6 +75,7 @@ public class SeedDataGenerator(
                 DisplayName = displayName,
                 Email = $"{displayName.ToLowerInvariant()}@example.com",
                 PasswordHash = string.Empty,
+                IsAdmin = false,
                 CreatedOn = DateTime.SpecifyKind(createdOn, DateTimeKind.Utc)
             };
 
