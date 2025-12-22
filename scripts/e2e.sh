@@ -66,7 +66,9 @@ export E2E_BASE_URL
 export E2E_ARTIFACT_DIR="$ARTIFACT_DIR/playwright"
 export CI=1
 
-if [[ ! -d "$ROOT_DIR/src/Wordle.TrackerSupreme.Web/node_modules" ]]; then
+if [[ "${CI:-}" == "1" ]]; then
+  (cd "$ROOT_DIR/src/Wordle.TrackerSupreme.Web" && npm ci)
+elif [[ ! -d "$ROOT_DIR/src/Wordle.TrackerSupreme.Web/node_modules" ]]; then
   (cd "$ROOT_DIR/src/Wordle.TrackerSupreme.Web" && npm ci)
 fi
 
