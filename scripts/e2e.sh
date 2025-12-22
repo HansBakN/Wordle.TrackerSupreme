@@ -85,12 +85,9 @@ fi
 (cd "$ROOT_DIR/src/Wordle.TrackerSupreme.Web" && {
   if [[ "${CI:-}" == "1" && "$(uname -s)" == "Linux" ]]; then
     if command -v sudo >/dev/null 2>&1; then
-      sudo npx playwright install --with-deps chromium
-    else
-      npx playwright install --with-deps chromium
+      sudo npx playwright install-deps chromium
     fi
-  else
-    npx playwright install chromium
   fi
+  npx playwright install chromium
 })
 (cd "$ROOT_DIR/src/Wordle.TrackerSupreme.Web" && npm run e2e)
