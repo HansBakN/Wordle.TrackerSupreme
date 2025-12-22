@@ -9,6 +9,11 @@ E2E_BASE_URL="${E2E_BASE_URL:-$FRONTEND_URL}"
 BACKEND_HEALTH_URL="${BACKEND_HEALTH_URL:-$BACKEND_URL/health/ready}"
 FRONTEND_HEALTH_URL="${FRONTEND_HEALTH_URL:-$FRONTEND_URL}"
 ENV_FILE="${ENV_FILE:-$ROOT_DIR/.env.local}"
+is_ci=false
+if [[ "${CI:-}" == "1" || "${CI:-}" == "true" || "${GITHUB_ACTIONS:-}" == "true" ]]; then
+  is_ci=true
+  export CI=1
+fi
 
 if [[ -z "$ARTIFACT_DIR" || "$ARTIFACT_DIR" == "/" ]]; then
   echo "Refusing to use unsafe ARTIFACT_DIR: $ARTIFACT_DIR" >&2
@@ -19,7 +24,7 @@ rm -rf "$ARTIFACT_DIR"
 mkdir -p "$ARTIFACT_DIR"
 
 compose=(docker compose)
-if [[ "${CI:-}" == "1" ]]; then
+if [[ "$is_ci" == "true" ]]; then
   compose+=(-f "$ROOT_DIR/docker-compose.yml")
 fi
 if [[ -f "$ENV_FILE" ]]; then
@@ -67,9 +72,8 @@ E2E_RESET_ENABLED=true \
 
 export E2E_BASE_URL
 export E2E_ARTIFACT_DIR="$ARTIFACT_DIR/playwright"
-export CI=1
 
-if [[ "${CI:-}" == "1" ]]; then
+if [[ "$is_ci" == "true" ]]; then
   if [[ -d "$ROOT_DIR/src/Wordle.TrackerSupreme.Web/node_modules" ]]; then
     if command -v sudo >/dev/null 2>&1; then
       sudo rm -rf "$ROOT_DIR/src/Wordle.TrackerSupreme.Web/node_modules"
@@ -83,7 +87,7 @@ elif [[ ! -d "$ROOT_DIR/src/Wordle.TrackerSupreme.Web/node_modules" ]]; then
 fi
 
 (cd "$ROOT_DIR/src/Wordle.TrackerSupreme.Web" && {
-  if [[ "${CI:-}" == "1" && "$(uname -s)" == "Linux" ]]; then
+  if [[ "$is_ci" == "true" && "$(uname -s)" == "Linux" ]]; then
     if command -v sudo >/dev/null 2>&1; then
       sudo npx playwright install-deps chromium
     fi
