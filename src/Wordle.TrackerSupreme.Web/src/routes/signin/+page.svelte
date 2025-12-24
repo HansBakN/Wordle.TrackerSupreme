@@ -1,0 +1,96 @@
+<script lang="ts">
+	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
+	import { auth, signIn } from '$lib/auth/store';
+	import { onMount } from 'svelte';
+
+	let email = '';
+	let password = '';
+	let error: string | null = null;
+	let loading = false;
+
+	onMount(() => {
+		const unsubscribe = auth.subscribe((state) => {
+			if (!state.ready) {
+				return;
+			}
+			if (state.user) {
+				goto(resolve('/'));
+			}
+		});
+		return () => unsubscribe();
+	});
+
+	const handleSubmit = async () => {
+		error = null;
+		if (!email.trim()) {
+			error = 'Enter your email.';
+			return;
+		}
+		loading = true;
+		try {
+			await signIn(email, password);
+			goto(resolve('/'));
+		} catch (err) {
+			error = err instanceof Error ? err.message : 'Unable to sign in.';
+		} finally {
+			loading = false;
+		}
+	};
+</script>
+
+<div class="mx-auto max-w-lg rounded-3xl border border-white/10 bg-white/5 p-10 shadow-2xl">
+	<p class="text-sm tracking-[0.2em] text-emerald-200/80 uppercase">Welcome back</p>
+	<h1 class="mt-2 text-3xl font-semibold text-white">Sign in</h1>
+	<p class="mt-2 text-sm text-slate-200/80">
+		Use your email to access your Wordle tracking dashboard.
+	</p>
+
+	<form class="mt-6 space-y-5" on:submit|preventDefault={handleSubmit}>
+		<label class="block space-y-2">
+			<span class="text-sm font-semibold text-white">Email</span>
+			<input
+				name="email"
+				type="email"
+				bind:value={email}
+				required
+				class="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-white transition outline-none focus:border-emerald-300 focus:bg-black/40"
+				placeholder="you@example.com"
+			/>
+		</label>
+
+		<label class="block space-y-2">
+			<span class="text-sm font-semibold text-white">Password</span>
+			<input
+				name="password"
+				type="password"
+				bind:value={password}
+				required
+				minlength="6"
+				class="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-white transition outline-none focus:border-emerald-300 focus:bg-black/40"
+				placeholder="••••••••"
+			/>
+		</label>
+
+		{#if error}
+			<div class="rounded-xl border border-red-400/40 bg-red-500/10 px-4 py-3 text-sm text-red-100">
+				{error}
+			</div>
+		{/if}
+
+		<button
+			type="submit"
+			class="flex w-full items-center justify-center gap-2 rounded-2xl bg-emerald-400 px-4 py-3 text-center text-base font-semibold text-slate-900 transition hover:bg-emerald-300 disabled:cursor-not-allowed disabled:opacity-60"
+			disabled={loading}
+		>
+			{loading ? 'Signing in...' : 'Sign in'}
+		</button>
+	</form>
+
+	<p class="mt-4 text-sm text-slate-200/80">
+		New here?
+		<a class="font-semibold text-emerald-200 hover:text-emerald-100" href={resolve('/signup')}
+			>Create an account</a
+		>.
+	</p>
+</div>

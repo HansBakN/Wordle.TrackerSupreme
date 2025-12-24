@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure;
+using Wordle.TrackerSupreme.Domain.Repositories;
 using Wordle.TrackerSupreme.Infrastructure.Database;
+using Wordle.TrackerSupreme.Infrastructure.Repositories;
 
 namespace Wordle.TrackerSupreme.Infrastructure;
 
@@ -24,5 +26,8 @@ public static class ServiceCollectionExtensions
                 configureNpgsql?.Invoke(builder);
             });
         });
+
+        services.AddScoped<IGameRepository, GameRepository>();
+        services.AddScoped<IPlayerRepository, PlayerRepository>();
     }
 }

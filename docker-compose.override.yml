@@ -1,0 +1,36 @@
+services:
+  api:
+    build:
+      context: ./src/Wordle.TrackerSupreme.BackEnd
+      dockerfile: Wordle.TrackerSupreme.Api/Dockerfile.dev
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://0.0.0.0:8080
+      DOTNET_USE_POLLING_FILE_WATCHER: "1"
+      DOTNET_WATCH_SUPPRESS_MSBUILD_INCREMENTALISM: "1"
+      DOTNET_NUGET_PACKAGES: /tmp/nuget
+      ConnectionStrings__WordleTrackerSupremeDbContext: Host=db;Database=${POSTGRES_DB:-wordle_trackersupreme};Username=${POSTGRES_USER:-wordle_user};Password=${POSTGRES_PASSWORD:-please-change-me}
+      Jwt__Secret: ${JWT_SECRET:-please-set-jwt-secret-at-least-32-characters-long}
+    volumes:
+      - ./src/Wordle.TrackerSupreme.BackEnd:/workspace
+      - nuget_cache:/tmp/nuget
+    working_dir: /workspace
+    ports:
+      - "8080:8080"
+
+  web:
+    build:
+      context: ./src/Wordle.TrackerSupreme.Web
+      dockerfile: Dockerfile.dev
+    environment:
+      HOST: 0.0.0.0
+      PORT: 3000
+      NODE_ENV: development
+    volumes:
+      - ./src/Wordle.TrackerSupreme.Web:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+
+volumes:
+  nuget_cache:

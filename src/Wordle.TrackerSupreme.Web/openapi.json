@@ -1,0 +1,1266 @@
+{
+	"openapi": "3.0.1",
+	"info": {
+		"title": "Wordle Tracker Supreme API",
+		"version": "v1"
+	},
+	"paths": {
+		"/api/Auth/signup": {
+			"post": {
+				"tags": ["Auth"],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/SignUpRequest"
+							}
+						},
+						"text/json": {
+							"schema": {
+								"$ref": "#/components/schemas/SignUpRequest"
+							}
+						},
+						"application/*+json": {
+							"schema": {
+								"$ref": "#/components/schemas/SignUpRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"$ref": "#/components/schemas/AuthResponse"
+								}
+							},
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AuthResponse"
+								}
+							},
+							"text/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AuthResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/Auth/signin": {
+			"post": {
+				"tags": ["Auth"],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/SignInRequest"
+							}
+						},
+						"text/json": {
+							"schema": {
+								"$ref": "#/components/schemas/SignInRequest"
+							}
+						},
+						"application/*+json": {
+							"schema": {
+								"$ref": "#/components/schemas/SignInRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"$ref": "#/components/schemas/AuthResponse"
+								}
+							},
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AuthResponse"
+								}
+							},
+							"text/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AuthResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/Auth/me": {
+			"get": {
+				"tags": ["Auth"],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"$ref": "#/components/schemas/PlayerResponse"
+								}
+							},
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PlayerResponse"
+								}
+							},
+							"text/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PlayerResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/Admin/players": {
+			"get": {
+				"tags": ["Admin"],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/AdminPlayerSummaryResponse"
+									}
+								}
+							},
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/AdminPlayerSummaryResponse"
+									}
+								}
+							},
+							"text/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/AdminPlayerSummaryResponse"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/Admin/players/{playerId}": {
+			"get": {
+				"tags": ["Admin"],
+				"parameters": [
+					{
+						"name": "playerId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"format": "uuid"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminPlayerDetailResponse"
+								}
+							},
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminPlayerDetailResponse"
+								}
+							},
+							"text/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminPlayerDetailResponse"
+								}
+							}
+						}
+					}
+				}
+			},
+			"put": {
+				"tags": ["Admin"],
+				"parameters": [
+					{
+						"name": "playerId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"format": "uuid"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminUpdatePlayerRequest"
+							}
+						},
+						"text/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminUpdatePlayerRequest"
+							}
+						},
+						"application/*+json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminUpdatePlayerRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminPlayerDetailResponse"
+								}
+							},
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminPlayerDetailResponse"
+								}
+							},
+							"text/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminPlayerDetailResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/Admin/players/{playerId}/password": {
+			"put": {
+				"tags": ["Admin"],
+				"parameters": [
+					{
+						"name": "playerId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"format": "uuid"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminResetPasswordRequest"
+							}
+						},
+						"text/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminResetPasswordRequest"
+							}
+						},
+						"application/*+json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminResetPasswordRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"204": {
+						"description": "No Content"
+					}
+				}
+			}
+		},
+		"/api/Admin/players/{playerId}/admin": {
+			"put": {
+				"tags": ["Admin"],
+				"parameters": [
+					{
+						"name": "playerId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"format": "uuid"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminSetAdminStatusRequest"
+							}
+						},
+						"text/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminSetAdminStatusRequest"
+							}
+						},
+						"application/*+json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminSetAdminStatusRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminPlayerDetailResponse"
+								}
+							},
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminPlayerDetailResponse"
+								}
+							},
+							"text/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminPlayerDetailResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/Admin/attempts/{attemptId}": {
+			"put": {
+				"tags": ["Admin"],
+				"parameters": [
+					{
+						"name": "attemptId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"format": "uuid"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminUpdateAttemptRequest"
+							}
+						},
+						"text/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminUpdateAttemptRequest"
+							}
+						},
+						"application/*+json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminUpdateAttemptRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminPlayerAttemptResponse"
+								}
+							},
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminPlayerAttemptResponse"
+								}
+							},
+							"text/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminPlayerAttemptResponse"
+								}
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": ["Admin"],
+				"parameters": [
+					{
+						"name": "attemptId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"format": "uuid"
+						}
+					}
+				],
+				"responses": {
+					"204": {
+						"description": "No Content"
+					}
+				}
+			}
+		},
+		"/api/game/state": {
+			"get": {
+				"tags": ["Game"],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"$ref": "#/components/schemas/GameStateResponse"
+								}
+							},
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GameStateResponse"
+								}
+							},
+							"text/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GameStateResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/game/guess": {
+			"post": {
+				"tags": ["Game"],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/SubmitGuessRequest"
+							}
+						},
+						"text/json": {
+							"schema": {
+								"$ref": "#/components/schemas/SubmitGuessRequest"
+							}
+						},
+						"application/*+json": {
+							"schema": {
+								"$ref": "#/components/schemas/SubmitGuessRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"$ref": "#/components/schemas/GameStateResponse"
+								}
+							},
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GameStateResponse"
+								}
+							},
+							"text/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GameStateResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/game/easy-mode": {
+			"post": {
+				"tags": ["Game"],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"$ref": "#/components/schemas/GameStateResponse"
+								}
+							},
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GameStateResponse"
+								}
+							},
+							"text/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GameStateResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/game/solutions": {
+			"get": {
+				"tags": ["Game"],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"$ref": "#/components/schemas/SolutionsResponse"
+								}
+							},
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SolutionsResponse"
+								}
+							},
+							"text/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SolutionsResponse"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden"
+					}
+				}
+			}
+		},
+		"/api/stats/me": {
+			"get": {
+				"tags": ["Stats"],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"$ref": "#/components/schemas/PlayerStatsResponse"
+								}
+							},
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PlayerStatsResponse"
+								}
+							},
+							"text/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PlayerStatsResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/stats/players": {
+			"post": {
+				"tags": ["Stats"],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/PlayerStatsFilterRequest"
+							}
+						},
+						"text/json": {
+							"schema": {
+								"$ref": "#/components/schemas/PlayerStatsFilterRequest"
+							}
+						},
+						"application/*+json": {
+							"schema": {
+								"$ref": "#/components/schemas/PlayerStatsFilterRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/PlayerStatsEntryResponse"
+									}
+								}
+							},
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/PlayerStatsEntryResponse"
+									}
+								}
+							},
+							"text/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/PlayerStatsEntryResponse"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/stats/leaderboard": {
+			"get": {
+				"tags": ["Stats"],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/LeaderboardEntryResponse"
+									}
+								}
+							},
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/LeaderboardEntryResponse"
+									}
+								}
+							},
+							"text/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/LeaderboardEntryResponse"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/Status": {
+			"get": {
+				"tags": ["Status"],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"AuthResponse": {
+				"type": "object",
+				"properties": {
+					"player": {
+						"$ref": "#/components/schemas/PlayerResponse"
+					},
+					"token": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"additionalProperties": false
+			},
+			"AdminPlayerAttemptResponse": {
+				"type": "object",
+				"properties": {
+					"attemptId": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"puzzleDate": {
+						"type": "string",
+						"format": "date"
+					},
+					"status": {
+						"type": "string"
+					},
+					"playedInHardMode": {
+						"type": "boolean"
+					},
+					"createdOn": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"completedOn": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"guesses": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/GuessResponse"
+						}
+					}
+				},
+				"additionalProperties": false
+			},
+			"AdminPlayerDetailResponse": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"displayName": {
+						"type": "string",
+						"nullable": true
+					},
+					"email": {
+						"type": "string",
+						"nullable": true
+					},
+					"createdOn": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"isAdmin": {
+						"type": "boolean"
+					},
+					"attempts": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/AdminPlayerAttemptResponse"
+						}
+					}
+				},
+				"additionalProperties": false
+			},
+			"AdminPlayerSummaryResponse": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"displayName": {
+						"type": "string",
+						"nullable": true
+					},
+					"email": {
+						"type": "string",
+						"nullable": true
+					},
+					"createdOn": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"isAdmin": {
+						"type": "boolean"
+					},
+					"attemptCount": {
+						"type": "integer",
+						"format": "int32"
+					}
+				},
+				"additionalProperties": false
+			},
+			"AdminResetPasswordRequest": {
+				"required": ["password"],
+				"type": "object",
+				"properties": {
+					"password": {
+						"type": "string"
+					}
+				},
+				"additionalProperties": false
+			},
+			"AdminSetAdminStatusRequest": {
+				"required": ["isAdmin"],
+				"type": "object",
+				"properties": {
+					"isAdmin": {
+						"type": "boolean"
+					}
+				},
+				"additionalProperties": false
+			},
+			"AdminUpdateAttemptRequest": {
+				"required": ["guesses", "playedInHardMode"],
+				"type": "object",
+				"properties": {
+					"guesses": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					"playedInHardMode": {
+						"type": "boolean"
+					}
+				},
+				"additionalProperties": false
+			},
+			"AdminUpdatePlayerRequest": {
+				"required": ["displayName", "email"],
+				"type": "object",
+				"properties": {
+					"displayName": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					}
+				},
+				"additionalProperties": false
+			},
+			"AttemptResponse": {
+				"type": "object",
+				"properties": {
+					"attemptId": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"status": {
+						"type": "string"
+					},
+					"isAfterReveal": {
+						"type": "boolean"
+					},
+					"createdOn": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"completedOn": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"guesses": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/GuessResponse"
+						}
+					}
+				},
+				"additionalProperties": false
+			},
+			"GameStateResponse": {
+				"type": "object",
+				"properties": {
+					"puzzleDate": {
+						"type": "string",
+						"format": "date"
+					},
+					"cutoffPassed": {
+						"type": "boolean"
+					},
+					"solutionRevealed": {
+						"type": "boolean"
+					},
+					"allowLatePlay": {
+						"type": "boolean"
+					},
+					"wordLength": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"maxGuesses": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"isHardMode": {
+						"type": "boolean"
+					},
+					"canGuess": {
+						"type": "boolean"
+					},
+					"attempt": {
+						"$ref": "#/components/schemas/AttemptResponse",
+						"nullable": true
+					},
+					"solution": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"additionalProperties": false
+			},
+			"GuessResponse": {
+				"type": "object",
+				"properties": {
+					"guessId": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"guessNumber": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"guessWord": {
+						"type": "string"
+					},
+					"feedback": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/LetterFeedbackResponse"
+						}
+					}
+				},
+				"additionalProperties": false
+			},
+			"LetterFeedbackResponse": {
+				"type": "object",
+				"properties": {
+					"position": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"letter": {
+						"type": "string"
+					},
+					"result": {
+						"type": "string"
+					}
+				},
+				"additionalProperties": false
+			},
+			"LeaderboardEntryResponse": {
+				"type": "object",
+				"properties": {
+					"rank": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"playerId": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"displayName": {
+						"type": "string"
+					},
+					"totalAttempts": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"wins": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"failures": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"currentStreak": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"longestStreak": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"practiceAttempts": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"averageGuessCount": {
+						"type": "number",
+						"format": "double",
+						"nullable": true
+					},
+					"winRate": {
+						"type": "number",
+						"format": "double",
+						"nullable": true
+					}
+				},
+				"additionalProperties": false
+			},
+			"PlayerStatsEntryResponse": {
+				"type": "object",
+				"properties": {
+					"playerId": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"displayName": {
+						"type": "string"
+					},
+					"stats": {
+						"$ref": "#/components/schemas/PlayerStatsResponse"
+					}
+				},
+				"additionalProperties": false
+			},
+			"PlayerStatsFilterRequest": {
+				"type": "object",
+				"properties": {
+					"includeHardMode": {
+						"type": "boolean"
+					},
+					"includeEasyMode": {
+						"type": "boolean"
+					},
+					"includeBeforeReveal": {
+						"type": "boolean"
+					},
+					"includeAfterReveal": {
+						"type": "boolean"
+					},
+					"includeSolved": {
+						"type": "boolean"
+					},
+					"includeFailed": {
+						"type": "boolean"
+					},
+					"includeInProgress": {
+						"type": "boolean"
+					},
+					"countPracticeAttempts": {
+						"type": "boolean"
+					},
+					"fromDate": {
+						"type": "string",
+						"format": "date",
+						"nullable": true
+					},
+					"toDate": {
+						"type": "string",
+						"format": "date",
+						"nullable": true
+					},
+					"minGuessCount": {
+						"type": "integer",
+						"format": "int32",
+						"nullable": true
+					},
+					"maxGuessCount": {
+						"type": "integer",
+						"format": "int32",
+						"nullable": true
+					}
+				},
+				"additionalProperties": false
+			},
+			"PlayerStatsResponse": {
+				"type": "object",
+				"properties": {
+					"totalAttempts": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"wins": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"failures": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"practiceAttempts": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"currentStreak": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"longestStreak": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"averageGuessCount": {
+						"type": "number",
+						"format": "double",
+						"nullable": true
+					}
+				},
+				"additionalProperties": false
+			},
+			"PlayerResponse": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"displayName": {
+						"type": "string",
+						"nullable": true
+					},
+					"email": {
+						"type": "string",
+						"nullable": true
+					},
+					"createdOn": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"isAdmin": {
+						"type": "boolean"
+					}
+				},
+				"additionalProperties": false
+			},
+			"SolutionEntryResponse": {
+				"type": "object",
+				"properties": {
+					"playerId": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"displayName": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"guessCount": {
+						"type": "integer",
+						"format": "int32",
+						"nullable": true
+					},
+					"isAfterReveal": {
+						"type": "boolean"
+					},
+					"completedOn": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"guesses": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					}
+				},
+				"additionalProperties": false
+			},
+			"SolutionsResponse": {
+				"type": "object",
+				"properties": {
+					"puzzleDate": {
+						"type": "string",
+						"format": "date"
+					},
+					"solution": {
+						"type": "string"
+					},
+					"cutoffPassed": {
+						"type": "boolean"
+					},
+					"entries": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/SolutionEntryResponse"
+						}
+					}
+				},
+				"additionalProperties": false
+			},
+			"SignInRequest": {
+				"required": ["password"],
+				"type": "object",
+				"properties": {
+					"displayName": {
+						"maxLength": 200,
+						"minLength": 0,
+						"type": "string",
+						"nullable": true
+					},
+					"email": {
+						"maxLength": 320,
+						"minLength": 0,
+						"type": "string",
+						"format": "email",
+						"nullable": true
+					},
+					"password": {
+						"maxLength": 100,
+						"minLength": 6,
+						"type": "string"
+					}
+				},
+				"additionalProperties": false
+			},
+			"SignUpRequest": {
+				"required": ["displayName", "email", "password"],
+				"type": "object",
+				"properties": {
+					"displayName": {
+						"maxLength": 200,
+						"minLength": 2,
+						"type": "string"
+					},
+					"email": {
+						"maxLength": 320,
+						"minLength": 0,
+						"type": "string",
+						"format": "email"
+					},
+					"password": {
+						"maxLength": 100,
+						"minLength": 6,
+						"type": "string"
+					}
+				},
+				"additionalProperties": false
+			},
+			"SubmitGuessRequest": {
+				"required": ["guess"],
+				"type": "object",
+				"properties": {
+					"guess": {
+						"minLength": 1,
+						"type": "string"
+					}
+				},
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {
+			"Bearer": {
+				"type": "http",
+				"description": "JWT Authorization header using the Bearer scheme.",
+				"scheme": "bearer",
+				"bearerFormat": "JWT"
+			}
+		}
+	},
+	"security": [
+		{
+			"Bearer": []
+		}
+	]
+}

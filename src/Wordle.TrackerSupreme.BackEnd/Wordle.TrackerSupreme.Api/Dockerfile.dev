@@ -1,0 +1,5 @@
+FROM mcr.microsoft.com/dotnet/nightly/sdk:10.0
+WORKDIR /workspace
+
+ENTRYPOINT []
+CMD ["dotnet", "watch", "--project", "Wordle.TrackerSupreme.Api/Wordle.TrackerSupreme.Api.csproj", "run", "--urls", "http://0.0.0.0:8080"]
