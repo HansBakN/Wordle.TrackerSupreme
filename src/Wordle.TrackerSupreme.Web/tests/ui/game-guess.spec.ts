@@ -41,7 +41,7 @@ const GUESS_RESPONSE_STUB = {
 async function setupPage(page: import('@playwright/test').Page) {
 	page.on('pageerror', (error) => console.error('pageerror', error));
 	page.on('console', (msg) => {
-		if (msg.type() === 'error') console.error('console', msg.text());
+		if (msg.type() === 'error') { console.error('console', msg.text()); }
 	});
 
 	await page.addInitScript(() => {
