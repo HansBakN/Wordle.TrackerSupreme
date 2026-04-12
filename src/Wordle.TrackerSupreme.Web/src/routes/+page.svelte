@@ -5,7 +5,7 @@
 	import { enableEasyMode, fetchGameState, fetchMyStats, submitGuess } from '$lib/game/api';
 	import { getRevealDurationMs, shouldTriggerSolveCelebration } from '$lib/game/celebration';
 	import type { GameStateResponse, LetterResult, PlayerStatsResponse } from '$lib/game/types';
-	import { onDestroy, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 
 	let checking = true;
 	let loadingState = true;
@@ -76,10 +76,10 @@
 
 		window.addEventListener('keydown', keyHandler);
 
-		onDestroy(() => {
+		return () => {
 			window.removeEventListener('keydown', keyHandler);
 			unsubscribe();
-		});
+		};
 	});
 
 	async function loadEverything() {
