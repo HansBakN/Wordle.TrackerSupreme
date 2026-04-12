@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import { getApiErrorMessage } from '$lib/api/errors';
 	import { auth, signIn } from '$lib/auth/store';
 	import { onMount } from 'svelte';
 
@@ -32,7 +33,7 @@
 			await signIn(email, password);
 			goto(resolve('/'));
 		} catch (err) {
-			error = err instanceof Error ? err.message : 'Unable to sign in.';
+			error = getApiErrorMessage(err, 'Unable to sign in.');
 		} finally {
 			loading = false;
 		}
