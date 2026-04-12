@@ -10,7 +10,7 @@ namespace Wordle.TrackerSupreme.Tests;
 public class PlayerRepositoryTests
 {
     [Fact]
-    public async Task GetPlayersWithAttempts_includes_attempts_and_puzzles()
+    public async Task GetPlayersWithAttempts_includes_attempts_puzzles_and_guesses()
     {
         var options = new DbContextOptionsBuilder<WordleTrackerSupremeDbContext>()
             .UseInMemoryDatabase($"players-{Guid.NewGuid()}")
@@ -41,7 +41,16 @@ public class PlayerRepositoryTests
             PlayedInHardMode = true,
             CreatedOn = puzzle.PuzzleDate.ToDateTime(TimeOnly.MinValue)
         };
+        var guess = new GuessAttempt
+        {
+            Id = Guid.NewGuid(),
+            PlayerPuzzleAttempt = attempt,
+            PlayerPuzzleAttemptId = attempt.Id,
+            GuessNumber = 1,
+            GuessWord = "CRANE"
+        };
 
+        attempt.Guesses.Add(guess);
         player.Attempts.Add(attempt);
         puzzle.Attempts.Add(attempt);
 
@@ -49,6 +58,7 @@ public class PlayerRepositoryTests
         {
             context.Add(player);
             context.Add(puzzle);
+            context.Add(guess);
             await context.SaveChangesAsync();
         }
 
@@ -61,6 +71,70 @@ public class PlayerRepositoryTests
         var loaded = players.Single();
         loaded.Attempts.Should().ContainSingle();
         loaded.Attempts.First().DailyPuzzle.Should().NotBeNull();
+        loaded.Attempts.First().Guesses.Should().ContainSingle();
+    }
+
+    [Fact]
+    public async Task GetPlayerWithAttempts_includes_guesses()
+    {
+        var options = new DbContextOptionsBuilder<WordleTrackerSupremeDbContext>()
+            .UseInMemoryDatabase($"players-{Guid.NewGuid()}")
+            .Options;
+
+        var player = new Player
+        {
+            Id = Guid.NewGuid(),
+            DisplayName = "Attempt Tester",
+            Email = "attempt@example.com",
+            PasswordHash = "hash",
+            Attempts = []
+        };
+        var puzzle = new DailyPuzzle
+        {
+            Id = Guid.NewGuid(),
+            PuzzleDate = new DateOnly(2025, 1, 4),
+            Solution = "CRANE"
+        };
+        var attempt = new PlayerPuzzleAttempt
+        {
+            Id = Guid.NewGuid(),
+            Player = player,
+            PlayerId = player.Id,
+            DailyPuzzle = puzzle,
+            DailyPuzzleId = puzzle.Id,
+            Status = AttemptStatus.InProgress,
+            PlayedInHardMode = true,
+            CreatedOn = puzzle.PuzzleDate.ToDateTime(TimeOnly.MinValue)
+        };
+        var guess = new GuessAttempt
+        {
+            Id = Guid.NewGuid(),
+            PlayerPuzzleAttempt = attempt,
+            PlayerPuzzleAttemptId = attempt.Id,
+            GuessNumber = 1,
+            GuessWord = "CRANE"
+        };
+
+        attempt.Guesses.Add(guess);
+        player.Attempts.Add(attempt);
+        puzzle.Attempts.Add(attempt);
+
+        await using (var context = new WordleTrackerSupremeDbContext(options))
+        {
+            context.Add(player);
+            context.Add(puzzle);
+            context.Add(guess);
+            await context.SaveChangesAsync();
+        }
+
+        await using var readContext = new WordleTrackerSupremeDbContext(options);
+        var repository = new PlayerRepository(readContext);
+
+        var loaded = await repository.GetPlayerWithAttempts(player.Id, CancellationToken.None);
+
+        loaded.Should().NotBeNull();
+        loaded!.Attempts.Should().ContainSingle();
+        loaded.Attempts.First().Guesses.Should().ContainSingle();
     }
 
     [Fact]
