@@ -100,13 +100,12 @@
 	}
 
 	async function handleGuess() {
-		if (!state || submitting) {
+		if (isGuessInputLocked()) {
 			return;
 		}
-		if (!state.canGuess) {
-			return;
-		}
-		const targetLength = state.wordLength ?? 5;
+
+		const currentState = state!;
+		const targetLength = currentState.wordLength ?? 5;
 
 		const normalized = guess.trim().toUpperCase();
 
@@ -117,7 +116,7 @@
 
 		error = null;
 		message = null;
-		const previousStatus = state.attempt?.status ?? null;
+		const previousStatus = currentState.attempt?.status ?? null;
 		submitting = true;
 		try {
 			state = await submitGuess(normalized);
@@ -134,37 +133,48 @@
 		}
 	}
 
+	function isGuessInputLocked() {
+		return !state || !state.canGuess || submitting;
+	}
+
 	function pushLetter(letter: string) {
-		if (!state || !state.canGuess) {
+		if (isGuessInputLocked()) {
 			return;
 		}
-		if (guess.length >= state.wordLength) {
+
+		const currentState = state!;
+		if (guess.length >= currentState.wordLength) {
 			return;
 		}
+
 		guess = `${guess}${letter}`;
 	}
 
 	function removeLetter() {
-		if (!state || !guess.length) {
+		if (!state || !guess.length || submitting) {
 			return;
 		}
+
 		guess = guess.slice(0, -1);
 	}
 
 	function submitFromKeyboard() {
-		if (!state || !state.canGuess || submitting) {
+		if (isGuessInputLocked()) {
 			return;
 		}
+
 		void handleGuess();
 	}
 
 	async function handleEnableEasyMode() {
-		if (!state || !state.isHardMode) {
+		if (!state || !state.isHardMode || submitting) {
 			return;
 		}
+
 		if (state.attempt && state.attempt.status !== 'InProgress') {
 			return;
 		}
+
 		error = null;
 		message = null;
 		try {
@@ -343,7 +353,8 @@
 						onclick={handleEnableEasyMode}
 						disabled={!state ||
 							!state.isHardMode ||
-							(state.attempt && state.attempt.status !== 'InProgress')}
+							(state.attempt && state.attempt.status !== 'InProgress') ||
+							submitting}
 						data-testid="enable-easy-mode"
 					>
 						Enable easy mode
@@ -411,7 +422,8 @@
 										<button
 											class="flex h-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 text-xs font-semibold tracking-[0.15em] text-white/80 uppercase transition hover:border-white/30"
 											onclick={removeLetter}
-											disabled={!state.canGuess}
+											disabled={isGuessInputLocked()}
+											data-testid="remove-letter"
 										>
 											Back
 										</button>
@@ -420,7 +432,8 @@
 										<button
 											class={keyClass(letter)}
 											onclick={() => pushLetter(letter)}
-											disabled={!state.canGuess}
+											disabled={isGuessInputLocked()}
+											data-testid={`keyboard-key-${letter}`}
 										>
 											{letter}
 										</button>
@@ -429,7 +442,8 @@
 										<button
 											class="flex h-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 text-xs font-semibold tracking-[0.15em] text-white/80 uppercase transition hover:border-white/30"
 											onclick={submitFromKeyboard}
-											disabled={!state.canGuess}
+											disabled={isGuessInputLocked()}
+											data-testid="submit-guess"
 										>
 											Enter
 										</button>

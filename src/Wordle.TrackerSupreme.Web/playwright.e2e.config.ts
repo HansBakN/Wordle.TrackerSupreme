@@ -1,5 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const artifactRoot =
 	process.env.E2E_ARTIFACT_DIR ?? path.resolve(__dirname, '../../artifacts/e2e/playwright');
