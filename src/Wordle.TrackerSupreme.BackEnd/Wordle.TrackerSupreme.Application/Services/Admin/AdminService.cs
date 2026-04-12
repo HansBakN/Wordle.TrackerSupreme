@@ -3,6 +3,7 @@ using Wordle.TrackerSupreme.Application.Services.Game;
 using Wordle.TrackerSupreme.Domain.Models;
 using Wordle.TrackerSupreme.Domain.Repositories;
 using Wordle.TrackerSupreme.Domain.Services;
+using Wordle.TrackerSupreme.Domain.Validation;
 
 namespace Wordle.TrackerSupreme.Application.Services.Admin;
 
@@ -36,6 +37,9 @@ public class AdminService(
         var trimmedName = displayName.Trim();
         var trimmedEmail = email.Trim().ToLowerInvariant();
 
+        PlayerValidationRules.EnsureValidDisplayName(trimmedName);
+        PlayerValidationRules.EnsureValidEmail(trimmedEmail);
+
         var nameTaken = await _playerRepository.IsDisplayNameTaken(trimmedName, playerId, cancellationToken);
         if (nameTaken)
         {
@@ -62,6 +66,8 @@ public class AdminService(
         {
             throw new KeyNotFoundException("Player not found.");
         }
+
+        PlayerValidationRules.EnsureValidPassword(newPassword);
 
         player.PasswordHash = _passwordHasher.HashPassword(player, newPassword);
         await _playerRepository.SaveChanges(cancellationToken);

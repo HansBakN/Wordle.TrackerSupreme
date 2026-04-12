@@ -60,6 +60,10 @@ public class AdminController(IAdminService adminService) : ControllerBase
         {
             return Conflict(new { message = ex.Message });
         }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
     }
 
     [HttpPut("players/{playerId:guid}/password")]
@@ -76,6 +80,10 @@ public class AdminController(IAdminService adminService) : ControllerBase
         catch (KeyNotFoundException)
         {
             return NotFound();
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { message = ex.Message });
         }
     }
 

@@ -124,6 +124,78 @@ public class AdminServiceTests
     }
 
     [Fact]
+    public async Task UpdatePlayerProfile_rejects_blank_display_name()
+    {
+        var options = new GameOptions { WordLength = 5, MaxGuesses = 6 };
+        var validator = new FakeWordValidator(["CRANE"]);
+        var guessService = new GuessEvaluationService(options, validator);
+        var gameRepo = new FakeGameRepository();
+        var passwordHasher = new PasswordHasher<Player>();
+        var player = new Player
+        {
+            Id = Guid.NewGuid(),
+            DisplayName = "Alpha",
+            Email = "alpha@example.com",
+            PasswordHash = "hash"
+        };
+        var playerRepo = new FakeAdminPlayerRepository([player]);
+        var service = new AdminService(playerRepo, gameRepo, guessService, passwordHasher, options);
+
+        var action = () => service.UpdatePlayerProfile(player.Id, " ", "alpha@example.com", CancellationToken.None);
+
+        await action.Should().ThrowAsync<ArgumentException>()
+            .WithMessage("Display name is required.*");
+    }
+
+    [Fact]
+    public async Task UpdatePlayerProfile_rejects_invalid_email()
+    {
+        var options = new GameOptions { WordLength = 5, MaxGuesses = 6 };
+        var validator = new FakeWordValidator(["CRANE"]);
+        var guessService = new GuessEvaluationService(options, validator);
+        var gameRepo = new FakeGameRepository();
+        var passwordHasher = new PasswordHasher<Player>();
+        var player = new Player
+        {
+            Id = Guid.NewGuid(),
+            DisplayName = "Alpha",
+            Email = "alpha@example.com",
+            PasswordHash = "hash"
+        };
+        var playerRepo = new FakeAdminPlayerRepository([player]);
+        var service = new AdminService(playerRepo, gameRepo, guessService, passwordHasher, options);
+
+        var action = () => service.UpdatePlayerProfile(player.Id, "Alpha", "not-an-email", CancellationToken.None);
+
+        await action.Should().ThrowAsync<ArgumentException>()
+            .WithMessage("Email must be a valid email address.*");
+    }
+
+    [Fact]
+    public async Task ResetPassword_rejects_short_password()
+    {
+        var options = new GameOptions { WordLength = 5, MaxGuesses = 6 };
+        var validator = new FakeWordValidator(["CRANE"]);
+        var guessService = new GuessEvaluationService(options, validator);
+        var gameRepo = new FakeGameRepository();
+        var passwordHasher = new PasswordHasher<Player>();
+        var player = new Player
+        {
+            Id = Guid.NewGuid(),
+            DisplayName = "Alpha",
+            Email = "alpha@example.com",
+            PasswordHash = "hash"
+        };
+        var playerRepo = new FakeAdminPlayerRepository([player]);
+        var service = new AdminService(playerRepo, gameRepo, guessService, passwordHasher, options);
+
+        var action = () => service.ResetPassword(player.Id, "abc", CancellationToken.None);
+
+        await action.Should().ThrowAsync<ArgumentException>()
+            .WithMessage("Password must be between 6 and 100 characters.*");
+    }
+
+    [Fact]
     public async Task DeleteAttempt_removes_attempt_and_guesses()
     {
         var options = new GameOptions { WordLength = 5, MaxGuesses = 6 };

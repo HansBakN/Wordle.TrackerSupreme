@@ -2,11 +2,21 @@
 	import { onMount } from 'svelte';
 	import { resolve } from '$app/paths';
 	import { auth } from '$lib/auth/store';
+	import { ApiError } from '$lib/api-client';
 	import { AdminService } from '$lib/api-client/services/AdminService';
 	import type { AdminPlayerAttemptResponse as ApiAdminPlayerAttemptResponse } from '$lib/api-client/models/AdminPlayerAttemptResponse';
 	import type { AdminPlayerDetailResponse as ApiAdminPlayerDetailResponse } from '$lib/api-client/models/AdminPlayerDetailResponse';
 	import type { AdminPlayerSummaryResponse as ApiAdminPlayerSummaryResponse } from '$lib/api-client/models/AdminPlayerSummaryResponse';
 	import type { GuessResponse } from '$lib/api-client/models/GuessResponse';
+	import {
+		displayNameMaxLength,
+		displayNameMinLength,
+		emailMaxLength,
+		getAdminPasswordValidationError,
+		getAdminProfileValidationError,
+		passwordMaxLength,
+		passwordMinLength
+	} from '$lib/admin/validation';
 
 	const wordLength = 5;
 	const maxGuesses = 6;
@@ -67,6 +77,10 @@
 	let attemptSaving = $state(false);
 	let attemptError = $state<string | null>(null);
 	let deletingAttemptId = $state<string | null>(null);
+	let profileValidationError = $derived(
+		getAdminProfileValidationError(displayNameDraft, emailDraft)
+	);
+	let passwordValidationError = $derived(getAdminPasswordValidationError(passwordDraft));
 
 	$effect(() => {
 		const term = query.trim().toLowerCase();
@@ -88,6 +102,35 @@
 			return value;
 		}
 		return date.toLocaleDateString();
+	}
+
+	function getRequestErrorMessage(err: unknown, fallback: string) {
+		if (err instanceof ApiError) {
+			const body = err.body as
+				| { message?: string; detail?: string; title?: string; errors?: Record<string, string[]> }
+				| undefined;
+
+			if (body?.message) {
+				return body.message;
+			}
+
+			if (body?.detail) {
+				return body.detail;
+			}
+
+			const validationMessages = body?.errors
+				? Object.values(body.errors).flat().filter(Boolean)
+				: [];
+			if (validationMessages.length > 0) {
+				return validationMessages.join(' ');
+			}
+
+			if (body?.title) {
+				return body.title;
+			}
+		}
+
+		return err instanceof Error ? err.message : fallback;
 	}
 
 	async function loadPlayers() {
@@ -164,6 +207,10 @@
 		if (!selectedPlayer) {
 			return;
 		}
+		if (profileValidationError) {
+			profileError = profileValidationError;
+			return;
+		}
 		profileSaving = true;
 		profileError = null;
 		try {
@@ -185,7 +232,7 @@
 					: player
 			);
 		} catch (err) {
-			profileError = err instanceof Error ? err.message : 'Unable to update profile.';
+			profileError = getRequestErrorMessage(err, 'Unable to update profile.');
 		} finally {
 			profileSaving = false;
 		}
@@ -193,6 +240,10 @@
 
 	async function resetPassword() {
 		if (!selectedPlayer) {
+			return;
+		}
+		if (passwordValidationError) {
+			passwordMessage = passwordValidationError;
 			return;
 		}
 		passwordSaving = true;
@@ -205,7 +256,7 @@
 			passwordDraft = '';
 			passwordMessage = 'Password reset successfully.';
 		} catch (err) {
-			passwordMessage = err instanceof Error ? err.message : 'Unable to reset password.';
+			passwordMessage = getRequestErrorMessage(err, 'Unable to reset password.');
 		} finally {
 			passwordSaving = false;
 		}
@@ -227,7 +278,7 @@
 				player.id === detail.id ? { ...player, isAdmin: detail.isAdmin ?? false } : player
 			);
 		} catch (err) {
-			adminError = err instanceof Error ? err.message : 'Unable to update admin status.';
+			adminError = getRequestErrorMessage(err, 'Unable to update admin status.');
 		} finally {
 			adminSaving = false;
 		}
@@ -256,7 +307,7 @@
 			};
 			stopEditing();
 		} catch (err) {
-			attemptError = err instanceof Error ? err.message : 'Unable to update guesses.';
+			attemptError = getRequestErrorMessage(err, 'Unable to update guesses.');
 		} finally {
 			attemptSaving = false;
 		}
@@ -281,7 +332,7 @@
 			);
 			stopEditing();
 		} catch (err) {
-			attemptError = err instanceof Error ? err.message : 'Unable to reset attempt.';
+			attemptError = getRequestErrorMessage(err, 'Unable to reset attempt.');
 		} finally {
 			deletingAttemptId = null;
 		}
@@ -494,6 +545,9 @@
 									<label class="block">
 										<span class="text-xs text-slate-200/70">Display name</span>
 										<input
+											required
+											minlength={displayNameMinLength}
+											maxlength={displayNameMaxLength}
 											class="mt-2 w-full rounded-xl border border-white/10 bg-black/40 px-3 py-2 text-white outline-none focus:border-emerald-400/60"
 											bind:value={displayNameDraft}
 											data-testid="admin-display-name"
@@ -502,6 +556,9 @@
 									<label class="block">
 										<span class="text-xs text-slate-200/70">Email</span>
 										<input
+											required
+											type="email"
+											maxlength={emailMaxLength}
 											class="mt-2 w-full rounded-xl border border-white/10 bg-black/40 px-3 py-2 text-white outline-none focus:border-emerald-400/60"
 											bind:value={emailDraft}
 											data-testid="admin-email"
@@ -510,11 +567,14 @@
 									<button
 										class="w-full rounded-full bg-emerald-400 px-4 py-2 text-xs font-semibold tracking-[0.2em] text-slate-900 uppercase transition hover:bg-emerald-300"
 										on:click={saveProfile}
-										disabled={profileSaving}
+										disabled={profileSaving || !!profileValidationError}
 										data-testid="admin-profile-save"
 									>
 										{profileSaving ? 'Saving...' : 'Save profile'}
 									</button>
+									{#if profileValidationError}
+										<div class="text-xs text-amber-200">{profileValidationError}</div>
+									{/if}
 									{#if profileError}
 										<div class="text-xs text-rose-200">{profileError}</div>
 									{/if}
@@ -529,6 +589,8 @@
 										<span class="text-xs text-slate-200/70">Reset password</span>
 										<input
 											type="password"
+											minlength={passwordMinLength}
+											maxlength={passwordMaxLength}
 											class="mt-2 w-full rounded-xl border border-white/10 bg-black/40 px-3 py-2 text-white outline-none focus:border-emerald-400/60"
 											placeholder="New password"
 											bind:value={passwordDraft}
@@ -538,11 +600,14 @@
 									<button
 										class="w-full rounded-full border border-emerald-300/50 bg-emerald-500/10 px-4 py-2 text-xs font-semibold tracking-[0.2em] text-emerald-100 uppercase transition hover:border-emerald-200"
 										on:click={resetPassword}
-										disabled={passwordSaving || !passwordDraft}
+										disabled={passwordSaving || !!passwordValidationError}
 										data-testid="admin-password-reset"
 									>
 										{passwordSaving ? 'Resetting...' : 'Reset password'}
 									</button>
+									{#if passwordValidationError}
+										<div class="text-xs text-amber-200">{passwordValidationError}</div>
+									{/if}
 									{#if passwordMessage}
 										<div class="text-xs text-slate-200/80">{passwordMessage}</div>
 									{/if}
