@@ -131,6 +131,39 @@ Configured via `.env.local` (git-ignored). Use `.env.example` as a template.
 | `Cors__AllowedOrigins__0`                           | Comma-free origin allowlist entry                                 |
 | `Seeder__*`                                         | Controls deterministic data generation (see README for full list) |
 
+## Project-level tooling
+
+### Skills (slash commands)
+
+| Command           | When to use                                                                                                   |
+| ----------------- | ------------------------------------------------------------------------------------------------------------- |
+| `/e2e`            | After any user-visible change — runs the full Docker-backed E2E suite and summarises results                  |
+| `/regen-client`   | After any API contract change — regenerates `src/lib/api-client/` from `openapi.json` and fixes broken usages |
+| `/migrate [Name]` | Apply pending EF migrations; if a name is given, also generates a new migration first                         |
+
+### Subagents
+
+| Agent                  | Model | Purpose                                                                               |
+| ---------------------- | ----- | ------------------------------------------------------------------------------------- |
+| `openapi-client-regen` | Haiku | Mechanical client regeneration: runs `gen:api`, fixes type errors, reports diffs      |
+| `db-inspector`         | Haiku | Read-only live DB inspection via the postgres MCP (counts, schema, anomaly detection) |
+
+### MCP servers
+
+**`postgres`** — direct SQL access to the local PostgreSQL instance via `@modelcontextprotocol/server-postgres`.
+
+Setup (one-time):
+
+1. The `docker-compose.override.yml` already exposes port 5432 to the host.
+2. Set `POSTGRES_URL` in your shell (or add it to `.env.local` for reference — but don't commit it):
+   ```bash
+   export POSTGRES_URL="postgresql://wordle_user:<password>@localhost:5432/wordle_trackersupreme"
+   ```
+   Substitute the values from your `.env.local` (`POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB`).
+3. The MCP server starts automatically when Claude Code loads this project.
+
+Use the `db-inspector` subagent for read-only queries, or invoke `mcp__postgres__*` tools directly.
+
 ## Security notes
 
 - JWT secret validation enforced at startup — the API will not start without a ≥32-byte secret.

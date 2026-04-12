@@ -18,6 +18,10 @@ services:
     ports:
       - "8080:8080"
 
+  db:
+    ports:
+      - "5432:5432"
+
   web:
     build:
       context: ./src/Wordle.TrackerSupreme.Web
