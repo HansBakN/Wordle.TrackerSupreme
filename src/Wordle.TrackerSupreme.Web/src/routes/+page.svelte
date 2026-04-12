@@ -343,7 +343,8 @@
 						onclick={handleEnableEasyMode}
 						disabled={!state ||
 							!state.isHardMode ||
-							(state.attempt && state.attempt.status !== 'InProgress')}
+							(state.attempt && state.attempt.status !== 'InProgress') ||
+							submitting}
 						data-testid="enable-easy-mode"
 					>
 						Enable easy mode
@@ -411,7 +412,7 @@
 										<button
 											class="flex h-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 text-xs font-semibold tracking-[0.15em] text-white/80 uppercase transition hover:border-white/30"
 											onclick={removeLetter}
-											disabled={!state.canGuess}
+											disabled={!state.canGuess || submitting}
 										>
 											Back
 										</button>
@@ -420,7 +421,7 @@
 										<button
 											class={keyClass(letter)}
 											onclick={() => pushLetter(letter)}
-											disabled={!state.canGuess}
+											disabled={!state.canGuess || submitting}
 										>
 											{letter}
 										</button>
@@ -429,7 +430,7 @@
 										<button
 											class="flex h-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 text-xs font-semibold tracking-[0.15em] text-white/80 uppercase transition hover:border-white/30"
 											onclick={submitFromKeyboard}
-											disabled={!state.canGuess}
+											disabled={!state.canGuess || submitting}
 										>
 											Enter
 										</button>
