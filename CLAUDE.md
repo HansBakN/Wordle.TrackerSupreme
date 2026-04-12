@@ -140,6 +140,7 @@ Configured via `.env.local` (git-ignored). Use `.env.example` as a template.
 | `/e2e`            | After any user-visible change — runs the full Docker-backed E2E suite and summarises results                  |
 | `/regen-client`   | After any API contract change — regenerates `src/lib/api-client/` from `openapi.json` and fixes broken usages |
 | `/migrate [Name]` | Apply pending EF migrations; if a name is given, also generates a new migration first                         |
+| `/browser-qa`     | Open a live Chromium browser and perform interactive QA — sign in, play the game, verify UI behaviour         |
 
 ### Subagents
 
@@ -149,6 +150,8 @@ Configured via `.env.local` (git-ignored). Use `.env.example` as a template.
 | `db-inspector`         | Haiku | Read-only live DB inspection via the postgres MCP (counts, schema, anomaly detection) |
 
 ### MCP servers
+
+**`playwright`** — live Chromium browser automation via `@playwright/mcp`. Provides `mcp__playwright__*` tools for navigating, clicking, typing, taking screenshots, reading the console, and inspecting network requests. Use the `/browser-qa` skill for a guided workflow. No extra setup needed — the MCP server starts automatically.
 
 **`postgres`** — direct SQL access to the local PostgreSQL instance via `@modelcontextprotocol/server-postgres`.
 
