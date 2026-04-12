@@ -5,7 +5,7 @@
 	import { enableEasyMode, fetchGameState, fetchMyStats, submitGuess } from '$lib/game/api';
 	import { getRevealDurationMs, shouldTriggerSolveCelebration } from '$lib/game/celebration';
 	import type { GameStateResponse, LetterResult, PlayerStatsResponse } from '$lib/game/types';
-	import { onDestroy, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 
 	let checking = true;
 	let loadingState = true;
@@ -76,10 +76,10 @@
 
 		window.addEventListener('keydown', keyHandler);
 
-		onDestroy(() => {
+		return () => {
 			window.removeEventListener('keydown', keyHandler);
 			unsubscribe();
-		});
+		};
 	});
 
 	async function loadEverything() {
@@ -429,7 +429,7 @@
 										<button
 											class="flex h-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 text-xs font-semibold tracking-[0.15em] text-white/80 uppercase transition hover:border-white/30"
 											onclick={submitFromKeyboard}
-											disabled={!state.canGuess}
+											disabled={!state.canGuess || submitting}
 										>
 											Enter
 										</button>
