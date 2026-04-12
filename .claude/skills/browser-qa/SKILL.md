@@ -8,7 +8,7 @@ description: Open a live browser and perform interactive QA on the running app â
 This skill uses the **Playwright MCP** tools to drive a real Chromium browser session against the running app. It is the equivalent of a human QA developer manually testing the app.
 
 **Prerequisite:** The Docker stack must be running.
-Start it if needed: `docker-compose --env-file .env.local --profile app up -d --build`
+Start it if needed: `docker compose --env-file .env.local --profile app up -d --build`
 The web app is then reachable at **http://localhost:3000**.
 
 ---
@@ -81,7 +81,7 @@ browser_close
 
 ## Seed accounts (deterministic dev data)
 
-After running `docker-compose --profile seed run --rm seeder`, these accounts exist:
+After running `docker compose --env-file .env.local --profile seed run --rm seeder`, these accounts exist:
 
 | Username  | Password   | Notes                            |
 | --------- | ---------- | -------------------------------- |
