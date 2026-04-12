@@ -14,6 +14,8 @@ public class PlayerRepository(WordleTrackerSupremeDbContext dbContext) : IPlayer
         => dbContext.Players
             .Include(p => p.Attempts)
                 .ThenInclude(a => a.DailyPuzzle)
+            .Include(p => p.Attempts)
+                .ThenInclude(a => a.Guesses)
             .FirstOrDefaultAsync(p => p.Id == playerId, cancellationToken);
 
     public Task<Player?> GetPlayerWithAttemptsAndGuesses(Guid playerId, CancellationToken cancellationToken)
@@ -32,6 +34,8 @@ public class PlayerRepository(WordleTrackerSupremeDbContext dbContext) : IPlayer
         => dbContext.Players
             .Include(p => p.Attempts)
                 .ThenInclude(a => a.DailyPuzzle)
+            .Include(p => p.Attempts)
+                .ThenInclude(a => a.Guesses)
             .ToListAsync(cancellationToken);
 
     public Task<bool> IsDisplayNameTaken(string displayName, Guid? excludePlayerId, CancellationToken cancellationToken)

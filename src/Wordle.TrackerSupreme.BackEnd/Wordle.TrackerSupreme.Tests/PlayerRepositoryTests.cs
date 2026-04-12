@@ -64,6 +64,133 @@ public class PlayerRepositoryTests
     }
 
     [Fact]
+    public async Task GetPlayersWithAttempts_includes_guesses_so_GuessCount_is_not_zero()
+    {
+        var options = new DbContextOptionsBuilder<WordleTrackerSupremeDbContext>()
+            .UseInMemoryDatabase($"players-{Guid.NewGuid()}")
+            .Options;
+
+        var player = new Player
+        {
+            Id = Guid.NewGuid(),
+            DisplayName = "Guess Count Tester",
+            Email = "guesscount@example.com",
+            PasswordHash = "hash",
+            Attempts = []
+        };
+        var puzzle = new DailyPuzzle
+        {
+            Id = Guid.NewGuid(),
+            PuzzleDate = new DateOnly(2025, 2, 1),
+            Solution = "CRANE"
+        };
+        var attempt = new PlayerPuzzleAttempt
+        {
+            Id = Guid.NewGuid(),
+            Player = player,
+            PlayerId = player.Id,
+            DailyPuzzle = puzzle,
+            DailyPuzzleId = puzzle.Id,
+            Status = AttemptStatus.Solved,
+            PlayedInHardMode = false,
+            CreatedOn = puzzle.PuzzleDate.ToDateTime(TimeOnly.MinValue)
+        };
+        var guess = new GuessAttempt
+        {
+            Id = Guid.NewGuid(),
+            PlayerPuzzleAttempt = attempt,
+            PlayerPuzzleAttemptId = attempt.Id,
+            GuessNumber = 1,
+            GuessWord = "CRANE"
+        };
+        attempt.Guesses.Add(guess);
+        player.Attempts.Add(attempt);
+        puzzle.Attempts.Add(attempt);
+
+        await using (var context = new WordleTrackerSupremeDbContext(options))
+        {
+            context.Add(player);
+            context.Add(puzzle);
+            context.Add(attempt);
+            context.Add(guess);
+            await context.SaveChangesAsync();
+        }
+
+        await using var readContext = new WordleTrackerSupremeDbContext(options);
+        var repository = new PlayerRepository(readContext);
+
+        var players = await repository.GetPlayersWithAttempts(CancellationToken.None);
+
+        players.Should().ContainSingle();
+        var loaded = players.Single();
+        loaded.Attempts.Should().ContainSingle();
+        loaded.Attempts.First().GuessCount.Should().Be(1);
+    }
+
+    [Fact]
+    public async Task GetPlayerWithAttempts_includes_guesses_so_GuessCount_is_not_zero()
+    {
+        var options = new DbContextOptionsBuilder<WordleTrackerSupremeDbContext>()
+            .UseInMemoryDatabase($"players-{Guid.NewGuid()}")
+            .Options;
+
+        var player = new Player
+        {
+            Id = Guid.NewGuid(),
+            DisplayName = "Single Player Guess Tester",
+            Email = "singleguesscount@example.com",
+            PasswordHash = "hash",
+            Attempts = []
+        };
+        var puzzle = new DailyPuzzle
+        {
+            Id = Guid.NewGuid(),
+            PuzzleDate = new DateOnly(2025, 2, 2),
+            Solution = "CRANE"
+        };
+        var attempt = new PlayerPuzzleAttempt
+        {
+            Id = Guid.NewGuid(),
+            Player = player,
+            PlayerId = player.Id,
+            DailyPuzzle = puzzle,
+            DailyPuzzleId = puzzle.Id,
+            Status = AttemptStatus.Solved,
+            PlayedInHardMode = false,
+            CreatedOn = puzzle.PuzzleDate.ToDateTime(TimeOnly.MinValue)
+        };
+        var guess = new GuessAttempt
+        {
+            Id = Guid.NewGuid(),
+            PlayerPuzzleAttempt = attempt,
+            PlayerPuzzleAttemptId = attempt.Id,
+            GuessNumber = 1,
+            GuessWord = "CRANE"
+        };
+        attempt.Guesses.Add(guess);
+        player.Attempts.Add(attempt);
+        puzzle.Attempts.Add(attempt);
+
+        await using (var context = new WordleTrackerSupremeDbContext(options))
+        {
+            context.Add(player);
+            context.Add(puzzle);
+            context.Add(attempt);
+            context.Add(guess);
+            await context.SaveChangesAsync();
+        }
+
+        await using var readContext = new WordleTrackerSupremeDbContext(options);
+        var repository = new PlayerRepository(readContext);
+
+        var loaded = await repository.GetPlayerWithAttempts(player.Id, CancellationToken.None);
+
+        loaded.Should().NotBeNull();
+        loaded!.Attempts.Should().ContainSingle();
+        loaded.Attempts.First().GuessCount.Should().Be(1);
+    }
+
+    [Fact]
     public async Task GetPlayerWithAttemptsAndGuesses_includes_guess_feedback()
     {
         var options = new DbContextOptionsBuilder<WordleTrackerSupremeDbContext>()
