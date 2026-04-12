@@ -22,10 +22,12 @@
 - Stop stack: `docker compose down` (add `-v` to drop Postgres volume `wordle_db_data`).
 - Apply migrations only when needed: `docker compose --env-file .env.local --profile migrate up --build migrator`
 - Seed local dev data (after migrations): `docker compose --env-file .env.local --profile seed run --rm seeder`
+- Verification wrapper: `./scripts/verify.sh all`
 - Tests (preferred):
   - Backend: `docker compose --profile tests run --rm tests-backend`
   - Frontend + UI: `docker compose --profile tests run --rm tests-frontend`
   - Both suites together: `docker compose --profile tests-all up --abort-on-container-exit --remove-orphans`
+  - Targeted verification: `./scripts/verify.sh backend|frontend|lint|e2e`
 - Format/lint frontend (should be clean): `npm run format` then `npm run lint` in `src/Wordle.TrackerSupreme.Web`.
 
 ## E2E workflow (required for feature work)
@@ -57,3 +59,4 @@
 - C#: stick to current nullability/records/classes conventions; keep mapping helpers in controllers small and deterministic.
 - Frontend: follow existing Svelte/TypeScript patterns (stores in `src/lib/auth`, API helpers in `src/lib/game/api.ts`), prefer typed API client usage over ad-hoc fetches.
 - Control flow braces: always use explicit block scopes for `if/else/for/while` (no single-line implicit bodies). Example: use `if (condition) { return; }`, never `if (condition) return;`.
+- Root `.editorconfig` sets the baseline whitespace/line-ending rules; let language-native formatters handle the rest.

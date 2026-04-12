@@ -1,38 +1,50 @@
-# sv
+# Wordle Tracker Supreme Web
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+SvelteKit frontend for Wordle Tracker Supreme. This app talks to the backend through the generated client in `src/lib/api-client` and is covered by both Vitest and Playwright suites.
 
-## Creating a project
+## Tooling
 
-If you're seeing this, you've probably already done this step. Congrats!
+- Node.js 20 from the repo root `.nvmrc`
+- npm with the checked-in `package-lock.json`
 
-```sh
-# create a new project in the current directory
-npx sv create
+## Commands
 
-# create a new project in my-app
-npx sv create my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
+```bash
+npm ci
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```sh
 npm run build
+npm run check
+npm run format
+npm run lint
+npm test -- --run
+npm run e2e
 ```
 
-You can preview the production build with `npm run preview`.
+## API client workflow
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+The frontend consumes the checked-in OpenAPI document at `openapi.json`.
+
+When backend contracts change:
+
+```bash
+npm run gen:api
+```
+
+Then update any affected code in:
+
+- `src/lib/api-client`
+- `src/lib/auth`
+- `src/lib/game`
+- route-level components under `src/routes`
+
+## Testing
+
+- Unit/component tests: `npm test -- --run`
+- Local UI tests: `npx playwright test`
+- Full app E2E flow from repo root: `../../scripts/e2e.sh`
+
+## Auth and admin areas
+
+- Auth state lives in `src/lib/auth/store.ts`
+- Admin tooling lives under `src/routes/admin`
+- Prefer typed client calls over ad-hoc `fetch`
