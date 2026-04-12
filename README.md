@@ -1,14 +1,25 @@
-# Wordle Tracker Supreme – How to Run It
+# Wordle Tracker Supreme
 
+Wordle Tracker Supreme is a Docker-first daily Wordle tracker with:
+- a .NET 10 API
+- a Postgres database
+- a SvelteKit frontend
+- Playwright/Vitest/XUnit test coverage
+
+Repo-specific agent guidance lives in `AGENTS.md`. Use this README for local setup, verification, and high-level project orientation.
+
+## Toolchain
+- Docker with Compose v2
+- Node.js 20 (`.nvmrc`)
+- .NET SDK 10.0.101 (`global.json`)
+
+## Services
 This project uses Docker Compose to run:
 - Postgres database
 - .NET API (port 8080)
 - Svelte frontend (port 3000)
 - Optional migrations runner
 - Optional Traefik reverse proxy (only if you enable the `proxy` profile)
-
-## Prerequisites
-- Docker with Compose v2
 
 ## Quick start (local)
 1) Review `.env.local` (already present) and adjust if needed:
@@ -63,6 +74,12 @@ docker compose --profile tests-all up --abort-on-container-exit --remove-orphans
 ```
 This starts both test containers; exit codes from either will stop the stack when `--abort-on-container-exit` is set.
 
+If you want one repeatable verification entrypoint from the repo root, use:
+```bash
+./scripts/verify.sh all
+```
+Supported targets are `backend`, `frontend`, `lint`, `e2e`, and `all`.
+
 ## End-to-end (E2E) tests
 The E2E runner starts the backend + frontend, resets deterministic seed data, and runs Playwright headlessly.
 
@@ -96,6 +113,16 @@ Reset safety:
 - `docker-compose.yml` – all services; Traefik is optional via the `proxy` profile.
 - `.env.local` – local defaults (ignored by git).
 - `.env.example` – template for your own env file.
+- `.nvmrc` – Node version used by frontend dev + CI.
+- `global.json` – pinned .NET SDK for backend work.
+- `.github/pull_request_template.md` – verification checklist expected for changes.
+
+## Repo map
+- `src/Wordle.TrackerSupreme.BackEnd` – API, application, domain, infrastructure, migrations, seeder, XUnit tests
+- `src/Wordle.TrackerSupreme.Web` – SvelteKit app, generated API client, Vitest tests, Playwright tests
+- `scripts/e2e.sh` – one-command E2E entrypoint used locally and in CI
+- `scripts/verify.sh` – repo-level verification wrapper for backend, frontend, lint, and E2E checks
+- `.github/workflows/e2e.yml` – GitHub Actions E2E workflow
 
 ## Notes
 - Postgres is only reachable on the internal Docker network; expose `5432` in an override if you need host access.
