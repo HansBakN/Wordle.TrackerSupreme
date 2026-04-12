@@ -429,7 +429,7 @@
 										<button
 											class="flex h-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 text-xs font-semibold tracking-[0.15em] text-white/80 uppercase transition hover:border-white/30"
 											onclick={submitFromKeyboard}
-											disabled={!state.canGuess}
+											disabled={!state.canGuess || submitting}
 										>
 											Enter
 										</button>
