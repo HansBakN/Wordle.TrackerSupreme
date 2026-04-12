@@ -6,13 +6,17 @@ const mockAuthService = {
 	postApiAuthSignup: vi.fn(),
 	getApiAuthMe: vi.fn()
 };
+let unauthorizedHandler: (() => void) | null = null;
 
 vi.mock('$lib/api-client/services/AuthService', () => ({
 	AuthService: mockAuthService
 }));
 
 vi.mock('$lib/api', () => ({
-	configureApiClient: vi.fn()
+	configureApiClient: vi.fn(),
+	registerUnauthorizedHandler: vi.fn((handler: (() => void) | null) => {
+		unauthorizedHandler = handler;
+	})
 }));
 
 const { auth, signIn, signUp, signOut, bootstrapAuth } = await import('./store');
@@ -20,7 +24,7 @@ const { auth, signIn, signUp, signOut, bootstrapAuth } = await import('./store')
 describe('auth store', () => {
 	beforeEach(() => {
 		localStorage.clear();
-		vi.resetAllMocks();
+		vi.clearAllMocks();
 		vi.spyOn(console, 'error').mockImplementation(() => {});
 		auth.set({ user: null, token: null, ready: true });
 	});
@@ -99,5 +103,27 @@ describe('auth store', () => {
 		await bootstrapAuth();
 
 		expect(get(auth).user?.isAdmin).toBe(true);
+	});
+
+	it('unauthorized handler clears auth state and redirects to sign-in', () => {
+		localStorage.setItem('wts_auth_token', 'keepme');
+		auth.set({
+			user: {
+				id: '1',
+				displayName: 'Tester',
+				email: 'tester@example.com',
+				createdOn: '',
+				isAdmin: false
+			},
+			token: 'keepme',
+			ready: true,
+			error: null
+		});
+
+		unauthorizedHandler?.();
+
+		expect(localStorage.getItem('wts_auth_token')).toBeNull();
+		expect(get(auth).user).toBeNull();
+		expect(get(auth).error).toBe('Session expired. Please sign in again.');
 	});
 });

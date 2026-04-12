@@ -1,7 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+const notifyUnauthorizedResponse = vi.fn();
+
 vi.mock('$lib/api', () => ({
-	getApiBase: () => 'http://api.test'
+	getApiBase: () => 'http://api.test',
+	notifyUnauthorizedResponse
 }));
 
 const openApiMock = { TOKEN: undefined as string | undefined };
@@ -15,6 +18,7 @@ const { enableEasyMode, fetchGameState, submitGuess } = await import('./api');
 describe('api helpers', () => {
 	beforeEach(() => {
 		openApiMock.TOKEN = undefined;
+		notifyUnauthorizedResponse.mockReset();
 		vi.restoreAllMocks();
 	});
 
@@ -45,6 +49,21 @@ describe('api helpers', () => {
 		vi.spyOn(globalThis, 'fetch' as never).mockResolvedValue(mockResponse);
 
 		await expect(submitGuess('crane')).rejects.toThrowError('Nope');
+	});
+
+	it('notifies the auth layer when an authenticated request returns 401', async () => {
+		openApiMock.TOKEN = 'abc123';
+		const mockResponse = {
+			ok: false,
+			status: 401,
+			statusText: 'Unauthorized',
+			text: () => Promise.resolve(JSON.stringify({ message: 'Unauthorized' }))
+		} as Response;
+
+		vi.spyOn(globalThis, 'fetch' as never).mockResolvedValue(mockResponse);
+
+		await expect(fetchGameState()).rejects.toThrowError('Unauthorized');
+		expect(notifyUnauthorizedResponse).toHaveBeenCalledWith(true);
 	});
 
 	it('posts to easy mode endpoint', async () => {

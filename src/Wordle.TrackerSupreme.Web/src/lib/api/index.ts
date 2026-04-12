@@ -1,6 +1,7 @@
 import { OpenAPI } from '$lib/api-client';
 
 let baseConfigured = false;
+let unauthorizedHandler: (() => void) | null = null;
 
 const fallbackApiBase = (() => {
 	if (typeof window === 'undefined') {
@@ -32,4 +33,16 @@ export function configureApiClient(token: string | null) {
 export function getApiBase() {
 	ensureBaseConfigured();
 	return OpenAPI.BASE;
+}
+
+export function registerUnauthorizedHandler(handler: (() => void) | null) {
+	unauthorizedHandler = handler;
+}
+
+export function notifyUnauthorizedResponse(hasAuthorization: boolean) {
+	if (!hasAuthorization) {
+		return;
+	}
+
+	unauthorizedHandler?.();
 }

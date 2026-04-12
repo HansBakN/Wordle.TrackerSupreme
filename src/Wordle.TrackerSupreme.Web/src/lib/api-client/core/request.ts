@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import { notifyUnauthorizedResponse } from '$lib/api';
 import { ApiError } from './ApiError';
 import type { ApiRequestOptions } from './ApiRequestOptions';
 import type { ApiResult } from './ApiResult';
@@ -329,6 +330,8 @@ export const request = <T>(
 					statusText: response.statusText,
 					body: responseHeader ?? responseBody
 				};
+
+				notifyUnauthorizedResponse(response.status === 401 && headers.has('Authorization'));
 
 				catchErrorCodes(options, result);
 

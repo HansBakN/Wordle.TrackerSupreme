@@ -1,11 +1,12 @@
 import { AuthService } from '$lib/api-client/services/AuthService';
-import { configureApiClient } from '$lib/api';
+import { configureApiClient, registerUnauthorizedHandler } from '$lib/api';
 import { writable } from 'svelte/store';
 import type { AuthResponse as ApiAuthResponse } from '$lib/api-client/models/AuthResponse';
 import type { PlayerResponse as ApiPlayerResponse } from '$lib/api-client/models/PlayerResponse';
 import type { AuthState, Player } from './types';
 
 const TOKEN_STORAGE_KEY = 'wts_auth_token';
+const PENDING_AUTH_ERROR_KEY = 'wts_auth_error';
 
 function loadStoredToken(): string | null {
 	if (typeof localStorage === 'undefined') {
@@ -25,25 +26,86 @@ function persistToken(token: string | null) {
 	}
 }
 
+function persistPendingAuthError(error: string | null) {
+	if (typeof sessionStorage === 'undefined') {
+		return;
+	}
+
+	if (error) {
+		sessionStorage.setItem(PENDING_AUTH_ERROR_KEY, error);
+	} else {
+		sessionStorage.removeItem(PENDING_AUTH_ERROR_KEY);
+	}
+}
+
+function consumePendingAuthError(): string | null {
+	if (typeof sessionStorage === 'undefined') {
+		return null;
+	}
+
+	const error = sessionStorage.getItem(PENDING_AUTH_ERROR_KEY);
+	if (error) {
+		sessionStorage.removeItem(PENDING_AUTH_ERROR_KEY);
+	}
+
+	return error;
+}
+
 const initialToken = loadStoredToken();
 
 export const auth = writable<AuthState>({
 	user: null,
 	token: initialToken,
-	ready: false
+	ready: false,
+	error: null
 });
 
 configureApiClient(initialToken);
 
-function setAuthenticated(result: ApiAuthResponse) {
-	persistToken(result.token);
-	configureApiClient(result.token);
+function setAuthState(
+	token: string | null,
+	user: Player | null,
+	error: string | null,
+	clearPendingAuthError = true
+) {
+	persistToken(token);
+	configureApiClient(token);
+	if (clearPendingAuthError) {
+		persistPendingAuthError(null);
+	}
 	auth.set({
-		user: mapPlayer(result.player),
-		token: result.token,
+		user,
+		token,
 		ready: true,
-		error: null
+		error
 	});
+}
+
+function redirectToSignIn() {
+	if (typeof window === 'undefined') {
+		return;
+	}
+
+	const signInPath = '/signin';
+	if (window.location.pathname === signInPath) {
+		return;
+	}
+
+	window.location.assign(signInPath);
+}
+
+export function expireSession(message = 'Session expired. Please sign in again.') {
+	persistPendingAuthError(message);
+	setAuthState(null, null, message, false);
+	redirectToSignIn();
+}
+
+registerUnauthorizedHandler(() => {
+	expireSession();
+});
+
+function setAuthenticated(result: ApiAuthResponse) {
+	setAuthState(result.token ?? null, mapPlayer(result.player), null);
 }
 
 function mapPlayer(player: ApiPlayerResponse): Player {
@@ -59,7 +121,7 @@ function mapPlayer(player: ApiPlayerResponse): Player {
 export async function bootstrapAuth() {
 	const token = loadStoredToken();
 	if (!token) {
-		auth.set({ user: null, token: null, ready: true });
+		auth.set({ user: null, token: null, ready: true, error: consumePendingAuthError() });
 		return;
 	}
 
@@ -70,8 +132,7 @@ export async function bootstrapAuth() {
 		auth.set({ user: mapPlayer(player), token, ready: true, error: null });
 	} catch (error) {
 		console.error('Auth bootstrap failed', error);
-		persistToken(null);
-		auth.set({ user: null, token: null, ready: true, error: 'Session expired. Please sign in.' });
+		setAuthState(null, null, consumePendingAuthError() ?? 'Session expired. Please sign in.');
 	}
 }
 
@@ -90,7 +151,5 @@ export async function signUp(displayName: string, email: string, password: strin
 }
 
 export function signOut() {
-	persistToken(null);
-	configureApiClient(null);
-	auth.set({ user: null, token: null, ready: true, error: null });
+	setAuthState(null, null, null);
 }

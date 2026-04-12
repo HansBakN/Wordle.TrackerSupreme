@@ -1,4 +1,4 @@
-import { getApiBase } from '$lib/api';
+import { getApiBase, notifyUnauthorizedResponse } from '$lib/api';
 import { OpenAPI } from '$lib/api-client';
 import { StatsService } from '$lib/api-client/services/StatsService';
 import type { GameStateResponse, PlayerStatsResponse, SolutionsResponse } from './types';
@@ -16,6 +16,8 @@ async function apiFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
 		...init,
 		headers
 	});
+
+	notifyUnauthorizedResponse(response.status === 401 && headers.has('Authorization'));
 
 	if (!response.ok) {
 		let message = 'Request failed';
