@@ -103,16 +103,16 @@
 		animatedGuessId = null;
 		try {
 			state = await fetchGameState();
-			message = null;
+			message = completedMessage(state);
 		} catch (err) {
 			if (
 				err instanceof ApiResponseError &&
 				err.status === 503 &&
-				err.code === 'puzzle_unavailable'
+				err.code === ‘puzzle_unavailable’
 			) {
 				noPuzzleToday = true;
 			} else {
-				error = err instanceof Error ? err.message : "Unable to load today's puzzle.";
+				error = err instanceof Error ? err.message : "Unable to load today’s puzzle.";
 			}
 		} finally {
 			loadingState = false;
@@ -126,6 +126,19 @@
 			shakingRow = null;
 			shakeTimer = null;
 		}, 600);
+	}
+
+	function completedMessage(s: GameStateResponse | null): string | null {
+		if (!s?.attempt) return null;
+		const guessCount = s.attempt.guesses.length;
+		if (s.attempt.status === ‘Solved’) {
+			return `You solved it in ${guessCount} ${guessCount === 1 ? ‘guess’ : ‘guesses’}! Come back tomorrow.`;
+		}
+		if (s.attempt.status === ‘Failed’) {
+			const word = s.solutionRevealed ? ` The word was ${s.solution}.` : ‘’;
+			return `No more guesses — better luck tomorrow!${word}`;
+		}
+		return null;
 	}
 
 	async function handleGuess() {
@@ -456,7 +469,8 @@
 
 						{#if message}
 							<div
-								class="rounded-xl border border-emerald-300/40 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-50"
+								class={`rounded-xl border px-4 py-3 text-sm ${state?.attempt?.status === 'Failed' ? 'border-amber-300/40 bg-amber-400/10 text-amber-50' : 'border-emerald-300/40 bg-emerald-400/10 text-emerald-50'}`}
+								data-testid="completed-message"
 							>
 								{message}
 							</div>
