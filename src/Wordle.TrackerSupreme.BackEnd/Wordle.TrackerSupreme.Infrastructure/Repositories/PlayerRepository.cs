@@ -10,6 +10,9 @@ public class PlayerRepository(WordleTrackerSupremeDbContext dbContext) : IPlayer
     public Task<Player?> GetPlayer(Guid playerId, CancellationToken cancellationToken)
         => dbContext.Players.FirstOrDefaultAsync(p => p.Id == playerId, cancellationToken);
 
+    public Task<Player?> GetPlayerByEmail(string email, CancellationToken cancellationToken)
+        => dbContext.Players.FirstOrDefaultAsync(p => p.Email == email, cancellationToken);
+
     public Task<Player?> GetPlayerWithAttempts(Guid playerId, CancellationToken cancellationToken)
         => dbContext.Players
             .Include(p => p.Attempts)
@@ -29,6 +32,12 @@ public class PlayerRepository(WordleTrackerSupremeDbContext dbContext) : IPlayer
 
     public Task<List<Player>> GetPlayers(CancellationToken cancellationToken)
         => dbContext.Players.ToListAsync(cancellationToken);
+
+    public async Task AddPlayer(Player player, CancellationToken cancellationToken)
+    {
+        dbContext.Players.Add(player);
+        await dbContext.SaveChangesAsync(cancellationToken);
+    }
 
     public Task<List<Player>> GetPlayersWithAttempts(CancellationToken cancellationToken)
         => dbContext.Players

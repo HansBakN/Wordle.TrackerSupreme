@@ -173,6 +173,11 @@ public class StatsControllerTests
             return Task.FromResult(_players.FirstOrDefault(player => player.Id == playerId));
         }
 
+        public Task<Player?> GetPlayerByEmail(string email, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(_players.FirstOrDefault(player => player.Email == email));
+        }
+
         public Task<Player?> GetPlayerWithAttempts(Guid playerId, CancellationToken cancellationToken)
         {
             return Task.FromResult(_players.FirstOrDefault(player => player.Id == playerId));
@@ -191,6 +196,12 @@ public class StatsControllerTests
         public Task<List<Player>> GetPlayersWithAttempts(CancellationToken cancellationToken)
         {
             return Task.FromResult(_players);
+        }
+
+        public Task AddPlayer(Player player, CancellationToken cancellationToken)
+        {
+            _players.Add(player);
+            return Task.CompletedTask;
         }
 
         public Task<bool> IsDisplayNameTaken(string displayName, Guid? excludePlayerId, CancellationToken cancellationToken)
