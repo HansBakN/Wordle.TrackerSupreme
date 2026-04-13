@@ -8,6 +8,7 @@ public class FakeGameRepository : IGameRepository
     private readonly List<DailyPuzzle> _puzzles = [];
     private readonly List<PlayerPuzzleAttempt> _attempts = [];
     private readonly List<GuessAttempt> _guesses = [];
+    public Func<CancellationToken, Task>? SaveChangesHandler { get; set; }
 
     public Task AddAttempt(PlayerPuzzleAttempt attempt, CancellationToken cancellationToken)
     {
@@ -80,7 +81,15 @@ public class FakeGameRepository : IGameRepository
         return Task.CompletedTask;
     }
 
-    public Task SaveChanges(CancellationToken cancellationToken) => Task.CompletedTask;
+    public Task SaveChanges(CancellationToken cancellationToken)
+    {
+        if (SaveChangesHandler is not null)
+        {
+            return SaveChangesHandler(cancellationToken);
+        }
+
+        return Task.CompletedTask;
+    }
 
     public IReadOnlyCollection<DailyPuzzle> Puzzles => _puzzles;
     public IReadOnlyCollection<PlayerPuzzleAttempt> Attempts => _attempts;

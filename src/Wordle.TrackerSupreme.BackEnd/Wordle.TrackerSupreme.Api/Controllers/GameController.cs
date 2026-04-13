@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Wordle.TrackerSupreme.Api.Models.Game;
 using Wordle.TrackerSupreme.Application.Services.Game;
+using Wordle.TrackerSupreme.Domain.Exceptions;
 using Wordle.TrackerSupreme.Domain.Models;
 using Wordle.TrackerSupreme.Domain.Services.Game;
 
@@ -57,6 +58,10 @@ public class GameController(
         {
             return BadRequest(new { message = ex.Message });
         }
+        catch (DuplicatePuzzleAttemptException ex)
+        {
+            return Conflict(new { message = ex.Message });
+        }
         catch (InvalidOperationException ex)
         {
             return Conflict(new { message = ex.Message });
@@ -80,6 +85,10 @@ public class GameController(
         catch (DailyPuzzleUnavailableException ex)
         {
             return StatusCode(StatusCodes.Status503ServiceUnavailable, new { message = ex.Message });
+        }
+        catch (DuplicatePuzzleAttemptException ex)
+        {
+            return Conflict(new { message = ex.Message });
         }
         catch (InvalidOperationException ex)
         {

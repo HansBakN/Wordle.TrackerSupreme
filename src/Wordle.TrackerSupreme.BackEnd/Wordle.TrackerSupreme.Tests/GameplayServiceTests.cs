@@ -1,6 +1,7 @@
 using FluentAssertions;
 using Microsoft.Extensions.Logging.Abstractions;
 using Wordle.TrackerSupreme.Application.Services.Game;
+using Wordle.TrackerSupreme.Domain.Exceptions;
 using Wordle.TrackerSupreme.Domain.Models;
 using Wordle.TrackerSupreme.Tests.Fakes;
 using Xunit;
@@ -151,6 +152,22 @@ public class GameplayServiceTests
 
         await act.Should().ThrowAsync<ArgumentException>()
             .WithMessage("Hard mode: guess must include all revealed letters.");
+    }
+
+    [Fact]
+    public async Task SubmitGuess_throws_duplicate_attempt_exception_when_save_detects_existing_attempt()
+    {
+        var repo = new FakeGameRepository
+        {
+            SaveChangesHandler = _ => Task.FromException(new DuplicatePuzzleAttemptException())
+        };
+        var gameplay = CreateService(repo, new FakeGameClock(new DateOnly(2025, 1, 9)), "APPLE");
+        var playerId = Guid.NewGuid();
+
+        var act = async () => await gameplay.SubmitGuess(playerId, "ALLEY");
+
+        await act.Should().ThrowAsync<DuplicatePuzzleAttemptException>()
+            .WithMessage("You already have an attempt for today's puzzle. Refresh to continue.");
     }
 
     [Fact]

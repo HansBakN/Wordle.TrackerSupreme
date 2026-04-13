@@ -369,3 +369,72 @@ test('guess controls stay locked while a submission is in flight', async ({ page
 	await submitPromise;
 	await expect.poll(() => guessRequests).toBe(1);
 });
+
+test('duplicate attempt conflicts show the API message without clearing the row', async ({
+	page
+}) => {
+	page.on('pageerror', (error) => {
+		console.error('pageerror', error);
+	});
+	page.on('console', (message) => {
+		if (message.type() === 'error') {
+			console.error('console', message.text());
+		}
+	});
+	await page.addInitScript(() => {
+		window.localStorage.setItem('wts_auth_token', 'test-token');
+	});
+	await page.route('**/api/Auth/me', async (route) => {
+		await route.fulfill({
+			status: 200,
+			contentType: 'application/json',
+			body: JSON.stringify({
+				id: '11111111-1111-1111-1111-111111111111',
+				displayName: 'Tester',
+				email: 'tester@example.com',
+				createdOn: '2025-01-01T00:00:00Z'
+			})
+		});
+	});
+
+	await page.route('**/api/game/state', async (route) => {
+		await route.fulfill({
+			status: 200,
+			contentType: 'application/json',
+			body: JSON.stringify({
+				puzzleDate: '2025-01-01',
+				cutoffPassed: false,
+				solutionRevealed: false,
+				allowLatePlay: true,
+				wordLength: 5,
+				maxGuesses: 6,
+				isHardMode: true,
+				canGuess: true,
+				attempt: null,
+				solution: null
+			})
+		});
+	});
+
+	await page.route('**/api/game/guess', async (route) => {
+		await route.fulfill({
+			status: 409,
+			contentType: 'application/json',
+			body: JSON.stringify({
+				message: "You already have an attempt for today's puzzle. Refresh to continue."
+			})
+		});
+	});
+
+	await page.goto('/', { waitUntil: 'domcontentloaded' });
+	await page.getByText('Checking your session...').waitFor({ state: 'hidden' });
+
+	await page.click('body');
+	await page.keyboard.type('CRANE');
+	await page.keyboard.press('Enter');
+
+	await expect(
+		page.getByText("You already have an attempt for today's puzzle. Refresh to continue.")
+	).toBeVisible();
+	await expect(page.getByTestId('board-row-0')).toContainText('CRANE');
+});
