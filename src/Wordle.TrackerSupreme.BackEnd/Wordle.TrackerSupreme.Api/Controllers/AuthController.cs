@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Wordle.TrackerSupreme.Api.Auth;
@@ -18,6 +19,7 @@ public class AuthController(
     PasswordHasher<Player> passwordHasher)
     : ControllerBase
 {
+    [EnableRateLimiting(AuthRateLimiting.PolicyName)]
     [HttpPost("signup")]
     public async Task<ActionResult<AuthResponse>> SignUp([FromBody] SignUpRequest request)
     {
@@ -54,6 +56,7 @@ public class AuthController(
         return Ok(new AuthResponse(MapPlayer(player), token));
     }
 
+    [EnableRateLimiting(AuthRateLimiting.PolicyName)]
     [HttpPost("signin")]
     public async Task<ActionResult<AuthResponse>> SignIn([FromBody] SignInRequest request)
     {
