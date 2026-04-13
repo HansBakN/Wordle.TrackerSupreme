@@ -46,6 +46,28 @@ public class AuthRateLimitingTests
     }
 
     [Fact]
+    public async Task SignIn_uses_forwarded_client_ip_for_rate_limit_partitioning()
+    {
+        await using var factory = new AuthRateLimitingFactory();
+        using var firstClient = factory.CreateClient();
+        using var secondClient = factory.CreateClient();
+        var payload = new { email = AdminEmail, password = InvalidCredential };
+
+        firstClient.DefaultRequestHeaders.Add("X-Forwarded-For", "198.51.100.10");
+        secondClient.DefaultRequestHeaders.Add("X-Forwarded-For", "198.51.100.11");
+
+        for (var attempt = 0; attempt < AuthRateLimiting.PermitLimit; attempt++)
+        {
+            var response = await firstClient.PostAsJsonAsync("/api/auth/signin", payload);
+            response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+        }
+
+        var secondClientResponse = await secondClient.PostAsJsonAsync("/api/auth/signin", payload);
+
+        secondClientResponse.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+    }
+
+    [Fact]
     public async Task SignUp_returns_too_many_requests_after_limit_is_exceeded()
     {
         await using var factory = new AuthRateLimitingFactory();
