@@ -4,7 +4,7 @@ export const emailMaxLength = 320;
 export const passwordMinLength = 6;
 export const passwordMaxLength = 100;
 
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const emailPattern = /^[^\s@]+@[^\s@]+$/;
 
 export function getAdminProfileValidationError(displayName: string, email: string): string | null {
 	const trimmedName = displayName.trim();

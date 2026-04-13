@@ -13,6 +13,7 @@ describe('admin validation', () => {
 
 	it('accepts valid profile values', () => {
 		expect(getAdminProfileValidationError('Admin Supreme', 'admin@example.com')).toBeNull();
+		expect(getAdminProfileValidationError('Legacy Admin', 'name+legacy@local')).toBeNull();
 	});
 
 	it('rejects short passwords', () => {
