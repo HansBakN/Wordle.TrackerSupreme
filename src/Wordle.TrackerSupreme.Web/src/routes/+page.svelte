@@ -15,6 +15,7 @@
 	let error: string | null = null;
 	let initialized = false;
 	let submitting = false;
+	let animatedGuessId: string | null = null;
 	let showConfetti = false;
 	let showWinStats = false;
 	let winStats: PlayerStatsResponse | null = null;
@@ -89,6 +90,7 @@
 	async function loadState() {
 		loadingState = true;
 		error = null;
+		animatedGuessId = null;
 		try {
 			state = await fetchGameState();
 			message = null;
@@ -117,9 +119,12 @@
 		error = null;
 		message = null;
 		const previousStatus = currentState.attempt?.status ?? null;
+		const previousGuessId = currentState.attempt?.guesses.at(-1)?.guessId ?? null;
 		submitting = true;
 		try {
 			state = await submitGuess(normalized);
+			const latestGuessId = state.attempt?.guesses.at(-1)?.guessId ?? null;
+			animatedGuessId = latestGuessId !== previousGuessId ? latestGuessId : null;
 			guess = '';
 			message = null;
 			const nextStatus = state.attempt?.status ?? null;
@@ -177,6 +182,7 @@
 
 		error = null;
 		message = null;
+		animatedGuessId = null;
 		try {
 			state = await enableEasyMode();
 			message = 'Easy mode enabled for this puzzle.';
@@ -198,6 +204,22 @@
 			return `${base} border-white/15 bg-white/5 text-white/60`;
 		}
 		return `${base} border-white/10 bg-white/5 text-white/30`;
+	}
+
+	function tileAnimationClass(guessId: string, result: LetterResult) {
+		if (guessId !== animatedGuessId) {
+			return '';
+		}
+
+		return `animate-reveal reveal-${result.toLowerCase()}`;
+	}
+
+	function tileAnimationDelay(guessId: string, position: number) {
+		if (guessId !== animatedGuessId) {
+			return '';
+		}
+
+		return `animation-delay:${position * 220}ms`;
 	}
 
 	function keyState(letter: string): LetterResult | 'Used' | null {
@@ -381,8 +403,11 @@
 									{#if state.attempt?.guesses[rowIndex]}
 										{#each state.attempt.guesses[rowIndex].feedback as fb (fb.position)}
 											<div
-												class={`${tileClass(fb.result)} ${rowIndex === (state.attempt?.guesses.length ?? 0) - 1 ? `animate-reveal reveal-${fb.result.toLowerCase()}` : ''}`}
-												style={`${rowIndex === (state.attempt?.guesses.length ?? 0) - 1 ? `animation-delay:${fb.position * 220}ms` : ''}`}
+												class={`${tileClass(fb.result)} ${tileAnimationClass(state.attempt.guesses[rowIndex].guessId, fb.result)}`}
+												style={tileAnimationDelay(
+													state.attempt.guesses[rowIndex].guessId,
+													fb.position
+												)}
 											>
 												{fb.letter}
 											</div>
