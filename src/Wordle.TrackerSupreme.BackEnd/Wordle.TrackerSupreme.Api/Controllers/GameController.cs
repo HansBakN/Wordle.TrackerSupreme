@@ -32,7 +32,7 @@ public class GameController(
         }
         catch (DailyPuzzleUnavailableException ex)
         {
-            return StatusCode(StatusCodes.Status503ServiceUnavailable, new { message = ex.Message });
+            return StatusCode(StatusCodes.Status503ServiceUnavailable, new { code = "puzzle_unavailable", message = ex.Message });
         }
     }
 
@@ -52,7 +52,7 @@ public class GameController(
         }
         catch (DailyPuzzleUnavailableException ex)
         {
-            return StatusCode(StatusCodes.Status503ServiceUnavailable, new { message = ex.Message });
+            return StatusCode(StatusCodes.Status503ServiceUnavailable, new { code = "puzzle_unavailable", message = ex.Message });
         }
         catch (ArgumentException ex)
         {
@@ -84,7 +84,7 @@ public class GameController(
         }
         catch (DailyPuzzleUnavailableException ex)
         {
-            return StatusCode(StatusCodes.Status503ServiceUnavailable, new { message = ex.Message });
+            return StatusCode(StatusCodes.Status503ServiceUnavailable, new { code = "puzzle_unavailable", message = ex.Message });
         }
         catch (DuplicatePuzzleAttemptException ex)
         {
@@ -111,7 +111,7 @@ public class GameController(
         }
         catch (DailyPuzzleUnavailableException ex)
         {
-            return StatusCode(StatusCodes.Status503ServiceUnavailable, new { message = ex.Message });
+            return StatusCode(StatusCodes.Status503ServiceUnavailable, new { code = "puzzle_unavailable", message = ex.Message });
         }
     }
 
