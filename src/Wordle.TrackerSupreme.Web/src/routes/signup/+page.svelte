@@ -11,6 +11,14 @@
 	let confirmPassword = '';
 	let error: string | null = null;
 	let loading = false;
+	let passwordTouched = false;
+
+	// Must stay in sync with PlayerValidationRules on the backend
+	const PASSWORD_MIN = 6;
+	const PASSWORD_MAX = 100;
+
+	$: passwordMeetsMin = password.length >= PASSWORD_MIN;
+	$: passwordMeetsMax = password.length <= PASSWORD_MAX;
 
 	onMount(() => {
 		const unsubscribe = auth.subscribe((state) => {
@@ -47,7 +55,7 @@
 	<p class="text-sm tracking-[0.2em] text-emerald-200/80 uppercase">Create account</p>
 	<h1 class="mt-2 text-3xl font-semibold text-white">Join Wordle Tracker</h1>
 	<p class="mt-2 text-sm text-slate-200/80">
-		Pick a display name and a password. You’ll use this combo to sign back in and keep your streaks
+		Pick a display name and a password. You'll use this combo to sign back in and keep your streaks
 		synced.
 	</p>
 
@@ -76,18 +84,40 @@
 			/>
 		</label>
 
-		<label class="block space-y-2">
-			<span class="text-sm font-semibold text-white">Password</span>
+		<div class="space-y-2">
+			<label class="block" for="password">
+				<span class="text-sm font-semibold text-white">Password</span>
+			</label>
 			<input
+				id="password"
 				name="password"
 				type="password"
 				bind:value={password}
+				on:input={() => (passwordTouched = true)}
 				required
-				minlength="6"
+				minlength={PASSWORD_MIN}
+				maxlength={PASSWORD_MAX}
 				class="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-white transition outline-none focus:border-emerald-300 focus:bg-black/40"
 				placeholder="••••••••"
+				data-testid="password-input"
 			/>
-		</label>
+			{#if passwordTouched}
+				<ul class="space-y-1 pl-1 text-xs" data-testid="password-requirements">
+					<li
+						class={passwordMeetsMin ? 'text-emerald-300' : 'text-slate-400'}
+						data-testid="req-min-length"
+					>
+						{passwordMeetsMin ? '✓' : '✗'} At least {PASSWORD_MIN} characters
+					</li>
+					<li
+						class={passwordMeetsMax ? 'text-emerald-300' : 'text-red-300'}
+						data-testid="req-max-length"
+					>
+						{passwordMeetsMax ? '✓' : '✗'} No more than {PASSWORD_MAX} characters
+					</li>
+				</ul>
+			{/if}
+		</div>
 
 		<label class="block space-y-2">
 			<span class="text-sm font-semibold text-white">Confirm password</span>
@@ -96,7 +126,7 @@
 				type="password"
 				bind:value={confirmPassword}
 				required
-				minlength="6"
+				minlength={PASSWORD_MIN}
 				class="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-white transition outline-none focus:border-emerald-300 focus:bg-black/40"
 				placeholder="••••••••"
 			/>
