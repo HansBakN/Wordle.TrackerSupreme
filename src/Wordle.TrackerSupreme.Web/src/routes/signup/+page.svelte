@@ -127,6 +127,7 @@
 				bind:value={confirmPassword}
 				required
 				minlength={PASSWORD_MIN}
+				maxlength={PASSWORD_MAX}
 				class="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-white transition outline-none focus:border-emerald-300 focus:bg-black/40"
 				placeholder="••••••••"
 			/>
