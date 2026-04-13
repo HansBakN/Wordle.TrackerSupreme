@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Wordle.TrackerSupreme.Domain.Validation;
 
 namespace Wordle.TrackerSupreme.Api.Models.Auth;
 
@@ -6,10 +7,10 @@ public class SignInRequest
 {
     [Required]
     [EmailAddress]
-    [StringLength(320)]
+    [StringLength(PlayerValidationRules.EmailMaxLength)]
     public string Email { get; set; } = string.Empty;
 
     [Required]
-    [StringLength(100, MinimumLength = 6)]
+    [StringLength(PlayerValidationRules.PasswordMaxLength, MinimumLength = PlayerValidationRules.PasswordMinLength)]
     public string Password { get; set; } = string.Empty;
 }

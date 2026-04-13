@@ -16,6 +16,16 @@ test('admin can manage player profiles and attempts', async ({ page }) => {
 	const attemptCards = page.getByTestId('admin-attempt-card');
 	await expect(attemptCards.first()).toBeVisible();
 
+	await page.getByTestId('admin-email').fill('invalid-email');
+	await expect(page.getByText('Email must be a valid email address.')).toBeVisible();
+	await expect(page.getByTestId('admin-profile-save')).toBeDisabled();
+	await page.getByTestId('admin-email').fill('player1@wordle.supreme');
+	await expect(page.getByTestId('admin-profile-save')).toBeEnabled();
+
+	await page.getByTestId('admin-password').fill('abc');
+	await expect(page.getByText('Password must be between 6 and 100 characters.')).toBeVisible();
+	await expect(page.getByTestId('admin-password-reset')).toBeDisabled();
+
 	await page.getByTestId('admin-password').fill('Reset!234');
 	await page.getByTestId('admin-password-reset').click();
 	await expect(page.getByText('Password reset successfully.')).toBeVisible();
