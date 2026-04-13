@@ -59,10 +59,11 @@ function getTodaySolution(): string {
 		'VOICE',
 		'YEARN'
 	];
-	const anchor = new Date('2025-01-01');
-	const today = new Date();
-	today.setHours(0, 0, 0, 0);
-	anchor.setHours(0, 0, 0, 0);
+	// Use the local-time constructor so anchor and today are both in local
+	// midnight, matching the backend WordSelector which works in server-local time.
+	const anchor = new Date(2025, 0, 1); // 1 Jan 2025, local midnight
+	const now = new Date();
+	const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // local midnight
 	const msPerDay = 24 * 60 * 60 * 1000;
 	const offset = Math.round((today.getTime() - anchor.getTime()) / msPerDay);
 	const index = ((offset % words.length) + words.length) % words.length;
@@ -77,7 +78,7 @@ test('player wins the daily puzzle and sees victory stats', async ({ page }) => 
 		password: 'Supreme!234'
 	});
 
-	await page.getByText("Loading today's puzzle...").waitFor({ state: 'hidden' });
+	await page.getByTestId('board-row-0').waitFor({ state: 'visible' });
 
 	const solution = getTodaySolution();
 
@@ -103,7 +104,7 @@ test('player wins the daily puzzle in easy mode and sees victory stats', async (
 		password: 'Supreme!234'
 	});
 
-	await page.getByText("Loading today's puzzle...").waitFor({ state: 'hidden' });
+	await page.getByTestId('board-row-0').waitFor({ state: 'visible' });
 
 	// Opt into easy mode before guessing
 	await page.getByTestId('enable-easy-mode').click();
