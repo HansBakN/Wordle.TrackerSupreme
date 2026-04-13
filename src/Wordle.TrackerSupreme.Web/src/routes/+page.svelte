@@ -108,11 +108,11 @@
 			if (
 				err instanceof ApiResponseError &&
 				err.status === 503 &&
-				err.code === ‘puzzle_unavailable’
+				err.code === 'puzzle_unavailable'
 			) {
 				noPuzzleToday = true;
 			} else {
-				error = err instanceof Error ? err.message : "Unable to load today’s puzzle.";
+				error = err instanceof Error ? err.message : "Unable to load today's puzzle.";
 			}
 		} finally {
 			loadingState = false;
@@ -131,11 +131,11 @@
 	function completedMessage(s: GameStateResponse | null): string | null {
 		if (!s?.attempt) return null;
 		const guessCount = s.attempt.guesses.length;
-		if (s.attempt.status === ‘Solved’) {
-			return `You solved it in ${guessCount} ${guessCount === 1 ? ‘guess’ : ‘guesses’}! Come back tomorrow.`;
+		if (s.attempt.status === 'Solved') {
+			return `You solved it in ${guessCount} ${guessCount === 1 ? 'guess' : 'guesses'}! Come back tomorrow.`;
 		}
-		if (s.attempt.status === ‘Failed’) {
-			const word = s.solutionRevealed ? ` The word was ${s.solution}.` : ‘’;
+		if (s.attempt.status === 'Failed') {
+			const word = s.solutionRevealed ? ` The word was ${s.solution}.` : '';
 			return `No more guesses — better luck tomorrow!${word}`;
 		}
 		return null;
