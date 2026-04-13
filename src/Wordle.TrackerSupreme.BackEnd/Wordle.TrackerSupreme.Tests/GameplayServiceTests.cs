@@ -136,7 +136,7 @@ public class GameplayServiceTests
         var act = async () => await gameplay.SubmitGuess(playerId, "PASTE");
 
         await act.Should().ThrowAsync<ArgumentException>()
-            .WithMessage("Hard mode: guess must keep revealed letters in their exact positions.");
+            .WithMessage("Hard mode: * must be in position *.");
     }
 
     [Fact]
@@ -151,7 +151,7 @@ public class GameplayServiceTests
         var act = async () => await gameplay.SubmitGuess(playerId, "AMASS");
 
         await act.Should().ThrowAsync<ArgumentException>()
-            .WithMessage("Hard mode: guess must include all revealed letters.");
+            .WithMessage("Hard mode: guess must include *.");
     }
 
     [Fact]
