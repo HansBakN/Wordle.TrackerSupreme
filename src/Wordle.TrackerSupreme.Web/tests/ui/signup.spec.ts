@@ -9,8 +9,12 @@ test('sign-up form shows validation and backend error', async ({ page }) => {
 			console.error('console', message.text());
 		}
 	});
-	await page.addInitScript(() => {
-		window.localStorage.clear();
+	await page.route('**/api/Auth/me', async (route) => {
+		await route.fulfill({
+			status: 401,
+			contentType: 'application/json',
+			body: JSON.stringify({ message: 'Unauthorized' })
+		});
 	});
 	await page.route('**/api/Auth/signup', async (route) => {
 		await route.fulfill({

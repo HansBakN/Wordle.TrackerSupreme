@@ -11,7 +11,7 @@ const fallbackApiBase = (() => {
 	const origin = window.location.origin;
 	const hostname = window.location.hostname;
 	if (hostname === 'localhost' || hostname === '127.0.0.1') {
-		return 'http://localhost:8080';
+		return `http://${hostname}:8080`;
 	}
 
 	return origin;
@@ -25,9 +25,11 @@ function ensureBaseConfigured() {
 	baseConfigured = true;
 }
 
-export function configureApiClient(token: string | null) {
+export function configureApiClient() {
 	ensureBaseConfigured();
-	OpenAPI.TOKEN = token ?? undefined;
+	OpenAPI.TOKEN = undefined;
+	OpenAPI.WITH_CREDENTIALS = true;
+	OpenAPI.CREDENTIALS = 'include';
 }
 
 export function getApiBase() {
@@ -39,8 +41,8 @@ export function registerUnauthorizedHandler(handler: (() => void) | null) {
 	unauthorizedHandler = handler;
 }
 
-export function notifyUnauthorizedResponse(hasAuthorization: boolean) {
-	if (!hasAuthorization) {
+export function notifyUnauthorizedResponse(shouldNotify: boolean) {
+	if (!shouldNotify) {
 		return;
 	}
 

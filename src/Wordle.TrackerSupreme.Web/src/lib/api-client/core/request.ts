@@ -331,7 +331,7 @@ export const request = <T>(
 					body: responseHeader ?? responseBody
 				};
 
-				notifyUnauthorizedResponse(response.status === 401 && headers.has('Authorization'));
+				notifyUnauthorizedResponse(response.status === 401);
 
 				catchErrorCodes(options, result);
 

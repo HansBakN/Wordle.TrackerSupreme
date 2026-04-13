@@ -57,7 +57,7 @@
 					</div>
 					<button
 						class="rounded-full border border-white/20 bg-white/10 px-4 py-2 font-medium text-white transition hover:border-white/40 hover:bg-white/15"
-						onclick={() => signOut()}
+						onclick={() => void signOut()}
 					>
 						Sign out
 					</button>

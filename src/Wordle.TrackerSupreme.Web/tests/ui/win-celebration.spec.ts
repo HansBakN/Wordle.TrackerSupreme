@@ -1,10 +1,6 @@
 import { expect, test } from '@playwright/test';
 
 test('shows confetti and win stats after solving', async ({ page }) => {
-	await page.addInitScript(() => {
-		window.localStorage.setItem('wts_auth_token', 'test-token');
-	});
-
 	await page.route('**/api/Auth/me', async (route) => {
 		await route.fulfill({
 			status: 200,

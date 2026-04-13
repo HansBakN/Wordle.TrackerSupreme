@@ -7,23 +7,16 @@ vi.mock('$lib/api', () => ({
 	notifyUnauthorizedResponse
 }));
 
-const openApiMock = { TOKEN: undefined as string | undefined };
-vi.mock('$lib/api-client', () => ({
-	OpenAPI: openApiMock
-}));
-
 // Lazy import after mocks so the module picks them up.
 const { enableEasyMode, fetchGameState, submitGuess } = await import('./api');
 
 describe('api helpers', () => {
 	beforeEach(() => {
-		openApiMock.TOKEN = undefined;
 		notifyUnauthorizedResponse.mockReset();
 		vi.restoreAllMocks();
 	});
 
-	it('includes bearer token when present', async () => {
-		openApiMock.TOKEN = 'abc123';
+	it('sends credentialed requests without a bearer header', async () => {
 		const mockResponse = {
 			ok: true,
 			status: 200,
@@ -34,8 +27,10 @@ describe('api helpers', () => {
 		await fetchGameState();
 
 		const call = fetchSpy.mock.calls[0];
-		const headers = (call[1] as RequestInit)?.headers as Headers;
-		expect(headers.get('Authorization')).toBe('Bearer abc123');
+		const init = call[1] as RequestInit;
+		const headers = init?.headers as Headers;
+		expect(init.credentials).toBe('include');
+		expect(headers.get('Authorization')).toBeNull();
 	});
 
 	it('throws error message from payload when request fails', async () => {
@@ -51,8 +46,7 @@ describe('api helpers', () => {
 		await expect(submitGuess('crane')).rejects.toThrowError('Nope');
 	});
 
-	it('notifies the auth layer when an authenticated request returns 401', async () => {
-		openApiMock.TOKEN = 'abc123';
+	it('notifies the auth layer when a credentialed request returns 401', async () => {
 		const mockResponse = {
 			ok: false,
 			status: 401,

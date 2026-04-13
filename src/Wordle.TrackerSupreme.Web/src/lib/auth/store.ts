@@ -1,30 +1,11 @@
 import { AuthService } from '$lib/api-client/services/AuthService';
-import { configureApiClient, registerUnauthorizedHandler } from '$lib/api';
+import { configureApiClient, getApiBase, registerUnauthorizedHandler } from '$lib/api';
 import { writable } from 'svelte/store';
 import type { AuthResponse as ApiAuthResponse } from '$lib/api-client/models/AuthResponse';
 import type { PlayerResponse as ApiPlayerResponse } from '$lib/api-client/models/PlayerResponse';
 import type { AuthState, Player } from './types';
 
-const TOKEN_STORAGE_KEY = 'wts_auth_token';
 const PENDING_AUTH_ERROR_KEY = 'wts_auth_error';
-
-function loadStoredToken(): string | null {
-	if (typeof localStorage === 'undefined') {
-		return null;
-	}
-	return localStorage.getItem(TOKEN_STORAGE_KEY);
-}
-
-function persistToken(token: string | null) {
-	if (typeof localStorage === 'undefined') {
-		return;
-	}
-	if (token) {
-		localStorage.setItem(TOKEN_STORAGE_KEY, token);
-	} else {
-		localStorage.removeItem(TOKEN_STORAGE_KEY);
-	}
-}
 
 function persistPendingAuthError(error: string | null) {
 	if (typeof sessionStorage === 'undefined') {
@@ -38,19 +19,6 @@ function persistPendingAuthError(error: string | null) {
 	}
 }
 
-function consumePendingAuthError(): string | null {
-	if (typeof sessionStorage === 'undefined') {
-		return null;
-	}
-
-	const error = sessionStorage.getItem(PENDING_AUTH_ERROR_KEY);
-	if (error) {
-		sessionStorage.removeItem(PENDING_AUTH_ERROR_KEY);
-	}
-
-	return error;
-}
-
 function loadPendingAuthError(): string | null {
 	if (typeof sessionStorage === 'undefined') {
 		return null;
@@ -59,31 +27,24 @@ function loadPendingAuthError(): string | null {
 	return sessionStorage.getItem(PENDING_AUTH_ERROR_KEY);
 }
 
-const initialToken = loadStoredToken();
-
 export const auth = writable<AuthState>({
 	user: null,
-	token: initialToken,
+	token: null,
 	ready: false,
 	error: null
 });
 
-configureApiClient(initialToken);
+configureApiClient();
 
-function setAuthState(
-	token: string | null,
-	user: Player | null,
-	error: string | null,
-	clearPendingAuthError = true
-) {
-	persistToken(token);
-	configureApiClient(token);
+function setAuthState(user: Player | null, error: string | null, clearPendingAuthError = true) {
+	configureApiClient();
 	if (clearPendingAuthError) {
 		persistPendingAuthError(null);
 	}
+
 	auth.set({
 		user,
-		token,
+		token: null,
 		ready: true,
 		error
 	});
@@ -104,7 +65,7 @@ function redirectToSignIn() {
 
 export function expireSession(message = 'Session expired. Please sign in again.') {
 	persistPendingAuthError(message);
-	setAuthState(null, null, message, false);
+	setAuthState(null, message, false);
 	redirectToSignIn();
 }
 
@@ -113,10 +74,14 @@ registerUnauthorizedHandler(() => {
 });
 
 function setAuthenticated(result: ApiAuthResponse) {
-	setAuthState(result.token ?? null, mapPlayer(result.player), null);
+	setAuthState(mapPlayer(result.player), null);
 }
 
-function mapPlayer(player: ApiPlayerResponse): Player {
+function mapPlayer(player: ApiPlayerResponse | undefined): Player | null {
+	if (!player) {
+		return null;
+	}
+
 	return {
 		id: player.id ?? '',
 		displayName: player.displayName ?? '',
@@ -127,22 +92,18 @@ function mapPlayer(player: ApiPlayerResponse): Player {
 }
 
 export async function bootstrapAuth() {
-	const token = loadStoredToken();
-	if (!token) {
-		auth.set({ user: null, token: null, ready: true, error: consumePendingAuthError() });
-		return;
-	}
-
-	configureApiClient(token);
-
 	try {
 		const player = await AuthService.getApiAuthMe();
-		auth.set({ user: mapPlayer(player), token, ready: true, error: null });
+		setAuthState(mapPlayer(player), null);
 	} catch (error) {
-		console.error('Auth bootstrap failed', error);
 		const pendingAuthError = loadPendingAuthError();
+		if (error instanceof Error && error.message === 'Unauthorized') {
+			setAuthState(null, pendingAuthError, pendingAuthError === null);
+			return;
+		}
+
+		console.error('Auth bootstrap failed', error);
 		setAuthState(
-			null,
 			null,
 			pendingAuthError ?? 'Session expired. Please sign in.',
 			pendingAuthError === null
@@ -164,6 +125,15 @@ export async function signUp(displayName: string, email: string, password: strin
 	setAuthenticated(result);
 }
 
-export function signOut() {
-	setAuthState(null, null, null);
+export async function signOut() {
+	try {
+		await fetch(`${getApiBase()}/api/auth/signout`, {
+			method: 'POST',
+			credentials: 'include'
+		});
+	} catch (error) {
+		console.error('Sign out request failed', error);
+	}
+
+	setAuthState(null, null);
 }

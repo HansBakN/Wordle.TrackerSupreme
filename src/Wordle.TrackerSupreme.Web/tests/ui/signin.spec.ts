@@ -1,9 +1,6 @@
 import { test, expect } from '@playwright/test';
 
 test('sign-in form shows validation and handles failed auth', async ({ page }) => {
-	await page.addInitScript(() => {
-		window.localStorage.clear();
-	});
 	await page.route('**/api/Auth/me', async (route) => {
 		await route.fulfill({
 			status: 401,
