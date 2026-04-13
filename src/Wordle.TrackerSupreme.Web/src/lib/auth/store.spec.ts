@@ -90,6 +90,17 @@ describe('auth store', () => {
 		expect(get(auth).token).toBeNull();
 	});
 
+	it('bootstrapAuth preserves a pending expiry error for the redirected sign-in page', async () => {
+		localStorage.setItem('wts_auth_token', 'expired');
+		sessionStorage.setItem('wts_auth_error', 'Session expired. Please sign in again.');
+		mockAuthService.getApiAuthMe.mockRejectedValue(new Error('expired'));
+
+		await bootstrapAuth();
+
+		expect(get(auth).error).toBe('Session expired. Please sign in again.');
+		expect(sessionStorage.getItem('wts_auth_error')).toBe('Session expired. Please sign in again.');
+	});
+
 	it('bootstrapAuth maps admin flag', async () => {
 		localStorage.setItem('wts_auth_token', 'keep');
 		mockAuthService.getApiAuthMe.mockResolvedValue({

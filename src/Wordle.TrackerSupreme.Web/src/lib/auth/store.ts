@@ -51,6 +51,14 @@ function consumePendingAuthError(): string | null {
 	return error;
 }
 
+function loadPendingAuthError(): string | null {
+	if (typeof sessionStorage === 'undefined') {
+		return null;
+	}
+
+	return sessionStorage.getItem(PENDING_AUTH_ERROR_KEY);
+}
+
 const initialToken = loadStoredToken();
 
 export const auth = writable<AuthState>({
@@ -132,7 +140,13 @@ export async function bootstrapAuth() {
 		auth.set({ user: mapPlayer(player), token, ready: true, error: null });
 	} catch (error) {
 		console.error('Auth bootstrap failed', error);
-		setAuthState(null, null, consumePendingAuthError() ?? 'Session expired. Please sign in.');
+		const pendingAuthError = loadPendingAuthError();
+		setAuthState(
+			null,
+			null,
+			pendingAuthError ?? 'Session expired. Please sign in.',
+			pendingAuthError === null
+		);
 	}
 }
 
