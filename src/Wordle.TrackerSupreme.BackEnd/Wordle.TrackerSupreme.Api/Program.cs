@@ -89,6 +89,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
             ValidateIssuer = true,
             ValidateAudience = true,
+            ValidateLifetime = true,
+            RequireExpirationTime = true,
             ValidIssuer = issuer,
             ValidAudience = audience,
             ClockSkew = TimeSpan.FromMinutes(2)
@@ -173,3 +175,5 @@ app.MapGet("/health/ready", async (WordleTrackerSupremeDbContext dbContext, Canc
 app.MapControllers();
 
 app.Run();
+
+public partial class Program;
