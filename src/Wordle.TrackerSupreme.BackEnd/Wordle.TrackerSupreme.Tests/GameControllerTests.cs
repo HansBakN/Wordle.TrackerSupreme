@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.Abstractions;
 using Wordle.TrackerSupreme.Api.Controllers;
 using Wordle.TrackerSupreme.Application.Services.Game;
+using Wordle.TrackerSupreme.Domain.Exceptions;
 using Wordle.TrackerSupreme.Domain.Models;
 using Wordle.TrackerSupreme.Domain.Services.Game;
 using Wordle.TrackerSupreme.Tests.Fakes;
@@ -108,6 +109,27 @@ public class GameControllerTests
             CancellationToken.None);
 
         result.Result.Should().BeOfType<BadRequestObjectResult>();
+    }
+
+    [Fact]
+    public async Task SubmitGuess_returns_conflict_with_duplicate_attempt_message_when_save_conflicts()
+    {
+        var clock = new FakeGameClock(new DateOnly(2025, 1, 11));
+        var repo = new FakeGameRepository
+        {
+            SaveChangesHandler = _ => Task.FromException(new DuplicatePuzzleAttemptException())
+        };
+        var controller = CreateController(repo, clock, "CRANE");
+
+        var result = await controller.SubmitGuess(
+            new Api.Models.Game.SubmitGuessRequest { Guess = "CRANE" },
+            CancellationToken.None);
+
+        var conflict = result.Result.Should().BeOfType<ConflictObjectResult>().Which;
+        conflict.Value.Should().BeEquivalentTo(new
+        {
+            message = "You already have an attempt for today's puzzle. Refresh to continue."
+        });
     }
 
     [Fact]

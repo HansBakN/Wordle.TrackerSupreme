@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Wordle.TrackerSupreme.Domain.Exceptions;
 using Wordle.TrackerSupreme.Domain.Models;
 using Wordle.TrackerSupreme.Domain.Repositories;
 using Wordle.TrackerSupreme.Infrastructure.Database;
@@ -83,5 +84,46 @@ public class GameRepository(WordleTrackerSupremeDbContext dbContext) : IGameRepo
                 $"Could not save game changes due to a stale state. Entities: {string.Join(", ", details)}",
                 ex);
         }
+        catch (DbUpdateException ex)
+        {
+            if (await IsDuplicateAttemptConflict(ex, cancellationToken))
+            {
+                throw new DuplicatePuzzleAttemptException();
+            }
+
+            throw;
+        }
+    }
+
+    private async Task<bool> IsDuplicateAttemptConflict(DbUpdateException ex, CancellationToken cancellationToken)
+    {
+        var pendingAttempts = ex.Entries
+            .Select(entry => entry.Entity)
+            .OfType<PlayerPuzzleAttempt>()
+            .Where(attempt => attempt.PlayerId != Guid.Empty && attempt.DailyPuzzleId != Guid.Empty)
+            .ToList();
+
+        if (pendingAttempts.Count == 0)
+        {
+            return false;
+        }
+
+        foreach (var attempt in pendingAttempts)
+        {
+            var hasExistingAttempt = await dbContext.Attempts
+                .AsNoTracking()
+                .AnyAsync(
+                    existing => existing.Id != attempt.Id &&
+                                existing.PlayerId == attempt.PlayerId &&
+                                existing.DailyPuzzleId == attempt.DailyPuzzleId,
+                    cancellationToken);
+
+            if (hasExistingAttempt)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
