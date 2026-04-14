@@ -95,14 +95,14 @@
 		});
 	});
 
-	$effect(() => {
+	$: {
 		const status = state?.attempt?.status;
 		if (status === 'Solved' || status === 'Failed') {
 			startCountdown();
 		} else {
 			stopCountdown();
 		}
-	});
+	}
 
 	async function loadEverything() {
 		await loadState();
