@@ -23,6 +23,8 @@
 	let confettiPieces: ConfettiPiece[] = [];
 	let confettiTimer: ReturnType<typeof setTimeout> | null = null;
 	let statsTimer: ReturnType<typeof setTimeout> | null = null;
+	let shakingRow: number | null = null;
+	let shakeTimer: ReturnType<typeof setTimeout> | null = null;
 	const keyboardRows = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'];
 	const confettiDurationMs = 1200;
 
@@ -101,6 +103,15 @@
 		}
 	}
 
+	function triggerShake() {
+		if (shakeTimer) clearTimeout(shakeTimer);
+		shakingRow = state?.attempt?.guesses.length ?? 0;
+		shakeTimer = setTimeout(() => {
+			shakingRow = null;
+			shakeTimer = null;
+		}, 600);
+	}
+
 	async function handleGuess() {
 		if (isGuessInputLocked()) {
 			return;
@@ -113,6 +124,7 @@
 
 		if (normalized.length !== targetLength) {
 			error = `Guesses must be ${targetLength} letters.`;
+			triggerShake();
 			return;
 		}
 
@@ -133,6 +145,7 @@
 			}
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Unable to submit guess.';
+			triggerShake();
 		} finally {
 			submitting = false;
 		}
@@ -396,7 +409,7 @@
 						<div class="grid grid-rows-6 gap-1.5">
 							{#each Array(state.maxGuesses).keys() as rowIndex (rowIndex)}
 								<div
-									class="grid justify-center gap-1.5"
+									class={`grid justify-center gap-1.5${shakingRow === rowIndex ? ' animate-shake' : ''}`}
 									style={`grid-template-columns: repeat(${state.wordLength}, 3.5rem);`}
 									data-testid={`board-row-${rowIndex}`}
 								>
@@ -611,6 +624,35 @@
 		100% {
 			transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(var(--rot));
 			opacity: 0;
+		}
+	}
+
+	:global(.animate-shake) {
+		animation: shake 600ms ease-in-out;
+	}
+
+	@keyframes shake {
+		0%,
+		100% {
+			transform: translateX(0);
+		}
+		15% {
+			transform: translateX(-8px);
+		}
+		30% {
+			transform: translateX(7px);
+		}
+		45% {
+			transform: translateX(-6px);
+		}
+		60% {
+			transform: translateX(5px);
+		}
+		75% {
+			transform: translateX(-3px);
+		}
+		90% {
+			transform: translateX(2px);
 		}
 	}
 </style>
