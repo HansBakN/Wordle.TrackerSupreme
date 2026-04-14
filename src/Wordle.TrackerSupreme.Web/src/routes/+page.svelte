@@ -32,6 +32,8 @@
 	let statsTimer: ReturnType<typeof setTimeout> | null = null;
 	let shakingRow: number | null = null;
 	let shakeTimer: ReturnType<typeof setTimeout> | null = null;
+	let countdownInterval: ReturnType<typeof setInterval> | null = null;
+	let countdown = '';
 	const keyboardRows = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'];
 	const confettiDurationMs = 1200;
 
@@ -88,8 +90,18 @@
 
 		onDestroy(() => {
 			window.removeEventListener('keydown', keyHandler);
+			stopCountdown();
 			unsubscribe();
 		});
+	});
+
+	$effect(() => {
+		const status = state?.attempt?.status;
+		if (status === 'Solved' || status === 'Failed') {
+			startCountdown();
+		} else {
+			stopCountdown();
+		}
 	});
 
 	async function loadEverything() {
@@ -301,6 +313,32 @@
 		const month = String(date.getMonth() + 1).padStart(2, '0');
 		const year = date.getFullYear();
 		return `${day}/${month}-${year}`;
+	}
+
+	function computeCountdown(): string {
+		const now = new Date();
+		const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+		const diffMs = midnight.getTime() - now.getTime();
+		const totalSecs = Math.max(0, Math.floor(diffMs / 1000));
+		const h = Math.floor(totalSecs / 3600);
+		const m = Math.floor((totalSecs % 3600) / 60);
+		const s = totalSecs % 60;
+		return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+	}
+
+	function startCountdown() {
+		if (countdownInterval) return;
+		countdown = computeCountdown();
+		countdownInterval = setInterval(() => {
+			countdown = computeCountdown();
+		}, 1000);
+	}
+
+	function stopCountdown() {
+		if (countdownInterval) {
+			clearInterval(countdownInterval);
+			countdownInterval = null;
+		}
 	}
 
 	function resetCelebration() {
@@ -533,6 +571,14 @@
 								{:else if statsError}
 									<div class="mt-3 text-sm text-emerald-50/80">{statsError}</div>
 								{/if}
+							</div>
+						{/if}
+						{#if state?.attempt?.status === 'Solved' || state?.attempt?.status === 'Failed'}
+							<div
+								class="mt-4 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-center text-sm text-slate-200/80"
+								data-testid="countdown-timer"
+							>
+								Next puzzle in: <span class="font-mono font-semibold text-white">{countdown}</span>
 							</div>
 						{/if}
 					</div>
