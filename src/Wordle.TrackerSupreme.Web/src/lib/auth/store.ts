@@ -1,6 +1,6 @@
 import { AuthService } from '$lib/api-client/services/AuthService';
 import { configureApiClient, getApiBase, registerUnauthorizedHandler } from '$lib/api';
-import { writable } from 'svelte/store';
+import { get, writable } from 'svelte/store';
 import type { AuthResponse as ApiAuthResponse } from '$lib/api-client/models/AuthResponse';
 import type { PlayerResponse as ApiPlayerResponse } from '$lib/api-client/models/PlayerResponse';
 import type { AuthState, Player } from './types';
@@ -70,7 +70,9 @@ export function expireSession(message = 'Session expired. Please sign in again.'
 }
 
 registerUnauthorizedHandler(() => {
-	expireSession();
+	if (get(auth).user !== null) {
+		expireSession();
+	}
 });
 
 function setAuthenticated(result: ApiAuthResponse) {
