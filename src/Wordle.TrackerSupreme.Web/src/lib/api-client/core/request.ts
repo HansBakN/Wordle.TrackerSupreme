@@ -331,7 +331,8 @@ export const request = <T>(
 					body: responseHeader ?? responseBody
 				};
 
-				notifyUnauthorizedResponse(response.status === 401);
+				const isAuthBootstrapRequest = options.url === '/api/Auth/me' || options.url === '/api/auth/me';
+				notifyUnauthorizedResponse(response.status === 401 && !isAuthBootstrapRequest);
 
 				catchErrorCodes(options, result);
 
