@@ -9,10 +9,6 @@ test('submitting a guess only calls the API once', async ({ page }) => {
 			console.error('console', message.text());
 		}
 	});
-	await page.addInitScript(() => {
-		window.localStorage.setItem('wts_auth_token', 'test-token');
-	});
-
 	await page.route('**/api/Auth/me', async (route) => {
 		await route.fulfill({
 			status: 200,
@@ -265,10 +261,6 @@ test('guess controls stay locked while a submission is in flight', async ({ page
 			console.error('console', message.text());
 		}
 	});
-	await page.addInitScript(() => {
-		window.localStorage.setItem('wts_auth_token', 'test-token');
-	});
-
 	await page.route('**/api/Auth/me', async (route) => {
 		await route.fulfill({
 			status: 200,

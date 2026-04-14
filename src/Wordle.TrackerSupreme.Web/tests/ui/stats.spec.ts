@@ -10,10 +10,6 @@ test('stats page defaults to hard mode filters and excludes current player', asy
 		}
 	});
 
-	await page.addInitScript(() => {
-		window.localStorage.setItem('wts_auth_token', 'test-token');
-	});
-
 	await page.route('**/api/Auth/me', async (route) => {
 		await route.fulfill({
 			status: 200,

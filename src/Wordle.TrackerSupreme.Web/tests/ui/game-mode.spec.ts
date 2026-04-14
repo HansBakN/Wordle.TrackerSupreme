@@ -1,10 +1,6 @@
 import { test, expect } from '@playwright/test';
 
 test('players can switch to easy mode mid-game', async ({ page }) => {
-	await page.addInitScript(() => {
-		window.localStorage.setItem('wts_auth_token', 'test-token');
-	});
-
 	await page.route('**/api/Auth/me', async (route) => {
 		await route.fulfill({
 			status: 200,

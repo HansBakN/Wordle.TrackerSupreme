@@ -16,7 +16,8 @@ namespace Wordle.TrackerSupreme.Api.Controllers;
 public class AuthController(
     WordleTrackerSupremeDbContext dbContext,
     JwtTokenService tokenService,
-    PasswordHasher<Player> passwordHasher)
+    PasswordHasher<Player> passwordHasher,
+    IWebHostEnvironment environment)
     : ControllerBase
 {
     [EnableRateLimiting(AuthRateLimiting.PolicyName)]
@@ -52,8 +53,8 @@ public class AuthController(
         dbContext.Players.Add(player);
         await dbContext.SaveChangesAsync();
 
-        var token = tokenService.CreateToken(player);
-        return Ok(new AuthResponse(MapPlayer(player), token));
+        SignInPlayer(player);
+        return Ok(new AuthResponse(MapPlayer(player), null));
     }
 
     [EnableRateLimiting(AuthRateLimiting.PolicyName)]
@@ -75,8 +76,15 @@ public class AuthController(
             return Unauthorized(new { message = "Invalid credentials." });
         }
 
-        var token = tokenService.CreateToken(player);
-        return Ok(new AuthResponse(MapPlayer(player), token));
+        SignInPlayer(player);
+        return Ok(new AuthResponse(MapPlayer(player), null));
+    }
+
+    [HttpPost("signout")]
+    public IActionResult SignOutCurrentSession()
+    {
+        Response.Cookies.Delete(AuthCookie.CookieName, AuthCookie.BuildOptions(!environment.IsDevelopment()));
+        return NoContent();
     }
 
     [Authorize]
@@ -100,4 +108,13 @@ public class AuthController(
 
     private static PlayerResponse MapPlayer(Player player)
         => new(player.Id, player.DisplayName, player.Email, player.CreatedOn, player.IsAdmin);
+
+    private void SignInPlayer(Player player)
+    {
+        var token = tokenService.CreateToken(player);
+        Response.Cookies.Append(
+            AuthCookie.CookieName,
+            token,
+            AuthCookie.BuildOptions(!environment.IsDevelopment()));
+    }
 }

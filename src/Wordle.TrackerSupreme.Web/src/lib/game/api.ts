@@ -1,5 +1,4 @@
 import { getApiBase, notifyUnauthorizedResponse } from '$lib/api';
-import { OpenAPI } from '$lib/api-client';
 import { StatsService } from '$lib/api-client/services/StatsService';
 import type { GameStateResponse, PlayerStatsResponse, SolutionsResponse } from './types';
 
@@ -7,17 +6,14 @@ async function apiFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
 	const base = getApiBase();
 	const headers = new Headers(init.headers ?? {});
 	headers.set('Content-Type', 'application/json');
-	const token = OpenAPI.TOKEN;
-	if (token) {
-		headers.set('Authorization', `Bearer ${token}`);
-	}
 
 	const response = await fetch(`${base}${path}`, {
 		...init,
-		headers
+		headers,
+		credentials: 'include'
 	});
 
-	notifyUnauthorizedResponse(response.status === 401 && headers.has('Authorization'));
+	notifyUnauthorizedResponse(response.status === 401);
 
 	if (!response.ok) {
 		let message = 'Request failed';

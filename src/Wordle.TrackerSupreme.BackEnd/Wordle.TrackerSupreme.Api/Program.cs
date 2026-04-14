@@ -98,6 +98,23 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidAudience = audience,
             ClockSkew = TimeSpan.FromMinutes(2)
         };
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                if (!string.IsNullOrWhiteSpace(context.Token))
+                {
+                    return Task.CompletedTask;
+                }
+
+                if (context.Request.Cookies.TryGetValue(AuthCookie.CookieName, out var cookieToken))
+                {
+                    context.Token = cookieToken;
+                }
+
+                return Task.CompletedTask;
+            }
+        };
     });
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
@@ -166,6 +183,7 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
         policy.WithOrigins(allowedOrigins)
+            .AllowCredentials()
             .AllowAnyHeader()
             .AllowAnyMethod());
 });
