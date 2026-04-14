@@ -3,18 +3,17 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Wordle.TrackerSupreme.Api.Auth;
 using Wordle.TrackerSupreme.Api.Models.Auth;
 using Wordle.TrackerSupreme.Domain.Models;
-using Wordle.TrackerSupreme.Infrastructure.Database;
+using Wordle.TrackerSupreme.Domain.Repositories;
 
 namespace Wordle.TrackerSupreme.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
 public class AuthController(
-    WordleTrackerSupremeDbContext dbContext,
+    IPlayerRepository playerRepository,
     JwtTokenService tokenService,
     PasswordHasher<Player> passwordHasher,
     IWebHostEnvironment environment)
@@ -22,19 +21,17 @@ public class AuthController(
 {
     [EnableRateLimiting(AuthRateLimiting.PolicyName)]
     [HttpPost("signup")]
-    public async Task<ActionResult<AuthResponse>> SignUp([FromBody] SignUpRequest request)
+    public async Task<ActionResult<AuthResponse>> SignUp([FromBody] SignUpRequest request, CancellationToken cancellationToken)
     {
         var displayName = request.DisplayName.Trim();
         var email = request.Email.Trim().ToLowerInvariant();
 
-        var exists = await dbContext.Players.AnyAsync(p => p.DisplayName == displayName);
-        if (exists)
+        if (await playerRepository.IsDisplayNameTaken(displayName, null, cancellationToken))
         {
             return Conflict(new { message = "Display name is already taken." });
         }
 
-        var emailExists = await dbContext.Players.AnyAsync(p => p.Email == email);
-        if (emailExists)
+        if (await playerRepository.IsEmailTaken(email, null, cancellationToken))
         {
             return Conflict(new { message = "Email is already registered." });
         }
@@ -50,8 +47,7 @@ public class AuthController(
 
         player.PasswordHash = passwordHasher.HashPassword(player, request.Password);
 
-        dbContext.Players.Add(player);
-        await dbContext.SaveChangesAsync();
+        await playerRepository.AddPlayer(player, cancellationToken);
 
         SignInPlayer(player);
         return Ok(new AuthResponse(MapPlayer(player), null));
@@ -59,11 +55,11 @@ public class AuthController(
 
     [EnableRateLimiting(AuthRateLimiting.PolicyName)]
     [HttpPost("signin")]
-    public async Task<ActionResult<AuthResponse>> SignIn([FromBody] SignInRequest request)
+    public async Task<ActionResult<AuthResponse>> SignIn([FromBody] SignInRequest request, CancellationToken cancellationToken)
     {
         var email = request.Email.Trim().ToLowerInvariant();
 
-        var player = await dbContext.Players.FirstOrDefaultAsync(p => p.Email == email);
+        var player = await playerRepository.GetPlayerByEmail(email, cancellationToken);
 
         if (player is null)
         {
@@ -89,7 +85,7 @@ public class AuthController(
 
     [Authorize]
     [HttpGet("me")]
-    public async Task<ActionResult<PlayerResponse>> GetCurrentPlayer()
+    public async Task<ActionResult<PlayerResponse>> GetCurrentPlayer(CancellationToken cancellationToken)
     {
         var playerIdClaim = User.FindFirstValue("playerId");
         if (!Guid.TryParse(playerIdClaim, out var playerId))
@@ -97,7 +93,7 @@ public class AuthController(
             return Unauthorized();
         }
 
-        var player = await dbContext.Players.FirstOrDefaultAsync(p => p.Id == playerId);
+        var player = await playerRepository.GetPlayer(playerId, cancellationToken);
         if (player is null)
         {
             return Unauthorized();
