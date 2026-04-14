@@ -142,7 +142,7 @@ services:
       - tests-all
 
   tests-frontend:
-    image: mcr.microsoft.com/playwright:v1.49.1-jammy
+    image: mcr.microsoft.com/playwright:v1.57.0-jammy
     working_dir: /workspace/src/Wordle.TrackerSupreme.Web
     environment:
       CI: "1"
