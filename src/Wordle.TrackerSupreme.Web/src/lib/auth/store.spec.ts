@@ -160,4 +160,13 @@ describe('auth store', () => {
 		expect(get(auth).user).toBeNull();
 		expect(get(auth).error).toBe('Session expired. Please sign in again.');
 	});
+
+	it('unauthorized handler is a no-op when there is no active user session', () => {
+		auth.set({ user: null, token: null, ready: true, error: null });
+
+		unauthorizedHandler?.();
+
+		expect(get(auth).user).toBeNull();
+		expect(get(auth).error).toBeNull();
+	});
 });
