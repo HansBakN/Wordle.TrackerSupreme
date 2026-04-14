@@ -8,6 +8,7 @@
 	let loading = $state(false);
 	let error = $state<string | null>(null);
 	let entries = $state<LeaderboardEntryResponse[]>([]);
+	let hasLoaded = $state(false);
 
 	function formatAverage(value: number | null | undefined) {
 		if (value === null || value === undefined) {
@@ -24,6 +25,9 @@
 	}
 
 	async function loadLeaderboard() {
+		if (!$auth.user) {
+			return;
+		}
 		loading = true;
 		error = null;
 		try {
@@ -36,7 +40,22 @@
 	}
 
 	onMount(() => {
-		void loadLeaderboard();
+		if ($auth.user) {
+			hasLoaded = true;
+			void loadLeaderboard();
+		}
+	});
+
+	$effect(() => {
+		if ($auth.user && !hasLoaded) {
+			hasLoaded = true;
+			void loadLeaderboard();
+		}
+
+		if (!$auth.user && hasLoaded) {
+			hasLoaded = false;
+			entries = [];
+		}
 	});
 </script>
 
