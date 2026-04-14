@@ -2,7 +2,13 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { auth } from '$lib/auth/store';
-	import { enableEasyMode, fetchGameState, fetchMyStats, submitGuess } from '$lib/game/api';
+	import {
+		ApiResponseError,
+		enableEasyMode,
+		fetchGameState,
+		fetchMyStats,
+		submitGuess
+	} from '$lib/game/api';
 	import { getRevealDurationMs, shouldTriggerSolveCelebration } from '$lib/game/celebration';
 	import type { GameStateResponse, LetterResult, PlayerStatsResponse } from '$lib/game/types';
 	import { onDestroy, onMount } from 'svelte';
@@ -13,6 +19,7 @@
 	let guess = '';
 	let message: string | null = null;
 	let error: string | null = null;
+	let noPuzzleToday = false;
 	let initialized = false;
 	let submitting = false;
 	let animatedGuessId: string | null = null;
@@ -92,12 +99,21 @@
 	async function loadState() {
 		loadingState = true;
 		error = null;
+		noPuzzleToday = false;
 		animatedGuessId = null;
 		try {
 			state = await fetchGameState();
 			message = null;
 		} catch (err) {
-			error = err instanceof Error ? err.message : 'Unable to load today’s puzzle.';
+			if (
+				err instanceof ApiResponseError &&
+				err.status === 503 &&
+				err.code === 'puzzle_unavailable'
+			) {
+				noPuzzleToday = true;
+			} else {
+				error = err instanceof Error ? err.message : "Unable to load today's puzzle.";
+			}
 		} finally {
 			loadingState = false;
 		}
@@ -373,8 +389,8 @@
 						Puzzle for {formatPuzzleDate(state?.puzzleDate)}
 					</h1>
 					<p class="mt-2 max-w-2xl text-sm text-slate-200/80">
-						Solve today’s word before noon to keep your streak alive. After 12:00 PM you can still
-						play, but those practice runs will be tracked separately and won’t change your stats.
+						Solve today's word before noon to keep your streak alive. After 12:00 PM you can still
+						play, but those practice runs will be tracked separately and won't change your stats.
 					</p>
 				</div>
 				<div class="flex flex-col items-start gap-3 sm:items-end">
@@ -401,7 +417,7 @@
 				<div
 					class="mt-8 rounded-2xl border border-white/10 bg-black/20 p-6 text-center text-slate-200/70"
 				>
-					Loading today’s puzzle...
+					Loading today's puzzle...
 				</div>
 			{:else if state}
 				<div class="mt-6">
@@ -523,12 +539,22 @@
 				</div>
 			{/if}
 
-			{#if !loadingState && !state && error}
+			{#if !loadingState && noPuzzleToday}
+				<div
+					class="mt-8 rounded-2xl border border-amber-400/50 bg-amber-500/10 p-6 text-center text-amber-100"
+					data-testid="no-puzzle-today"
+				>
+					<p class="text-base font-semibold">No puzzle available today.</p>
+					<p class="mt-1 text-sm text-amber-100/80">
+						Check back later — today's puzzle hasn't been scheduled yet.
+					</p>
+				</div>
+			{:else if !loadingState && !state && error}
 				<div
 					class="mt-8 rounded-2xl border border-rose-400/50 bg-rose-500/10 p-6 text-center text-sm text-rose-100"
 					data-testid="daily-puzzle-error"
 				>
-					{error ?? 'Unable to load today’s puzzle.'}
+					{error ?? "Unable to load today's puzzle."}
 				</div>
 			{/if}
 		</section>

@@ -8,7 +8,7 @@ vi.mock('$lib/api', () => ({
 }));
 
 // Lazy import after mocks so the module picks them up.
-const { enableEasyMode, fetchGameState, submitGuess } = await import('./api');
+const { ApiResponseError, enableEasyMode, fetchGameState, submitGuess } = await import('./api');
 
 describe('api helpers', () => {
 	beforeEach(() => {
@@ -73,6 +73,24 @@ describe('api helpers', () => {
 		const call = fetchSpy.mock.calls[0];
 		expect(call[0]).toBe('http://api.test/api/game/easy-mode');
 		expect((call[1] as RequestInit)?.method).toBe('POST');
+	});
+
+	it('throws ApiResponseError with code when response has a code field', async () => {
+		const mockResponse = {
+			ok: false,
+			status: 503,
+			statusText: 'Service Unavailable',
+			text: () =>
+				Promise.resolve(JSON.stringify({ code: 'puzzle_unavailable', message: 'No puzzle today.' }))
+		} as Response;
+
+		vi.spyOn(globalThis, 'fetch' as never).mockResolvedValue(mockResponse);
+
+		const err = await fetchGameState().catch((e) => e);
+		expect(err).toBeInstanceOf(ApiResponseError);
+		expect((err as ApiResponseError).status).toBe(503);
+		expect((err as ApiResponseError).code).toBe('puzzle_unavailable');
+		expect((err as ApiResponseError).message).toBe('No puzzle today.');
 	});
 
 	it('submits guesses with a JSON payload', async () => {

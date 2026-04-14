@@ -2,6 +2,17 @@ import { getApiBase, notifyUnauthorizedResponse } from '$lib/api';
 import { StatsService } from '$lib/api-client/services/StatsService';
 import type { GameStateResponse, PlayerStatsResponse, SolutionsResponse } from './types';
 
+export class ApiResponseError extends Error {
+	readonly status: number;
+	readonly code: string | undefined;
+
+	constructor(message: string, status: number, code?: string) {
+		super(message);
+		this.status = status;
+		this.code = code;
+	}
+}
+
 async function apiFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
 	const base = getApiBase();
 	const headers = new Headers(init.headers ?? {});
@@ -17,17 +28,23 @@ async function apiFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
 
 	if (!response.ok) {
 		let message = 'Request failed';
+		let code: string | undefined;
 		const bodyText = await response.text();
 		if (bodyText) {
 			try {
 				const payload = JSON.parse(bodyText);
 				message = payload?.message ?? message;
+				code = payload?.code;
 			} catch {
 				message = bodyText;
 			}
 		}
 
-		throw new Error(message || `${response.status} ${response.statusText}`);
+		throw new ApiResponseError(
+			message || `${response.status} ${response.statusText}`,
+			response.status,
+			code
+		);
 	}
 
 	if (response.status === 204) {
