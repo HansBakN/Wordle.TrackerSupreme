@@ -136,7 +136,7 @@ public class GameplayServiceTests
         var act = async () => await gameplay.SubmitGuess(playerId, "PASTE");
 
         await act.Should().ThrowAsync<ArgumentException>()
-            .WithMessage("Hard mode: guess must keep revealed letters in their exact positions.");
+            .WithMessage("Hard mode: * must be in position *.");
     }
 
     [Fact]
@@ -151,7 +151,22 @@ public class GameplayServiceTests
         var act = async () => await gameplay.SubmitGuess(playerId, "AMASS");
 
         await act.Should().ThrowAsync<ArgumentException>()
-            .WithMessage("Hard mode: guess must include all revealed letters.");
+            .WithMessage("Hard mode: guess must include *.");
+    }
+
+    [Fact]
+    public async Task SubmitGuess_reports_required_duplicate_letter_count_in_hard_mode()
+    {
+        var repo = new FakeGameRepository();
+        var gameplay = CreateService(repo, new FakeGameClock(new DateOnly(2025, 1, 9)), "APPLE");
+        var playerId = Guid.NewGuid();
+
+        await gameplay.SubmitGuess(playerId, "PRIMP");
+
+        var act = async () => await gameplay.SubmitGuess(playerId, "PLAZA");
+
+        await act.Should().ThrowAsync<ArgumentException>()
+            .WithMessage("Hard mode: guess must include 2 P's.");
     }
 
     [Fact]

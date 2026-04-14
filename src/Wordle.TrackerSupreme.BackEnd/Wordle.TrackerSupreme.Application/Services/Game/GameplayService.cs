@@ -213,7 +213,7 @@ public class GameplayService(
             }
         }
 
-        foreach (var (position, letter) in requiredPositions)
+        foreach (var (position, letter) in requiredPositions.OrderBy(kv => kv.Key))
         {
             if (position < 0 || position >= guessWord.Length)
             {
@@ -222,16 +222,22 @@ public class GameplayService(
 
             if (guessWord[position] != letter)
             {
-                throw new ArgumentException("Hard mode: guess must keep revealed letters in their exact positions.");
+                throw new ArgumentException(
+                    $"Hard mode: {letter} must be in position {position + 1}.");
             }
         }
 
-        foreach (var (letter, count) in requiredLetterCounts)
+        foreach (var (letter, count) in requiredLetterCounts.OrderBy(kv => kv.Key))
         {
             var actualCount = guessWord.Count(c => c == letter);
             if (actualCount < count)
             {
-                throw new ArgumentException("Hard mode: guess must include all revealed letters.");
+                var message = count == 1
+                    ? $"Hard mode: guess must include {letter}."
+                    : $"Hard mode: guess must include {count} {letter}'s.";
+
+                throw new ArgumentException(
+                    message);
             }
         }
     }
