@@ -232,8 +232,12 @@ public class GameplayService(
             var actualCount = guessWord.Count(c => c == letter);
             if (actualCount < count)
             {
+                var message = count == 1
+                    ? $"Hard mode: guess must include {letter}."
+                    : $"Hard mode: guess must include {count} {letter}'s.";
+
                 throw new ArgumentException(
-                    $"Hard mode: guess must include {letter}.");
+                    message);
             }
         }
     }

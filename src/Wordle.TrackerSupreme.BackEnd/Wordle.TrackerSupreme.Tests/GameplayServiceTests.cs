@@ -155,6 +155,21 @@ public class GameplayServiceTests
     }
 
     [Fact]
+    public async Task SubmitGuess_reports_required_duplicate_letter_count_in_hard_mode()
+    {
+        var repo = new FakeGameRepository();
+        var gameplay = CreateService(repo, new FakeGameClock(new DateOnly(2025, 1, 9)), "APPLE");
+        var playerId = Guid.NewGuid();
+
+        await gameplay.SubmitGuess(playerId, "PRIMP");
+
+        var act = async () => await gameplay.SubmitGuess(playerId, "PLAZA");
+
+        await act.Should().ThrowAsync<ArgumentException>()
+            .WithMessage("Hard mode: guess must include 2 P's.");
+    }
+
+    [Fact]
     public async Task SubmitGuess_throws_duplicate_attempt_exception_when_save_detects_existing_attempt()
     {
         var repo = new FakeGameRepository
