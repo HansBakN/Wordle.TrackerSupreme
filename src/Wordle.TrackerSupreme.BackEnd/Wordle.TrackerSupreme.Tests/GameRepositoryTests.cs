@@ -71,4 +71,63 @@ public class GameRepositoryTests
         await act.Should().ThrowAsync<DuplicatePuzzleAttemptException>()
             .WithMessage("You already have an attempt for today's puzzle. Refresh to continue.");
     }
+
+    [Fact]
+    public async Task SaveChanges_translates_duplicate_guess_unique_index_violation()
+    {
+        await using var connection = new SqliteConnection("Data Source=:memory:");
+        await connection.OpenAsync();
+
+        var options = new DbContextOptionsBuilder<WordleTrackerSupremeDbContext>()
+            .UseSqlite(connection)
+            .Options;
+
+        var attemptId = Guid.NewGuid();
+
+        await using (var setupContext = new WordleTrackerSupremeDbContext(options))
+        {
+            await setupContext.Database.ExecuteSqlRawAsync(
+                """
+                CREATE TABLE Guesses (
+                    Id TEXT NOT NULL PRIMARY KEY,
+                    PlayerPuzzleAttemptId TEXT NOT NULL,
+                    GuessNumber INTEGER NOT NULL,
+                    GuessWord TEXT NOT NULL
+                );
+
+                CREATE UNIQUE INDEX IX_Guesses_PlayerPuzzleAttemptId_GuessNumber
+                    ON Guesses (PlayerPuzzleAttemptId, GuessNumber);
+                """);
+        }
+
+        await using (var seedContext = new WordleTrackerSupremeDbContext(options))
+        {
+            var existingId = Guid.NewGuid();
+            var guessWord = "CRANE";
+            await seedContext.Database.ExecuteSqlInterpolatedAsync(
+                $"""
+                INSERT INTO Guesses (Id, PlayerPuzzleAttemptId, GuessNumber, GuessWord)
+                VALUES ({existingId}, {attemptId}, {1}, {guessWord});
+                """);
+        }
+
+        await using var duplicateContext = new WordleTrackerSupremeDbContext(options);
+        var repository = new GameRepository(duplicateContext);
+        await repository.AddGuess(
+            new GuessAttempt
+            {
+                Id = Guid.NewGuid(),
+                PlayerPuzzleAttemptId = attemptId,
+                GuessNumber = 1,
+                GuessWord = "PLANT",
+                Feedback = []
+            },
+            [],
+            CancellationToken.None);
+
+        var act = async () => await repository.SaveChanges(CancellationToken.None);
+
+        await act.Should().ThrowAsync<InvalidOperationException>()
+            .WithMessage("A guess was already recorded for this slot. Refresh to see the current state.");
+    }
 }

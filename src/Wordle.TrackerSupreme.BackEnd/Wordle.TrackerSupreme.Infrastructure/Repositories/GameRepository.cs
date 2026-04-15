@@ -91,6 +91,11 @@ public class GameRepository(WordleTrackerSupremeDbContext dbContext) : IGameRepo
                 throw new DuplicatePuzzleAttemptException();
             }
 
+            if (await IsDuplicateGuessConflict(ex, cancellationToken))
+            {
+                throw new InvalidOperationException("A guess was already recorded for this slot. Refresh to see the current state.");
+            }
+
             throw;
         }
     }
@@ -119,6 +124,38 @@ public class GameRepository(WordleTrackerSupremeDbContext dbContext) : IGameRepo
                     cancellationToken);
 
             if (hasExistingAttempt)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private async Task<bool> IsDuplicateGuessConflict(DbUpdateException ex, CancellationToken cancellationToken)
+    {
+        var pendingGuesses = ex.Entries
+            .Select(entry => entry.Entity)
+            .OfType<GuessAttempt>()
+            .Where(g => g.PlayerPuzzleAttemptId != Guid.Empty && g.GuessNumber > 0)
+            .ToList();
+
+        if (pendingGuesses.Count == 0)
+        {
+            return false;
+        }
+
+        foreach (var guess in pendingGuesses)
+        {
+            var hasExistingGuess = await dbContext.Guesses
+                .AsNoTracking()
+                .AnyAsync(
+                    existing => existing.Id != guess.Id &&
+                                existing.PlayerPuzzleAttemptId == guess.PlayerPuzzleAttemptId &&
+                                existing.GuessNumber == guess.GuessNumber,
+                    cancellationToken);
+
+            if (hasExistingGuess)
             {
                 return true;
             }
