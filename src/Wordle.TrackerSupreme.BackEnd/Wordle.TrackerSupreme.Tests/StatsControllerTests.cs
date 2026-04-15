@@ -113,6 +113,67 @@ public class StatsControllerTests
         payload.Single().DisplayName.Should().Be("Active");
     }
 
+    [Fact]
+    public async Task GetTodayLeaderboard_orders_solved_then_failed_then_in_progress_for_current_puzzle()
+    {
+        var anchorDate = new DateOnly(2025, 1, 2);
+
+        var speedy = CreatePlayer("Speedy");
+        speedy.Attempts.Add(CreateAttempt(speedy, anchorDate, AttemptStatus.Solved, true, 2));
+
+        var steady = CreatePlayer("Steady");
+        steady.Attempts.Add(CreateAttempt(steady, anchorDate, AttemptStatus.Solved, false, 3));
+
+        var unlucky = CreatePlayer("Unlucky");
+        unlucky.Attempts.Add(CreateAttempt(unlucky, anchorDate, AttemptStatus.Failed, true, 6));
+
+        var stillPlaying = CreatePlayer("StillPlaying");
+        stillPlaying.Attempts.Add(CreateAttempt(stillPlaying, anchorDate, AttemptStatus.InProgress, true, 4));
+
+        var yesterday = CreatePlayer("Yesterday");
+        yesterday.Attempts.Add(CreateAttempt(yesterday, anchorDate.AddDays(-1), AttemptStatus.Solved, true, 1));
+
+        var repo = new FakePlayerRepository([speedy, steady, unlucky, stillPlaying, yesterday]);
+        var controller = new StatsController(repo, new PlayerStatisticsService(), new FakeGameClock(anchorDate));
+
+        var result = await controller.GetTodayLeaderboard(CancellationToken.None);
+        var okResult = result.Result as OkObjectResult;
+
+        okResult.Should().NotBeNull();
+        var payload = okResult!.Value.Should().BeAssignableTo<IReadOnlyList<TodayLeaderboardEntryResponse>>().Subject;
+
+        payload.Select(entry => entry.DisplayName).Should().Equal("Speedy", "Steady", "Unlucky", "StillPlaying");
+        payload.Select(entry => entry.Rank).Should().Equal(1, 2, 3, 4);
+        payload.Select(entry => entry.Result).Should().Equal("Solved", "Solved", "Failed", "In progress");
+        payload.Select(entry => entry.GuessCount).Should().Equal(2, 3, 6, 4);
+        payload.Select(entry => entry.PlayedInHardMode).Should().Equal(true, false, true, true);
+    }
+
+    [Fact]
+    public async Task GetTodayLeaderboard_excludes_players_without_a_current_puzzle_attempt()
+    {
+        var anchorDate = new DateOnly(2025, 1, 2);
+
+        var idle = CreatePlayer("Idle");
+        var yesterday = CreatePlayer("Yesterday");
+        yesterday.Attempts.Add(CreateAttempt(yesterday, anchorDate.AddDays(-1), AttemptStatus.Solved, true, 2));
+
+        var active = CreatePlayer("Active");
+        active.Attempts.Add(CreateAttempt(active, anchorDate, AttemptStatus.InProgress, false, 1));
+
+        var repo = new FakePlayerRepository([idle, yesterday, active]);
+        var controller = new StatsController(repo, new PlayerStatisticsService(), new FakeGameClock(anchorDate));
+
+        var result = await controller.GetTodayLeaderboard(CancellationToken.None);
+        var okResult = result.Result as OkObjectResult;
+
+        okResult.Should().NotBeNull();
+        var payload = okResult!.Value.Should().BeAssignableTo<IReadOnlyList<TodayLeaderboardEntryResponse>>().Subject;
+
+        payload.Should().ContainSingle();
+        payload.Single().DisplayName.Should().Be("Active");
+    }
+
     private static Player CreatePlayer(string name)
     {
         return new Player

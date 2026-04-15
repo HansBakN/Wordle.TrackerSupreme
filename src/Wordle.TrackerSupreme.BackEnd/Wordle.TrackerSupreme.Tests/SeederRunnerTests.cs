@@ -50,7 +50,7 @@ public class SeederRunnerTests
         var totalPlayers = options.PlayerCount + 1;
         dbContext.Players.Should().HaveCount(totalPlayers);
         dbContext.DailyPuzzles.Should().HaveCount(options.PuzzleDays);
-        var featuredCount = Math.Min(3, totalPlayers);
+        var featuredCount = Math.Min(4, totalPlayers);
         dbContext.Attempts.Should().HaveCount(totalPlayers * 5 + featuredCount);
 
         var attempts = await dbContext.Attempts
@@ -128,7 +128,7 @@ public class SeederRunnerTests
         }
 
         var totalPlayers = options.PlayerCount + 1;
-        var featuredCount = Math.Min(3, totalPlayers);
+        var featuredCount = Math.Min(4, totalPlayers);
         var expectedPerPlayer = Math.Min(
             options.PuzzleDays,
             options.MinSolvedPuzzles + options.FailedPuzzlesMin + options.InProgressPuzzlesMin);

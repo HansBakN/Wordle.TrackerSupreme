@@ -674,6 +674,42 @@
 				}
 			}
 		},
+		"/api/stats/leaderboard/today": {
+			"get": {
+				"tags": ["Stats"],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/TodayLeaderboardEntryResponse"
+									}
+								}
+							},
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/TodayLeaderboardEntryResponse"
+									}
+								}
+							},
+							"text/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/TodayLeaderboardEntryResponse"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/api/Status": {
 			"get": {
 				"tags": ["Status"],
@@ -1185,6 +1221,33 @@
 						"items": {
 							"$ref": "#/components/schemas/SolutionEntryResponse"
 						}
+					}
+				},
+				"additionalProperties": false
+			},
+			"TodayLeaderboardEntryResponse": {
+				"type": "object",
+				"properties": {
+					"rank": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"playerId": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"displayName": {
+						"type": "string"
+					},
+					"result": {
+						"type": "string"
+					},
+					"guessCount": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"playedInHardMode": {
+						"type": "boolean"
 					}
 				},
 				"additionalProperties": false

@@ -6,6 +6,7 @@ import type { LeaderboardEntryResponse } from '../models/LeaderboardEntryRespons
 import type { PlayerStatsEntryResponse } from '../models/PlayerStatsEntryResponse';
 import type { PlayerStatsFilterRequest } from '../models/PlayerStatsFilterRequest';
 import type { PlayerStatsResponse } from '../models/PlayerStatsResponse';
+import type { TodayLeaderboardEntryResponse } from '../models/TodayLeaderboardEntryResponse';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
@@ -44,6 +45,18 @@ export class StatsService {
 		return __request(OpenAPI, {
 			method: 'GET',
 			url: '/api/stats/leaderboard'
+		});
+	}
+	/**
+	 * @returns TodayLeaderboardEntryResponse OK
+	 * @throws ApiError
+	 */
+	public static getApiStatsLeaderboardToday(): CancelablePromise<
+		Array<TodayLeaderboardEntryResponse>
+	> {
+		return __request(OpenAPI, {
+			method: 'GET',
+			url: '/api/stats/leaderboard/today'
 		});
 	}
 }

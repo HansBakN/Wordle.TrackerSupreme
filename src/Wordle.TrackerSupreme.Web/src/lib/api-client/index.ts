@@ -29,6 +29,7 @@ export type { SignUpRequest } from './models/SignUpRequest';
 export type { SolutionEntryResponse } from './models/SolutionEntryResponse';
 export type { SolutionsResponse } from './models/SolutionsResponse';
 export type { SubmitGuessRequest } from './models/SubmitGuessRequest';
+export type { TodayLeaderboardEntryResponse } from './models/TodayLeaderboardEntryResponse';
 
 export { AdminService } from './services/AdminService';
 export { AuthService } from './services/AuthService';
