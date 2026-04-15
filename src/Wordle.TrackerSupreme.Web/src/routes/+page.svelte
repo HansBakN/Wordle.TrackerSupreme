@@ -9,6 +9,7 @@
 		fetchMyStats,
 		submitGuess
 	} from '$lib/game/api';
+	import { describeTileForScreenReader } from '$lib/game/accessibility';
 	import { getRevealDurationMs, shouldTriggerSolveCelebration } from '$lib/game/celebration';
 	import {
 		buildConfettiPieces,
@@ -39,6 +40,8 @@
 	let shakeTimer: ReturnType<typeof setTimeout> | null = null;
 	let countdownInterval: ReturnType<typeof setInterval> | null = null;
 	let countdown = '';
+	let announcement: string | null = null;
+	let announcementIsError = false;
 	const keyboardRows = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'];
 	const confettiDurationMs = 1200;
 
@@ -99,6 +102,8 @@
 	}
 
 	$: guessInputLocked = !state || !state.canGuess || submitting;
+	$: announcement = error ?? message;
+	$: announcementIsError = error !== null;
 
 	async function loadEverything() {
 		await loadState();
@@ -451,12 +456,14 @@
 			{:else if state}
 				<div class="mt-6">
 					<div class="space-y-4 rounded-2xl border border-white/10 bg-black/20 p-6 shadow-inner">
-						<div class="grid grid-rows-6 gap-1.5">
+						<div class="grid grid-rows-6 gap-1.5" role="grid" aria-label="Wordle board">
 							{#each Array(state.maxGuesses).keys() as rowIndex (rowIndex)}
 								<div
 									class={`grid justify-center gap-1.5${shakingRow === rowIndex ? ' animate-shake' : ''}`}
 									style={`grid-template-columns: repeat(${state.wordLength}, 3.5rem);`}
 									data-testid={`board-row-${rowIndex}`}
+									role="row"
+									aria-label={`Guess row ${rowIndex + 1}`}
 								>
 									{#if state.attempt?.guesses[rowIndex]}
 										{#each state.attempt.guesses[rowIndex].feedback as fb (fb.position)}
@@ -466,6 +473,8 @@
 													state.attempt.guesses[rowIndex].guessId,
 													fb.position
 												)}
+												role="gridcell"
+												aria-label={describeTileForScreenReader(fb.letter, fb.result)}
 											>
 												{fb.letter}
 											</div>
@@ -473,9 +482,19 @@
 									{:else}
 										{#each Array(state.wordLength).keys() as col (col)}
 											{#if rowIndex === (state.attempt?.guesses.length ?? 0)}
-												<div class={tileClass(null)}>{(guess[col] ?? '').toUpperCase()}</div>
+												<div
+													class={tileClass(null)}
+													role="gridcell"
+													aria-label={describeTileForScreenReader(guess[col] ?? '', null)}
+												>
+													{(guess[col] ?? '').toUpperCase()}
+												</div>
 											{:else}
-												<div class={tileClass(null)}></div>
+												<div
+													class={tileClass(null)}
+													role="gridcell"
+													aria-label={describeTileForScreenReader('', null)}
+												></div>
 											{/if}
 										{/each}
 									{/if}
@@ -483,23 +502,19 @@
 							{/each}
 						</div>
 
-						{#if message}
+						{#if announcement}
 							<div
-								class={`rounded-xl border px-4 py-3 text-sm ${state?.attempt?.status === 'Failed' ? 'border-amber-300/40 bg-amber-400/10 text-amber-50' : 'border-emerald-300/40 bg-emerald-400/10 text-emerald-50'}`}
-								data-testid="completed-message"
+								class={`rounded-xl border px-4 py-3 text-sm ${announcementIsError ? 'border-rose-400/40 bg-rose-500/10 text-rose-50' : state?.attempt?.status === 'Failed' ? 'border-amber-300/40 bg-amber-400/10 text-amber-50' : 'border-emerald-300/40 bg-emerald-400/10 text-emerald-50'}`}
+								data-testid={announcementIsError ? 'error-message' : 'completed-message'}
+								role="status"
+								aria-live="polite"
+								aria-atomic="true"
 							>
-								{message}
-							</div>
-						{/if}
-						{#if error}
-							<div
-								class="rounded-xl border border-rose-400/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-50"
-							>
-								{error}
+								{announcement}
 							</div>
 						{/if}
 
-						<div class="space-y-3 pt-3">
+						<div class="space-y-3 pt-3" role="group" aria-label="On-screen keyboard">
 							{#each keyboardRows as row, rowIndex (rowIndex)}
 								<div class="flex items-center justify-center gap-2">
 									{#if rowIndex === 2}
@@ -508,6 +523,7 @@
 											onclick={removeLetter}
 											disabled={guessInputLocked}
 											data-testid="remove-letter"
+											aria-label="Remove letter"
 										>
 											Back
 										</button>
@@ -528,6 +544,7 @@
 											onclick={submitFromKeyboard}
 											disabled={guessInputLocked}
 											data-testid="submit-guess"
+											aria-label="Submit guess"
 										>
 											Enter
 										</button>
