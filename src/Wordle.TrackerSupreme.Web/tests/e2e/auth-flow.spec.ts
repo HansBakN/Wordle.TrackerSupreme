@@ -16,8 +16,16 @@ test('user can sign up, sign out, and sign back in', async ({ page }) => {
 	await expect(page.getByRole('link', { name: 'Sign in' })).toBeVisible();
 
 	await page.goto('/signin');
-	await page.getByLabel('Email').fill(credentials.email);
-	await page.getByLabel('Password').fill(credentials.password);
+	const emailInput = page.getByLabel('Email');
+	await emailInput.click();
+	await emailInput.pressSequentially(credentials.email);
+	await expect(emailInput).toHaveValue(credentials.email);
+
+	const passwordInput = page.getByLabel('Password');
+	await passwordInput.click();
+	await passwordInput.pressSequentially(credentials.password);
+	await expect(passwordInput).toHaveValue(credentials.password);
+
 	await page.getByRole('button', { name: 'Sign in' }).click();
 	await page.waitForURL('**/');
 
