@@ -11,7 +11,7 @@
 	} from '$lib/game/api';
 	import { getRevealDurationMs, shouldTriggerSolveCelebration } from '$lib/game/celebration';
 	import type { GameStateResponse, LetterResult, PlayerStatsResponse } from '$lib/game/types';
-	import { onDestroy, onMount } from 'svelte';
+	import { onDestroy, onMount, tick } from 'svelte';
 
 	let checking = true;
 	let loadingState = true;
@@ -104,6 +104,8 @@
 		}
 	}
 
+	$: guessInputLocked = !state || !state.canGuess || submitting;
+
 	async function loadEverything() {
 		await loadState();
 	}
@@ -161,6 +163,7 @@
 		const previousStatus = currentState.attempt?.status ?? null;
 		const previousGuessId = currentState.attempt?.guesses.at(-1)?.guessId ?? null;
 		submitting = true;
+		await tick();
 		try {
 			state = await submitGuess(normalized);
 			const latestGuessId = state.attempt?.guesses.at(-1)?.guessId ?? null;
@@ -514,7 +517,7 @@
 										<button
 											class="flex h-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 text-xs font-semibold tracking-[0.15em] text-white/80 uppercase transition hover:border-white/30"
 											onclick={removeLetter}
-											disabled={isGuessInputLocked()}
+											disabled={guessInputLocked}
 											data-testid="remove-letter"
 										>
 											Back
@@ -524,7 +527,7 @@
 										<button
 											class={keyClass(letter)}
 											onclick={() => pushLetter(letter)}
-											disabled={isGuessInputLocked()}
+											disabled={guessInputLocked}
 											data-testid={`keyboard-key-${letter}`}
 										>
 											{letter}
@@ -534,7 +537,7 @@
 										<button
 											class="flex h-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 text-xs font-semibold tracking-[0.15em] text-white/80 uppercase transition hover:border-white/30"
 											onclick={submitFromKeyboard}
-											disabled={isGuessInputLocked()}
+											disabled={guessInputLocked}
 											data-testid="submit-guess"
 										>
 											Enter
