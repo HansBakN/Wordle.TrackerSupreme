@@ -1,14 +1,17 @@
 using System.Security.Claims;
 using FluentAssertions;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Wordle.TrackerSupreme.Api.Auth;
 using Wordle.TrackerSupreme.Api.Controllers;
 using Wordle.TrackerSupreme.Api.Models.Auth;
 using Wordle.TrackerSupreme.Domain.Models;
 using Wordle.TrackerSupreme.Domain.Repositories;
+using Wordle.TrackerSupreme.Tests.Fakes;
 using Xunit;
 
 namespace Wordle.TrackerSupreme.Tests;
@@ -32,10 +35,13 @@ public class AuthControllerTests
             ExpiryMinutes = 60
         });
 
+        var env = new FakeWebHostEnvironment();
+
         var controller = new AuthController(
             repository,
             new JwtTokenService(jwtSettings),
-            new PasswordHasher<Player>())
+            new PasswordHasher<Player>(),
+            env)
         {
             ControllerContext = new ControllerContext
             {
