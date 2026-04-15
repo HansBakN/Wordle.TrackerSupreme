@@ -11,7 +11,7 @@
 	} from '$lib/game/api';
 	import { getRevealDurationMs, shouldTriggerSolveCelebration } from '$lib/game/celebration';
 	import type { GameStateResponse, LetterResult, PlayerStatsResponse } from '$lib/game/types';
-	import { onDestroy, onMount } from 'svelte';
+	import { onDestroy, onMount, tick } from 'svelte';
 
 	let checking = true;
 	let loadingState = true;
@@ -32,6 +32,8 @@
 	let statsTimer: ReturnType<typeof setTimeout> | null = null;
 	let shakingRow: number | null = null;
 	let shakeTimer: ReturnType<typeof setTimeout> | null = null;
+	let countdownInterval: ReturnType<typeof setInterval> | null = null;
+	let countdown = '';
 	const keyboardRows = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'];
 	const confettiDurationMs = 1200;
 
@@ -88,9 +90,21 @@
 
 		onDestroy(() => {
 			window.removeEventListener('keydown', keyHandler);
+			stopCountdown();
 			unsubscribe();
 		});
 	});
+
+	$: {
+		const status = state?.attempt?.status;
+		if (status === 'Solved' || status === 'Failed') {
+			startCountdown();
+		} else {
+			stopCountdown();
+		}
+	}
+
+	$: guessInputLocked = !state || !state.canGuess || submitting;
 
 	async function loadEverything() {
 		await loadState();
@@ -162,6 +176,7 @@
 		const previousStatus = currentState.attempt?.status ?? null;
 		const previousGuessId = currentState.attempt?.guesses.at(-1)?.guessId ?? null;
 		submitting = true;
+		await tick();
 		try {
 			state = await submitGuess(normalized);
 			const latestGuessId = state.attempt?.guesses.at(-1)?.guessId ?? null;
@@ -314,6 +329,32 @@
 		const month = String(date.getMonth() + 1).padStart(2, '0');
 		const year = date.getFullYear();
 		return `${day}/${month}-${year}`;
+	}
+
+	function computeCountdown(): string {
+		const now = new Date();
+		const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+		const diffMs = midnight.getTime() - now.getTime();
+		const totalSecs = Math.max(0, Math.floor(diffMs / 1000));
+		const h = Math.floor(totalSecs / 3600);
+		const m = Math.floor((totalSecs % 3600) / 60);
+		const s = totalSecs % 60;
+		return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+	}
+
+	function startCountdown() {
+		if (countdownInterval) return;
+		countdown = computeCountdown();
+		countdownInterval = setInterval(() => {
+			countdown = computeCountdown();
+		}, 1000);
+	}
+
+	function stopCountdown() {
+		if (countdownInterval) {
+			clearInterval(countdownInterval);
+			countdownInterval = null;
+		}
 	}
 
 	function resetCelebration() {
@@ -490,7 +531,7 @@
 										<button
 											class="flex h-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 text-xs font-semibold tracking-[0.15em] text-white/80 uppercase transition hover:border-white/30"
 											onclick={removeLetter}
-											disabled={isGuessInputLocked()}
+											disabled={guessInputLocked}
 											data-testid="remove-letter"
 										>
 											Back
@@ -500,7 +541,7 @@
 										<button
 											class={keyClass(letter)}
 											onclick={() => pushLetter(letter)}
-											disabled={isGuessInputLocked()}
+											disabled={guessInputLocked}
 											data-testid={`keyboard-key-${letter}`}
 										>
 											{letter}
@@ -510,7 +551,7 @@
 										<button
 											class="flex h-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 text-xs font-semibold tracking-[0.15em] text-white/80 uppercase transition hover:border-white/30"
 											onclick={submitFromKeyboard}
-											disabled={isGuessInputLocked()}
+											disabled={guessInputLocked}
 											data-testid="submit-guess"
 										>
 											Enter
@@ -547,6 +588,14 @@
 								{:else if statsError}
 									<div class="mt-3 text-sm text-emerald-50/80">{statsError}</div>
 								{/if}
+							</div>
+						{/if}
+						{#if state?.attempt?.status === 'Solved' || state?.attempt?.status === 'Failed'}
+							<div
+								class="mt-4 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-center text-sm text-slate-200/80"
+								data-testid="countdown-timer"
+							>
+								Next puzzle in: <span class="font-mono font-semibold text-white">{countdown}</span>
 							</div>
 						{/if}
 					</div>
