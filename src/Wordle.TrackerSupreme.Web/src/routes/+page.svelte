@@ -16,6 +16,7 @@
 		defaultConfettiPieceCount,
 		type ConfettiPiece
 	} from '$lib/game/confetti';
+	import { getKeyboardLetterState } from '$lib/game/keyboard';
 	import type { GameStateResponse, LetterResult, PlayerStatsResponse } from '$lib/game/types';
 	import { onDestroy, onMount, tick } from 'svelte';
 
@@ -278,32 +279,8 @@
 		return `animation-delay:${position * 220}ms`;
 	}
 
-	function keyState(letter: string): LetterResult | 'Used' | null {
-		if (!state?.attempt?.guesses?.length) {
-			return null;
-		}
-		let best: LetterResult | 'Used' | null = null;
-
-		for (const guessItem of state.attempt.guesses) {
-			for (const fb of guessItem.feedback) {
-				if (fb.letter !== letter) {
-					continue;
-				}
-				if (fb.result === 'Correct') {
-					return 'Correct';
-				}
-				if (fb.result === 'Present') {
-					best = 'Present';
-				} else if (!best) {
-					best = 'Used';
-				}
-			}
-			if (!best && guessItem.guessWord.includes(letter)) {
-				best = 'Used';
-			}
-		}
-
-		return best;
+	function keyState(letter: string): LetterResult | null {
+		return getKeyboardLetterState(state?.attempt?.guesses, letter);
 	}
 
 	function keyClass(letter: string) {
@@ -316,8 +293,8 @@
 		if (stateKey === 'Present') {
 			return `${base} border-amber-300/70 bg-amber-300 text-slate-900`;
 		}
-		if (stateKey === 'Used') {
-			return `${base} border-white/25 bg-white/50 text-slate-900`;
+		if (stateKey === 'Absent') {
+			return `${base} border-slate-500/70 bg-slate-600 text-slate-100`;
 		}
 		return `${base} border-white/60 bg-white/90 text-slate-900 shadow hover:border-white hover:bg-white`;
 	}
@@ -534,6 +511,7 @@
 											onclick={() => pushLetter(letter)}
 											disabled={guessInputLocked}
 											data-testid={`keyboard-key-${letter}`}
+											data-state={(keyState(letter) ?? 'unused').toLowerCase()}
 										>
 											{letter}
 										</button>
