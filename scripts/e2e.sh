@@ -47,7 +47,8 @@ cleanup() {
 
 trap cleanup EXIT
 
-"${compose[@]}" --profile app up -d --build db api web
+ASPNETCORE_ENVIRONMENT=Development \
+  "${compose[@]}" --profile app up -d --build db api web
 
 "${compose[@]}" logs -f --no-color api >"$ARTIFACT_DIR/backend.log" 2>&1 &
 BACKEND_LOG_PID=$!
