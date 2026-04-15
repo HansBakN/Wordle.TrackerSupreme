@@ -177,7 +177,7 @@ public class SeedDataGenerator(
             return;
         }
 
-        var featuredCount = Math.Min(3, players.Count);
+        var featuredCount = Math.Min(4, players.Count);
 
         for (int index = 0; index < featuredCount; index++)
         {
@@ -216,11 +216,11 @@ public class SeedDataGenerator(
                 attempt = BuildFeaturedAttempt(
                     player,
                     puzzle,
-                    AttemptStatus.Solved,
-                    playedInHardMode: false,
-                    createdOn: puzzle.PuzzleDate.ToDateTime(new TimeOnly(15, 20)),
-                    completedOn: puzzle.PuzzleDate.ToDateTime(new TimeOnly(15, 45)),
-                    guessCount: 4);
+                    index == 2 ? AttemptStatus.Solved : AttemptStatus.InProgress,
+                    playedInHardMode: index != 2,
+                    createdOn: puzzle.PuzzleDate.ToDateTime(index == 2 ? new TimeOnly(15, 20) : new TimeOnly(11, 10)),
+                    completedOn: puzzle.PuzzleDate.ToDateTime(index == 2 ? new TimeOnly(15, 45) : new TimeOnly(11, 10)),
+                    guessCount: index == 2 ? 4 : Math.Max(2, _gameOptions.MaxGuesses - 2));
             }
 
             attempts.Add(attempt);

@@ -15,4 +15,11 @@ test('leaderboard renders seeded entries for signed-in users', async ({ page }) 
 	await expect(page.getByRole('heading', { name: 'Hard mode before noon' })).toBeVisible();
 	await expect(page.getByTestId('leaderboard-table')).toBeVisible();
 	await expect(page.getByTestId('leaderboard-row').first()).toBeVisible();
+
+	await page.getByRole('tab', { name: "Today's puzzle" }).click();
+
+	await expect(page.getByRole('heading', { name: "Today's puzzle" })).toBeVisible();
+	await expect(page.getByTestId('leaderboard-table')).toBeVisible();
+	await expect(page.getByText('Solved').first()).toBeVisible();
+	await expect(page.getByText('In progress').first()).toBeVisible();
 });

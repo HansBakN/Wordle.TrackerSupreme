@@ -115,6 +115,53 @@ public class StatsController(
         return Ok(leaderboard);
     }
 
+    [HttpGet("leaderboard/today")]
+    public async Task<ActionResult<IReadOnlyList<TodayLeaderboardEntryResponse>>> GetTodayLeaderboard(CancellationToken cancellationToken)
+    {
+        var today = gameClock.Today;
+        var players = await playerRepository.GetPlayersWithAttempts(cancellationToken);
+        var ranked = players
+            .Select(player => player.Attempts
+                .Where(attempt => attempt.DailyPuzzle?.PuzzleDate == today)
+                .OrderByDescending(attempt => attempt.CreatedOn)
+                .FirstOrDefault())
+            .Where(attempt => attempt is not null)
+            .Select(attempt => attempt!)
+            .OrderBy(attempt => attempt.Status switch
+            {
+                AttemptStatus.Solved => 0,
+                AttemptStatus.Failed => 1,
+                _ => 2
+            })
+            .ThenBy(attempt => attempt.Status == AttemptStatus.InProgress ? int.MaxValue : attempt.GuessCount ?? int.MaxValue)
+            .ThenBy(attempt => attempt.CompletedOn ?? DateTime.MaxValue)
+            .ThenByDescending(attempt => attempt.Status == AttemptStatus.InProgress ? attempt.GuessCount ?? 0 : 0)
+            .ThenBy(attempt => attempt.Player.DisplayName)
+            .ToList();
+
+        var leaderboard = new List<TodayLeaderboardEntryResponse>();
+        var rank = 1;
+
+        foreach (var attempt in ranked)
+        {
+            leaderboard.Add(new TodayLeaderboardEntryResponse(
+                rank,
+                attempt.PlayerId,
+                attempt.Player.DisplayName,
+                attempt.Status switch
+                {
+                    AttemptStatus.Solved => "Solved",
+                    AttemptStatus.Failed => "Failed",
+                    _ => "In progress"
+                },
+                attempt.GuessCount ?? 0,
+                attempt.PlayedInHardMode));
+            rank += 1;
+        }
+
+        return Ok(leaderboard);
+    }
+
     private static PlayerStatsResponse MapStats(PlayerStatistics stats)
     {
         return new PlayerStatsResponse(
