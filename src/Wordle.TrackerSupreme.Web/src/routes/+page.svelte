@@ -17,7 +17,7 @@
 		type ConfettiPiece
 	} from '$lib/game/confetti';
 	import type { GameStateResponse, LetterResult, PlayerStatsResponse } from '$lib/game/types';
-	import { onDestroy, onMount, tick } from 'svelte';
+	import { onMount, tick } from 'svelte';
 
 	let checking = true;
 	let loadingState = true;
@@ -84,12 +84,11 @@
 		};
 
 		window.addEventListener('keydown', keyHandler);
-
-		onDestroy(() => {
+		return () => {
 			window.removeEventListener('keydown', keyHandler);
 			stopCountdown();
 			unsubscribe();
-		});
+		};
 	});
 
 	$: {
