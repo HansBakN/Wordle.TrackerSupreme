@@ -93,6 +93,27 @@ describe('api helpers', () => {
 		expect((err as ApiResponseError).message).toBe('No puzzle today.');
 	});
 
+	it('throws error detail from ProblemDetails payload when request fails', async () => {
+		const mockResponse = {
+			ok: false,
+			status: 409,
+			statusText: 'Conflict',
+			text: () =>
+				Promise.resolve(
+					JSON.stringify({
+						type: 'https://tools.ietf.org/html/rfc9110#section-15.5.10',
+						title: 'Conflict',
+						status: 409,
+						detail: 'You already have an attempt for today.'
+					})
+				)
+		} as Response;
+
+		vi.spyOn(globalThis, 'fetch' as never).mockResolvedValue(mockResponse);
+
+		await expect(submitGuess('crane')).rejects.toThrowError('You already have an attempt for today.');
+	});
+
 	it('submits guesses with a JSON payload', async () => {
 		const mockResponse = {
 			ok: true,
