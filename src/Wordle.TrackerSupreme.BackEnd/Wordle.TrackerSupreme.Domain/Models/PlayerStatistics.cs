@@ -9,4 +9,5 @@ public class PlayerStatistics
     public int CurrentStreak { get; set; }
     public int LongestStreak { get; set; }
     public double? AverageGuessCount { get; set; }
+    public IReadOnlyDictionary<int, int> GuessDistribution { get; set; } = new Dictionary<int, int>();
 }

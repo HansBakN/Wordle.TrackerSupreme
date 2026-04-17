@@ -171,6 +171,7 @@ public class StatsController(
             stats.PracticeAttempts,
             stats.CurrentStreak,
             stats.LongestStreak,
-            stats.AverageGuessCount);
+            stats.AverageGuessCount,
+            stats.GuessDistribution);
     }
 }

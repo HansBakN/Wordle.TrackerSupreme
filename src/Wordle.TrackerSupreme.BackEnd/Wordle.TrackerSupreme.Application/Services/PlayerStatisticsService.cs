@@ -39,6 +39,11 @@ public class PlayerStatisticsService : IPlayerStatisticsService
 
         var (currentStreak, longestStreak) = CalculateStreaks(countedAttempts);
 
+        var guessDistribution = countedAttempts
+            .Where(a => a.Status == AttemptStatus.Solved && a.GuessCount.HasValue)
+            .GroupBy(a => a.GuessCount!.Value)
+            .ToDictionary(g => g.Key, g => g.Count());
+
         return new PlayerStatistics
         {
             TotalAttempts = totalAttempts,
@@ -47,7 +52,8 @@ public class PlayerStatisticsService : IPlayerStatisticsService
             CurrentStreak = currentStreak,
             LongestStreak = longestStreak,
             AverageGuessCount = averageGuesses,
-            PracticeAttempts = practiceAttempts.Count
+            PracticeAttempts = practiceAttempts.Count,
+            GuessDistribution = guessDistribution
         };
     }
 
