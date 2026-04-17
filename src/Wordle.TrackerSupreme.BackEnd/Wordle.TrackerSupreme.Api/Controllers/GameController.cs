@@ -14,7 +14,8 @@ namespace Wordle.TrackerSupreme.Api.Controllers;
 [Authorize]
 public class GameController(
     IGameplayService gameplayService,
-    IGameClock gameClock) : ControllerBase
+    IGameClock gameClock,
+    ILogger<GameController> logger) : ControllerBase
 {
     [HttpGet("state")]
     public async Task<ActionResult<GameStateResponse>> GetState(CancellationToken cancellationToken)
@@ -48,6 +49,7 @@ public class GameController(
         try
         {
             var state = await gameplayService.SubmitGuess(playerId.Value, request.Guess, cancellationToken);
+            logger.LogInformation("Guess submitted. PlayerId={PlayerId} PuzzleDate={PuzzleDate}", playerId, state.Puzzle.PuzzleDate);
             return Ok(MapState(state));
         }
         catch (DailyPuzzleUnavailableException ex)
@@ -80,6 +82,7 @@ public class GameController(
         try
         {
             var state = await gameplayService.EnableEasyMode(playerId.Value, cancellationToken);
+            logger.LogInformation("Easy mode enabled. PlayerId={PlayerId}", playerId);
             return Ok(MapState(state));
         }
         catch (DailyPuzzleUnavailableException ex)

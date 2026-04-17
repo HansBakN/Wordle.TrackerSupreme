@@ -16,7 +16,8 @@ public class AuthController(
     IPlayerRepository playerRepository,
     JwtTokenService tokenService,
     PasswordHasher<Player> passwordHasher,
-    IWebHostEnvironment environment)
+    IWebHostEnvironment environment,
+    ILogger<AuthController> logger)
     : ControllerBase
 {
     [EnableRateLimiting(AuthRateLimiting.PolicyName)]
@@ -49,6 +50,7 @@ public class AuthController(
 
         await playerRepository.AddPlayer(player, cancellationToken);
 
+        logger.LogInformation("Player registered. PlayerId={PlayerId} DisplayName={DisplayName}", player.Id, player.DisplayName);
         SignInPlayer(player);
         return Ok(new AuthResponse(MapPlayer(player), null));
     }
@@ -63,15 +65,18 @@ public class AuthController(
 
         if (player is null)
         {
+            logger.LogWarning("Sign-in failed: email not found. Email={Email}", email);
             return Unauthorized(new { message = "Invalid credentials." });
         }
 
         var verification = passwordHasher.VerifyHashedPassword(player, player.PasswordHash, request.Password);
         if (verification == PasswordVerificationResult.Failed)
         {
+            logger.LogWarning("Sign-in failed: wrong password. PlayerId={PlayerId}", player.Id);
             return Unauthorized(new { message = "Invalid credentials." });
         }
 
+        logger.LogInformation("Player signed in. PlayerId={PlayerId}", player.Id);
         SignInPlayer(player);
         return Ok(new AuthResponse(MapPlayer(player), null));
     }

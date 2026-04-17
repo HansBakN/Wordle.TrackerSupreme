@@ -35,7 +35,7 @@ public class GameControllerTests
             clock,
             new GuessEvaluationService(options, validator),
             options);
-        var controller = new GameController(gameplay, clock)
+        var controller = new GameController(gameplay, clock, NullLogger<GameController>.Instance)
         {
             ControllerContext = new ControllerContext
             {
