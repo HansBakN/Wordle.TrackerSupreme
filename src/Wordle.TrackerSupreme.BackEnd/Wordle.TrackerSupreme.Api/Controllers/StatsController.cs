@@ -59,8 +59,14 @@ public class StatsController(
     }
 
     [HttpGet("leaderboard")]
-    public async Task<ActionResult<IReadOnlyList<LeaderboardEntryResponse>>> GetLeaderboard(CancellationToken cancellationToken)
+    public async Task<ActionResult<LeaderboardPageResponse>> GetLeaderboard(
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10,
+        CancellationToken cancellationToken = default)
     {
+        page = Math.Max(1, page);
+        pageSize = Math.Clamp(pageSize, 1, 100);
+
         var filter = new PlayerStatsFilterRequest(
             IncludeHardMode: true,
             IncludeEasyMode: false,
@@ -92,10 +98,15 @@ public class StatsController(
             .ThenBy(entry => entry.Player.DisplayName)
             .ToList();
 
-        var leaderboard = new List<LeaderboardEntryResponse>();
-        var rank = 1;
+        var total = ranked.Count;
+        var totalPages = total == 0 ? 1 : (int)Math.Ceiling((double)total / pageSize);
+        page = Math.Min(page, totalPages);
 
-        foreach (var entry in ranked)
+        var leaderboard = new List<LeaderboardEntryResponse>();
+        var globalRankStart = (page - 1) * pageSize + 1;
+        var rank = globalRankStart;
+
+        foreach (var entry in ranked.Skip((page - 1) * pageSize).Take(pageSize))
         {
             leaderboard.Add(new LeaderboardEntryResponse(
                 rank,
@@ -112,7 +123,7 @@ public class StatsController(
             rank += 1;
         }
 
-        return Ok(leaderboard);
+        return Ok(new LeaderboardPageResponse(leaderboard, total, page, pageSize, totalPages));
     }
 
     [HttpGet("leaderboard/today")]

@@ -18,11 +18,11 @@ test('leaderboard shows empty state when no entries', async ({ page }) => {
 		});
 	});
 
-	await page.route('**/api/stats/leaderboard', async (route) => {
+	await page.route('**/api/stats/leaderboard**', async (route) => {
 		await route.fulfill({
 			status: 200,
 			contentType: 'application/json',
-			body: JSON.stringify([])
+			body: JSON.stringify({ items: [], total: 0, page: 1, pageSize: 10, totalPages: 1 })
 		});
 	});
 

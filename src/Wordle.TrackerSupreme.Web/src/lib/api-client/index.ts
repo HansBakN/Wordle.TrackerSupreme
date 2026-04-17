@@ -19,6 +19,7 @@ export type { AuthResponse } from './models/AuthResponse';
 export type { GameStateResponse } from './models/GameStateResponse';
 export type { GuessResponse } from './models/GuessResponse';
 export type { LeaderboardEntryResponse } from './models/LeaderboardEntryResponse';
+export type { LeaderboardPageResponse } from './models/LeaderboardPageResponse';
 export type { LetterFeedbackResponse } from './models/LetterFeedbackResponse';
 export type { PlayerResponse } from './models/PlayerResponse';
 export type { PlayerStatsEntryResponse } from './models/PlayerStatsEntryResponse';

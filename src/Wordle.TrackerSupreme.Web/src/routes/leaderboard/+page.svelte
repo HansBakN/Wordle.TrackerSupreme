@@ -7,6 +7,8 @@
 	import type { TodayLeaderboardEntryResponse } from '$lib/api-client/models/TodayLeaderboardEntryResponse';
 	import { formatTodayLeaderboardMeta } from '$lib/stats/leaderboard';
 
+	const PAGE_SIZE = 10;
+
 	type LeaderboardTab = 'all-time' | 'today';
 
 	type LeaderboardTabContent = {
@@ -20,19 +22,22 @@
 			title: 'Hard mode before noon',
 			description:
 				'Ranked by win rate, then average guesses, across hard-mode attempts submitted before the daily reveal.',
-			emptyState: 'No leaderboard entries yet. Solve today’s puzzle to claim the top spot.'
+			emptyState: "No leaderboard entries yet. Solve today's puzzle to claim the top spot."
 		},
 		today: {
 			title: "Today's puzzle",
 			description:
-				'See who has finished today’s puzzle, how many guesses it took, and who is still playing right now.',
-			emptyState: 'No one has submitted an attempt for today’s puzzle yet.'
+				"See who has finished today's puzzle, how many guesses it took, and who is still playing right now.",
+			emptyState: "No one has submitted an attempt for today's puzzle yet."
 		}
 	};
 
 	let loading = $state(false);
 	let error = $state<string | null>(null);
 	let allTimeEntries = $state<LeaderboardEntryResponse[]>([]);
+	let allTimePage = $state(1);
+	let allTimeTotalPages = $state(1);
+	let allTimeTotal = $state(0);
 	let todayEntries = $state<TodayLeaderboardEntryResponse[]>([]);
 	let hasLoaded = $state(false);
 	let activeTab = $state<LeaderboardTab>('all-time');
@@ -69,6 +74,24 @@
 		return 'bg-amber-400/15 text-amber-100 ring-1 ring-amber-300/20';
 	}
 
+	async function loadAllTime(page: number) {
+		if (!$auth.user) return;
+		loading = true;
+		error = null;
+		try {
+			const data = await StatsService.getApiStatsLeaderboard({ page, pageSize: PAGE_SIZE });
+			allTimeEntries = data.items ?? [];
+			allTimePage = data.page ?? 1;
+			allTimeTotalPages = data.totalPages ?? 1;
+			allTimeTotal = data.total ?? 0;
+			loadedTabs['all-time'] = true;
+		} catch (err) {
+			error = err instanceof Error ? err.message : 'Unable to load leaderboard.';
+		} finally {
+			loading = false;
+		}
+	}
+
 	async function loadLeaderboard(tab: LeaderboardTab) {
 		if (!$auth.user) {
 			return;
@@ -77,7 +100,8 @@
 		error = null;
 		try {
 			if (tab === 'all-time') {
-				allTimeEntries = await StatsService.getApiStatsLeaderboard();
+				await loadAllTime(1);
+				return;
 			} else {
 				todayEntries = await StatsService.getApiStatsLeaderboardToday();
 			}
@@ -87,6 +111,10 @@
 		} finally {
 			loading = false;
 		}
+	}
+
+	async function goToPage(page: number) {
+		await loadAllTime(page);
 	}
 
 	async function selectTab(tab: LeaderboardTab) {
@@ -233,6 +261,32 @@
 					</tbody>
 				</table>
 			</div>
+			{#if allTimeTotalPages > 1}
+				<div
+					class="mt-4 flex items-center justify-between text-sm text-slate-200/70"
+					data-testid="leaderboard-pagination"
+				>
+					<span>{allTimeTotal} players · page {allTimePage} of {allTimeTotalPages}</span>
+					<div class="flex gap-2">
+						<button
+							class="rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold text-white/80 transition hover:bg-white/15 disabled:cursor-not-allowed disabled:opacity-40"
+							disabled={allTimePage <= 1 || loading}
+							data-testid="leaderboard-prev"
+							on:click={() => void goToPage(allTimePage - 1)}
+						>
+							← Previous
+						</button>
+						<button
+							class="rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold text-white/80 transition hover:bg-white/15 disabled:cursor-not-allowed disabled:opacity-40"
+							disabled={allTimePage >= allTimeTotalPages || loading}
+							data-testid="leaderboard-next"
+							on:click={() => void goToPage(allTimePage + 1)}
+						>
+							Next →
+						</button>
+					</div>
+				</div>
+			{/if}
 		{:else}
 			<div class="overflow-hidden rounded-3xl border border-white/10 bg-black/30 shadow-xl">
 				<table class="w-full text-left text-sm text-slate-200/80" data-testid="leaderboard-table">

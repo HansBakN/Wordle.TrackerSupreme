@@ -48,17 +48,18 @@ public class StatsControllerTests
         var repo = new FakePlayerRepository([consistent, sharp]);
         var controller = new StatsController(repo, new PlayerStatisticsService(), new FakeGameClock(new DateOnly(2025, 1, 2)));
 
-        var result = await controller.GetLeaderboard(CancellationToken.None);
+        var result = await controller.GetLeaderboard(cancellationToken: CancellationToken.None);
         var okResult = result.Result as OkObjectResult;
 
         okResult.Should().NotBeNull();
-        var payload = okResult!.Value.Should().BeAssignableTo<IReadOnlyList<LeaderboardEntryResponse>>().Subject;
+        var payload = okResult!.Value.Should().BeOfType<LeaderboardPageResponse>().Subject;
 
-        payload.Should().HaveCount(2);
-        payload.First().DisplayName.Should().Be("Sharp");
-        payload.First().Rank.Should().Be(1);
-        payload.Last().DisplayName.Should().Be("Consistent");
-        payload.Last().Rank.Should().Be(2);
+        payload.Items.Should().HaveCount(2);
+        payload.Total.Should().Be(2);
+        payload.Items.First().DisplayName.Should().Be("Sharp");
+        payload.Items.First().Rank.Should().Be(1);
+        payload.Items.Last().DisplayName.Should().Be("Consistent");
+        payload.Items.Last().Rank.Should().Be(2);
     }
 
     [Fact]
@@ -103,14 +104,63 @@ public class StatsControllerTests
         var repo = new FakePlayerRepository([emptyPlayer, activePlayer]);
         var controller = new StatsController(repo, new PlayerStatisticsService(), new FakeGameClock(new DateOnly(2025, 1, 2)));
 
-        var result = await controller.GetLeaderboard(CancellationToken.None);
+        var result = await controller.GetLeaderboard(cancellationToken: CancellationToken.None);
         var okResult = result.Result as OkObjectResult;
 
         okResult.Should().NotBeNull();
-        var payload = okResult!.Value.Should().BeAssignableTo<IReadOnlyList<LeaderboardEntryResponse>>().Subject;
+        var payload = okResult!.Value.Should().BeOfType<LeaderboardPageResponse>().Subject;
 
-        payload.Should().HaveCount(1);
-        payload.Single().DisplayName.Should().Be("Active");
+        payload.Items.Should().HaveCount(1);
+        payload.Items.Single().DisplayName.Should().Be("Active");
+        payload.Total.Should().Be(1);
+    }
+
+    [Fact]
+    public async Task GetLeaderboard_returns_correct_page_slice_and_metadata()
+    {
+        var players = Enumerable.Range(1, 5)
+            .Select(i =>
+            {
+                var p = CreatePlayer($"Player{i}");
+                p.Attempts.Add(CreateAttempt(p, new DateOnly(2025, 1, i), AttemptStatus.Solved, true, i));
+                return p;
+            })
+            .ToList();
+
+        var repo = new FakePlayerRepository(players);
+        var controller = new StatsController(repo, new PlayerStatisticsService(), new FakeGameClock(new DateOnly(2025, 1, 6)));
+
+        var result = await controller.GetLeaderboard(page: 2, pageSize: 2, CancellationToken.None);
+        var okResult = result.Result as OkObjectResult;
+
+        okResult.Should().NotBeNull();
+        var payload = okResult!.Value.Should().BeOfType<LeaderboardPageResponse>().Subject;
+
+        payload.Total.Should().Be(5);
+        payload.Page.Should().Be(2);
+        payload.PageSize.Should().Be(2);
+        payload.TotalPages.Should().Be(3);
+        payload.Items.Should().HaveCount(2);
+        // Page 2 has global ranks 3 and 4
+        payload.Items.First().Rank.Should().Be(3);
+        payload.Items.Last().Rank.Should().Be(4);
+    }
+
+    [Fact]
+    public async Task GetLeaderboard_clamps_page_to_last_page_when_out_of_range()
+    {
+        var player = CreatePlayer("Solo");
+        player.Attempts.Add(CreateAttempt(player, new DateOnly(2025, 1, 1), AttemptStatus.Solved, true, 2));
+
+        var repo = new FakePlayerRepository([player]);
+        var controller = new StatsController(repo, new PlayerStatisticsService(), new FakeGameClock(new DateOnly(2025, 1, 2)));
+
+        var result = await controller.GetLeaderboard(page: 99, pageSize: 10, CancellationToken.None);
+        var okResult = result.Result as OkObjectResult;
+
+        var payload = okResult!.Value.Should().BeOfType<LeaderboardPageResponse>().Subject;
+        payload.Page.Should().Be(1);
+        payload.Items.Should().HaveCount(1);
     }
 
     [Fact]
