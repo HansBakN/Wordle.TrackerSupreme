@@ -7,4 +7,5 @@ public record PlayerStatsResponse(
     int PracticeAttempts,
     int CurrentStreak,
     int LongestStreak,
-    double? AverageGuessCount);
+    double? AverageGuessCount,
+    IReadOnlyDictionary<int, int> GuessDistribution);

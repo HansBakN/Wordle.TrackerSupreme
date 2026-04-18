@@ -176,6 +176,43 @@ public class PlayerStatisticsServiceTests
         stats.PracticeAttempts.Should().Be(1);
     }
 
+    [Fact]
+    public void Calculate_returns_guess_distribution_for_solved_attempts()
+    {
+        var player = CreatePlayer();
+        player.Attempts =
+        [
+            CreateAttempt(player, new DateOnly(2025, 3, 1), AttemptStatus.Solved, true, 2),
+            CreateAttempt(player, new DateOnly(2025, 3, 2), AttemptStatus.Solved, true, 3),
+            CreateAttempt(player, new DateOnly(2025, 3, 3), AttemptStatus.Solved, true, 3),
+            CreateAttempt(player, new DateOnly(2025, 3, 4), AttemptStatus.Failed, true, 6),
+        ];
+
+        var service = new PlayerStatisticsService();
+        var stats = service.Calculate(player, null, _ => false);
+
+        stats.GuessDistribution.Should().BeEquivalentTo(new Dictionary<int, int>
+        {
+            [2] = 1,
+            [3] = 2
+        });
+    }
+
+    [Fact]
+    public void Calculate_returns_empty_distribution_when_no_solved_attempts()
+    {
+        var player = CreatePlayer();
+        player.Attempts =
+        [
+            CreateAttempt(player, new DateOnly(2025, 3, 5), AttemptStatus.Failed, true, 6),
+        ];
+
+        var service = new PlayerStatisticsService();
+        var stats = service.Calculate(player, null, _ => false);
+
+        stats.GuessDistribution.Should().BeEmpty();
+    }
+
     private static PlayerPuzzleAttempt CreateAttempt(
         Player player,
         DateOnly puzzleDate,

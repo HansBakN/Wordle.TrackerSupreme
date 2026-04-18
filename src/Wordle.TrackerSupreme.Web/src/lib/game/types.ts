@@ -60,4 +60,5 @@ export type PlayerStatsResponse = {
 	currentStreak: number;
 	longestStreak: number;
 	averageGuessCount?: number | null;
+	guessDistribution?: Record<string, number>;
 };
