@@ -18,6 +18,7 @@
 	} from '$lib/game/confetti';
 	import { getKeyboardLetterState } from '$lib/game/keyboard';
 	import type { GameStateResponse, LetterResult, PlayerStatsResponse } from '$lib/game/types';
+	import { colorMode } from '$lib/game/colorMode';
 	import { onMount, tick } from 'svelte';
 
 	let checking = true;
@@ -104,6 +105,7 @@
 	$: guessInputLocked = !state || !state.canGuess || submitting;
 	$: announcement = error ?? message;
 	$: announcementIsError = error !== null;
+	$: highContrast = $colorMode;
 
 	async function loadEverything() {
 		await loadState();
@@ -251,10 +253,14 @@
 		const base =
 			'flex h-14 w-14 items-center justify-center rounded-xl border text-lg font-semibold transition';
 		if (result === 'Correct') {
-			return `${base} border-emerald-400 bg-emerald-400 text-slate-900 shadow-lg`;
+			return highContrast
+				? `${base} border-orange-500 bg-orange-500 text-white shadow-lg`
+				: `${base} border-emerald-400 bg-emerald-400 text-slate-900 shadow-lg`;
 		}
 		if (result === 'Present') {
-			return `${base} border-amber-300/70 bg-amber-300 text-slate-900 shadow`;
+			return highContrast
+				? `${base} border-blue-400 bg-blue-400 text-white shadow`
+				: `${base} border-amber-300/70 bg-amber-300 text-slate-900 shadow`;
 		}
 		if (result === 'Absent') {
 			return `${base} border-white/15 bg-white/5 text-white/60`;
@@ -287,10 +293,14 @@
 			'flex h-11 items-center justify-center rounded-xl border px-3 text-sm font-semibold uppercase transition';
 		const stateKey = keyState(letter);
 		if (stateKey === 'Correct') {
-			return `${base} border-emerald-400 bg-emerald-400 text-slate-900`;
+			return highContrast
+				? `${base} border-orange-500 bg-orange-500 text-white`
+				: `${base} border-emerald-400 bg-emerald-400 text-slate-900`;
 		}
 		if (stateKey === 'Present') {
-			return `${base} border-amber-300/70 bg-amber-300 text-slate-900`;
+			return highContrast
+				? `${base} border-blue-400 bg-blue-400 text-white`
+				: `${base} border-amber-300/70 bg-amber-300 text-slate-900`;
 		}
 		if (stateKey === 'Absent') {
 			return `${base} border-slate-500/70 bg-slate-600 text-slate-100`;
@@ -381,6 +391,7 @@
 	<div class="mx-auto grid max-w-6xl gap-6">
 		<section
 			class="relative rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-8 shadow-2xl"
+			data-high-contrast={highContrast}
 		>
 			{#if showConfetti}
 				<div class="confetti-layer" data-testid="confetti">
@@ -624,6 +635,19 @@
 		--end-bg: rgba(255, 255, 255, 0.08);
 		--end-border: rgba(255, 255, 255, 0.2);
 		--end-text: rgba(255, 255, 255, 0.6);
+	}
+
+	/* High-contrast overrides */
+	:global([data-high-contrast='true'] .reveal-correct) {
+		--end-bg: #f97316;
+		--end-border: #f97316;
+		--end-text: #ffffff;
+	}
+
+	:global([data-high-contrast='true'] .reveal-present) {
+		--end-bg: #60a5fa;
+		--end-border: #60a5fa;
+		--end-text: #ffffff;
 	}
 
 	@keyframes reveal-flip {
