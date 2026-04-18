@@ -1,4 +1,6 @@
+using System.Security.Claims;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Wordle.TrackerSupreme.Api.Controllers;
 using Wordle.TrackerSupreme.Api.Models.Game;
@@ -222,6 +224,38 @@ public class StatsControllerTests
 
         payload.Should().ContainSingle();
         payload.Single().DisplayName.Should().Be("Active");
+    }
+
+    [Fact]
+    public async Task GetMine_counts_practice_wins_in_personal_stats()
+    {
+        var player = CreatePlayer("Practitioner");
+        var attempt = CreateAttempt(player, new DateOnly(2025, 1, 1), AttemptStatus.Solved, true, 3);
+        player.Attempts.Add(attempt);
+
+        var repo = new FakePlayerRepository([player]);
+        // revealPassed = true means the attempt is classified as practice
+        var clock = new FakeGameClock(new DateOnly(2025, 1, 2), revealPassed: true);
+        var controller = new StatsController(repo, new PlayerStatisticsService(), clock)
+        {
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new ClaimsPrincipal(new ClaimsIdentity(
+                        [new Claim("playerId", player.Id.ToString())],
+                        "Test"))
+                }
+            }
+        };
+
+        var result = await controller.GetMine(CancellationToken.None);
+
+        var ok = result.Result.Should().BeOfType<OkObjectResult>().Which;
+        var stats = ok.Value.Should().BeOfType<PlayerStatsResponse>().Which;
+        stats.Wins.Should().Be(1, "practice wins should count in personal stats");
+        stats.TotalAttempts.Should().Be(1);
+        stats.PracticeAttempts.Should().Be(1);
     }
 
     private static Player CreatePlayer(string name)
