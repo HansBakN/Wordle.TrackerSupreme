@@ -17,6 +17,7 @@
 		type ConfettiPiece
 	} from '$lib/game/confetti';
 	import { getKeyboardLetterState } from '$lib/game/keyboard';
+	import { buildShareText } from '$lib/game/share';
 	import type { GameStateResponse, LetterResult, PlayerStatsResponse } from '$lib/game/types';
 	import { onMount, tick } from 'svelte';
 
@@ -34,6 +35,8 @@
 	let showWinStats = false;
 	let winStats: PlayerStatsResponse | null = null;
 	let statsError: string | null = null;
+	let copied = false;
+	let copyTimer: ReturnType<typeof setTimeout> | null = null;
 	let confettiPieces: ConfettiPiece[] = [];
 	let confettiTimer: ReturnType<typeof setTimeout> | null = null;
 	let statsTimer: ReturnType<typeof setTimeout> | null = null;
@@ -347,6 +350,18 @@
 		statsError = null;
 	}
 
+	async function copyResult() {
+		if (!state) return;
+		const text = buildShareText(state);
+		await navigator.clipboard.writeText(text);
+		if (copyTimer) clearTimeout(copyTimer);
+		copied = true;
+		copyTimer = setTimeout(() => {
+			copied = false;
+			copyTimer = null;
+		}, 2000);
+	}
+
 	async function triggerWinCelebration() {
 		if (!state) {
 			return;
@@ -560,11 +575,21 @@
 							</div>
 						{/if}
 						{#if state?.attempt?.status === 'Solved' || state?.attempt?.status === 'Failed'}
-							<div
-								class="mt-4 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-center text-sm text-slate-200/80"
-								data-testid="countdown-timer"
-							>
-								Next puzzle in: <span class="font-mono font-semibold text-white">{countdown}</span>
+							<div class="mt-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+								<div
+									class="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-center text-sm text-slate-200/80"
+									data-testid="countdown-timer"
+								>
+									Next puzzle in: <span class="font-mono font-semibold text-white">{countdown}</span
+									>
+								</div>
+								<button
+									class="rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-sm font-semibold text-white/80 transition hover:border-white/40 hover:bg-white/10"
+									onclick={copyResult}
+									data-testid="copy-result"
+								>
+									{copied ? '✓ Copied!' : 'Copy result'}
+								</button>
 							</div>
 						{/if}
 					</div>

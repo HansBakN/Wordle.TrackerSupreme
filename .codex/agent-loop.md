@@ -53,3 +53,14 @@
   2. Implemented issue #41 (Structured logging): added CorrelationIdMiddleware (reads/generates X-Correlation-ID, adds to log scope + response header), JSON console logging for non-dev, structured log events in GameController and AuthController. 2 new middleware unit tests. All 71 backend tests pass. Opened PR #81.
 - what is blocked: PR #79 (#35 ProblemDetails), PR #80 (#24 distribution), PR #81 (#41 logging) all awaiting review — cannot self-merge.
 - what should be done next: continue with unassigned issues. Issue #34 (leaderboard pagination) or #38 (mobile UX) are next candidates.
+
+## 2026-04-18T04:12:00+02:00
+- what you inspected: open PRs (#84, #81, #80, #79), CI status for each, PR authors (all HansBakN), diff content for #84 (leaderboard pagination), #81 (structured logging), #80 (guess distribution), and conflict potential between #79 and #81.
+- what action you took:
+  1. Merged PR #84 (leaderboard pagination, closes #34) — CI green, clean implementation.
+  2. Merged PR #80 (guess distribution chart, closes #24) — second CI run passed (first was 11s infra failure).
+  3. Merged PR #81 (structured logging, closes #41) — CI green. Then rebased my PR #79 (`feat/problem-details-issue-35`) on top of updated main to resolve the trivial AuthController conflict (keep log warning + ProblemDetails); force-pushed the branch.
+  4. Fixed issue #83 (keyboard highlights not updating): root cause was Svelte 4's template compiler only tracking explicit function arguments as reactive dependencies — `keyState(letter)` didn't re-run when `state` changed. Fix: thread `guesses` as a parameter so `state` is directly referenced in the template. Added Playwright UI test. All 28 UI tests pass. Opened PR #85.
+  5. Fixed issue #82 (personal stats show 0 wins when played after noon): root cause was `GetMine` using default filter with `CountPracticeAttempts = false`. Fix: pass explicit filter with `CountPracticeAttempts = true` for personal stats. Added xUnit test. 76 backend tests pass. Opened PR #86.
+- what is blocked: PR #79 (ProblemDetails), #85 (keyboard), #86 (personal stats) all awaiting CI and review.
+- what should be done next: check CI on PRs #85 and #86, then continue with remaining open issues: #43 (stats breakdown), #33 (admin pagination), #38 (mobile UX), #31 (streak calendar), etc.
