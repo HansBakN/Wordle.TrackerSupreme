@@ -45,3 +45,11 @@
 - what action you took: committed the change as `a222a70` (`Increase win confetti burst`), pushed branch `codex/issue-57-more-confetti`, and opened draft PR `#72` (`[codex] Increase win confetti burst`) targeting `main`.
 - what is blocked: nothing immediate on the published work; PR `#72` is open and waiting for review/comments.
 - what should be done next: re-query GitHub state, prioritize any comments or CI changes on `#72`, and if none appear take the next uncovered open issue, with `#45` as the best remaining product-facing candidate.
+
+## 2026-04-18T00:00:00+02:00
+- what you inspected: open PRs (#79 REVIEW_REQUIRED), open issues, game/types.ts, PlayerStatisticsService, PlayerStatsResponse DTO, StatsController, stats page, openapi.json, api-client models.
+- what action you took:
+  1. Implemented issue #24 (Guess count distribution chart): added `GuessDistribution` to domain model + service, DTO, controller MapStats; updated TypeScript client + local types; added horizontal bar chart (rows 1-6) to stats page; 2 new xUnit tests + 2 new Playwright UI tests. All 71 backend + 37 frontend unit + 4 UI tests pass. Opened PR #80.
+  2. Implemented issue #41 (Structured logging): added CorrelationIdMiddleware (reads/generates X-Correlation-ID, adds to log scope + response header), JSON console logging for non-dev, structured log events in GameController and AuthController. 2 new middleware unit tests. All 71 backend tests pass. Opened PR #81.
+- what is blocked: PR #79 (#35 ProblemDetails), PR #80 (#24 distribution), PR #81 (#41 logging) all awaiting review — cannot self-merge.
+- what should be done next: continue with unassigned issues. Issue #34 (leaderboard pagination) or #38 (mobile UX) are next candidates.

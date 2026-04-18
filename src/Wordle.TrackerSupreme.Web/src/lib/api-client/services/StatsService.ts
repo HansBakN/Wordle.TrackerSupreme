@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { LeaderboardEntryResponse } from '../models/LeaderboardEntryResponse';
+import type { LeaderboardPageResponse } from '../models/LeaderboardPageResponse';
 import type { PlayerStatsEntryResponse } from '../models/PlayerStatsEntryResponse';
 import type { PlayerStatsFilterRequest } from '../models/PlayerStatsFilterRequest';
 import type { PlayerStatsResponse } from '../models/PlayerStatsResponse';
@@ -38,13 +39,23 @@ export class StatsService {
 		});
 	}
 	/**
-	 * @returns LeaderboardEntryResponse OK
+	 * @returns LeaderboardPageResponse OK
 	 * @throws ApiError
 	 */
-	public static getApiStatsLeaderboard(): CancelablePromise<Array<LeaderboardEntryResponse>> {
+	public static getApiStatsLeaderboard({
+		page,
+		pageSize
+	}: {
+		page?: number;
+		pageSize?: number;
+	} = {}): CancelablePromise<LeaderboardPageResponse> {
 		return __request(OpenAPI, {
 			method: 'GET',
-			url: '/api/stats/leaderboard'
+			url: '/api/stats/leaderboard',
+			query: {
+				page,
+				pageSize
+			}
 		});
 	}
 	/**

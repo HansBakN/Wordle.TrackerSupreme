@@ -17,28 +17,37 @@ test('leaderboard can switch from all-time rankings to today standings', async (
 		});
 	});
 
-	await page.route('**/api/stats/leaderboard', async (route) => {
-		allTimeRequests += 1;
-		await route.fulfill({
-			status: 200,
-			contentType: 'application/json',
-			body: JSON.stringify([
-				{
-					rank: 1,
-					playerId: '22222222-2222-2222-2222-222222222222',
-					displayName: 'Rival',
-					totalAttempts: 5,
-					wins: 4,
-					failures: 1,
-					currentStreak: 4,
-					longestStreak: 5,
-					practiceAttempts: 0,
-					averageGuessCount: 3,
-					winRate: 0.8
-				}
-			])
-		});
-	});
+	await page.route(
+		(url) => url.href.includes('/api/stats/leaderboard') && !url.href.includes('/today'),
+		async (route) => {
+			allTimeRequests += 1;
+			await route.fulfill({
+				status: 200,
+				contentType: 'application/json',
+				body: JSON.stringify({
+					items: [
+						{
+							rank: 1,
+							playerId: '22222222-2222-2222-2222-222222222222',
+							displayName: 'Rival',
+							totalAttempts: 5,
+							wins: 4,
+							failures: 1,
+							currentStreak: 4,
+							longestStreak: 5,
+							practiceAttempts: 0,
+							averageGuessCount: 3,
+							winRate: 0.8
+						}
+					],
+					total: 1,
+					page: 1,
+					pageSize: 10,
+					totalPages: 1
+				})
+			});
+		}
+	);
 
 	await page.route('**/api/stats/leaderboard/today', async (route) => {
 		todayRequests += 1;
