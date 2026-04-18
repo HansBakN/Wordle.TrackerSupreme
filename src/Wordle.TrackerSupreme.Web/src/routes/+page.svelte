@@ -249,7 +249,7 @@
 
 	function tileClass(result: LetterResult | null) {
 		const base =
-			'flex h-14 w-14 items-center justify-center rounded-xl border text-lg font-semibold transition';
+			'flex h-14 w-full items-center justify-center rounded-xl border text-lg font-semibold transition';
 		if (result === 'Correct') {
 			return `${base} border-emerald-400 bg-emerald-400 text-slate-900 shadow-lg`;
 		}
@@ -284,7 +284,7 @@
 
 	function keyClass(letter: string) {
 		const base =
-			'flex h-11 items-center justify-center rounded-xl border px-3 text-sm font-semibold uppercase transition';
+			'flex h-10 items-center justify-center rounded-xl border px-2 text-sm font-semibold uppercase transition sm:h-11 sm:px-3';
 		const stateKey = keyState(letter);
 		if (stateKey === 'Correct') {
 			return `${base} border-emerald-400 bg-emerald-400 text-slate-900`;
@@ -380,7 +380,7 @@
 {:else if $auth.user}
 	<div class="mx-auto grid max-w-6xl gap-6">
 		<section
-			class="relative rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-8 shadow-2xl"
+			class="relative rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-4 shadow-2xl sm:p-8"
 		>
 			{#if showConfetti}
 				<div class="confetti-layer" data-testid="confetti">
@@ -436,7 +436,7 @@
 							{#each Array(state.maxGuesses).keys() as rowIndex (rowIndex)}
 								<div
 									class={`grid justify-center gap-1.5${shakingRow === rowIndex ? ' animate-shake' : ''}`}
-									style={`grid-template-columns: repeat(${state.wordLength}, 3.5rem);`}
+									style={`grid-template-columns: repeat(${state.wordLength}, min(3.5rem, calc((min(100vw, 640px) - 8rem) / ${state.wordLength})));`}
 									data-testid={`board-row-${rowIndex}`}
 									role="row"
 									aria-label={`Guess row ${rowIndex + 1}`}
@@ -490,13 +490,14 @@
 							</div>
 						{/if}
 
-						<div class="space-y-3 pt-3" role="group" aria-label="On-screen keyboard">
+						<div class="space-y-2 pt-3 sm:space-y-3" role="group" aria-label="On-screen keyboard">
 							{#each keyboardRows as row, rowIndex (rowIndex)}
-								<div class="flex items-center justify-center gap-2">
+								<div class="flex items-center justify-center gap-1 sm:gap-2">
 									{#if rowIndex === 2}
 										<button
-											class="flex h-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 text-xs font-semibold tracking-[0.15em] text-white/80 uppercase transition hover:border-white/30"
+											class="flex h-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-3 text-xs font-semibold tracking-[0.15em] text-white/80 uppercase transition hover:border-white/30 sm:h-12 sm:px-4"
 											onclick={removeLetter}
+											onpointerdown={(e) => e.preventDefault()}
 											disabled={guessInputLocked}
 											data-testid="remove-letter"
 											aria-label="Remove letter"
@@ -508,6 +509,7 @@
 										<button
 											class={keyClass(letter)}
 											onclick={() => pushLetter(letter)}
+											onpointerdown={(e) => e.preventDefault()}
 											disabled={guessInputLocked}
 											data-testid={`keyboard-key-${letter}`}
 											data-state={(keyState(letter) ?? 'unused').toLowerCase()}
@@ -517,8 +519,9 @@
 									{/each}
 									{#if rowIndex === 2}
 										<button
-											class="flex h-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 text-xs font-semibold tracking-[0.15em] text-white/80 uppercase transition hover:border-white/30"
+											class="flex h-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-3 text-xs font-semibold tracking-[0.15em] text-white/80 uppercase transition hover:border-white/30 sm:h-12 sm:px-4"
 											onclick={submitFromKeyboard}
+											onpointerdown={(e) => e.preventDefault()}
 											disabled={guessInputLocked}
 											data-testid="submit-guess"
 											aria-label="Submit guess"
