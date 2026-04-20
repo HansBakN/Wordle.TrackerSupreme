@@ -159,6 +159,89 @@ public class AdminService(
         await _gameRepository.SaveChanges(cancellationToken);
     }
 
+    public async Task<IReadOnlyList<DailyPuzzle>> GetPuzzles(CancellationToken cancellationToken)
+        => await _gameRepository.GetPuzzles(cancellationToken);
+
+    public Task<DailyPuzzle?> GetPuzzle(Guid puzzleId, CancellationToken cancellationToken)
+        => _gameRepository.GetPuzzleById(puzzleId, cancellationToken);
+
+    public async Task<DailyPuzzle> CreatePuzzle(DateOnly puzzleDate, string solution, CancellationToken cancellationToken)
+    {
+        var normalized = solution.Trim().ToUpperInvariant();
+        if (normalized.Length != _options.WordLength)
+        {
+            throw new ArgumentException($"Solution must be exactly {_options.WordLength} letters.", nameof(solution));
+        }
+
+        var existing = await _gameRepository.GetPuzzleByDate(puzzleDate, cancellationToken);
+        if (existing is not null)
+        {
+            throw new InvalidOperationException($"A puzzle already exists for {puzzleDate:yyyy-MM-dd}.");
+        }
+
+        var puzzle = new DailyPuzzle
+        {
+            Id = Guid.NewGuid(),
+            PuzzleDate = puzzleDate,
+            Solution = normalized
+        };
+
+        await _gameRepository.AddPuzzle(puzzle, cancellationToken);
+        await _gameRepository.SaveChanges(cancellationToken);
+        return puzzle;
+    }
+
+    public async Task<DailyPuzzle> UpdatePuzzle(Guid puzzleId, DateOnly puzzleDate, string solution, CancellationToken cancellationToken)
+    {
+        var puzzle = await _gameRepository.GetPuzzleById(puzzleId, cancellationToken);
+        if (puzzle is null)
+        {
+            throw new KeyNotFoundException("Puzzle not found.");
+        }
+
+        if (puzzle.Attempts.Count > 0)
+        {
+            throw new InvalidOperationException("Cannot modify a puzzle that already has player attempts.");
+        }
+
+        var normalized = solution.Trim().ToUpperInvariant();
+        if (normalized.Length != _options.WordLength)
+        {
+            throw new ArgumentException($"Solution must be exactly {_options.WordLength} letters.", nameof(solution));
+        }
+
+        if (puzzle.PuzzleDate != puzzleDate)
+        {
+            var existing = await _gameRepository.GetPuzzleByDate(puzzleDate, cancellationToken);
+            if (existing is not null)
+            {
+                throw new InvalidOperationException($"A puzzle already exists for {puzzleDate:yyyy-MM-dd}.");
+            }
+        }
+
+        puzzle.PuzzleDate = puzzleDate;
+        puzzle.Solution = normalized;
+        await _gameRepository.SaveChanges(cancellationToken);
+        return puzzle;
+    }
+
+    public async Task DeletePuzzle(Guid puzzleId, CancellationToken cancellationToken)
+    {
+        var puzzle = await _gameRepository.GetPuzzleById(puzzleId, cancellationToken);
+        if (puzzle is null)
+        {
+            throw new KeyNotFoundException("Puzzle not found.");
+        }
+
+        if (puzzle.Attempts.Count > 0)
+        {
+            throw new InvalidOperationException("Cannot delete a puzzle that already has player attempts.");
+        }
+
+        await _gameRepository.RemovePuzzle(puzzle, cancellationToken);
+        await _gameRepository.SaveChanges(cancellationToken);
+    }
+
     private void UpdateAttemptStatus(PlayerPuzzleAttempt attempt, IReadOnlyList<string> guesses, string solution)
     {
         if (guesses.Count == 0)

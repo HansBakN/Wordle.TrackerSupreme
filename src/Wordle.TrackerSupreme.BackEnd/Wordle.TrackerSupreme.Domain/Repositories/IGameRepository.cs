@@ -5,7 +5,10 @@ namespace Wordle.TrackerSupreme.Domain.Repositories;
 public interface IGameRepository
 {
     Task<DailyPuzzle?> GetPuzzleByDate(DateOnly puzzleDate, CancellationToken cancellationToken);
+    Task<DailyPuzzle?> GetPuzzleById(Guid puzzleId, CancellationToken cancellationToken);
+    Task<List<DailyPuzzle>> GetPuzzles(CancellationToken cancellationToken);
     Task AddPuzzle(DailyPuzzle puzzle, CancellationToken cancellationToken);
+    Task RemovePuzzle(DailyPuzzle puzzle, CancellationToken cancellationToken);
     Task<PlayerPuzzleAttempt?> GetAttempt(Guid playerId, Guid puzzleId, CancellationToken cancellationToken);
     Task<PlayerPuzzleAttempt?> GetAttemptWithDetails(Guid attemptId, CancellationToken cancellationToken);
     Task AddAttempt(PlayerPuzzleAttempt attempt, CancellationToken cancellationToken);
