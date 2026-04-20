@@ -1,6 +1,11 @@
 import { getApiBase, notifyUnauthorizedResponse } from '$lib/api';
 import { StatsService } from '$lib/api-client/services/StatsService';
-import type { GameStateResponse, PlayerStatsResponse, SolutionsResponse } from './types';
+import type {
+	GameStateResponse,
+	PlayerStatsResponse,
+	PracticeStateResponse,
+	SolutionsResponse
+} from './types';
 
 export class ApiResponseError extends Error {
 	readonly status: number;
@@ -77,4 +82,19 @@ export function fetchSolutions(): Promise<SolutionsResponse> {
 
 export function fetchMyStats(): Promise<PlayerStatsResponse> {
 	return StatsService.getApiStatsMe();
+}
+
+export function startPracticeGame(): Promise<PracticeStateResponse> {
+	return apiFetch<PracticeStateResponse>('/api/practice/start', { method: 'POST' });
+}
+
+export function fetchPracticeState(): Promise<PracticeStateResponse> {
+	return apiFetch<PracticeStateResponse>('/api/practice/state');
+}
+
+export function submitPracticeGuess(guess: string): Promise<PracticeStateResponse> {
+	return apiFetch<PracticeStateResponse>('/api/practice/guess', {
+		method: 'POST',
+		body: JSON.stringify({ guess })
+	});
 }

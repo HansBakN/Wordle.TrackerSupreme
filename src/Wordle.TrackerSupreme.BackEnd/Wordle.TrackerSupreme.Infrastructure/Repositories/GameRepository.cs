@@ -50,6 +50,15 @@ public class GameRepository(WordleTrackerSupremeDbContext dbContext) : IGameRepo
             .Where(a => a.DailyPuzzleId == puzzleId)
             .ToListAsync(cancellationToken);
 
+    public Task<PlayerPuzzleAttempt?> GetActivePracticeAttempt(Guid playerId, CancellationToken cancellationToken)
+        => dbContext.Attempts
+            .Include(a => a.DailyPuzzle)
+            .Include(a => a.Guesses)
+                .ThenInclude(g => g.Feedback)
+            .Where(a => a.PlayerId == playerId && a.DailyPuzzle.IsPractice && a.Status == AttemptStatus.InProgress)
+            .OrderByDescending(a => a.CreatedOn)
+            .FirstOrDefaultAsync(cancellationToken);
+
     public Task RemoveGuesses(IReadOnlyCollection<GuessAttempt> guesses, CancellationToken cancellationToken)
     {
         if (guesses.Count == 0)

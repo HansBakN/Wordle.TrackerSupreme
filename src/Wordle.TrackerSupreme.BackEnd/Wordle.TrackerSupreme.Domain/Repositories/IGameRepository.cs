@@ -11,6 +11,7 @@ public interface IGameRepository
     Task AddAttempt(PlayerPuzzleAttempt attempt, CancellationToken cancellationToken);
     Task AddGuess(GuessAttempt guessAttempt, IReadOnlyCollection<LetterEvaluation> feedback, CancellationToken cancellationToken);
     Task<List<PlayerPuzzleAttempt>> GetAttemptsForPuzzle(Guid puzzleId, CancellationToken cancellationToken);
+    Task<PlayerPuzzleAttempt?> GetActivePracticeAttempt(Guid playerId, CancellationToken cancellationToken);
     Task RemoveGuesses(IReadOnlyCollection<GuessAttempt> guesses, CancellationToken cancellationToken);
     Task RemoveAttempt(PlayerPuzzleAttempt attempt, CancellationToken cancellationToken);
     Task SaveChanges(CancellationToken cancellationToken);

@@ -52,6 +52,16 @@ export type SolutionsResponse = {
 	entries: SolutionEntry[];
 };
 
+export type PracticeStateResponse = {
+	puzzleId: string;
+	solutionRevealed: boolean;
+	wordLength: number;
+	maxGuesses: number;
+	canGuess: boolean;
+	attempt?: AttemptResponse | null;
+	solution?: string | null;
+};
+
 export type PlayerStatsResponse = {
 	totalAttempts: number;
 	wins: number;

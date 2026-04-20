@@ -187,6 +187,7 @@ else
     builder.Services.AddScoped<IOfficialWordProvider>(sp => sp.GetRequiredService<OfficialWordProvider>());
 }
 builder.Services.AddScoped<IGameplayService, GameplayService>();
+builder.Services.AddScoped<IPracticeService, PracticeService>();
 builder.Services.AddScoped<IDailyPuzzleService, DailyPuzzleService>();
 builder.Services.AddScoped<IPlayerStatisticsService, PlayerStatisticsService>();
 builder.Services.AddScoped<IAdminService, AdminService>();

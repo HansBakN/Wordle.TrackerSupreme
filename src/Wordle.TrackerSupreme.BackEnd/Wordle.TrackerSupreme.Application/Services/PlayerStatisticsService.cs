@@ -19,10 +19,10 @@ public class PlayerStatisticsService : IPlayerStatisticsService
             .Where(a => MatchesFilter(a, filterOptions, isAfterRevealFn))
             .ToList();
 
-        var practiceAttempts = filteredAttempts.Where(a => isAfterRevealFn(a)).ToList();
+        var practiceAttempts = filteredAttempts.Where(a => isAfterRevealFn(a) || (a.DailyPuzzle?.IsPractice ?? false)).ToList();
         var countedAttempts = filterOptions.CountPracticeAttempts
             ? filteredAttempts
-            : filteredAttempts.Where(a => !isAfterRevealFn(a)).ToList();
+            : filteredAttempts.Where(a => !isAfterRevealFn(a) && !(a.DailyPuzzle?.IsPractice ?? false)).ToList();
 
         var totalAttempts = countedAttempts.Count;
         var wins = countedAttempts.Count(a => a.Status == AttemptStatus.Solved);

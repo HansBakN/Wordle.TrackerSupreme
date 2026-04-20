@@ -13,13 +13,18 @@ public class WordSelector : IWordSelector
         "NORTH", "SOUTH", "EAGER", "QUEST", "FRAME", "GRIND", "WRIST", "TRICK", "VOICE", "YEARN"
     ];
 
-    // Keep the rotation deterministic so every node agrees on the solution without extra storage.
     private static readonly DateOnly Anchor = new(2025, 1, 1);
 
     public string GetSolutionFor(DateOnly puzzleDate)
     {
         var offset = puzzleDate.DayNumber - Anchor.DayNumber;
         var index = ((offset % Words.Length) + Words.Length) % Words.Length;
+        return Words[index];
+    }
+
+    public string SelectRandomWord()
+    {
+        var index = Random.Shared.Next(Words.Length);
         return Words[index];
     }
 }

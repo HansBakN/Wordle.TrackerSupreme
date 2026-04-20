@@ -42,6 +42,7 @@
 					class="hidden items-center gap-4 text-xs font-semibold tracking-[0.2em] text-slate-200/70 uppercase md:flex"
 				>
 					<a href={resolve('/')} class="transition hover:text-white">Play</a>
+					<a href={resolve('/practice')} class="transition hover:text-white">Practice</a>
 					<a href={resolve('/stats')} class="transition hover:text-white">Stats</a>
 					<a href={resolve('/leaderboard')} class="transition hover:text-white">Leaderboard</a>
 					{#if $auth.user?.isAdmin}

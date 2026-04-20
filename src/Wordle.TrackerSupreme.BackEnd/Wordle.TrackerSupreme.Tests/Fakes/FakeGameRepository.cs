@@ -59,6 +59,23 @@ public class FakeGameRepository : IGameRepository
         return Task.FromResult(attempts);
     }
 
+    public Task<PlayerPuzzleAttempt?> GetActivePracticeAttempt(Guid playerId, CancellationToken cancellationToken)
+    {
+        var attempt = _attempts
+            .Where(a => a.PlayerId == playerId && a.Status == AttemptStatus.InProgress)
+            .Where(a => _puzzles.Any(p => p.Id == a.DailyPuzzleId && p.IsPractice))
+            .OrderByDescending(a => a.CreatedOn)
+            .FirstOrDefault();
+
+        if (attempt is not null)
+        {
+            attempt.DailyPuzzle = _puzzles.First(p => p.Id == attempt.DailyPuzzleId);
+            attempt.Guesses = _guesses.Where(g => g.PlayerPuzzleAttemptId == attempt.Id).OrderBy(g => g.GuessNumber).ToList();
+        }
+
+        return Task.FromResult<PlayerPuzzleAttempt?>(attempt);
+    }
+
     public Task<DailyPuzzle?> GetPuzzleByDate(DateOnly puzzleDate, CancellationToken cancellationToken)
     {
         var puzzle = _puzzles.FirstOrDefault(p => p.PuzzleDate == puzzleDate);
