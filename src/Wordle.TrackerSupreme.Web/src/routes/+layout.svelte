@@ -37,19 +37,26 @@
 					<div class="text-xs text-slate-200/70">Keep your streaks honest.</div>
 				</div>
 			</div>
-			{#if $auth.user}
-				<nav
-					class="hidden items-center gap-4 text-xs font-semibold tracking-[0.2em] text-slate-200/70 uppercase md:flex"
-				>
+			<nav
+				class="hidden items-center gap-4 text-xs font-semibold tracking-[0.2em] text-slate-200/70 uppercase md:flex"
+			>
+				{#if $auth.user}
 					<a href={resolve('/')} class="transition hover:text-white">Play</a>
 					<a href={resolve('/stats')} class="transition hover:text-white">Stats</a>
 					<a href={resolve('/leaderboard')} class="transition hover:text-white">Leaderboard</a>
 					{#if $auth.user?.isAdmin}
 						<a href={resolve('/admin')} class="transition hover:text-white">Admin</a>
 					{/if}
-				</nav>
-			{/if}
+				{/if}
+				<a href={resolve('/release-notes')} class="transition hover:text-white">Release notes</a>
+			</nav>
 			<div class="flex items-center gap-3 text-sm">
+				<a
+					href={resolve('/release-notes')}
+					class="text-xs font-semibold tracking-[0.16em] text-slate-200/70 uppercase transition hover:text-white md:hidden"
+				>
+					Notes
+				</a>
 				{#if $auth.user}
 					<div class="hidden text-right sm:block">
 						<div class="font-semibold">{$auth.user.displayName}</div>
