@@ -22,6 +22,9 @@ const MOCK_GAME_STATE = {
 };
 
 async function setupRoutes(page: import('@playwright/test').Page) {
+	await page.addInitScript(() => {
+		localStorage.setItem('wts_enableHowToPlayAutoOpen', '1');
+	});
 	await page.route('**/api/Auth/me', async (route) => {
 		await route.fulfill({
 			status: 200,
@@ -129,17 +132,18 @@ test('modal explains tile colours and game modes', async ({ page, context }) => 
 
 	await page.goto('/', { waitUntil: 'domcontentloaded' });
 	await page.getByText('Loading your session...').waitFor({ state: 'hidden' });
-	await expect(page.getByTestId('how-to-play-modal')).toBeVisible();
+	const modal = page.getByTestId('how-to-play-modal');
+	await expect(modal).toBeVisible();
 
 	// Tile colour explanations
-	await expect(page.getByText('Green')).toBeVisible();
-	await expect(page.getByText('Yellow')).toBeVisible();
-	await expect(page.getByText('Grey')).toBeVisible();
+	await expect(modal.getByText('Green', { exact: true })).toBeVisible();
+	await expect(modal.getByText('Yellow', { exact: true })).toBeVisible();
+	await expect(modal.getByText('Grey', { exact: true })).toBeVisible();
 
 	// Game mode explanations
-	await expect(page.getByText('Hard mode')).toBeVisible();
-	await expect(page.getByText('Easy mode')).toBeVisible();
+	await expect(modal.getByText('Hard mode', { exact: true })).toBeVisible();
+	await expect(modal.getByText('Easy mode', { exact: true })).toBeVisible();
 
 	// Daily cutoff
-	await expect(page.getByText('12:00 PM local time')).toBeVisible();
+	await expect(modal.getByText('12:00 PM local time')).toBeVisible();
 });

@@ -11,18 +11,19 @@
 	let showHowToPlay = $state(false);
 	const isTestMode = import.meta.env.MODE === 'test';
 	const STORAGE_KEY = 'wts_hasSeenHowToPlay';
+	const TEST_AUTO_OPEN_KEY = 'wts_enableHowToPlayAutoOpen';
 
 	onMount(async () => {
 		if (isTestMode) {
 			booting = false;
 			void bootstrapAuth();
-			return;
+		} else {
+			await bootstrapAuth();
+			booting = false;
 		}
 
-		await bootstrapAuth();
-		booting = false;
-
-		if (!localStorage.getItem(STORAGE_KEY)) {
+		const autoOpenEnabled = !isTestMode || localStorage.getItem(TEST_AUTO_OPEN_KEY) === '1';
+		if (autoOpenEnabled && !localStorage.getItem(STORAGE_KEY)) {
 			showHowToPlay = true;
 		}
 	});
