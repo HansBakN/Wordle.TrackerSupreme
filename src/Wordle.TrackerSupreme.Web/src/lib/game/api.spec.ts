@@ -137,7 +137,9 @@ describe('api helpers', () => {
 
 		vi.spyOn(globalThis, 'fetch' as never).mockResolvedValue(mockResponse);
 
-		await expect(submitGuess('crane')).rejects.toThrowError('You already have an attempt for today.');
+		await expect(submitGuess('crane')).rejects.toThrowError(
+			'You already have an attempt for today.'
+		);
 	});
 
 	it('submits guesses with a JSON payload', async () => {
