@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { LeaderboardEntryResponse } from '../models/LeaderboardEntryResponse';
 import type { LeaderboardPageResponse } from '../models/LeaderboardPageResponse';
 import type { PlayerStatsEntryResponse } from '../models/PlayerStatsEntryResponse';
 import type { PlayerStatsFilterRequest } from '../models/PlayerStatsFilterRequest';
@@ -43,18 +42,18 @@ export class StatsService {
 	 * @throws ApiError
 	 */
 	public static getApiStatsLeaderboard({
-		page,
-		pageSize
+		page = 1,
+		pageSize = 10
 	}: {
 		page?: number;
 		pageSize?: number;
-	} = {}): CancelablePromise<LeaderboardPageResponse> {
+	}): CancelablePromise<LeaderboardPageResponse> {
 		return __request(OpenAPI, {
 			method: 'GET',
 			url: '/api/stats/leaderboard',
 			query: {
-				page,
-				pageSize
+				page: page,
+				pageSize: pageSize
 			}
 		});
 	}

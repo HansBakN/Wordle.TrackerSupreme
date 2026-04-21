@@ -6,6 +6,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const artifactRoot =
 	process.env.E2E_ARTIFACT_DIR ?? path.resolve(__dirname, '../../artifacts/e2e/playwright');
+const baseURL = process.env.E2E_BASE_URL ?? 'http://localhost:3000';
 
 export default defineConfig({
 	testDir: './tests/e2e',
@@ -21,11 +22,20 @@ export default defineConfig({
 		['html', { outputFolder: path.join(artifactRoot, 'report'), open: 'never' }]
 	],
 	use: {
-		baseURL: process.env.E2E_BASE_URL ?? 'http://localhost:3000',
+		baseURL,
 		headless: true,
 		trace: 'on-first-retry',
 		screenshot: 'only-on-failure',
-		video: 'retain-on-failure'
+		video: 'retain-on-failure',
+		storageState: {
+			cookies: [],
+			origins: [
+				{
+					origin: baseURL,
+					localStorage: [{ name: 'wts_hasSeenHowToPlay', value: '1' }]
+				}
+			]
+		}
 	},
 	projects: [
 		{
