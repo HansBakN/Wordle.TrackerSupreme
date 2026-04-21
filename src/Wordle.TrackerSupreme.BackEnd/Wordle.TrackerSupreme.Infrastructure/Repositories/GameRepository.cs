@@ -8,8 +8,10 @@ namespace Wordle.TrackerSupreme.Infrastructure.Repositories;
 
 public class GameRepository(WordleTrackerSupremeDbContext dbContext) : IGameRepository
 {
-    public Task<DailyPuzzle?> GetPuzzleByDate(DateOnly puzzleDate, CancellationToken cancellationToken)
-        => dbContext.DailyPuzzles.FirstOrDefaultAsync(p => p.PuzzleDate == puzzleDate, cancellationToken);
+    public Task<DailyPuzzle?> GetPuzzleByDate(DateOnly puzzleDate, PuzzleStream stream, CancellationToken cancellationToken)
+        => dbContext.DailyPuzzles.FirstOrDefaultAsync(
+            p => p.PuzzleDate == puzzleDate && p.Stream == stream,
+            cancellationToken);
 
     public Task AddPuzzle(DailyPuzzle puzzle, CancellationToken cancellationToken)
     {

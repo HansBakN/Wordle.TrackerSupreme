@@ -35,7 +35,7 @@ async function apiFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
 		if (bodyText) {
 			try {
 				const payload = JSON.parse(bodyText);
-				message = payload?.message ?? message;
+				message = payload?.detail ?? payload?.message ?? message;
 				code = payload?.code;
 			} catch {
 				message = bodyText;

@@ -76,9 +76,9 @@ public class FakeGameRepository : IGameRepository
         return Task.FromResult<PlayerPuzzleAttempt?>(attempt);
     }
 
-    public Task<DailyPuzzle?> GetPuzzleByDate(DateOnly puzzleDate, CancellationToken cancellationToken)
+    public Task<DailyPuzzle?> GetPuzzleByDate(DateOnly puzzleDate, PuzzleStream stream, CancellationToken cancellationToken)
     {
-        var puzzle = _puzzles.FirstOrDefault(p => p.PuzzleDate == puzzleDate);
+        var puzzle = _puzzles.FirstOrDefault(p => p.PuzzleDate == puzzleDate && p.Stream == stream);
         return Task.FromResult<DailyPuzzle?>(puzzle);
     }
 

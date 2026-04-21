@@ -12,6 +12,177 @@ namespace Wordle.TrackerSupreme.Tests;
 public class GameRepositoryTests
 {
     [Fact]
+    public void DailyPuzzle_model_uses_filtered_date_and_stream_unique_index()
+    {
+        var options = new DbContextOptionsBuilder<WordleTrackerSupremeDbContext>()
+            .UseSqlite("Data Source=:memory:")
+            .Options;
+
+        using var dbContext = new WordleTrackerSupremeDbContext(options);
+        var entityType = dbContext.Model.FindEntityType(typeof(DailyPuzzle));
+
+        var index = entityType!.GetIndexes()
+            .Single(i => i.Properties
+                .Select(p => p.Name)
+                .SequenceEqual([nameof(DailyPuzzle.PuzzleDate), nameof(DailyPuzzle.Stream)]));
+
+        index.IsUnique.Should().BeTrue();
+        index.GetFilter().Should().Be("\"IsPractice\" = false");
+    }
+
+    [Fact]
+    public async Task DailyPuzzles_allows_same_date_when_stream_differs()
+    {
+        await using var connection = new SqliteConnection("Data Source=:memory:");
+        await connection.OpenAsync();
+
+        var options = new DbContextOptionsBuilder<WordleTrackerSupremeDbContext>()
+            .UseSqlite(connection)
+            .Options;
+
+        await CreateDailyPuzzlesTable(options);
+
+        var puzzleDate = new DateOnly(2026, 4, 21);
+
+        await using var dbContext = new WordleTrackerSupremeDbContext(options);
+        dbContext.DailyPuzzles.AddRange(
+            new DailyPuzzle
+            {
+                Id = Guid.NewGuid(),
+                PuzzleDate = puzzleDate,
+                Stream = PuzzleStream.TrackerSupreme,
+                Solution = "CRANE"
+            },
+            new DailyPuzzle
+            {
+                Id = Guid.NewGuid(),
+                PuzzleDate = puzzleDate,
+                Stream = PuzzleStream.NewYorkTimes,
+                Solution = "SLATE"
+            });
+
+        await dbContext.SaveChangesAsync();
+
+        dbContext.DailyPuzzles.Should().HaveCount(2);
+    }
+
+    [Fact]
+    public async Task DailyPuzzles_rejects_same_date_and_stream_duplicate()
+    {
+        await using var connection = new SqliteConnection("Data Source=:memory:");
+        await connection.OpenAsync();
+
+        var options = new DbContextOptionsBuilder<WordleTrackerSupremeDbContext>()
+            .UseSqlite(connection)
+            .Options;
+
+        await CreateDailyPuzzlesTable(options);
+
+        var puzzleDate = new DateOnly(2026, 4, 21);
+
+        await using var dbContext = new WordleTrackerSupremeDbContext(options);
+        dbContext.DailyPuzzles.AddRange(
+            new DailyPuzzle
+            {
+                Id = Guid.NewGuid(),
+                PuzzleDate = puzzleDate,
+                Stream = PuzzleStream.NewYorkTimes,
+                Solution = "CRANE"
+            },
+            new DailyPuzzle
+            {
+                Id = Guid.NewGuid(),
+                PuzzleDate = puzzleDate,
+                Stream = PuzzleStream.NewYorkTimes,
+                Solution = "SLATE"
+            });
+
+        var act = async () => await dbContext.SaveChangesAsync();
+
+        await act.Should().ThrowAsync<DbUpdateException>();
+    }
+
+    [Fact]
+    public async Task DailyPuzzles_allows_practice_duplicates_for_same_date_and_stream()
+    {
+        await using var connection = new SqliteConnection("Data Source=:memory:");
+        await connection.OpenAsync();
+
+        var options = new DbContextOptionsBuilder<WordleTrackerSupremeDbContext>()
+            .UseSqlite(connection)
+            .Options;
+
+        await CreateDailyPuzzlesTable(options);
+
+        var puzzleDate = new DateOnly(2026, 4, 21);
+
+        await using var dbContext = new WordleTrackerSupremeDbContext(options);
+        dbContext.DailyPuzzles.AddRange(
+            new DailyPuzzle
+            {
+                Id = Guid.NewGuid(),
+                PuzzleDate = puzzleDate,
+                Stream = PuzzleStream.NewYorkTimes,
+                Solution = "CRANE",
+                IsPractice = true
+            },
+            new DailyPuzzle
+            {
+                Id = Guid.NewGuid(),
+                PuzzleDate = puzzleDate,
+                Stream = PuzzleStream.NewYorkTimes,
+                Solution = "SLATE",
+                IsPractice = true
+            });
+
+        await dbContext.SaveChangesAsync();
+
+        dbContext.DailyPuzzles.Should().HaveCount(2);
+    }
+
+    [Fact]
+    public async Task GetPuzzleByDate_returns_requested_stream()
+    {
+        await using var connection = new SqliteConnection("Data Source=:memory:");
+        await connection.OpenAsync();
+
+        var options = new DbContextOptionsBuilder<WordleTrackerSupremeDbContext>()
+            .UseSqlite(connection)
+            .Options;
+
+        await CreateDailyPuzzlesTable(options);
+
+        var puzzleDate = new DateOnly(2026, 4, 21);
+        await using (var seedContext = new WordleTrackerSupremeDbContext(options))
+        {
+            seedContext.DailyPuzzles.AddRange(
+                new DailyPuzzle
+                {
+                    Id = Guid.NewGuid(),
+                    PuzzleDate = puzzleDate,
+                    Stream = PuzzleStream.TrackerSupreme,
+                    Solution = "CRANE"
+                },
+                new DailyPuzzle
+                {
+                    Id = Guid.NewGuid(),
+                    PuzzleDate = puzzleDate,
+                    Stream = PuzzleStream.NewYorkTimes,
+                    Solution = "SLATE"
+                });
+            await seedContext.SaveChangesAsync();
+        }
+
+        await using var dbContext = new WordleTrackerSupremeDbContext(options);
+        var repository = new GameRepository(dbContext);
+
+        var puzzle = await repository.GetPuzzleByDate(puzzleDate, PuzzleStream.NewYorkTimes, CancellationToken.None);
+
+        puzzle.Should().NotBeNull();
+        puzzle!.Solution.Should().Be("SLATE");
+    }
+
+    [Fact]
     public async Task SaveChanges_translates_duplicate_attempt_unique_index_violation()
     {
         await using var connection = new SqliteConnection("Data Source=:memory:");
@@ -70,6 +241,26 @@ public class GameRepositoryTests
 
         await act.Should().ThrowAsync<DuplicatePuzzleAttemptException>()
             .WithMessage("You already have an attempt for today's puzzle. Refresh to continue.");
+    }
+
+    private static async Task CreateDailyPuzzlesTable(DbContextOptions<WordleTrackerSupremeDbContext> options)
+    {
+        await using var setupContext = new WordleTrackerSupremeDbContext(options);
+        await setupContext.Database.ExecuteSqlRawAsync(
+            """
+            CREATE TABLE DailyPuzzles (
+                Id TEXT NOT NULL PRIMARY KEY,
+                PuzzleDate TEXT NOT NULL,
+                Stream INTEGER NOT NULL,
+                Solution TEXT NULL,
+                IsPractice INTEGER NOT NULL DEFAULT 0,
+                IsArchived INTEGER NOT NULL DEFAULT 0
+            );
+
+            CREATE UNIQUE INDEX IX_DailyPuzzles_PuzzleDate_Stream
+                ON DailyPuzzles (PuzzleDate, Stream)
+                WHERE IsPractice = 0;
+            """);
     }
 
     [Fact]

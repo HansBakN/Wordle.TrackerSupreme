@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Wordle.TrackerSupreme.Infrastructure.Database;
@@ -11,9 +12,11 @@ using Wordle.TrackerSupreme.Infrastructure.Database;
 namespace Wordle.TrackerSupreme.Migrations.Migrations
 {
     [DbContext(typeof(WordleTrackerSupremeDbContext))]
-    partial class WordleTrackerSupremeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260421145328_AddPuzzleStream")]
+    partial class AddPuzzleStream
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,11 +34,6 @@ namespace Wordle.TrackerSupreme.Migrations.Migrations
                     b.Property<bool>("IsArchived")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("IsPractice")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
-
                     b.Property<DateOnly>("PuzzleDate")
                         .HasColumnType("date");
 
@@ -49,8 +47,7 @@ namespace Wordle.TrackerSupreme.Migrations.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("PuzzleDate", "Stream")
-                        .IsUnique()
-                        .HasFilter("\"IsPractice\" = false");
+                        .IsUnique();
 
                     b.ToTable("DailyPuzzles");
                 });

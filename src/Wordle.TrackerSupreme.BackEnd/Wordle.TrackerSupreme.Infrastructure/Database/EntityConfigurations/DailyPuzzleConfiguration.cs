@@ -13,13 +13,16 @@ public class DailyPuzzleConfiguration : IEntityTypeConfiguration<DailyPuzzle>
         builder.Property(puzzle => puzzle.PuzzleDate)
             .IsRequired();
 
+        builder.Property(puzzle => puzzle.Stream)
+            .IsRequired();
+
         builder.Property(puzzle => puzzle.Solution)
             .HasMaxLength(5);
 
         builder.Property(puzzle => puzzle.IsPractice)
             .HasDefaultValue(false);
 
-        builder.HasIndex(puzzle => puzzle.PuzzleDate)
+        builder.HasIndex(puzzle => new { puzzle.PuzzleDate, puzzle.Stream })
             .IsUnique()
             .HasFilter("\"IsPractice\" = false");
 
