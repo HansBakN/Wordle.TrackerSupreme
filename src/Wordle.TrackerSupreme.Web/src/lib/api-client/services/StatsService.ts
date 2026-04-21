@@ -43,18 +43,18 @@ export class StatsService {
 	 * @throws ApiError
 	 */
 	public static getApiStatsLeaderboard({
-		page,
-		pageSize
+		page = 1,
+		pageSize = 10
 	}: {
 		page?: number;
 		pageSize?: number;
-	} = {}): CancelablePromise<LeaderboardPageResponse> {
+	}): CancelablePromise<LeaderboardPageResponse> {
 		return __request(OpenAPI, {
 			method: 'GET',
 			url: '/api/stats/leaderboard',
 			query: {
-				page,
-				pageSize
+				page: page,
+				pageSize: pageSize
 			}
 		});
 	}

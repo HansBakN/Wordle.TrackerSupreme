@@ -37,7 +37,10 @@ public class PlayerStatisticsService : IPlayerStatisticsService
             ? guessCounts.Average()
             : null;
 
-        var (currentStreak, longestStreak) = CalculateStreaks(countedAttempts);
+        var streakAttempts = filteredAttempts
+            .Where(a => !isAfterRevealFn(a))
+            .ToList();
+        var (currentStreak, longestStreak) = CalculateStreaks(streakAttempts);
 
         var guessDistribution = countedAttempts
             .Where(a => a.Status == AttemptStatus.Solved && a.GuessCount.HasValue)
