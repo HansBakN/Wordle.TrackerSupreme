@@ -3,7 +3,8 @@ import { expect, test } from '@playwright/test';
 test('mobile layout keeps board in viewport and submits with on-screen keyboard', async ({
 	page
 }) => {
-	await page.setViewportSize({ width: 375, height: 760 });
+	const viewport = { width: 375, height: 640 };
+	await page.setViewportSize(viewport);
 
 	await page.route('**/api/Auth/me', async (route) => {
 		await route.fulfill({
@@ -87,7 +88,15 @@ test('mobile layout keeps board in viewport and submits with on-screen keyboard'
 	const rowBox = await firstRow.boundingBox();
 	expect(rowBox).not.toBeNull();
 	expect(rowBox!.x).toBeGreaterThanOrEqual(0);
-	expect(rowBox!.x + rowBox!.width).toBeLessThanOrEqual(375);
+	expect(rowBox!.x + rowBox!.width).toBeLessThanOrEqual(viewport.width);
+
+	const keyboard = page.getByRole('group', { name: 'On-screen keyboard' });
+	const keyboardBox = await keyboard.boundingBox();
+	expect(keyboardBox).not.toBeNull();
+	expect(keyboardBox!.x).toBeGreaterThanOrEqual(0);
+	expect(keyboardBox!.x + keyboardBox!.width).toBeLessThanOrEqual(viewport.width);
+	expect(keyboardBox!.y + keyboardBox!.height).toBeGreaterThanOrEqual(viewport.height - 16);
+	expect(keyboardBox!.y + keyboardBox!.height).toBeLessThanOrEqual(viewport.height);
 
 	for (const letter of ['C', 'R', 'A', 'N', 'E']) {
 		await page.getByTestId(`keyboard-key-${letter}`).click();

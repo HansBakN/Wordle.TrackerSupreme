@@ -445,7 +445,9 @@
 				</div>
 			{:else if state}
 				<div class="mt-6">
-					<div class="space-y-4 rounded-2xl border border-white/10 bg-black/20 p-6 shadow-inner">
+					<div
+						class="space-y-4 rounded-2xl border border-white/10 bg-black/20 p-4 pb-36 shadow-inner sm:p-6"
+					>
 						<div class="grid grid-rows-6 gap-1.5" role="grid" aria-label="Wordle board">
 							{#each Array(state.maxGuesses).keys() as rowIndex (rowIndex)}
 								<div
@@ -504,7 +506,11 @@
 							</div>
 						{/if}
 
-						<div class="space-y-2 pt-3 sm:space-y-3" role="group" aria-label="On-screen keyboard">
+						<div
+							class="fixed right-0 bottom-0 left-0 z-30 space-y-2 border-t border-white/10 bg-slate-950/95 px-3 pt-3 pb-[calc(env(safe-area-inset-bottom)+0.75rem)] shadow-2xl backdrop-blur sm:static sm:space-y-3 sm:border-0 sm:bg-transparent sm:px-0 sm:pt-3 sm:pb-0 sm:shadow-none sm:backdrop-blur-none"
+							role="group"
+							aria-label="On-screen keyboard"
+						>
 							{#each keyboardRows as row, rowIndex (rowIndex)}
 								<div class="flex w-full items-center justify-center gap-1 sm:gap-2">
 									{#if rowIndex === 2}
