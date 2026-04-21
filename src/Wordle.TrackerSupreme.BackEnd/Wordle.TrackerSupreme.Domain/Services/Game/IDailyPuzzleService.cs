@@ -4,5 +4,5 @@ namespace Wordle.TrackerSupreme.Domain.Services.Game;
 
 public interface IDailyPuzzleService
 {
-    Task<DailyPuzzle> GetOrCreatePuzzle(DateOnly puzzleDate, CancellationToken cancellationToken);
+    Task<DailyPuzzle> GetOrCreatePuzzle(DateOnly puzzleDate, PuzzleStream stream, CancellationToken cancellationToken);
 }
