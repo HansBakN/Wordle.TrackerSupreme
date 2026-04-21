@@ -8,9 +8,10 @@
 		startPracticeGame,
 		submitPracticeGuess
 	} from '$lib/game/api';
+	import type { PracticeStateResponse } from '$lib/api-client/models/PracticeStateResponse';
 	import { describeTileForScreenReader } from '$lib/game/accessibility';
 	import { getKeyboardLetterState } from '$lib/game/keyboard';
-	import type { GuessResponse, LetterResult, PracticeStateResponse } from '$lib/game/types';
+	import type { GuessResponse, LetterResult } from '$lib/game/types';
 	import { onMount, tick } from 'svelte';
 
 	let checking = true;

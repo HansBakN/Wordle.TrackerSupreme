@@ -25,6 +25,7 @@ export type { PlayerResponse } from './models/PlayerResponse';
 export type { PlayerStatsEntryResponse } from './models/PlayerStatsEntryResponse';
 export type { PlayerStatsFilterRequest } from './models/PlayerStatsFilterRequest';
 export type { PlayerStatsResponse } from './models/PlayerStatsResponse';
+export type { PracticeStateResponse } from './models/PracticeStateResponse';
 export type { SignInRequest } from './models/SignInRequest';
 export type { SignUpRequest } from './models/SignUpRequest';
 export type { SolutionEntryResponse } from './models/SolutionEntryResponse';
@@ -35,5 +36,6 @@ export type { TodayLeaderboardEntryResponse } from './models/TodayLeaderboardEnt
 export { AdminService } from './services/AdminService';
 export { AuthService } from './services/AuthService';
 export { GameService } from './services/GameService';
+export { PracticeService } from './services/PracticeService';
 export { StatsService } from './services/StatsService';
 export { StatusService } from './services/StatusService';
