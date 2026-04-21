@@ -167,11 +167,7 @@ public class AdminService(
 
     public async Task<DailyPuzzle> CreatePuzzle(DateOnly puzzleDate, string solution, CancellationToken cancellationToken)
     {
-        var normalized = solution.Trim().ToUpperInvariant();
-        if (normalized.Length != _options.WordLength)
-        {
-            throw new ArgumentException($"Solution must be exactly {_options.WordLength} letters.", nameof(solution));
-        }
+        var normalized = NormalizePuzzleSolution(solution);
 
         var existing = await _gameRepository.GetPuzzleByDate(puzzleDate, cancellationToken);
         if (existing is not null)
@@ -204,11 +200,7 @@ public class AdminService(
             throw new InvalidOperationException("Cannot modify a puzzle that already has player attempts.");
         }
 
-        var normalized = solution.Trim().ToUpperInvariant();
-        if (normalized.Length != _options.WordLength)
-        {
-            throw new ArgumentException($"Solution must be exactly {_options.WordLength} letters.", nameof(solution));
-        }
+        var normalized = NormalizePuzzleSolution(solution);
 
         if (puzzle.PuzzleDate != puzzleDate)
         {
@@ -269,5 +261,21 @@ public class AdminService(
             attempt.Status = AttemptStatus.InProgress;
             attempt.CompletedOn = null;
         }
+    }
+
+    private string NormalizePuzzleSolution(string solution)
+    {
+        var normalized = solution.Trim().ToUpperInvariant();
+        if (normalized.Length != _options.WordLength)
+        {
+            throw new ArgumentException($"Solution must be exactly {_options.WordLength} letters.", nameof(solution));
+        }
+
+        if (normalized.Any(character => character < 'A' || character > 'Z'))
+        {
+            throw new ArgumentException("Solution must contain only letters.", nameof(solution));
+        }
+
+        return normalized;
     }
 }

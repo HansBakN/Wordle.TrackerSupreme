@@ -276,6 +276,23 @@ public class AdminServiceTests
     }
 
     [Fact]
+    public async Task CreatePuzzle_rejects_non_letter_solution()
+    {
+        var options = new GameOptions { WordLength = 5, MaxGuesses = 6 };
+        var validator = new FakeWordValidator();
+        var guessService = new GuessEvaluationService(options, validator);
+        var gameRepo = new FakeGameRepository();
+        var playerRepo = new FakeAdminPlayerRepository([]);
+        var passwordHasher = new PasswordHasher<Player>();
+        var service = new AdminService(playerRepo, gameRepo, guessService, passwordHasher, options);
+
+        var action = () => service.CreatePuzzle(new DateOnly(2025, 6, 1), "A B C", CancellationToken.None);
+
+        await action.Should().ThrowAsync<ArgumentException>()
+            .WithMessage("*only letters*");
+    }
+
+    [Fact]
     public async Task CreatePuzzle_rejects_duplicate_date()
     {
         var options = new GameOptions { WordLength = 5, MaxGuesses = 6 };
@@ -297,6 +314,31 @@ public class AdminServiceTests
 
         await action.Should().ThrowAsync<InvalidOperationException>()
             .WithMessage("*already exists*");
+    }
+
+    [Fact]
+    public async Task UpdatePuzzle_rejects_non_letter_solution()
+    {
+        var options = new GameOptions { WordLength = 5, MaxGuesses = 6 };
+        var validator = new FakeWordValidator();
+        var guessService = new GuessEvaluationService(options, validator);
+        var gameRepo = new FakeGameRepository();
+        var playerRepo = new FakeAdminPlayerRepository([]);
+        var passwordHasher = new PasswordHasher<Player>();
+        var service = new AdminService(playerRepo, gameRepo, guessService, passwordHasher, options);
+
+        var puzzle = new DailyPuzzle
+        {
+            Id = Guid.NewGuid(),
+            PuzzleDate = new DateOnly(2025, 6, 1),
+            Solution = "CRANE"
+        };
+        await gameRepo.AddPuzzle(puzzle, CancellationToken.None);
+
+        var action = () => service.UpdatePuzzle(puzzle.Id, new DateOnly(2025, 6, 1), "12345", CancellationToken.None);
+
+        await action.Should().ThrowAsync<ArgumentException>()
+            .WithMessage("*only letters*");
     }
 
     [Fact]
