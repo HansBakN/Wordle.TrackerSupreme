@@ -16,9 +16,14 @@
 		defaultConfettiPieceCount,
 		type ConfettiPiece
 	} from '$lib/game/confetti';
-	import { getKeyboardLetterState } from '$lib/game/keyboard';
-	import type { GameStateResponse, LetterResult, PlayerStatsResponse } from '$lib/game/types';
 	import { colorMode } from '$lib/game/colorMode';
+	import { getKeyboardLetterState } from '$lib/game/keyboard';
+	import type {
+		GameStateResponse,
+		GuessResponse,
+		LetterResult,
+		PlayerStatsResponse
+	} from '$lib/game/types';
 	import { onMount, tick } from 'svelte';
 
 	let checking = true;
@@ -135,7 +140,9 @@
 	}
 
 	function triggerShake() {
-		if (shakeTimer) clearTimeout(shakeTimer);
+		if (shakeTimer) {
+			clearTimeout(shakeTimer);
+		}
 		shakingRow = state?.attempt?.guesses.length ?? 0;
 		shakeTimer = setTimeout(() => {
 			shakingRow = null;
@@ -144,7 +151,9 @@
 	}
 
 	function completedMessage(s: GameStateResponse | null): string | null {
-		if (!s?.attempt) return null;
+		if (!s?.attempt) {
+			return null;
+		}
 		const guessCount = s.attempt.guesses.length;
 		if (s.attempt.status === 'Solved') {
 			return `You solved it in ${guessCount} ${guessCount === 1 ? 'guess' : 'guesses'}! Come back tomorrow.`;
@@ -249,16 +258,16 @@
 		}
 	}
 
-	function tileClass(result: LetterResult | null) {
+	function tileClass(result: LetterResult | null, useHighContrast: boolean) {
 		const base =
 			'flex h-14 w-14 items-center justify-center rounded-xl border text-lg font-semibold transition';
 		if (result === 'Correct') {
-			return highContrast
+			return useHighContrast
 				? `${base} border-orange-500 bg-orange-500 text-white shadow-lg`
 				: `${base} border-emerald-400 bg-emerald-400 text-slate-900 shadow-lg`;
 		}
 		if (result === 'Present') {
-			return highContrast
+			return useHighContrast
 				? `${base} border-blue-400 bg-blue-400 text-white shadow`
 				: `${base} border-amber-300/70 bg-amber-300 text-slate-900 shadow`;
 		}
@@ -284,21 +293,28 @@
 		return `animation-delay:${position * 220}ms`;
 	}
 
-	function keyState(letter: string): LetterResult | null {
-		return getKeyboardLetterState(state?.attempt?.guesses, letter);
+	function keyState(
+		letter: string,
+		guesses: GuessResponse[] | null | undefined
+	): LetterResult | null {
+		return getKeyboardLetterState(guesses, letter);
 	}
 
-	function keyClass(letter: string) {
+	function keyClass(
+		letter: string,
+		guesses: GuessResponse[] | null | undefined,
+		useHighContrast: boolean
+	) {
 		const base =
 			'flex h-11 items-center justify-center rounded-xl border px-3 text-sm font-semibold uppercase transition';
-		const stateKey = keyState(letter);
+		const stateKey = keyState(letter, guesses);
 		if (stateKey === 'Correct') {
-			return highContrast
+			return useHighContrast
 				? `${base} border-orange-500 bg-orange-500 text-white`
 				: `${base} border-emerald-400 bg-emerald-400 text-slate-900`;
 		}
 		if (stateKey === 'Present') {
-			return highContrast
+			return useHighContrast
 				? `${base} border-blue-400 bg-blue-400 text-white`
 				: `${base} border-amber-300/70 bg-amber-300 text-slate-900`;
 		}
@@ -328,7 +344,9 @@
 	}
 
 	function startCountdown() {
-		if (countdownInterval) return;
+		if (countdownInterval) {
+			return;
+		}
 		countdown = computeCountdown();
 		countdownInterval = setInterval(() => {
 			countdown = computeCountdown();
@@ -455,7 +473,7 @@
 									{#if state.attempt?.guesses[rowIndex]}
 										{#each state.attempt.guesses[rowIndex].feedback as fb (fb.position)}
 											<div
-												class={`${tileClass(fb.result)} ${tileAnimationClass(state.attempt.guesses[rowIndex].guessId, fb.result)}`}
+												class={`${tileClass(fb.result, highContrast)} ${tileAnimationClass(state.attempt.guesses[rowIndex].guessId, fb.result)}`}
 												style={tileAnimationDelay(
 													state.attempt.guesses[rowIndex].guessId,
 													fb.position
@@ -470,7 +488,7 @@
 										{#each Array(state.wordLength).keys() as col (col)}
 											{#if rowIndex === (state.attempt?.guesses.length ?? 0)}
 												<div
-													class={tileClass(null)}
+													class={tileClass(null, highContrast)}
 													role="gridcell"
 													aria-label={describeTileForScreenReader(guess[col] ?? '', null)}
 												>
@@ -478,7 +496,7 @@
 												</div>
 											{:else}
 												<div
-													class={tileClass(null)}
+													class={tileClass(null, highContrast)}
 													role="gridcell"
 													aria-label={describeTileForScreenReader('', null)}
 												></div>
@@ -517,11 +535,13 @@
 									{/if}
 									{#each row.split('') as letter (letter)}
 										<button
-											class={keyClass(letter)}
+											class={keyClass(letter, state?.attempt?.guesses, highContrast)}
 											onclick={() => pushLetter(letter)}
 											disabled={guessInputLocked}
 											data-testid={`keyboard-key-${letter}`}
-											data-state={(keyState(letter) ?? 'unused').toLowerCase()}
+											data-state={(
+												keyState(letter, state?.attempt?.guesses) ?? 'unused'
+											).toLowerCase()}
 										>
 											{letter}
 										</button>
