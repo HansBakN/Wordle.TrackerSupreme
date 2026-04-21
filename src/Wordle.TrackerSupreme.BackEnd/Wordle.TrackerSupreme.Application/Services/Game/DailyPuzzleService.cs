@@ -27,9 +27,12 @@ public class DailyPuzzleService : IDailyPuzzleService
         _logger = logger;
     }
 
-    public async Task<DailyPuzzle> GetOrCreatePuzzle(DateOnly puzzleDate, CancellationToken cancellationToken)
+    public async Task<DailyPuzzle> GetOrCreatePuzzle(
+        DateOnly puzzleDate,
+        PuzzleStream stream,
+        CancellationToken cancellationToken)
     {
-        var existing = await _gameRepository.GetPuzzleByDate(puzzleDate, cancellationToken);
+        var existing = await _gameRepository.GetPuzzleByDate(puzzleDate, stream, cancellationToken);
         if (existing is not null)
         {
             if (string.IsNullOrWhiteSpace(existing.Solution))
@@ -45,6 +48,7 @@ public class DailyPuzzleService : IDailyPuzzleService
         {
             Id = Guid.NewGuid(),
             PuzzleDate = puzzleDate,
+            Stream = stream,
             Solution = await ResolveSolution(puzzleDate, cancellationToken),
             IsArchived = false
         };

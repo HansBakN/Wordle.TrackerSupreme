@@ -20,9 +20,10 @@ public class DailyPuzzleServiceTests
         var officialProvider = new FakeOfficialWordProvider("RANGE");
         var service = CreateService(repo, officialProvider);
 
-        var puzzle = await service.GetOrCreatePuzzle(new DateOnly(2025, 1, 1), CancellationToken.None);
+        var puzzle = await service.GetOrCreatePuzzle(new DateOnly(2025, 1, 1), PuzzleStream.NewYorkTimes, CancellationToken.None);
 
         puzzle.Solution.Should().Be("RANGE");
+        puzzle.Stream.Should().Be(PuzzleStream.NewYorkTimes);
         officialProvider.CallCount.Should().Be(1);
     }
 
@@ -40,7 +41,7 @@ public class DailyPuzzleServiceTests
         await repo.AddPuzzle(existing, CancellationToken.None);
         var service = CreateService(repo, officialProvider);
 
-        var puzzle = await service.GetOrCreatePuzzle(existing.PuzzleDate, CancellationToken.None);
+        var puzzle = await service.GetOrCreatePuzzle(existing.PuzzleDate, PuzzleStream.NewYorkTimes, CancellationToken.None);
 
         puzzle.Id.Should().Be(existing.Id);
         puzzle.Solution.Should().Be("PLANT");
@@ -54,7 +55,10 @@ public class DailyPuzzleServiceTests
         var officialProvider = new FakeOfficialWordProvider((_, _) => throw new InvalidOperationException("boom"));
         var service = CreateService(repo, officialProvider);
 
-        var act = async () => await service.GetOrCreatePuzzle(new DateOnly(2025, 1, 3), CancellationToken.None);
+        var act = async () => await service.GetOrCreatePuzzle(
+            new DateOnly(2025, 1, 3),
+            PuzzleStream.NewYorkTimes,
+            CancellationToken.None);
 
         await act.Should().ThrowAsync<DailyPuzzleUnavailableException>()
             .WithMessage("Unable to retrieve today's puzzle. Please try again later.");

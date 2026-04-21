@@ -16,7 +16,10 @@ export class GameService {
 	public static getApiGameState(): CancelablePromise<GameStateResponse> {
 		return __request(OpenAPI, {
 			method: 'GET',
-			url: '/api/game/state'
+			url: '/api/game/state',
+			errors: {
+				503: `Service Unavailable`
+			}
 		});
 	}
 	/**
@@ -32,7 +35,12 @@ export class GameService {
 			method: 'POST',
 			url: '/api/game/guess',
 			body: requestBody,
-			mediaType: 'application/json'
+			mediaType: 'application/json',
+			errors: {
+				400: `Bad Request`,
+				409: `Conflict`,
+				503: `Service Unavailable`
+			}
 		});
 	}
 	/**
@@ -42,7 +50,11 @@ export class GameService {
 	public static postApiGameEasyMode(): CancelablePromise<GameStateResponse> {
 		return __request(OpenAPI, {
 			method: 'POST',
-			url: '/api/game/easy-mode'
+			url: '/api/game/easy-mode',
+			errors: {
+				409: `Conflict`,
+				503: `Service Unavailable`
+			}
 		});
 	}
 	/**
@@ -54,7 +66,8 @@ export class GameService {
 			method: 'GET',
 			url: '/api/game/solutions',
 			errors: {
-				403: `Forbidden`
+				403: `Forbidden`,
+				503: `Service Unavailable`
 			}
 		});
 	}
