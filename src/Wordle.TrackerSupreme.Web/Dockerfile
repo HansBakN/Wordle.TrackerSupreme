@@ -1,6 +1,14 @@
 FROM node:20-alpine AS build
 WORKDIR /app
 
+# Add build args
+ARG COMMIT_SHA=dev
+ARG REPO_URL=https://github.com/HansBakN/wordle.trackersupreme
+
+# Expose to SvelteKit (must be PUBLIC_)
+ENV PUBLIC_COMMIT_SHA=$COMMIT_SHA
+ENV PUBLIC_COMMIT_URL=$REPO_URL/commit/$COMMIT_SHA
+
 COPY package*.json ./
 RUN npm ci
 
