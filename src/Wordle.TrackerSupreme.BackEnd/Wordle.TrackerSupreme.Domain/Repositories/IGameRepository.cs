@@ -4,7 +4,7 @@ namespace Wordle.TrackerSupreme.Domain.Repositories;
 
 public interface IGameRepository
 {
-    Task<DailyPuzzle?> GetPuzzleByDate(DateOnly puzzleDate, CancellationToken cancellationToken);
+    Task<DailyPuzzle?> GetPuzzleByDate(DateOnly puzzleDate, PuzzleStream stream, CancellationToken cancellationToken);
     Task<DailyPuzzle?> GetPuzzleById(Guid puzzleId, CancellationToken cancellationToken);
     Task<List<DailyPuzzle>> GetPuzzles(CancellationToken cancellationToken);
     Task AddPuzzle(DailyPuzzle puzzle, CancellationToken cancellationToken);

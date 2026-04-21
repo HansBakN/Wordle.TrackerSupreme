@@ -169,7 +169,7 @@ public class AdminService(
     {
         var normalized = NormalizePuzzleSolution(solution);
 
-        var existing = await _gameRepository.GetPuzzleByDate(puzzleDate, cancellationToken);
+        var existing = await _gameRepository.GetPuzzleByDate(puzzleDate, PuzzleStream.NewYorkTimes, cancellationToken);
         if (existing is not null)
         {
             throw new InvalidOperationException($"A puzzle already exists for {puzzleDate:yyyy-MM-dd}.");
@@ -205,7 +205,7 @@ public class AdminService(
 
         if (puzzle.PuzzleDate != puzzleDate)
         {
-            var existing = await _gameRepository.GetPuzzleByDate(puzzleDate, cancellationToken);
+            var existing = await _gameRepository.GetPuzzleByDate(puzzleDate, puzzle.Stream, cancellationToken);
             if (existing is not null)
             {
                 throw new InvalidOperationException($"A puzzle already exists for {puzzleDate:yyyy-MM-dd}.");
