@@ -2,6 +2,7 @@ namespace Wordle.TrackerSupreme.Domain.Models;
 
 public class PlayerStatistics
 {
+    public IReadOnlyList<PuzzleStream> Streams { get; set; } = [PuzzleStream.TrackerSupreme];
     public int TotalAttempts { get; set; }
     public int Wins { get; set; }
     public int Failures { get; set; }

@@ -14,11 +14,13 @@ public record PlayerStatsFilterRequest(
     DateOnly? FromDate = null,
     DateOnly? ToDate = null,
     int? MinGuessCount = null,
-    int? MaxGuessCount = null)
+    int? MaxGuessCount = null,
+    IReadOnlyList<PuzzleStream>? Streams = null)
 {
     public PlayerStatisticsFilter ToFilter()
         => new()
         {
+            Streams = NormalizeStreams(Streams),
             IncludeHardMode = IncludeHardMode,
             IncludeEasyMode = IncludeEasyMode,
             IncludeBeforeReveal = IncludeBeforeReveal,
@@ -32,4 +34,17 @@ public record PlayerStatsFilterRequest(
             MinGuessCount = MinGuessCount,
             MaxGuessCount = MaxGuessCount
         };
+
+    private static IReadOnlyList<PuzzleStream> NormalizeStreams(IReadOnlyList<PuzzleStream>? streams)
+    {
+        if (streams is null || streams.Count == 0)
+        {
+            return [PuzzleStream.TrackerSupreme];
+        }
+
+        return streams
+            .Distinct()
+            .OrderBy(stream => stream)
+            .ToList();
+    }
 }

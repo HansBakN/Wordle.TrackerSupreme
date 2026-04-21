@@ -695,6 +695,14 @@
 							"format": "int32",
 							"default": 10
 						}
+					},
+					{
+						"name": "includeNewYorkTimes",
+						"in": "query",
+						"schema": {
+							"type": "boolean",
+							"default": false
+						}
 					}
 				],
 				"responses": {
@@ -724,6 +732,16 @@
 		"/api/stats/leaderboard/today": {
 			"get": {
 				"tags": ["Stats"],
+				"parameters": [
+					{
+						"name": "includeNewYorkTimes",
+						"in": "query",
+						"schema": {
+							"type": "boolean",
+							"default": false
+						}
+					}
+				],
 				"responses": {
 					"200": {
 						"description": "OK",
@@ -1048,6 +1066,13 @@
 			"LeaderboardPageResponse": {
 				"type": "object",
 				"properties": {
+					"streams": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/PuzzleStream"
+						},
+						"nullable": true
+					},
 					"items": {
 						"type": "array",
 						"items": {
@@ -1187,6 +1212,13 @@
 						"type": "integer",
 						"format": "int32",
 						"nullable": true
+					},
+					"streams": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/PuzzleStream"
+						},
+						"nullable": true
 					}
 				},
 				"additionalProperties": false
@@ -1194,6 +1226,13 @@
 			"PlayerStatsResponse": {
 				"type": "object",
 				"properties": {
+					"streams": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/PuzzleStream"
+						},
+						"nullable": true
+					},
 					"totalAttempts": {
 						"type": "integer",
 						"format": "int32"

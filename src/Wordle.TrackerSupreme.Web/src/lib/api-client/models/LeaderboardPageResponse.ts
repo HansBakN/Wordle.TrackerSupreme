@@ -4,6 +4,7 @@
 /* eslint-disable */
 import type { LeaderboardEntryResponse } from './LeaderboardEntryResponse';
 export type LeaderboardPageResponse = {
+	streams?: Array<'TrackerSupreme' | 'NewYorkTimes'> | null;
 	items?: Array<LeaderboardEntryResponse> | null;
 	total?: number;
 	page?: number;

@@ -5,6 +5,7 @@ describe('stats filter helpers', () => {
 	it('builds default request for hard mode before reveal', () => {
 		const request = buildStatsFilterRequest(defaultStatsFilterState);
 
+		expect(request.streams).toEqual(['TrackerSupreme']);
 		expect(request.includeHardMode).toBe(true);
 		expect(request.includeEasyMode).toBe(false);
 		expect(request.includeBeforeReveal).toBe(true);
@@ -12,6 +13,15 @@ describe('stats filter helpers', () => {
 		expect(request.includeSolved).toBe(true);
 		expect(request.includeFailed).toBe(true);
 		expect(request.includeInProgress).toBe(false);
+	});
+
+	it('adds NYT stream when inclusive comparison is enabled', () => {
+		const request = buildStatsFilterRequest({
+			...defaultStatsFilterState,
+			includeNewYorkTimes: true
+		});
+
+		expect(request.streams).toEqual(['TrackerSupreme', 'NewYorkTimes']);
 	});
 
 	it('converts numeric filters and date strings when provided', () => {

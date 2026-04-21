@@ -2,6 +2,7 @@ namespace Wordle.TrackerSupreme.Domain.Models;
 
 public record PlayerStatisticsFilter
 {
+    public IReadOnlyList<PuzzleStream> Streams { get; init; } = [PuzzleStream.TrackerSupreme];
     public bool IncludeHardMode { get; init; } = true;
     public bool IncludeEasyMode { get; init; } = true;
     public bool IncludeBeforeReveal { get; init; } = true;

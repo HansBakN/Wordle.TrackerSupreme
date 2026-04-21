@@ -69,7 +69,9 @@ test('stats page defaults to hard mode filters and excludes current player', asy
 	await expect(page.locator('main').getByText('Tester', { exact: true })).toHaveCount(0);
 
 	await expect(page.getByLabel('Easy mode attempts')).toBeVisible();
+	await expect(page.getByLabel('Include New York Times')).toBeVisible();
 	await page.getByLabel('Easy mode attempts').check();
+	await page.getByLabel('Include New York Times').check();
 	await page.getByRole('button', { name: 'Apply filters' }).click();
 
 	expect(bodies.length).toBeGreaterThanOrEqual(2);
@@ -80,9 +82,11 @@ test('stats page defaults to hard mode filters and excludes current player', asy
 		includeAfterReveal: false,
 		includeSolved: true,
 		includeFailed: true,
-		includeInProgress: false
+		includeInProgress: false,
+		streams: ['TrackerSupreme']
 	});
 	expect(bodies[1]).toMatchObject({
-		includeEasyMode: true
+		includeEasyMode: true,
+		streams: ['TrackerSupreme', 'NewYorkTimes']
 	});
 });

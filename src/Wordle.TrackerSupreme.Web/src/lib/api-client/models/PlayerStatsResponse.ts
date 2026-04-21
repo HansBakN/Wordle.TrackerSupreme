@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export type PlayerStatsResponse = {
+	streams?: Array<'TrackerSupreme' | 'NewYorkTimes'> | null;
 	totalAttempts?: number;
 	wins?: number;
 	failures?: number;

@@ -62,10 +62,12 @@ public class StatsController(
     public async Task<ActionResult<LeaderboardPageResponse>> GetLeaderboard(
         [FromQuery] int page = 1,
         [FromQuery] int pageSize = 10,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        [FromQuery] bool includeNewYorkTimes = false)
     {
         page = Math.Max(1, page);
         pageSize = Math.Clamp(pageSize, 1, 100);
+        var streams = GetLeaderboardStreams(includeNewYorkTimes);
 
         var filter = new PlayerStatsFilterRequest(
             IncludeHardMode: true,
@@ -74,7 +76,8 @@ public class StatsController(
             IncludeAfterReveal: false,
             IncludeSolved: true,
             IncludeFailed: true,
-            IncludeInProgress: false).ToFilter();
+            IncludeInProgress: false,
+            Streams: streams).ToFilter();
 
         var players = await playerRepository.GetPlayersWithAttempts(cancellationToken);
         var ranked = players
@@ -123,17 +126,22 @@ public class StatsController(
             rank += 1;
         }
 
-        return Ok(new LeaderboardPageResponse(leaderboard, total, page, pageSize, totalPages));
+        return Ok(new LeaderboardPageResponse(streams, leaderboard, total, page, pageSize, totalPages));
     }
 
     [HttpGet("leaderboard/today")]
-    public async Task<ActionResult<IReadOnlyList<TodayLeaderboardEntryResponse>>> GetTodayLeaderboard(CancellationToken cancellationToken)
+    public async Task<ActionResult<IReadOnlyList<TodayLeaderboardEntryResponse>>> GetTodayLeaderboard(
+        CancellationToken cancellationToken,
+        [FromQuery] bool includeNewYorkTimes = false)
     {
         var today = gameClock.Today;
+        var streams = GetLeaderboardStreams(includeNewYorkTimes);
         var players = await playerRepository.GetPlayersWithAttempts(cancellationToken);
         var ranked = players
             .Select(player => player.Attempts
-                .Where(attempt => attempt.DailyPuzzle?.PuzzleDate == today)
+                .Where(attempt =>
+                    attempt.DailyPuzzle?.PuzzleDate == today &&
+                    streams.Contains(attempt.DailyPuzzle.Stream))
                 .OrderByDescending(attempt => attempt.CreatedOn)
                 .FirstOrDefault())
             .Where(attempt => attempt is not null)
@@ -176,6 +184,7 @@ public class StatsController(
     private static PlayerStatsResponse MapStats(PlayerStatistics stats)
     {
         return new PlayerStatsResponse(
+            stats.Streams,
             stats.TotalAttempts,
             stats.Wins,
             stats.Failures,
@@ -185,4 +194,9 @@ public class StatsController(
             stats.AverageGuessCount,
             stats.GuessDistribution);
     }
+
+    private static IReadOnlyList<PuzzleStream> GetLeaderboardStreams(bool includeNewYorkTimes)
+        => includeNewYorkTimes
+            ? [PuzzleStream.TrackerSupreme, PuzzleStream.NewYorkTimes]
+            : [PuzzleStream.TrackerSupreme];
 }

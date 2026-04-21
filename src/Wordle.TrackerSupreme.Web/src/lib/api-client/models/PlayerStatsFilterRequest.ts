@@ -15,4 +15,5 @@ export type PlayerStatsFilterRequest = {
 	toDate?: string | null;
 	minGuessCount?: number | null;
 	maxGuessCount?: number | null;
+	streams?: Array<'TrackerSupreme' | 'NewYorkTimes'> | null;
 };

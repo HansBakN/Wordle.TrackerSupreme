@@ -44,17 +44,20 @@ export class StatsService {
 	 */
 	public static getApiStatsLeaderboard({
 		page,
-		pageSize
+		pageSize,
+		includeNewYorkTimes
 	}: {
 		page?: number;
 		pageSize?: number;
+		includeNewYorkTimes?: boolean;
 	} = {}): CancelablePromise<LeaderboardPageResponse> {
 		return __request(OpenAPI, {
 			method: 'GET',
 			url: '/api/stats/leaderboard',
 			query: {
 				page,
-				pageSize
+				pageSize,
+				includeNewYorkTimes
 			}
 		});
 	}
@@ -62,12 +65,17 @@ export class StatsService {
 	 * @returns TodayLeaderboardEntryResponse OK
 	 * @throws ApiError
 	 */
-	public static getApiStatsLeaderboardToday(): CancelablePromise<
-		Array<TodayLeaderboardEntryResponse>
-	> {
+	public static getApiStatsLeaderboardToday({
+		includeNewYorkTimes
+	}: {
+		includeNewYorkTimes?: boolean;
+	} = {}): CancelablePromise<Array<TodayLeaderboardEntryResponse>> {
 		return __request(OpenAPI, {
 			method: 'GET',
-			url: '/api/stats/leaderboard/today'
+			url: '/api/stats/leaderboard/today',
+			query: {
+				includeNewYorkTimes
+			}
 		});
 	}
 }
