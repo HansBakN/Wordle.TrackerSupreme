@@ -28,6 +28,23 @@ public class DailyPuzzleServiceTests
     }
 
     [Fact]
+    public async Task Fills_tracker_supreme_puzzle_with_local_solution()
+    {
+        var repo = new FakeGameRepository();
+        var officialProvider = new FakeOfficialWordProvider("RANGE");
+        var service = CreateService(repo, officialProvider, new FakeWordSelector("CRANE"));
+
+        var puzzle = await service.GetOrCreatePuzzle(
+            new DateOnly(2025, 1, 1),
+            PuzzleStream.TrackerSupreme,
+            CancellationToken.None);
+
+        puzzle.Solution.Should().Be("CRANE");
+        puzzle.Stream.Should().Be(PuzzleStream.TrackerSupreme);
+        officialProvider.CallCount.Should().Be(0);
+    }
+
+    [Fact]
     public async Task Uses_existing_puzzle_and_keeps_solution_from_official()
     {
         var repo = new FakeGameRepository();

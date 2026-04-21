@@ -81,6 +81,26 @@ public class GameplayServiceTests
     }
 
     [Fact]
+    public async Task SubmitGuess_keeps_attempts_isolated_by_stream()
+    {
+        var repo = new FakeGameRepository();
+        var clock = new FakeGameClock(new DateOnly(2025, 1, 5));
+        var gameplay = CreateService(repo, clock, "CRANE");
+        var playerId = Guid.NewGuid();
+
+        var trackerState = await gameplay.SubmitGuess(playerId, "SLATE", PuzzleStream.TrackerSupreme);
+        var nytState = await gameplay.SubmitGuess(playerId, "CRANE", PuzzleStream.NewYorkTimes);
+
+        trackerState.Puzzle.Stream.Should().Be(PuzzleStream.TrackerSupreme);
+        trackerState.Attempt!.Guesses.Should().ContainSingle(g => g.GuessWord == "SLATE");
+        trackerState.Attempt.Status.Should().Be(AttemptStatus.InProgress);
+        nytState.Puzzle.Stream.Should().Be(PuzzleStream.NewYorkTimes);
+        nytState.Attempt!.Guesses.Should().ContainSingle(g => g.GuessWord == "CRANE");
+        nytState.Attempt.Status.Should().Be(AttemptStatus.Solved);
+        repo.Attempts.Should().HaveCount(2);
+    }
+
+    [Fact]
     public async Task SubmitGuess_rejects_invalid_length()
     {
         var repo = new FakeGameRepository();

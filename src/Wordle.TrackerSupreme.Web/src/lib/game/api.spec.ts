@@ -75,6 +75,40 @@ describe('api helpers', () => {
 		expect((call[1] as RequestInit)?.method).toBe('POST');
 	});
 
+	it('adds selected stream to game requests', async () => {
+		const mockResponse = {
+			ok: true,
+			status: 200,
+			json: () => Promise.resolve({ puzzleDate: '2025-01-01', stream: 'NewYorkTimes' })
+		} as Response;
+		const fetchSpy = vi.spyOn(globalThis, 'fetch' as never).mockResolvedValue(mockResponse);
+
+		await fetchGameState('NewYorkTimes');
+		await submitGuess('CRANE', 'NewYorkTimes');
+		await enableEasyMode('NewYorkTimes');
+
+		expect(fetchSpy.mock.calls[0][0]).toBe('http://api.test/api/game/state?stream=NewYorkTimes');
+		expect(fetchSpy.mock.calls[1][0]).toBe('http://api.test/api/game/guess?stream=NewYorkTimes');
+		expect(fetchSpy.mock.calls[2][0]).toBe(
+			'http://api.test/api/game/easy-mode?stream=NewYorkTimes'
+		);
+	});
+
+	it('omits stream query for the default Tracker Supreme puzzle', async () => {
+		const mockResponse = {
+			ok: true,
+			status: 200,
+			json: () => Promise.resolve({ puzzleDate: '2025-01-01', stream: 'TrackerSupreme' })
+		} as Response;
+		const fetchSpy = vi.spyOn(globalThis, 'fetch' as never).mockResolvedValue(mockResponse);
+
+		await fetchGameState('TrackerSupreme');
+		await submitGuess('CRANE', 'TrackerSupreme');
+
+		expect(fetchSpy.mock.calls[0][0]).toBe('http://api.test/api/game/state');
+		expect(fetchSpy.mock.calls[1][0]).toBe('http://api.test/api/game/guess');
+	});
+
 	it('throws ApiResponseError with code when response has a code field', async () => {
 		const mockResponse = {
 			ok: false,

@@ -1,4 +1,5 @@
 export type LetterResult = 'Absent' | 'Present' | 'Correct';
+export type PuzzleStream = 'TrackerSupreme' | 'NewYorkTimes';
 
 export type LetterFeedback = {
 	position: number;
@@ -23,6 +24,7 @@ export type AttemptResponse = {
 };
 
 export type GameStateResponse = {
+	stream: PuzzleStream;
 	puzzleDate: string;
 	cutoffPassed: boolean;
 	solutionRevealed: boolean;

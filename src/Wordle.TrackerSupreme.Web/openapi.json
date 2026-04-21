@@ -429,6 +429,15 @@
 		"/api/game/state": {
 			"get": {
 				"tags": ["Game"],
+				"parameters": [
+					{
+						"name": "stream",
+						"in": "query",
+						"schema": {
+							"$ref": "#/components/schemas/PuzzleStream"
+						}
+					}
+				],
 				"responses": {
 					"200": {
 						"description": "OK",
@@ -456,6 +465,15 @@
 		"/api/game/guess": {
 			"post": {
 				"tags": ["Game"],
+				"parameters": [
+					{
+						"name": "stream",
+						"in": "query",
+						"schema": {
+							"$ref": "#/components/schemas/PuzzleStream"
+						}
+					}
+				],
 				"requestBody": {
 					"content": {
 						"application/json": {
@@ -502,6 +520,15 @@
 		"/api/game/easy-mode": {
 			"post": {
 				"tags": ["Game"],
+				"parameters": [
+					{
+						"name": "stream",
+						"in": "query",
+						"schema": {
+							"$ref": "#/components/schemas/PuzzleStream"
+						}
+					}
+				],
 				"responses": {
 					"200": {
 						"description": "OK",
@@ -529,6 +556,15 @@
 		"/api/game/solutions": {
 			"get": {
 				"tags": ["Game"],
+				"parameters": [
+					{
+						"name": "stream",
+						"in": "query",
+						"schema": {
+							"$ref": "#/components/schemas/PuzzleStream"
+						}
+					}
+				],
 				"responses": {
 					"200": {
 						"description": "OK",
@@ -925,6 +961,9 @@
 			"GameStateResponse": {
 				"type": "object",
 				"properties": {
+					"stream": {
+						"$ref": "#/components/schemas/PuzzleStream"
+					},
 					"puzzleDate": {
 						"type": "string",
 						"format": "date"
@@ -962,6 +1001,10 @@
 					}
 				},
 				"additionalProperties": false
+			},
+			"PuzzleStream": {
+				"enum": ["TrackerSupreme", "NewYorkTimes"],
+				"type": "string"
 			},
 			"GuessResponse": {
 				"type": "object",
