@@ -201,6 +201,7 @@ public class AdminService(
         }
 
         var normalized = NormalizePuzzleSolution(solution);
+        EnsurePuzzleIsStillScheduled(puzzle, "modify");
 
         if (puzzle.PuzzleDate != puzzleDate)
         {
@@ -229,6 +230,8 @@ public class AdminService(
         {
             throw new InvalidOperationException("Cannot delete a puzzle that already has player attempts.");
         }
+
+        EnsurePuzzleIsStillScheduled(puzzle, "delete");
 
         await _gameRepository.RemovePuzzle(puzzle, cancellationToken);
         await _gameRepository.SaveChanges(cancellationToken);
@@ -277,5 +280,14 @@ public class AdminService(
         }
 
         return normalized;
+    }
+
+    private static void EnsurePuzzleIsStillScheduled(DailyPuzzle puzzle, string action)
+    {
+        var today = DateOnly.FromDateTime(DateTimeOffset.Now.Date);
+        if (puzzle.PuzzleDate <= today)
+        {
+            throw new InvalidOperationException($"Cannot {action} a puzzle that is already live.");
+        }
     }
 }
