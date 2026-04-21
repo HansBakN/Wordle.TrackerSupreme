@@ -33,7 +33,8 @@ public class StatsController(
             return Unauthorized();
         }
 
-        var stats = statisticsService.Calculate(player, null, attempt => gameClock.IsAfterReveal(attempt));
+        var filter = new PlayerStatisticsFilter { CountPracticeAttempts = true };
+        var stats = statisticsService.Calculate(player, filter, attempt => gameClock.IsAfterReveal(attempt));
 
         return Ok(MapStats(stats));
     }

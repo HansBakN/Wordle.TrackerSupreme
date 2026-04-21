@@ -440,6 +440,39 @@ public class StatsControllerTests
         history.Single().Solution.Should().Be("CRANE");
     }
 
+    [Fact]
+    public async Task GetMine_counts_practice_wins_in_personal_stats()
+    {
+        var player = CreatePlayer("Practitioner");
+        player.Attempts.Add(CreateAttempt(player, new DateOnly(2025, 1, 1), AttemptStatus.Solved, true, 3));
+
+        var repo = new FakePlayerRepository([player]);
+        // revealPassed = true means the attempt is classified as practice
+        var clock = new FakeGameClock(new DateOnly(2025, 1, 2), revealPassed: true);
+        var controller = new StatsController(repo, new PlayerStatisticsService(), clock)
+        {
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new ClaimsPrincipal(new ClaimsIdentity(
+                        [new Claim("playerId", player.Id.ToString())],
+                        "Test"))
+                }
+            }
+        };
+
+        var result = await controller.GetMine(CancellationToken.None);
+
+        var ok = result.Result.Should().BeOfType<OkObjectResult>().Which;
+        var stats = ok.Value.Should().BeOfType<PlayerStatsResponse>().Which;
+        stats.Wins.Should().Be(1, "practice wins should count in personal stats");
+        stats.TotalAttempts.Should().Be(1);
+        stats.PracticeAttempts.Should().Be(1);
+        stats.CurrentStreak.Should().Be(0, "practice wins must not extend streaks");
+        stats.LongestStreak.Should().Be(0, "practice wins must not extend streaks");
+    }
+
     private static Player CreatePlayer(string name)
     {
         return new Player
