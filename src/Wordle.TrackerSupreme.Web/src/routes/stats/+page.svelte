@@ -185,6 +185,7 @@
 							<button
 								class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition hover:bg-white/5"
 								on:click={() => toggleHistory(entry.puzzleDate ?? '')}
+								aria-expanded={expanded}
 								data-testid="history-toggle"
 							>
 								<div class="flex items-center gap-4">
