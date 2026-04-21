@@ -23,7 +23,10 @@ export class AuthService {
 			method: 'POST',
 			url: '/api/Auth/signup',
 			body: requestBody,
-			mediaType: 'application/json'
+			mediaType: 'application/json',
+			errors: {
+				409: `Conflict`
+			}
 		});
 	}
 	/**
@@ -39,7 +42,10 @@ export class AuthService {
 			method: 'POST',
 			url: '/api/Auth/signin',
 			body: requestBody,
-			mediaType: 'application/json'
+			mediaType: 'application/json',
+			errors: {
+				401: `Unauthorized`
+			}
 		});
 	}
 	/**

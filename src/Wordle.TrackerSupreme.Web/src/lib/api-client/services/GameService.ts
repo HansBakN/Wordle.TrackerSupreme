@@ -24,6 +24,9 @@ export class GameService {
 			url: '/api/game/state',
 			query: {
 				stream: stream
+			},
+			errors: {
+				503: `Service Unavailable`
 			}
 		});
 	}
@@ -45,7 +48,12 @@ export class GameService {
 				stream: stream
 			},
 			body: requestBody,
-			mediaType: 'application/json'
+			mediaType: 'application/json',
+			errors: {
+				400: `Bad Request`,
+				409: `Conflict`,
+				503: `Service Unavailable`
+			}
 		});
 	}
 	/**
@@ -62,6 +70,10 @@ export class GameService {
 			url: '/api/game/easy-mode',
 			query: {
 				stream: stream
+			},
+			errors: {
+				409: `Conflict`,
+				503: `Service Unavailable`
 			}
 		});
 	}
@@ -81,7 +93,8 @@ export class GameService {
 				stream: stream
 			},
 			errors: {
-				403: `Forbidden`
+				403: `Forbidden`,
+				503: `Service Unavailable`
 			}
 		});
 	}
