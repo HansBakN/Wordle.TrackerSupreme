@@ -17,7 +17,12 @@
 		type ConfettiPiece
 	} from '$lib/game/confetti';
 	import { getKeyboardLetterState } from '$lib/game/keyboard';
-	import type { GameStateResponse, GuessResponse, LetterResult, PlayerStatsResponse } from '$lib/game/types';
+	import type {
+		GameStateResponse,
+		GuessResponse,
+		LetterResult,
+		PlayerStatsResponse
+	} from '$lib/game/types';
 	import { onMount, tick } from 'svelte';
 
 	let checking = true;
@@ -278,7 +283,10 @@
 		return `animation-delay:${position * 220}ms`;
 	}
 
-	function keyState(letter: string, guesses: GuessResponse[] | null | undefined): LetterResult | null {
+	function keyState(
+		letter: string,
+		guesses: GuessResponse[] | null | undefined
+	): LetterResult | null {
 		return getKeyboardLetterState(guesses, letter);
 	}
 
@@ -510,7 +518,9 @@
 											onclick={() => pushLetter(letter)}
 											disabled={guessInputLocked}
 											data-testid={`keyboard-key-${letter}`}
-											data-state={(keyState(letter, state?.attempt?.guesses) ?? 'unused').toLowerCase()}
+											data-state={(
+												keyState(letter, state?.attempt?.guesses) ?? 'unused'
+											).toLowerCase()}
 										>
 											{letter}
 										</button>

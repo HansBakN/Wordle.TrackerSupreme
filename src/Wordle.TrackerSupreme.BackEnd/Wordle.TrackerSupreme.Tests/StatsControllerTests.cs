@@ -1,4 +1,6 @@
+using System.Security.Claims;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Wordle.TrackerSupreme.Api.Controllers;
 using Wordle.TrackerSupreme.Api.Models.Game;
@@ -222,6 +224,40 @@ public class StatsControllerTests
 
         payload.Should().ContainSingle();
         payload.Single().DisplayName.Should().Be("Active");
+    }
+
+    [Fact]
+    public async Task GetMyCalendar_returns_daily_outcomes_for_date_range()
+    {
+        var today = new DateOnly(2025, 1, 10);
+        var player = CreatePlayer("Tester");
+        player.Attempts.Add(CreateAttempt(player, new DateOnly(2025, 1, 8), AttemptStatus.Solved, true, 3));
+        player.Attempts.Add(CreateAttempt(player, new DateOnly(2025, 1, 9), AttemptStatus.Failed, true, 6));
+
+        var repo = new FakePlayerRepository([player]);
+        var clock = new FakeGameClock(today);
+        var controller = new StatsController(repo, new PlayerStatisticsService(), clock)
+        {
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new ClaimsPrincipal(new ClaimsIdentity(new[]
+                    {
+                        new Claim("playerId", player.Id.ToString())
+                    }, "Test"))
+                }
+            }
+        };
+
+        var result = await controller.GetMyCalendar(days: 5, CancellationToken.None);
+
+        var ok = result.Result.Should().BeOfType<OkObjectResult>().Which;
+        var calendar = ok.Value.Should().BeOfType<CalendarResponse>().Which;
+        calendar.Days.Should().HaveCount(5);
+        calendar.Days.Should().Contain(d => d.Date == new DateOnly(2025, 1, 8) && d.Outcome == "won" && d.GuessCount == 3);
+        calendar.Days.Should().Contain(d => d.Date == new DateOnly(2025, 1, 9) && d.Outcome == "failed");
+        calendar.Days.Should().Contain(d => d.Date == new DateOnly(2025, 1, 10) && d.Outcome == "none");
     }
 
     private static Player CreatePlayer(string name)

@@ -1,6 +1,11 @@
 import { getApiBase, notifyUnauthorizedResponse } from '$lib/api';
 import { StatsService } from '$lib/api-client/services/StatsService';
-import type { GameStateResponse, PlayerStatsResponse, SolutionsResponse } from './types';
+import type {
+	CalendarResponse,
+	GameStateResponse,
+	PlayerStatsResponse,
+	SolutionsResponse
+} from './types';
 
 export class ApiResponseError extends Error {
 	readonly status: number;
@@ -77,4 +82,8 @@ export function fetchSolutions(): Promise<SolutionsResponse> {
 
 export function fetchMyStats(): Promise<PlayerStatsResponse> {
 	return StatsService.getApiStatsMe();
+}
+
+export function fetchMyCalendar(days = 90): Promise<CalendarResponse> {
+	return apiFetch<CalendarResponse>(`/api/stats/me/calendar?days=${days}`);
 }
