@@ -87,7 +87,9 @@
 	let passwordValidationError = $derived(getAdminPasswordValidationError(passwordDraft));
 
 	function handleSearchInput() {
-		if (searchTimeout) clearTimeout(searchTimeout);
+		if (searchTimeout) {
+			clearTimeout(searchTimeout);
+		}
 		searchTimeout = setTimeout(() => {
 			page = 1;
 			void loadPlayers();
@@ -95,7 +97,9 @@
 	}
 
 	function goToPage(newPage: number) {
-		if (newPage < 1 || newPage > totalPages || loading) return;
+		if (newPage < 1 || newPage > totalPages || loading) {
+			return;
+		}
 		page = newPage;
 		void loadPlayers();
 	}

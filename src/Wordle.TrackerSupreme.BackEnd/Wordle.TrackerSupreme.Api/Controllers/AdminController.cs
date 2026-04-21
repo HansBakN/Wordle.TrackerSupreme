@@ -19,8 +19,15 @@ public class AdminController(IAdminService adminService) : ControllerBase
         [FromQuery] int pageSize = 20,
         CancellationToken cancellationToken = default)
     {
-        if (page < 1) page = 1;
-        if (pageSize is < 1 or > 100) pageSize = 20;
+        if (page < 1)
+        {
+            page = 1;
+        }
+
+        if (pageSize is < 1 or > 100)
+        {
+            pageSize = 20;
+        }
 
         var (players, totalCount) = await adminService.GetPlayersPage(search, page, pageSize, cancellationToken);
         var entries = players.Select(MapSummary).ToList();
