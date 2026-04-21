@@ -112,6 +112,7 @@ public class SeedDataGenerator(
             {
                 Id = Guid.NewGuid(),
                 PuzzleDate = date,
+                Stream = PuzzleStream.TrackerSupreme,
                 Solution = _wordSelector.GetSolutionFor(date),
                 IsArchived = date < anchorDate
             });
