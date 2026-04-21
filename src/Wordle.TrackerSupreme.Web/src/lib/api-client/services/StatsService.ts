@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { LeaderboardEntryResponse } from '../models/LeaderboardEntryResponse';
+import type { CalendarResponse } from '../models/CalendarResponse';
 import type { LeaderboardPageResponse } from '../models/LeaderboardPageResponse';
 import type { PlayerStatsEntryResponse } from '../models/PlayerStatsEntryResponse';
 import type { PlayerStatsFilterRequest } from '../models/PlayerStatsFilterRequest';
@@ -68,6 +68,23 @@ export class StatsService {
 		return __request(OpenAPI, {
 			method: 'GET',
 			url: '/api/stats/leaderboard/today'
+		});
+	}
+	/**
+	 * @returns CalendarResponse OK
+	 * @throws ApiError
+	 */
+	public static getApiStatsMeCalendar({
+		days
+	}: {
+		days?: number;
+	} = {}): CancelablePromise<CalendarResponse> {
+		return __request(OpenAPI, {
+			method: 'GET',
+			url: '/api/stats/me/calendar',
+			query: {
+				days
+			}
 		});
 	}
 }

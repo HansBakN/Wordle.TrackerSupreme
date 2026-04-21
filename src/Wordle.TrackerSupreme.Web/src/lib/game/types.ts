@@ -62,14 +62,3 @@ export type PlayerStatsResponse = {
 	averageGuessCount?: number | null;
 	guessDistribution?: Record<string, number>;
 };
-
-export type CalendarDayResponse = {
-	date: string;
-	outcome: 'won' | 'failed' | 'in_progress' | 'none';
-	guessCount?: number | null;
-	isAfterReveal: boolean;
-};
-
-export type CalendarResponse = {
-	days: CalendarDayResponse[];
-};

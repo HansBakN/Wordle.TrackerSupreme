@@ -16,6 +16,8 @@ export type { AdminUpdateAttemptRequest } from './models/AdminUpdateAttemptReque
 export type { AdminUpdatePlayerRequest } from './models/AdminUpdatePlayerRequest';
 export type { AttemptResponse } from './models/AttemptResponse';
 export type { AuthResponse } from './models/AuthResponse';
+export type { CalendarDayResponse } from './models/CalendarDayResponse';
+export type { CalendarResponse } from './models/CalendarResponse';
 export type { GameStateResponse } from './models/GameStateResponse';
 export type { GuessResponse } from './models/GuessResponse';
 export type { LeaderboardEntryResponse } from './models/LeaderboardEntryResponse';

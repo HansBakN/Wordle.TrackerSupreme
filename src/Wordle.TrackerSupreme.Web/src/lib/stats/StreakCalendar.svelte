@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { auth } from '$lib/auth/store';
+	import type { CalendarDayResponse } from '$lib/api-client/models/CalendarDayResponse';
 	import { fetchMyCalendar } from '$lib/game/api';
-	import type { CalendarDayResponse } from '$lib/game/types';
 
 	let days = $state<CalendarDayResponse[]>([]);
 	let loading = $state(false);
@@ -79,11 +79,11 @@
 		<div class="mt-4 overflow-x-auto">
 			<div class="inline-grid gap-[2px]" style="grid-template-columns: auto repeat(7, 1fr)">
 				<div></div>
-				{#each weekdays as wd}
+				{#each weekdays as wd (wd)}
 					<div class="px-1 text-center text-[10px] text-slate-200/50">{wd}</div>
 				{/each}
 
-				{#each getWeeks(days) as week, wi}
+				{#each getWeeks(days) as week, wi (wi)}
 					<div class="flex items-center pr-1 text-[10px] text-slate-200/40">
 						{#if wi === 0 || wi === Math.floor(getWeeks(days).length / 2) || wi === getWeeks(days).length - 1}
 							{@const firstDay = week.find((d) => d !== null)}
@@ -95,7 +95,7 @@
 							{/if}
 						{/if}
 					</div>
-					{#each week as day}
+					{#each week as day, di (day?.date ?? `empty-${wi}-${di}`)}
 						{#if day === null}
 							<div class="h-4 w-4"></div>
 						{:else}
