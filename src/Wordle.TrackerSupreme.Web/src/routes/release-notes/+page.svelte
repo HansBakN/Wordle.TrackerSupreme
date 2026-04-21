@@ -66,7 +66,12 @@
 		<aside class="rounded-2xl border border-white/10 bg-black/25 p-6 shadow-xl">
 			<h2 class="text-lg font-semibold text-white">Release branch workflow</h2>
 			<ol class="mt-4 space-y-3 text-sm leading-6 text-slate-100/80">
-				<li>Merge completed feature and fix branches into `release/&lt;version-or-date&gt;`.</li>
+				<li>
+					Merge completed feature and fix branches into
+					<code class="rounded bg-white/10 px-1.5 py-0.5 text-slate-50"
+						>release/&lt;version-or-date&gt;</code
+					>.
+				</li>
 				<li>Update the release-note data with a short player-facing summary.</li>
 				<li>Run the release branch verification before merging to `main` for deployment.</li>
 			</ol>
