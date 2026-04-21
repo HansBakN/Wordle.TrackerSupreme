@@ -16,6 +16,7 @@
 		defaultConfettiPieceCount,
 		type ConfettiPiece
 	} from '$lib/game/confetti';
+	import { colorMode } from '$lib/game/colorMode';
 	import { getKeyboardLetterState } from '$lib/game/keyboard';
 	import type {
 		GameStateResponse,
@@ -109,6 +110,7 @@
 	$: guessInputLocked = !state || !state.canGuess || submitting;
 	$: announcement = error ?? message;
 	$: announcementIsError = error !== null;
+	$: highContrast = $colorMode;
 
 	async function loadEverything() {
 		await loadState();
@@ -256,14 +258,18 @@
 		}
 	}
 
-	function tileClass(result: LetterResult | null) {
+	function tileClass(result: LetterResult | null, useHighContrast: boolean) {
 		const base =
 			'flex h-14 w-full items-center justify-center rounded-xl border text-lg font-semibold transition';
 		if (result === 'Correct') {
-			return `${base} border-emerald-400 bg-emerald-400 text-slate-900 shadow-lg`;
+			return useHighContrast
+				? `${base} border-orange-500 bg-orange-500 text-white shadow-lg`
+				: `${base} border-emerald-400 bg-emerald-400 text-slate-900 shadow-lg`;
 		}
 		if (result === 'Present') {
-			return `${base} border-amber-300/70 bg-amber-300 text-slate-900 shadow`;
+			return useHighContrast
+				? `${base} border-blue-400 bg-blue-400 text-white shadow`
+				: `${base} border-amber-300/70 bg-amber-300 text-slate-900 shadow`;
 		}
 		if (result === 'Absent') {
 			return `${base} border-white/15 bg-white/5 text-white/60`;
@@ -294,15 +300,23 @@
 		return getKeyboardLetterState(guesses, letter);
 	}
 
-	function keyClass(letter: string, guesses: GuessResponse[] | null | undefined) {
+	function keyClass(
+		letter: string,
+		guesses: GuessResponse[] | null | undefined,
+		useHighContrast: boolean
+	) {
 		const base =
 			'flex h-10 min-w-0 flex-1 items-center justify-center rounded-xl border px-1.5 text-sm font-semibold uppercase transition sm:h-11 sm:flex-none sm:px-3';
 		const stateKey = keyState(letter, guesses);
 		if (stateKey === 'Correct') {
-			return `${base} border-emerald-400 bg-emerald-400 text-slate-900`;
+			return useHighContrast
+				? `${base} border-orange-500 bg-orange-500 text-white`
+				: `${base} border-emerald-400 bg-emerald-400 text-slate-900`;
 		}
 		if (stateKey === 'Present') {
-			return `${base} border-amber-300/70 bg-amber-300 text-slate-900`;
+			return useHighContrast
+				? `${base} border-blue-400 bg-blue-400 text-white`
+				: `${base} border-amber-300/70 bg-amber-300 text-slate-900`;
 		}
 		if (stateKey === 'Absent') {
 			return `${base} border-slate-500/70 bg-slate-600 text-slate-100`;
@@ -395,6 +409,7 @@
 	<div class="mx-auto grid max-w-6xl gap-6">
 		<section
 			class="relative rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-4 shadow-2xl sm:p-8"
+			data-high-contrast={highContrast}
 		>
 			{#if showConfetti}
 				<div class="confetti-layer" data-testid="confetti">
@@ -460,7 +475,7 @@
 									{#if state.attempt?.guesses[rowIndex]}
 										{#each state.attempt.guesses[rowIndex].feedback as fb (fb.position)}
 											<div
-												class={`${tileClass(fb.result)} ${tileAnimationClass(state.attempt.guesses[rowIndex].guessId, fb.result)}`}
+												class={`${tileClass(fb.result, highContrast)} ${tileAnimationClass(state.attempt.guesses[rowIndex].guessId, fb.result)}`}
 												style={tileAnimationDelay(
 													state.attempt.guesses[rowIndex].guessId,
 													fb.position
@@ -475,7 +490,7 @@
 										{#each Array(state.wordLength).keys() as col (col)}
 											{#if rowIndex === (state.attempt?.guesses.length ?? 0)}
 												<div
-													class={tileClass(null)}
+													class={tileClass(null, highContrast)}
 													role="gridcell"
 													aria-label={describeTileForScreenReader(guess[col] ?? '', null)}
 												>
@@ -483,7 +498,7 @@
 												</div>
 											{:else}
 												<div
-													class={tileClass(null)}
+													class={tileClass(null, highContrast)}
 													role="gridcell"
 													aria-label={describeTileForScreenReader('', null)}
 												></div>
@@ -527,7 +542,7 @@
 									{/if}
 									{#each row.split('') as letter (letter)}
 										<button
-											class={keyClass(letter, state?.attempt?.guesses)}
+											class={keyClass(letter, state?.attempt?.guesses, highContrast)}
 											onclick={() => pushLetter(letter)}
 											onpointerdown={(e) => e.preventDefault()}
 											disabled={guessInputLocked}
@@ -649,6 +664,19 @@
 		--end-bg: rgba(255, 255, 255, 0.08);
 		--end-border: rgba(255, 255, 255, 0.2);
 		--end-text: rgba(255, 255, 255, 0.6);
+	}
+
+	/* High-contrast overrides */
+	:global([data-high-contrast='true'] .reveal-correct) {
+		--end-bg: #f97316;
+		--end-border: #f97316;
+		--end-text: #ffffff;
+	}
+
+	:global([data-high-contrast='true'] .reveal-present) {
+		--end-bg: #60a5fa;
+		--end-border: #60a5fa;
+		--end-text: #ffffff;
 	}
 
 	@keyframes reveal-flip {
