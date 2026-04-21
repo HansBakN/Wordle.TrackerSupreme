@@ -12,7 +12,7 @@ namespace Wordle.TrackerSupreme.Tests;
 public class SeedDataGeneratorTests
 {
     [Fact]
-    public void Generate_assigns_tracker_supreme_stream_to_seeded_puzzles()
+    public void Generate_creates_representative_puzzles_and_attempts_for_each_stream()
     {
         var generator = new SeedDataGenerator(
             new SeederOptions
@@ -35,7 +35,15 @@ public class SeedDataGeneratorTests
         var data = generator.Generate(new DateOnly(2025, 2, 1));
 
         data.Puzzles.Should().NotBeEmpty();
-        data.Puzzles.Should().OnlyContain(puzzle => puzzle.Stream == PuzzleStream.TrackerSupreme);
+        data.Puzzles.Select(puzzle => puzzle.Stream).Should().Contain(PuzzleStream.TrackerSupreme);
+        data.Puzzles.Select(puzzle => puzzle.Stream).Should().Contain(PuzzleStream.NewYorkTimes);
+        data.Puzzles
+            .GroupBy(puzzle => puzzle.PuzzleDate)
+            .Should()
+            .OnlyContain(group => group.Select(puzzle => puzzle.Stream).ToHashSet()
+                .SetEquals(new[] { PuzzleStream.TrackerSupreme, PuzzleStream.NewYorkTimes }));
+        data.Attempts.Select(attempt => attempt.DailyPuzzle.Stream).Should().Contain(PuzzleStream.TrackerSupreme);
+        data.Attempts.Select(attempt => attempt.DailyPuzzle.Stream).Should().Contain(PuzzleStream.NewYorkTimes);
     }
 
     private sealed class TestWordListProvider : IWordListProvider

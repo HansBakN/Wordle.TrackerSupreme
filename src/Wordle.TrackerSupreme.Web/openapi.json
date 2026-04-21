@@ -812,6 +812,9 @@
 						"type": "string",
 						"format": "date"
 					},
+					"stream": {
+						"$ref": "#/components/schemas/PuzzleStream"
+					},
 					"status": {
 						"type": "string"
 					},

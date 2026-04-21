@@ -54,6 +54,9 @@ This project uses Docker Compose to run:
    - `Seeder__DefaultPassword=dev-password`
    - `Seeder__AllowReseed=false`
    - `Seeder__AnchorDate=2025-02-01`
+   `Seeder__PuzzleDays` is the number of dates to seed per puzzle stream. Each seeded date gets both a
+   Tracker Supreme puzzle and a New York Times puzzle so admin and leaderboard screens can show same-date
+   stream-specific data.
 5) Stop everything:
    ```bash
    docker compose down

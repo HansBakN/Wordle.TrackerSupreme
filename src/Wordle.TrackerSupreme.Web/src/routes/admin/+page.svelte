@@ -8,6 +8,7 @@
 	import type { AdminPlayerDetailResponse as ApiAdminPlayerDetailResponse } from '$lib/api-client/models/AdminPlayerDetailResponse';
 	import type { AdminPlayerSummaryResponse as ApiAdminPlayerSummaryResponse } from '$lib/api-client/models/AdminPlayerSummaryResponse';
 	import type { GuessResponse } from '$lib/api-client/models/GuessResponse';
+	import type { PuzzleStream } from '$lib/api-client/models/PuzzleStream';
 	import {
 		displayNameMaxLength,
 		displayNameMinLength,
@@ -29,6 +30,7 @@
 	type AdminPlayerAttempt = {
 		attemptId: string;
 		puzzleDate: string;
+		stream: PuzzleStream;
 		status: string;
 		playedInHardMode: boolean;
 		createdOn: string;
@@ -102,6 +104,10 @@
 			return value;
 		}
 		return date.toLocaleDateString();
+	}
+
+	function formatPuzzleStream(stream: PuzzleStream) {
+		return stream === 'NewYorkTimes' ? 'New York Times' : 'Tracker Supreme';
 	}
 
 	function getRequestErrorMessage(err: unknown, fallback: string) {
@@ -381,6 +387,7 @@
 		return {
 			attemptId,
 			puzzleDate: attempt.puzzleDate ?? '',
+			stream: attempt.stream ?? 'TrackerSupreme',
 			status: attempt.status ?? 'Unknown',
 			playedInHardMode: attempt.playedInHardMode ?? true,
 			createdOn: attempt.createdOn ?? '',
@@ -643,6 +650,9 @@
 												<div>
 													<div class="text-sm font-semibold text-white">
 														{attempt.puzzleDate}
+													</div>
+													<div class="text-xs text-emerald-200/80">
+														{formatPuzzleStream(attempt.stream)}
 													</div>
 													<div class="text-xs text-slate-200/60">
 														Status: {attempt.status} • {attempt.guesses.length} guesses
