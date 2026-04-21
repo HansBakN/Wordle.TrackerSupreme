@@ -2,6 +2,7 @@
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import { auth, bootstrapAuth, signOut } from '$lib/auth/store';
+	import { colorMode } from '$lib/game/colorMode';
 	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import HowToPlay from '$lib/game/HowToPlay.svelte';
@@ -14,6 +15,8 @@
 	const TEST_AUTO_OPEN_KEY = 'wts_enableHowToPlayAutoOpen';
 
 	onMount(async () => {
+		colorMode.init();
+
 		if (isTestMode) {
 			booting = false;
 			void bootstrapAuth();
@@ -91,6 +94,25 @@
 				</button>
 			</div>
 			<div class="flex items-center gap-3 text-sm">
+				<button
+					class={`flex h-8 w-8 items-center justify-center rounded-full border transition ${$colorMode ? 'border-blue-400/60 bg-blue-400/15 text-blue-300 hover:border-blue-400/80 hover:bg-blue-400/25' : 'border-white/20 bg-white/5 text-white/60 hover:border-white/40 hover:bg-white/10 hover:text-white'}`}
+					onclick={() => colorMode.toggle()}
+					aria-label={$colorMode ? 'Disable high-contrast mode' : 'Enable high-contrast mode'}
+					aria-pressed={$colorMode}
+					data-testid="toggle-high-contrast"
+					title={$colorMode ? 'High-contrast: on' : 'High-contrast: off'}
+				>
+					<svg
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						class="h-4 w-4"
+					>
+						<circle cx="12" cy="12" r="10" />
+						<path d="M12 2a10 10 0 0 1 0 20V2z" fill="currentColor" stroke="none" />
+					</svg>
+				</button>
 				{#if $auth.user}
 					<div class="hidden text-right sm:block">
 						<div class="font-semibold">{$auth.user.displayName}</div>
