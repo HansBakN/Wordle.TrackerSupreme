@@ -115,7 +115,8 @@ public class GameControllerTests
 
         var objectResult = result.Result.Should().BeOfType<ObjectResult>().Which;
         objectResult.StatusCode.Should().Be(StatusCodes.Status503ServiceUnavailable);
-        objectResult.Value.Should().BeEquivalentTo(new { message = "Unable to retrieve today's puzzle. Please try again later." });
+        var pd = objectResult.Value.Should().BeOfType<ProblemDetails>().Which;
+        pd.Detail.Should().Be("Unable to retrieve today's puzzle. Please try again later.");
     }
 
     [Fact]
@@ -165,10 +166,8 @@ public class GameControllerTests
             cancellationToken: CancellationToken.None);
 
         var conflict = result.Result.Should().BeOfType<ConflictObjectResult>().Which;
-        conflict.Value.Should().BeEquivalentTo(new
-        {
-            message = "You already have an attempt for today's puzzle. Refresh to continue."
-        });
+        var pd = conflict.Value.Should().BeOfType<ProblemDetails>().Which;
+        pd.Detail.Should().Be("You already have an attempt for today's puzzle. Refresh to continue.");
     }
 
     [Fact]
