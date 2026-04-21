@@ -39,7 +39,7 @@
 		try {
 			const request = buildStatsFilterRequest(filters);
 			const data = await StatsService.postApiStatsPlayers({ requestBody: request });
-			entries = data.filter((entry) => entry.playerId !== $auth.user?.id);
+			entries = data;
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Unable to load player stats.';
 		} finally {

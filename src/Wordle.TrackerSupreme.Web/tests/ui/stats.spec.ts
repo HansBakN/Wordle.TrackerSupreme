@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('stats page defaults to hard mode filters and excludes current player', async ({ page }) => {
+test('stats page defaults to hard mode filters and includes current player', async ({ page }) => {
 	page.on('pageerror', (error) => {
 		console.error('pageerror', error);
 	});
@@ -66,7 +66,7 @@ test('stats page defaults to hard mode filters and excludes current player', asy
 
 	await expect(page.getByRole('heading', { name: 'Every player, every lens' })).toBeVisible();
 	await expect(page.locator('main').getByText('Rival', { exact: true })).toBeVisible();
-	await expect(page.locator('main').getByText('Tester', { exact: true })).toHaveCount(0);
+	await expect(page.locator('main').getByText('Tester', { exact: true })).toBeVisible();
 
 	await expect(page.getByLabel('Easy mode attempts')).toBeVisible();
 	await expect(page.getByLabel('Include New York Times')).toBeVisible();
