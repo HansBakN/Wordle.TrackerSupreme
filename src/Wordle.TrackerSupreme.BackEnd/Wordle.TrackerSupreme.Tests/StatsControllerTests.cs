@@ -230,8 +230,7 @@ public class StatsControllerTests
     public async Task GetMine_counts_practice_wins_in_personal_stats()
     {
         var player = CreatePlayer("Practitioner");
-        var attempt = CreateAttempt(player, new DateOnly(2025, 1, 1), AttemptStatus.Solved, true, 3);
-        player.Attempts.Add(attempt);
+        player.Attempts.Add(CreateAttempt(player, new DateOnly(2025, 1, 1), AttemptStatus.Solved, true, 3));
 
         var repo = new FakePlayerRepository([player]);
         // revealPassed = true means the attempt is classified as practice
@@ -256,6 +255,8 @@ public class StatsControllerTests
         stats.Wins.Should().Be(1, "practice wins should count in personal stats");
         stats.TotalAttempts.Should().Be(1);
         stats.PracticeAttempts.Should().Be(1);
+        stats.CurrentStreak.Should().Be(0, "practice wins must not extend streaks");
+        stats.LongestStreak.Should().Be(0, "practice wins must not extend streaks");
     }
 
     private static Player CreatePlayer(string name)
