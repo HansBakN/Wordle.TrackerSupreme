@@ -88,4 +88,48 @@ describe('buildShareText', () => {
 		expect(text).toContain('X/6');
 		expect(text).toContain('⬜⬜⬜⬜⬜');
 	});
+
+	it('does not reorder guesses or feedback in the source state', () => {
+		const state: GameStateResponse = {
+			...baseState,
+			attempt: {
+				attemptId: 'a3',
+				status: 'Solved',
+				isAfterReveal: false,
+				createdOn: '2026-04-12T08:00:00Z',
+				completedOn: '2026-04-12T08:05:00Z',
+				guesses: [
+					{
+						guessId: 'g2',
+						guessNumber: 2,
+						guessWord: 'PLANT',
+						feedback: [
+							{ position: 4, letter: 'T', result: 'Correct' },
+							{ position: 0, letter: 'P', result: 'Correct' }
+						]
+					},
+					{
+						guessId: 'g1',
+						guessNumber: 1,
+						guessWord: 'CRANE',
+						feedback: [
+							{ position: 1, letter: 'R', result: 'Present' },
+							{ position: 0, letter: 'C', result: 'Absent' }
+						]
+					}
+				]
+			}
+		};
+		const originalGuessOrder = state.attempt!.guesses.map((guess) => guess.guessId);
+		const originalFeedbackOrder = state.attempt!.guesses.map((guess) =>
+			guess.feedback.map((fb) => fb.position)
+		);
+
+		buildShareText(state);
+
+		expect(state.attempt!.guesses.map((guess) => guess.guessId)).toEqual(originalGuessOrder);
+		expect(state.attempt!.guesses.map((guess) => guess.feedback.map((fb) => fb.position))).toEqual(
+			originalFeedbackOrder
+		);
+	});
 });

@@ -1,8 +1,12 @@
 import type { GameStateResponse } from './types';
 
 function emojiForResult(result: string): string {
-	if (result === 'Correct') return '🟩';
-	if (result === 'Present') return '🟨';
+	if (result === 'Correct') {
+		return '🟩';
+	}
+	if (result === 'Present') {
+		return '🟨';
+	}
 	return '⬜';
 }
 
@@ -23,10 +27,10 @@ export function buildShareText(state: GameStateResponse): string {
 
 	const header = `Wordle Tracker Supreme ${date} ${guessCount}/${maxGuesses}`;
 
-	const rows = guesses
+	const rows = [...guesses]
 		.sort((a, b) => a.guessNumber - b.guessNumber)
 		.map((guess) =>
-			guess.feedback
+			[...guess.feedback]
 				.sort((a, b) => a.position - b.position)
 				.map((fb) => emojiForResult(fb.result))
 				.join('')
