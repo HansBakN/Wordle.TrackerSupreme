@@ -41,6 +41,8 @@
 	let todayEntries = $state<TodayLeaderboardEntryResponse[]>([]);
 	let hasLoaded = $state(false);
 	let activeTab = $state<LeaderboardTab>('all-time');
+	let leaderboardSort = $state('winRate');
+	let leaderboardDirection = $state<'asc' | 'desc'>('desc');
 	let loadedTabs = $state<Record<LeaderboardTab, boolean>>({
 		'all-time': false,
 		today: false
@@ -79,7 +81,12 @@
 		loading = true;
 		error = null;
 		try {
-			const data = await StatsService.getApiStatsLeaderboard({ page, pageSize: PAGE_SIZE });
+			const data = await StatsService.getApiStatsLeaderboard({
+				page,
+				pageSize: PAGE_SIZE,
+				sort: leaderboardSort,
+				direction: leaderboardDirection
+			});
 			allTimeEntries = data.items ?? [];
 			allTimePage = data.page ?? 1;
 			allTimeTotalPages = data.totalPages ?? 1;
@@ -115,6 +122,16 @@
 
 	async function goToPage(page: number) {
 		await loadAllTime(page);
+	}
+
+	async function sortLeaderboard(sort: 'winRate' | 'averageGuessCount' | 'wins' | 'attempts' | 'currentStreak') {
+		if (leaderboardSort === sort) {
+			leaderboardDirection = leaderboardDirection === 'asc' ? 'desc' : 'asc';
+		} else {
+			leaderboardSort = sort;
+			leaderboardDirection = sort === 'averageGuessCount' ? 'asc' : 'desc';
+		}
+		await loadAllTime(1);
 	}
 
 	async function selectTab(tab: LeaderboardTab) {
@@ -234,11 +251,31 @@
 						<tr>
 							<th class="px-6 py-4">Rank</th>
 							<th class="px-6 py-4">Player</th>
-							<th class="px-6 py-4">Win rate</th>
-							<th class="px-6 py-4">Avg guesses</th>
-							<th class="px-6 py-4">Wins</th>
-							<th class="px-6 py-4">Attempts</th>
-							<th class="px-6 py-4">Current streak</th>
+							<th class="px-6 py-4">
+								<button type="button" class="hover:text-white" on:click={() => void sortLeaderboard('winRate')}>
+									Win rate {leaderboardSort === 'winRate' ? (leaderboardDirection === 'asc' ? '▲' : '▼') : ''}
+								</button>
+							</th>
+							<th class="px-6 py-4">
+								<button type="button" class="hover:text-white" on:click={() => void sortLeaderboard('averageGuessCount')}>
+									Avg guesses {leaderboardSort === 'averageGuessCount' ? (leaderboardDirection === 'asc' ? '▲' : '▼') : ''}
+								</button>
+							</th>
+							<th class="px-6 py-4">
+								<button type="button" class="hover:text-white" on:click={() => void sortLeaderboard('wins')}>
+									Wins {leaderboardSort === 'wins' ? (leaderboardDirection === 'asc' ? '▲' : '▼') : ''}
+								</button>
+							</th>
+							<th class="px-6 py-4">
+								<button type="button" class="hover:text-white" on:click={() => void sortLeaderboard('attempts')}>
+									Attempts {leaderboardSort === 'attempts' ? (leaderboardDirection === 'asc' ? '▲' : '▼') : ''}
+								</button>
+							</th>
+							<th class="px-6 py-4">
+								<button type="button" class="hover:text-white" on:click={() => void sortLeaderboard('currentStreak')}>
+									Current streak {leaderboardSort === 'currentStreak' ? (leaderboardDirection === 'asc' ? '▲' : '▼') : ''}
+								</button>
+							</th>
 						</tr>
 					</thead>
 					<tbody>

@@ -125,5 +125,6 @@ Reset safety:
 - `.github/workflows/e2e.yml` – GitHub Actions E2E workflow
 
 ## Notes
+- The leaderboard's all-time view supports sorting by the table headers, which map to `sort` and `direction` query params on `/api/stats/leaderboard`.
 - Postgres is only reachable on the internal Docker network; expose `5432` in an override if you need host access.
 - Traefik is off by default to avoid Docker socket issues on Windows; enable it with `--profile proxy` after adjusting the socket mount for your platform. For HTTPS/domain use with Traefik, uncomment the ACME lines in `docker-compose.yml` and set `TRAEFIK_ACME_EMAIL` in your env file.

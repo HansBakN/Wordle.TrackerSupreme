@@ -72,3 +72,58 @@ test('leaderboard shows ranked hard mode entries', async ({ page }) => {
 	await expect(page.getByRole('cell', { name: 'Challenger' })).toBeVisible();
 	await expect(page.getByRole('cell', { name: '1' })).toBeVisible();
 });
+
+test('leaderboard can be resorted by column', async ({ page }) => {
+	let sortQueries: Array<Record<string, string | string[] | undefined>> = [];
+
+	await page.route('**/api/Auth/me', async (route) => {
+		await route.fulfill({
+			status: 200,
+			contentType: 'application/json',
+			body: JSON.stringify({
+				id: '11111111-1111-1111-1111-111111111111',
+				displayName: 'Tester',
+				email: 'tester@example.com',
+				createdOn: '2025-01-01T00:00:00Z'
+			})
+		});
+	});
+
+	await page.route('**/api/stats/leaderboard**', async (route) => {
+		const query = route.request().url();
+		sortQueries.push(Object.fromEntries(new URL(query).searchParams.entries()));
+		await route.fulfill({
+			status: 200,
+			contentType: 'application/json',
+			body: JSON.stringify({
+				items: [
+					{
+						rank: 1,
+						playerId: '22222222-2222-2222-2222-222222222222',
+						displayName: 'Rival',
+						totalAttempts: 5,
+						wins: 4,
+						failures: 1,
+						currentStreak: 4,
+						longestStreak: 5,
+						practiceAttempts: 0,
+						averageGuessCount: 3,
+						winRate: 0.8
+					}
+				],
+				total: 1,
+				page: 1,
+				pageSize: 10,
+				totalPages: 1
+			})
+		});
+	});
+
+	await page.goto('/leaderboard', { waitUntil: 'domcontentloaded' });
+	await page.getByText('Loading your session...').waitFor({ state: 'hidden' });
+	await page.getByRole('button', { name: /Avg guesses/ }).click();
+
+	await expect(page.getByRole('cell', { name: 'Rival' })).toBeVisible();
+	expect(sortQueries.at(-1)?.sort).toBe('averageGuessCount');
+	expect(sortQueries.at(-1)?.direction).toBe('asc');
+});
