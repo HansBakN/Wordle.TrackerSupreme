@@ -100,12 +100,12 @@ public class StatsController(
                     : (double?)null;
                 return new LeaderboardCandidate(player, stats, winRate);
             })
-            .Where(entry => entry.Stats.TotalAttempts > 0)
-            .OrderBy(entry => 0)
-            .ApplyLeaderboardSort(normalizedSort, normalizedDirection)
+            .Where(entry => entry.Stats.TotalAttempts > 0);
+
+        var rankedList = ApplyLeaderboardSort(ranked, normalizedSort, normalizedDirection)
             .ToList();
 
-        var total = ranked.Count;
+        var total = rankedList.Count;
         var totalPages = total == 0 ? 1 : (int)Math.Ceiling((double)total / pageSize);
         page = Math.Min(page, totalPages);
 
@@ -113,7 +113,7 @@ public class StatsController(
         var globalRankStart = (page - 1) * pageSize + 1;
         var rank = globalRankStart;
 
-        foreach (var entry in ranked.Skip((page - 1) * pageSize).Take(pageSize))
+        foreach (var entry in rankedList.Skip((page - 1) * pageSize).Take(pageSize))
         {
             leaderboard.Add(new LeaderboardEntryResponse(
                 rank,
@@ -194,7 +194,7 @@ public class StatsController(
     }
 
     private static IOrderedEnumerable<LeaderboardCandidate> ApplyLeaderboardSort(
-        this IOrderedEnumerable<LeaderboardCandidate> entries,
+        IEnumerable<LeaderboardCandidate> entries,
         string sort,
         string direction)
     {
@@ -203,59 +203,59 @@ public class StatsController(
         return sort.ToLowerInvariant() switch
         {
             "averageguesscount" => descending
-                ? entries.ThenByDescending(entry => entry.Stats.AverageGuessCount ?? double.MaxValue)
+                ? entries.OrderByDescending(entry => entry.Stats.AverageGuessCount ?? double.MaxValue)
                     .ThenByDescending(entry => entry.WinRate ?? 0)
                     .ThenByDescending(entry => entry.Stats.Wins)
                     .ThenBy(entry => entry.Player.DisplayName)
-                : entries.ThenBy(entry => entry.Stats.AverageGuessCount ?? double.MaxValue)
+                : entries.OrderBy(entry => entry.Stats.AverageGuessCount ?? double.MaxValue)
                     .ThenByDescending(entry => entry.WinRate ?? 0)
                     .ThenByDescending(entry => entry.Stats.Wins)
                     .ThenBy(entry => entry.Player.DisplayName),
             "wins" => descending
-                ? entries.ThenByDescending(entry => entry.Stats.Wins)
+                ? entries.OrderByDescending(entry => entry.Stats.Wins)
                     .ThenByDescending(entry => entry.WinRate ?? 0)
                     .ThenBy(entry => entry.Stats.AverageGuessCount ?? double.MaxValue)
                     .ThenBy(entry => entry.Player.DisplayName)
-                : entries.ThenBy(entry => entry.Stats.Wins)
+                : entries.OrderBy(entry => entry.Stats.Wins)
                     .ThenByDescending(entry => entry.WinRate ?? 0)
                     .ThenBy(entry => entry.Stats.AverageGuessCount ?? double.MaxValue)
                     .ThenBy(entry => entry.Player.DisplayName),
             "attempts" => descending
-                ? entries.ThenByDescending(entry => entry.Stats.TotalAttempts)
+                ? entries.OrderByDescending(entry => entry.Stats.TotalAttempts)
                     .ThenByDescending(entry => entry.WinRate ?? 0)
                     .ThenBy(entry => entry.Stats.AverageGuessCount ?? double.MaxValue)
                     .ThenBy(entry => entry.Player.DisplayName)
-                : entries.ThenBy(entry => entry.Stats.TotalAttempts)
+                : entries.OrderBy(entry => entry.Stats.TotalAttempts)
                     .ThenByDescending(entry => entry.WinRate ?? 0)
                     .ThenBy(entry => entry.Stats.AverageGuessCount ?? double.MaxValue)
                     .ThenBy(entry => entry.Player.DisplayName),
             "currentstreak" => descending
-                ? entries.ThenByDescending(entry => entry.Stats.CurrentStreak)
+                ? entries.OrderByDescending(entry => entry.Stats.CurrentStreak)
                     .ThenByDescending(entry => entry.WinRate ?? 0)
                     .ThenBy(entry => entry.Stats.AverageGuessCount ?? double.MaxValue)
                     .ThenBy(entry => entry.Player.DisplayName)
-                : entries.ThenBy(entry => entry.Stats.CurrentStreak)
+                : entries.OrderBy(entry => entry.Stats.CurrentStreak)
                     .ThenByDescending(entry => entry.WinRate ?? 0)
                     .ThenBy(entry => entry.Stats.AverageGuessCount ?? double.MaxValue)
                     .ThenBy(entry => entry.Player.DisplayName),
             "longeststreak" => descending
-                ? entries.ThenByDescending(entry => entry.Stats.LongestStreak)
+                ? entries.OrderByDescending(entry => entry.Stats.LongestStreak)
                     .ThenByDescending(entry => entry.WinRate ?? 0)
                     .ThenBy(entry => entry.Stats.AverageGuessCount ?? double.MaxValue)
                     .ThenBy(entry => entry.Player.DisplayName)
-                : entries.ThenBy(entry => entry.Stats.LongestStreak)
+                : entries.OrderBy(entry => entry.Stats.LongestStreak)
                     .ThenByDescending(entry => entry.WinRate ?? 0)
                     .ThenBy(entry => entry.Stats.AverageGuessCount ?? double.MaxValue)
                     .ThenBy(entry => entry.Player.DisplayName),
             "player" => descending
-                ? entries.ThenByDescending(entry => entry.Player.DisplayName)
-                : entries.ThenBy(entry => entry.Player.DisplayName),
+                ? entries.OrderByDescending(entry => entry.Player.DisplayName)
+                : entries.OrderBy(entry => entry.Player.DisplayName),
             _ => descending
-                ? entries.ThenByDescending(entry => entry.WinRate ?? 0)
+                ? entries.OrderByDescending(entry => entry.WinRate ?? 0)
                     .ThenBy(entry => entry.Stats.AverageGuessCount ?? double.MaxValue)
                     .ThenByDescending(entry => entry.Stats.Wins)
                     .ThenBy(entry => entry.Player.DisplayName)
-                : entries.ThenBy(entry => entry.WinRate ?? 0)
+                : entries.OrderBy(entry => entry.WinRate ?? 0)
                     .ThenBy(entry => entry.Stats.AverageGuessCount ?? double.MaxValue)
                     .ThenByDescending(entry => entry.Stats.Wins)
                     .ThenBy(entry => entry.Player.DisplayName)
