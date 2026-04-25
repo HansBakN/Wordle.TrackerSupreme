@@ -79,6 +79,7 @@ If you want one repeatable verification entrypoint from the repo root, use:
 ./scripts/verify.sh all
 ```
 Supported targets are `backend`, `frontend`, `lint`, `e2e`, and `all`.
+The repo scripts auto-detect `docker compose` first and fall back to legacy `docker-compose` when that is the only Compose CLI available.
 
 ## End-to-end (E2E) tests
 The E2E runner starts the backend + frontend, resets deterministic seed data, and runs Playwright headlessly.
@@ -92,6 +93,7 @@ Run the full E2E suite from the repo root:
 ```bash
 ./scripts/e2e.sh
 ```
+`scripts/e2e.sh` uses the same Compose auto-detection and works on both Compose v2 and legacy `docker-compose v1`.
 
 Environment overrides:
 - `BACKEND_URL` (default `http://localhost:8080`)
