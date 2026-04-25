@@ -14,4 +14,5 @@ export type GameStateResponse = {
 	canGuess?: boolean;
 	attempt?: AttemptResponse | null;
 	solution?: string | null;
+	isReplay?: boolean;
 };

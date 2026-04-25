@@ -13,10 +13,17 @@ export class GameService {
 	 * @returns GameStateResponse OK
 	 * @throws ApiError
 	 */
-	public static getApiGameState(): CancelablePromise<GameStateResponse> {
+	public static getApiGameState({
+		date
+	}: {
+		date?: string | null;
+	}): CancelablePromise<GameStateResponse> {
 		return __request(OpenAPI, {
 			method: 'GET',
 			url: '/api/game/state',
+			query: {
+				date: date
+			},
 			errors: {
 				503: `Service Unavailable`
 			}
@@ -27,13 +34,18 @@ export class GameService {
 	 * @throws ApiError
 	 */
 	public static postApiGameGuess({
+		date,
 		requestBody
 	}: {
+		date?: string | null;
 		requestBody?: SubmitGuessRequest;
 	}): CancelablePromise<GameStateResponse> {
 		return __request(OpenAPI, {
 			method: 'POST',
 			url: '/api/game/guess',
+			query: {
+				date: date
+			},
 			body: requestBody,
 			mediaType: 'application/json',
 			errors: {
@@ -47,10 +59,17 @@ export class GameService {
 	 * @returns GameStateResponse OK
 	 * @throws ApiError
 	 */
-	public static postApiGameEasyMode(): CancelablePromise<GameStateResponse> {
+	public static postApiGameEasyMode({
+		date
+	}: {
+		date?: string | null;
+	}): CancelablePromise<GameStateResponse> {
 		return __request(OpenAPI, {
 			method: 'POST',
 			url: '/api/game/easy-mode',
+			query: {
+				date: date
+			},
 			errors: {
 				409: `Conflict`,
 				503: `Service Unavailable`

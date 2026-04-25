@@ -15,9 +15,15 @@ public class GameplayService(
     private readonly GameOptions _options = options;
     private readonly IGuessEvaluationService _guessEvaluationService = guessEvaluationService;
 
-    public async Task<GameplayState> GetState(Guid playerId, CancellationToken cancellationToken = default)
+    public async Task<GameplayState> GetState(Guid playerId, DateOnly? puzzleDate = null, CancellationToken cancellationToken = default)
     {
-        var puzzle = await puzzleService.GetOrCreatePuzzle(gameClock.Today, PuzzleStream.NewYorkTimes, cancellationToken);
+        var isReplay = puzzleDate.HasValue && puzzleDate.Value != gameClock.Today;
+        var targetDate = puzzleDate ?? gameClock.Today;
+
+        var puzzle = isReplay
+            ? await GetExistingPuzzle(targetDate, cancellationToken)
+            : await puzzleService.GetOrCreatePuzzle(targetDate, PuzzleStream.NewYorkTimes, cancellationToken);
+
         var attempt = await LoadAttempt(playerId, puzzle.Id, cancellationToken);
 
         var cutoffPassed = gameClock.HasRevealPassed(puzzle.PuzzleDate);
@@ -30,13 +36,19 @@ public class GameplayService(
             solutionRevealed,
             AllowLatePlay: true,
             _options.WordLength,
-            _options.MaxGuesses);
+            _options.MaxGuesses,
+            IsReplay: isReplay);
     }
 
-    public async Task<GameplayState> SubmitGuess(Guid playerId, string guessWord, CancellationToken cancellationToken = default)
+    public async Task<GameplayState> SubmitGuess(Guid playerId, string guessWord, DateOnly? puzzleDate = null, CancellationToken cancellationToken = default)
     {
+        var isReplay = puzzleDate.HasValue && puzzleDate.Value != gameClock.Today;
+        var targetDate = puzzleDate ?? gameClock.Today;
         var normalizedGuess = _guessEvaluationService.NormalizeGuess(guessWord);
-        var puzzle = await puzzleService.GetOrCreatePuzzle(gameClock.Today, PuzzleStream.NewYorkTimes, cancellationToken);
+
+        var puzzle = isReplay
+            ? await GetExistingPuzzle(targetDate, cancellationToken)
+            : await puzzleService.GetOrCreatePuzzle(targetDate, PuzzleStream.NewYorkTimes, cancellationToken);
 
         var attempt = await LoadAttempt(playerId, puzzle.Id, cancellationToken);
         if (attempt is null)
@@ -117,12 +129,19 @@ public class GameplayService(
             solutionRevealed,
             AllowLatePlay: true,
             _options.WordLength,
-            _options.MaxGuesses);
+            _options.MaxGuesses,
+            IsReplay: isReplay);
     }
 
-    public async Task<GameplayState> EnableEasyMode(Guid playerId, CancellationToken cancellationToken = default)
+    public async Task<GameplayState> EnableEasyMode(Guid playerId, DateOnly? puzzleDate = null, CancellationToken cancellationToken = default)
     {
-        var puzzle = await puzzleService.GetOrCreatePuzzle(gameClock.Today, PuzzleStream.NewYorkTimes, cancellationToken);
+        var isReplay = puzzleDate.HasValue && puzzleDate.Value != gameClock.Today;
+        var targetDate = puzzleDate ?? gameClock.Today;
+
+        var puzzle = isReplay
+            ? await GetExistingPuzzle(targetDate, cancellationToken)
+            : await puzzleService.GetOrCreatePuzzle(targetDate, PuzzleStream.NewYorkTimes, cancellationToken);
+
         var attempt = await LoadAttempt(playerId, puzzle.Id, cancellationToken);
 
         if (attempt is null)
@@ -159,7 +178,8 @@ public class GameplayService(
             solutionRevealed,
             AllowLatePlay: true,
             _options.WordLength,
-            _options.MaxGuesses);
+            _options.MaxGuesses,
+            IsReplay: isReplay);
     }
 
     public async Task<SolutionsSnapshot> GetSolutions(CancellationToken cancellationToken = default)
@@ -170,6 +190,22 @@ public class GameplayService(
         var attempts = await gameRepository.GetAttemptsForPuzzle(puzzle.Id, cancellationToken);
 
         return new SolutionsSnapshot(puzzle, cutoffPassed, attempts);
+    }
+
+    private async Task<DailyPuzzle> GetExistingPuzzle(DateOnly date, CancellationToken cancellationToken)
+    {
+        if (date > gameClock.Today)
+        {
+            throw new ArgumentException("Cannot replay a puzzle from the future.");
+        }
+
+        var puzzle = await gameRepository.GetPuzzleByDate(date, PuzzleStream.NewYorkTimes, cancellationToken);
+        if (puzzle is null)
+        {
+            throw new KeyNotFoundException($"No puzzle found for {date:yyyy-MM-dd}.");
+        }
+
+        return puzzle;
     }
 
     private async Task<PlayerPuzzleAttempt?> LoadAttempt(Guid playerId, Guid puzzleId, CancellationToken cancellationToken)
