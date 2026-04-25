@@ -318,7 +318,7 @@
 							class="rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold text-white/80 transition hover:bg-white/15 disabled:cursor-not-allowed disabled:opacity-40"
 							disabled={allTimePage <= 1 || loading}
 							data-testid="leaderboard-prev"
-							on:click={() => void goToPage(allTimePage - 1)}
+							onclick={() => void goToPage(allTimePage - 1)}
 						>
 							← Previous
 						</button>
@@ -326,7 +326,7 @@
 							class="rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold text-white/80 transition hover:bg-white/15 disabled:cursor-not-allowed disabled:opacity-40"
 							disabled={allTimePage >= allTimeTotalPages || loading}
 							data-testid="leaderboard-next"
-							on:click={() => void goToPage(allTimePage + 1)}
+							onclick={() => void goToPage(allTimePage + 1)}
 						>
 							Next →
 						</button>
