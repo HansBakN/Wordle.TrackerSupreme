@@ -1,12 +1,13 @@
 <script lang="ts">
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
+	import { PUBLIC_COMMIT_SHA, PUBLIC_COMMIT_URL, PUBLIC_BUILD_NUMBER } from '$env/static/public';
 	import { auth, bootstrapAuth, signOut } from '$lib/auth/store';
 	import { colorMode } from '$lib/game/colorMode';
 	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import HowToPlay from '$lib/game/HowToPlay.svelte';
-
+	
 	let { children } = $props();
 	let booting = $state(true);
 	let showHowToPlay = $state(false);
@@ -157,6 +158,22 @@
 			{@render children()}
 		{/if}
 	</main>
+
+	{#if PUBLIC_COMMIT_SHA}
+		<div class="fixed bottom-2 left-2 text-[14px]" style="display: flex">
+			<div class="text-slate-200/80">{PUBLIC_BUILD_NUMBER}.</div>
+			<a
+				href={PUBLIC_COMMIT_URL}
+				target="_blank"
+				rel="noopener noreferrer"
+				class="text-slate-400/60 hover:text-slate-200 transition"
+				title={`Commit: ${PUBLIC_COMMIT_SHA}`}
+				data-testid="commit-hash"
+			>
+				{PUBLIC_COMMIT_SHA.slice(0, 7)}
+			</a>
+		</div>
+	{/if}
 </div>
 
 {#if showHowToPlay}
