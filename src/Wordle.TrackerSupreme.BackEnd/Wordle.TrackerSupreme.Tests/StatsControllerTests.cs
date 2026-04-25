@@ -48,7 +48,7 @@ public class StatsControllerTests
         var repo = new FakePlayerRepository([consistent, sharp]);
         var controller = new StatsController(repo, new PlayerStatisticsService(), new FakeGameClock(new DateOnly(2025, 1, 2)));
 
-        var result = await controller.GetLeaderboard(CancellationToken.None);
+        var result = await controller.GetLeaderboard(0, CancellationToken.None);
         var okResult = result.Result as OkObjectResult;
 
         okResult.Should().NotBeNull();
@@ -103,7 +103,7 @@ public class StatsControllerTests
         var repo = new FakePlayerRepository([emptyPlayer, activePlayer]);
         var controller = new StatsController(repo, new PlayerStatisticsService(), new FakeGameClock(new DateOnly(2025, 1, 2)));
 
-        var result = await controller.GetLeaderboard(CancellationToken.None);
+        var result = await controller.GetLeaderboard(0, CancellationToken.None);
         var okResult = result.Result as OkObjectResult;
 
         okResult.Should().NotBeNull();
@@ -111,6 +111,66 @@ public class StatsControllerTests
 
         payload.Should().HaveCount(1);
         payload.Single().DisplayName.Should().Be("Active");
+    }
+
+    [Fact]
+    public async Task GetLeaderboard_defaults_to_ten_game_minimum()
+    {
+        var veteran = CreatePlayer("Veteran");
+        foreach (var attempt in Enumerable.Range(1, 10)
+                     .Select(offset => CreateAttempt(veteran, new DateOnly(2025, 1, offset), AttemptStatus.Solved, true, 2)))
+        {
+            veteran.Attempts.Add(attempt);
+        }
+
+        var newcomer = CreatePlayer("Newcomer");
+        foreach (var attempt in Enumerable.Range(1, 9)
+                     .Select(offset => CreateAttempt(newcomer, new DateOnly(2025, 2, offset), AttemptStatus.Solved, true, 2)))
+        {
+            newcomer.Attempts.Add(attempt);
+        }
+
+        var repo = new FakePlayerRepository([veteran, newcomer]);
+        var controller = new StatsController(repo, new PlayerStatisticsService(), new FakeGameClock(new DateOnly(2025, 2, 15)));
+
+        var result = await controller.GetLeaderboard(cancellationToken: CancellationToken.None);
+        var okResult = result.Result as OkObjectResult;
+
+        okResult.Should().NotBeNull();
+        var payload = okResult!.Value.Should().BeAssignableTo<IReadOnlyList<LeaderboardEntryResponse>>().Subject;
+
+        payload.Should().ContainSingle();
+        payload.Single().DisplayName.Should().Be("Veteran");
+    }
+
+    [Fact]
+    public async Task GetLeaderboard_allows_lower_minimum_when_requested()
+    {
+        var veteran = CreatePlayer("Veteran");
+        foreach (var attempt in Enumerable.Range(1, 10)
+                     .Select(offset => CreateAttempt(veteran, new DateOnly(2025, 1, offset), AttemptStatus.Solved, true, 2)))
+        {
+            veteran.Attempts.Add(attempt);
+        }
+
+        var newcomer = CreatePlayer("Newcomer");
+        foreach (var attempt in Enumerable.Range(1, 3)
+                     .Select(offset => CreateAttempt(newcomer, new DateOnly(2025, 2, offset), AttemptStatus.Solved, true, 2)))
+        {
+            newcomer.Attempts.Add(attempt);
+        }
+
+        var repo = new FakePlayerRepository([veteran, newcomer]);
+        var controller = new StatsController(repo, new PlayerStatisticsService(), new FakeGameClock(new DateOnly(2025, 2, 15)));
+
+        var result = await controller.GetLeaderboard(0, CancellationToken.None);
+        var okResult = result.Result as OkObjectResult;
+
+        okResult.Should().NotBeNull();
+        var payload = okResult!.Value.Should().BeAssignableTo<IReadOnlyList<LeaderboardEntryResponse>>().Subject;
+
+        payload.Should().HaveCount(2);
+        payload.Select(entry => entry.DisplayName).Should().Contain(["Veteran", "Newcomer"]);
     }
 
     private static Player CreatePlayer(string name)

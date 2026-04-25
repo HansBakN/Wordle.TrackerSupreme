@@ -40,10 +40,17 @@ export class StatsService {
 	 * @returns LeaderboardEntryResponse OK
 	 * @throws ApiError
 	 */
-	public static getApiStatsLeaderboard(): CancelablePromise<Array<LeaderboardEntryResponse>> {
+	public static getApiStatsLeaderboard({
+		minGames = 10
+	}: {
+		minGames?: number;
+	}): CancelablePromise<Array<LeaderboardEntryResponse>> {
 		return __request(OpenAPI, {
 			method: 'GET',
-			url: '/api/stats/leaderboard'
+			url: '/api/stats/leaderboard',
+			query: {
+				minGames: minGames
+			}
 		});
 	}
 }

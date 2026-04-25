@@ -641,6 +641,17 @@
 		"/api/stats/leaderboard": {
 			"get": {
 				"tags": ["Stats"],
+				"parameters": [
+					{
+						"name": "minGames",
+						"in": "query",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 10
+						}
+					}
+				],
 				"responses": {
 					"200": {
 						"description": "OK",

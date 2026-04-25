@@ -4,11 +4,16 @@
 	import { auth } from '$lib/auth/store';
 	import { StatsService } from '$lib/api-client/services/StatsService';
 	import type { LeaderboardEntryResponse } from '$lib/api-client/models/LeaderboardEntryResponse';
+	import {
+		defaultLeaderboardMinimumGames,
+		getLeaderboardMinimumGames
+	} from '$lib/stats/leaderboard';
 
 	let loading = $state(false);
 	let error = $state<string | null>(null);
 	let entries = $state<LeaderboardEntryResponse[]>([]);
 	let hasLoaded = $state(false);
+	let includeLowVolumePlayers = $state(false);
 
 	function formatAverage(value: number | null | undefined) {
 		if (value === null || value === undefined) {
@@ -31,12 +36,22 @@
 		loading = true;
 		error = null;
 		try {
-			entries = await StatsService.getApiStatsLeaderboard();
+			entries = await StatsService.getApiStatsLeaderboard({
+				minGames: getLeaderboardMinimumGames(includeLowVolumePlayers)
+			});
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Unable to load leaderboard.';
 		} finally {
 			loading = false;
 		}
+	}
+
+	function handleMinimumGamesToggle() {
+		if (!$auth.user) {
+			return;
+		}
+
+		void loadLeaderboard();
 	}
 
 	onMount(() => {
@@ -83,8 +98,18 @@
 			<h1 class="mt-3 text-3xl font-semibold text-white">Hard mode before noon</h1>
 			<p class="mt-2 max-w-2xl text-sm text-slate-200/80">
 				Ranked by win rate, then average guesses, across hard-mode attempts submitted before the
-				daily reveal.
+				daily reveal. By default, players need at least {defaultLeaderboardMinimumGames} games to appear.
 			</p>
+			<label class="mt-5 inline-flex items-center gap-3 text-sm text-slate-200/80">
+				<input
+					type="checkbox"
+					bind:checked={includeLowVolumePlayers}
+					onchange={handleMinimumGamesToggle}
+					class="h-4 w-4 rounded border-white/20 bg-white/10 text-emerald-400 focus:ring-emerald-300"
+					data-testid="leaderboard-min-games-toggle"
+				/>
+				<span>Include players with fewer than {defaultLeaderboardMinimumGames} games</span>
+			</label>
 		</section>
 
 		{#if error}
