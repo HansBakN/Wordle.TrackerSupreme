@@ -1,4 +1,6 @@
 import { getApiBase, notifyUnauthorizedResponse } from '$lib/api';
+import type { PracticeStateResponse } from '$lib/api-client/models/PracticeStateResponse';
+import { PracticeService } from '$lib/api-client/services/PracticeService';
 import { StatsService } from '$lib/api-client/services/StatsService';
 import type { GameStateResponse, PlayerStatsResponse, SolutionsResponse } from './types';
 
@@ -81,4 +83,16 @@ export function fetchSolutions(): Promise<SolutionsResponse> {
 
 export function fetchMyStats(): Promise<PlayerStatsResponse> {
 	return StatsService.getApiStatsMe();
+}
+
+export function startPracticeGame(): Promise<PracticeStateResponse> {
+	return PracticeService.postApiPracticeStart();
+}
+
+export function fetchPracticeState(): Promise<PracticeStateResponse> {
+	return PracticeService.getApiPracticeState();
+}
+
+export function submitPracticeGuess(guess: string): Promise<PracticeStateResponse> {
+	return PracticeService.postApiPracticeGuess({ requestBody: { guess } });
 }
