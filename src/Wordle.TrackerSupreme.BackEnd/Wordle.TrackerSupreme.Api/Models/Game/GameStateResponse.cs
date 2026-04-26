@@ -1,6 +1,7 @@
 namespace Wordle.TrackerSupreme.Api.Models.Game;
 
 public record GameStateResponse(
+    Wordle.TrackerSupreme.Domain.Models.PuzzleStream Stream,
     DateOnly PuzzleDate,
     bool CutoffPassed,
     bool SolutionRevealed,

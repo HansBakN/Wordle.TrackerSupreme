@@ -3,7 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { AttemptResponse } from './AttemptResponse';
+import type { PuzzleStream } from './PuzzleStream';
 export type GameStateResponse = {
+	stream?: PuzzleStream;
 	puzzleDate?: string;
 	cutoffPassed?: boolean;
 	solutionRevealed?: boolean;

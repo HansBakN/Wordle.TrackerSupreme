@@ -1,6 +1,7 @@
 import type { PlayerStatsFilterRequest } from '$lib/api-client/models/PlayerStatsFilterRequest';
 
 export type StatsFilterState = {
+	includeNewYorkTimes: boolean;
 	includeHardMode: boolean;
 	includeEasyMode: boolean;
 	includeBeforeReveal: boolean;
@@ -16,6 +17,7 @@ export type StatsFilterState = {
 };
 
 export const defaultStatsFilterState: StatsFilterState = {
+	includeNewYorkTimes: false,
 	includeHardMode: true,
 	includeEasyMode: false,
 	includeBeforeReveal: true,
@@ -52,6 +54,7 @@ function toOptionalNumber(value: string | number | null | undefined): number | u
 
 export function buildStatsFilterRequest(state: StatsFilterState): PlayerStatsFilterRequest {
 	return {
+		streams: state.includeNewYorkTimes ? ['TrackerSupreme', 'NewYorkTimes'] : ['TrackerSupreme'],
 		includeHardMode: state.includeHardMode,
 		includeEasyMode: state.includeEasyMode,
 		includeBeforeReveal: state.includeBeforeReveal,

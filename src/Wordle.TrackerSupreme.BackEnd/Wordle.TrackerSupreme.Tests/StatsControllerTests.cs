@@ -37,6 +37,53 @@ public class StatsControllerTests
     }
 
     [Fact]
+    public async Task GetPlayers_defaults_to_tracker_supreme_stream_only()
+    {
+        var player = CreatePlayer("Streamy");
+        player.Attempts.Add(CreateAttempt(player, new DateOnly(2025, 1, 1), AttemptStatus.Solved, true, 2, PuzzleStream.TrackerSupreme));
+        player.Attempts.Add(CreateAttempt(player, new DateOnly(2025, 1, 2), AttemptStatus.Solved, true, 3, PuzzleStream.NewYorkTimes));
+
+        var repo = new FakePlayerRepository([player]);
+        var controller = new StatsController(repo, new PlayerStatisticsService(), new FakeGameClock(new DateOnly(2025, 1, 3)));
+
+        var result = await controller.GetPlayers(null, CancellationToken.None);
+        var okResult = result.Result as OkObjectResult;
+
+        okResult.Should().NotBeNull();
+        var payload = okResult!.Value.Should().BeAssignableTo<IReadOnlyList<PlayerStatsEntryResponse>>().Subject;
+
+        payload.Should().ContainSingle();
+        payload.Single().Stats.TotalAttempts.Should().Be(1);
+        payload.Single().Stats.Wins.Should().Be(1);
+        payload.Single().Stats.AverageGuessCount.Should().Be(2);
+        payload.Single().Stats.Streams.Should().Equal(PuzzleStream.TrackerSupreme);
+    }
+
+    [Fact]
+    public async Task GetPlayers_can_include_new_york_times_stream()
+    {
+        var player = CreatePlayer("Streamy");
+        player.Attempts.Add(CreateAttempt(player, new DateOnly(2025, 1, 1), AttemptStatus.Solved, true, 2, PuzzleStream.TrackerSupreme));
+        player.Attempts.Add(CreateAttempt(player, new DateOnly(2025, 1, 2), AttemptStatus.Solved, true, 3, PuzzleStream.NewYorkTimes));
+
+        var repo = new FakePlayerRepository([player]);
+        var controller = new StatsController(repo, new PlayerStatisticsService(), new FakeGameClock(new DateOnly(2025, 1, 3)));
+
+        var request = new PlayerStatsFilterRequest(Streams: [PuzzleStream.TrackerSupreme, PuzzleStream.NewYorkTimes]);
+
+        var result = await controller.GetPlayers(request, CancellationToken.None);
+        var okResult = result.Result as OkObjectResult;
+
+        okResult.Should().NotBeNull();
+        var payload = okResult!.Value.Should().BeAssignableTo<IReadOnlyList<PlayerStatsEntryResponse>>().Subject;
+
+        payload.Should().ContainSingle();
+        payload.Single().Stats.TotalAttempts.Should().Be(2);
+        payload.Single().Stats.Wins.Should().Be(2);
+        payload.Single().Stats.Streams.Should().Equal(PuzzleStream.TrackerSupreme, PuzzleStream.NewYorkTimes);
+    }
+
+    [Fact]
     public async Task GetLeaderboard_orders_by_win_rate_then_average()
     {
         var consistent = CreatePlayer("Consistent");
@@ -62,6 +109,51 @@ public class StatsControllerTests
         payload.Items.First().Rank.Should().Be(1);
         payload.Items.Last().DisplayName.Should().Be("Consistent");
         payload.Items.Last().Rank.Should().Be(2);
+    }
+
+    [Fact]
+    public async Task GetLeaderboard_defaults_to_tracker_supreme_stream_only()
+    {
+        var tracker = CreatePlayer("Tracker");
+        tracker.Attempts.Add(CreateAttempt(tracker, new DateOnly(2025, 1, 1), AttemptStatus.Solved, true, 2, PuzzleStream.TrackerSupreme));
+
+        var nytOnly = CreatePlayer("NYTOnly");
+        nytOnly.Attempts.Add(CreateAttempt(nytOnly, new DateOnly(2025, 1, 1), AttemptStatus.Solved, true, 1, PuzzleStream.NewYorkTimes));
+
+        var repo = new FakePlayerRepository([tracker, nytOnly]);
+        var controller = new StatsController(repo, new PlayerStatisticsService(), new FakeGameClock(new DateOnly(2025, 1, 2)));
+
+        var result = await controller.GetLeaderboard(cancellationToken: CancellationToken.None);
+        var okResult = result.Result as OkObjectResult;
+
+        okResult.Should().NotBeNull();
+        var payload = okResult!.Value.Should().BeOfType<LeaderboardPageResponse>().Subject;
+
+        payload.Streams.Should().Equal(PuzzleStream.TrackerSupreme);
+        payload.Items.Should().ContainSingle();
+        payload.Items.Single().DisplayName.Should().Be("Tracker");
+    }
+
+    [Fact]
+    public async Task GetLeaderboard_can_include_new_york_times_stream()
+    {
+        var tracker = CreatePlayer("Tracker");
+        tracker.Attempts.Add(CreateAttempt(tracker, new DateOnly(2025, 1, 1), AttemptStatus.Solved, true, 2, PuzzleStream.TrackerSupreme));
+
+        var nytOnly = CreatePlayer("NYTOnly");
+        nytOnly.Attempts.Add(CreateAttempt(nytOnly, new DateOnly(2025, 1, 1), AttemptStatus.Solved, true, 1, PuzzleStream.NewYorkTimes));
+
+        var repo = new FakePlayerRepository([tracker, nytOnly]);
+        var controller = new StatsController(repo, new PlayerStatisticsService(), new FakeGameClock(new DateOnly(2025, 1, 2)));
+
+        var result = await controller.GetLeaderboard(includeNewYorkTimes: true, cancellationToken: CancellationToken.None);
+        var okResult = result.Result as OkObjectResult;
+
+        okResult.Should().NotBeNull();
+        var payload = okResult!.Value.Should().BeOfType<LeaderboardPageResponse>().Subject;
+
+        payload.Streams.Should().Equal(PuzzleStream.TrackerSupreme, PuzzleStream.NewYorkTimes);
+        payload.Items.Select(entry => entry.DisplayName).Should().Contain(["Tracker", "NYTOnly"]);
     }
 
     [Fact]
@@ -202,6 +294,53 @@ public class StatsControllerTests
     }
 
     [Fact]
+    public async Task GetTodayLeaderboard_defaults_to_tracker_supreme_stream_only()
+    {
+        var anchorDate = new DateOnly(2025, 1, 2);
+
+        var tracker = CreatePlayer("Tracker");
+        tracker.Attempts.Add(CreateAttempt(tracker, anchorDate, AttemptStatus.Solved, true, 2, PuzzleStream.TrackerSupreme));
+
+        var nytOnly = CreatePlayer("NYTOnly");
+        nytOnly.Attempts.Add(CreateAttempt(nytOnly, anchorDate, AttemptStatus.Solved, true, 1, PuzzleStream.NewYorkTimes));
+
+        var repo = new FakePlayerRepository([tracker, nytOnly]);
+        var controller = new StatsController(repo, new PlayerStatisticsService(), new FakeGameClock(anchorDate));
+
+        var result = await controller.GetTodayLeaderboard(CancellationToken.None);
+        var okResult = result.Result as OkObjectResult;
+
+        okResult.Should().NotBeNull();
+        var payload = okResult!.Value.Should().BeAssignableTo<IReadOnlyList<TodayLeaderboardEntryResponse>>().Subject;
+
+        payload.Should().ContainSingle();
+        payload.Single().DisplayName.Should().Be("Tracker");
+    }
+
+    [Fact]
+    public async Task GetTodayLeaderboard_can_include_new_york_times_stream()
+    {
+        var anchorDate = new DateOnly(2025, 1, 2);
+
+        var tracker = CreatePlayer("Tracker");
+        tracker.Attempts.Add(CreateAttempt(tracker, anchorDate, AttemptStatus.Solved, true, 2, PuzzleStream.TrackerSupreme));
+
+        var nytOnly = CreatePlayer("NYTOnly");
+        nytOnly.Attempts.Add(CreateAttempt(nytOnly, anchorDate, AttemptStatus.Solved, true, 1, PuzzleStream.NewYorkTimes));
+
+        var repo = new FakePlayerRepository([tracker, nytOnly]);
+        var controller = new StatsController(repo, new PlayerStatisticsService(), new FakeGameClock(anchorDate));
+
+        var result = await controller.GetTodayLeaderboard(includeNewYorkTimes: true, cancellationToken: CancellationToken.None);
+        var okResult = result.Result as OkObjectResult;
+
+        okResult.Should().NotBeNull();
+        var payload = okResult!.Value.Should().BeAssignableTo<IReadOnlyList<TodayLeaderboardEntryResponse>>().Subject;
+
+        payload.Select(entry => entry.DisplayName).Should().Contain(["Tracker", "NYTOnly"]);
+    }
+
+    [Fact]
     public async Task GetTodayLeaderboard_excludes_players_without_a_current_puzzle_attempt()
     {
         var anchorDate = new DateOnly(2025, 1, 2);
@@ -276,9 +415,10 @@ public class StatsControllerTests
         DateOnly puzzleDate,
         AttemptStatus status,
         bool hardMode,
-        int guessCount)
+        int guessCount,
+        PuzzleStream stream = PuzzleStream.TrackerSupreme)
     {
-        var puzzle = new DailyPuzzle { Id = Guid.NewGuid(), PuzzleDate = puzzleDate };
+        var puzzle = new DailyPuzzle { Id = Guid.NewGuid(), PuzzleDate = puzzleDate, Stream = stream };
         var attempt = new PlayerPuzzleAttempt
         {
             Id = Guid.NewGuid(),

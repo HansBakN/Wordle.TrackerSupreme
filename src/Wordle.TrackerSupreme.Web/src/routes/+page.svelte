@@ -22,13 +22,28 @@
 		GameStateResponse,
 		GuessResponse,
 		LetterResult,
-		PlayerStatsResponse
+		PlayerStatsResponse,
+		PuzzleStream
 	} from '$lib/game/types';
 	import { onMount, tick } from 'svelte';
+
+	const streamOptions: Array<{ value: PuzzleStream; label: string; description: string }> = [
+		{
+			value: 'TrackerSupreme',
+			label: 'Tracker Supreme',
+			description: 'Main puzzle'
+		},
+		{
+			value: 'NewYorkTimes',
+			label: 'New York Times',
+			description: 'NYT puzzle'
+		}
+	];
 
 	let checking = true;
 	let loadingState = true;
 	let state: GameStateResponse | null = null;
+	let selectedStream: PuzzleStream = 'TrackerSupreme';
 	let guess = '';
 	let message: string | null = null;
 	let error: string | null = null;
@@ -122,7 +137,7 @@
 		noPuzzleToday = false;
 		animatedGuessId = null;
 		try {
-			state = await fetchGameState();
+			state = await fetchGameState(selectedStream);
 			message = completedMessage(state);
 		} catch (err) {
 			if (
@@ -137,6 +152,21 @@
 		} finally {
 			loadingState = false;
 		}
+	}
+
+	async function selectStream(stream: PuzzleStream) {
+		if (selectedStream === stream || loadingState || submitting) {
+			return;
+		}
+
+		selectedStream = stream;
+		state = null;
+		guess = '';
+		message = null;
+		error = null;
+		resetCelebration();
+		stopCountdown();
+		await loadState();
 	}
 
 	function triggerShake() {
@@ -188,7 +218,7 @@
 		submitting = true;
 		await tick();
 		try {
-			state = await submitGuess(normalized);
+			state = await submitGuess(normalized, selectedStream);
 			const latestGuessId = state.attempt?.guesses.at(-1)?.guessId ?? null;
 			animatedGuessId = latestGuessId !== previousGuessId ? latestGuessId : null;
 			guess = '';
@@ -251,7 +281,7 @@
 		message = null;
 		animatedGuessId = null;
 		try {
-			state = await enableEasyMode();
+			state = await enableEasyMode(selectedStream);
 			message = 'Easy mode enabled for this puzzle.';
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Unable to switch to easy mode.';
@@ -431,6 +461,26 @@
 						Solve today's word before noon to keep your streak alive. After 12:00 PM you can still
 						play, but those practice runs will be tracked separately and won't change your stats.
 					</p>
+					<div
+						class="mt-5 inline-flex rounded-2xl border border-white/10 bg-black/20 p-1"
+						role="group"
+						aria-label="Puzzle stream"
+					>
+						{#each streamOptions as option (option.value)}
+							<button
+								type="button"
+								class={`min-w-36 rounded-xl px-4 py-2 text-left transition ${selectedStream === option.value ? 'bg-emerald-400 text-slate-950 shadow' : 'text-slate-200 hover:bg-white/10'}`}
+								aria-label={`${option.label} puzzle`}
+								aria-pressed={selectedStream === option.value}
+								disabled={loadingState || submitting}
+								onclick={() => selectStream(option.value)}
+								data-testid={`stream-${option.value}`}
+							>
+								<span class="block text-sm font-semibold">{option.label}</span>
+								<span class="block text-xs opacity-75">{option.description}</span>
+							</button>
+						{/each}
+					</div>
 				</div>
 				<div class="flex flex-col items-start gap-3 sm:items-end">
 					<span

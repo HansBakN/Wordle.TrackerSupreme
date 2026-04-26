@@ -15,9 +15,12 @@ public class GameplayService(
     private readonly GameOptions _options = options;
     private readonly IGuessEvaluationService _guessEvaluationService = guessEvaluationService;
 
-    public async Task<GameplayState> GetState(Guid playerId, CancellationToken cancellationToken = default)
+    public async Task<GameplayState> GetState(
+        Guid playerId,
+        PuzzleStream stream = PuzzleStream.TrackerSupreme,
+        CancellationToken cancellationToken = default)
     {
-        var puzzle = await puzzleService.GetOrCreatePuzzle(gameClock.Today, PuzzleStream.NewYorkTimes, cancellationToken);
+        var puzzle = await puzzleService.GetOrCreatePuzzle(gameClock.Today, stream, cancellationToken);
         var attempt = await LoadAttempt(playerId, puzzle.Id, cancellationToken);
 
         var cutoffPassed = gameClock.HasRevealPassed(puzzle.PuzzleDate);
@@ -33,10 +36,14 @@ public class GameplayService(
             _options.MaxGuesses);
     }
 
-    public async Task<GameplayState> SubmitGuess(Guid playerId, string guessWord, CancellationToken cancellationToken = default)
+    public async Task<GameplayState> SubmitGuess(
+        Guid playerId,
+        string guessWord,
+        PuzzleStream stream = PuzzleStream.TrackerSupreme,
+        CancellationToken cancellationToken = default)
     {
         var normalizedGuess = _guessEvaluationService.NormalizeGuess(guessWord);
-        var puzzle = await puzzleService.GetOrCreatePuzzle(gameClock.Today, PuzzleStream.NewYorkTimes, cancellationToken);
+        var puzzle = await puzzleService.GetOrCreatePuzzle(gameClock.Today, stream, cancellationToken);
 
         var attempt = await LoadAttempt(playerId, puzzle.Id, cancellationToken);
         if (attempt is null)
@@ -46,6 +53,7 @@ public class GameplayService(
                 Id = Guid.NewGuid(),
                 PlayerId = playerId,
                 DailyPuzzleId = puzzle.Id,
+                DailyPuzzle = puzzle,
                 Status = AttemptStatus.InProgress,
                 CreatedOn = DateTime.UtcNow,
                 PlayedInHardMode = true
@@ -120,9 +128,12 @@ public class GameplayService(
             _options.MaxGuesses);
     }
 
-    public async Task<GameplayState> EnableEasyMode(Guid playerId, CancellationToken cancellationToken = default)
+    public async Task<GameplayState> EnableEasyMode(
+        Guid playerId,
+        PuzzleStream stream = PuzzleStream.TrackerSupreme,
+        CancellationToken cancellationToken = default)
     {
-        var puzzle = await puzzleService.GetOrCreatePuzzle(gameClock.Today, PuzzleStream.NewYorkTimes, cancellationToken);
+        var puzzle = await puzzleService.GetOrCreatePuzzle(gameClock.Today, stream, cancellationToken);
         var attempt = await LoadAttempt(playerId, puzzle.Id, cancellationToken);
 
         if (attempt is null)
@@ -132,6 +143,7 @@ public class GameplayService(
                 Id = Guid.NewGuid(),
                 PlayerId = playerId,
                 DailyPuzzleId = puzzle.Id,
+                DailyPuzzle = puzzle,
                 Status = AttemptStatus.InProgress,
                 CreatedOn = DateTime.UtcNow,
                 PlayedInHardMode = false
@@ -162,9 +174,11 @@ public class GameplayService(
             _options.MaxGuesses);
     }
 
-    public async Task<SolutionsSnapshot> GetSolutions(CancellationToken cancellationToken = default)
+    public async Task<SolutionsSnapshot> GetSolutions(
+        PuzzleStream stream = PuzzleStream.TrackerSupreme,
+        CancellationToken cancellationToken = default)
     {
-        var puzzle = await puzzleService.GetOrCreatePuzzle(gameClock.Today, PuzzleStream.NewYorkTimes, cancellationToken);
+        var puzzle = await puzzleService.GetOrCreatePuzzle(gameClock.Today, stream, cancellationToken);
         var cutoffPassed = gameClock.HasRevealPassed(puzzle.PuzzleDate);
 
         var attempts = await gameRepository.GetAttemptsForPuzzle(puzzle.Id, cancellationToken);

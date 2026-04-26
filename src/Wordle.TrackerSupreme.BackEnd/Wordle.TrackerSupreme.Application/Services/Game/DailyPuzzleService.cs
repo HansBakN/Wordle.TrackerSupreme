@@ -37,7 +37,7 @@ public class DailyPuzzleService : IDailyPuzzleService
         {
             if (string.IsNullOrWhiteSpace(existing.Solution))
             {
-                existing.Solution = await ResolveSolution(puzzleDate, cancellationToken);
+                existing.Solution = await ResolveSolution(puzzleDate, stream, cancellationToken);
                 await _gameRepository.SaveChanges(cancellationToken);
             }
 
@@ -49,7 +49,7 @@ public class DailyPuzzleService : IDailyPuzzleService
             Id = Guid.NewGuid(),
             PuzzleDate = puzzleDate,
             Stream = stream,
-            Solution = await ResolveSolution(puzzleDate, cancellationToken),
+            Solution = await ResolveSolution(puzzleDate, stream, cancellationToken),
             IsArchived = false
         };
 
@@ -58,8 +58,16 @@ public class DailyPuzzleService : IDailyPuzzleService
         return puzzle;
     }
 
-    private async Task<string> ResolveSolution(DateOnly puzzleDate, CancellationToken cancellationToken)
+    private async Task<string> ResolveSolution(
+        DateOnly puzzleDate,
+        PuzzleStream stream,
+        CancellationToken cancellationToken)
     {
+        if (stream == PuzzleStream.TrackerSupreme)
+        {
+            return _wordSelector.GetSolutionFor(puzzleDate);
+        }
+
         try
         {
             return await _officialWordProvider.GetSolutionForDateAsync(puzzleDate, cancellationToken);

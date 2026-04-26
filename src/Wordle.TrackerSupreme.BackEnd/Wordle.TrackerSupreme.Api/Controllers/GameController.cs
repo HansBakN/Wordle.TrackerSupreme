@@ -18,7 +18,9 @@ public class GameController(
     ILogger<GameController> logger) : ControllerBase
 {
     [HttpGet("state")]
-    public async Task<ActionResult<GameStateResponse>> GetState(CancellationToken cancellationToken)
+    public async Task<ActionResult<GameStateResponse>> GetState(
+        [FromQuery] PuzzleStream? stream = null,
+        CancellationToken cancellationToken = default)
     {
         var playerId = GetPlayerId();
         if (playerId is null)
@@ -28,7 +30,10 @@ public class GameController(
 
         try
         {
-            var state = await gameplayService.GetState(playerId.Value, cancellationToken);
+            var state = await gameplayService.GetState(
+                playerId.Value,
+                stream ?? PuzzleStream.TrackerSupreme,
+                cancellationToken);
             return Ok(MapState(state));
         }
         catch (DailyPuzzleUnavailableException ex)
@@ -38,7 +43,10 @@ public class GameController(
     }
 
     [HttpPost("guess")]
-    public async Task<ActionResult<GameStateResponse>> SubmitGuess([FromBody] SubmitGuessRequest request, CancellationToken cancellationToken)
+    public async Task<ActionResult<GameStateResponse>> SubmitGuess(
+        [FromBody] SubmitGuessRequest request,
+        [FromQuery] PuzzleStream? stream = null,
+        CancellationToken cancellationToken = default)
     {
         var playerId = GetPlayerId();
         if (playerId is null)
@@ -48,8 +56,16 @@ public class GameController(
 
         try
         {
-            var state = await gameplayService.SubmitGuess(playerId.Value, request.Guess, cancellationToken);
-            logger.LogInformation("Guess submitted. PlayerId={PlayerId} PuzzleDate={PuzzleDate}", playerId, state.Puzzle.PuzzleDate);
+            var state = await gameplayService.SubmitGuess(
+                playerId.Value,
+                request.Guess,
+                stream ?? PuzzleStream.TrackerSupreme,
+                cancellationToken);
+            logger.LogInformation(
+                "Guess submitted. PlayerId={PlayerId} PuzzleDate={PuzzleDate} Stream={Stream}",
+                playerId,
+                state.Puzzle.PuzzleDate,
+                state.Puzzle.Stream);
             return Ok(MapState(state));
         }
         catch (DailyPuzzleUnavailableException ex)
@@ -71,7 +87,9 @@ public class GameController(
     }
 
     [HttpPost("easy-mode")]
-    public async Task<ActionResult<GameStateResponse>> EnableEasyMode(CancellationToken cancellationToken)
+    public async Task<ActionResult<GameStateResponse>> EnableEasyMode(
+        [FromQuery] PuzzleStream? stream = null,
+        CancellationToken cancellationToken = default)
     {
         var playerId = GetPlayerId();
         if (playerId is null)
@@ -81,8 +99,14 @@ public class GameController(
 
         try
         {
-            var state = await gameplayService.EnableEasyMode(playerId.Value, cancellationToken);
-            logger.LogInformation("Easy mode enabled. PlayerId={PlayerId}", playerId);
+            var state = await gameplayService.EnableEasyMode(
+                playerId.Value,
+                stream ?? PuzzleStream.TrackerSupreme,
+                cancellationToken);
+            logger.LogInformation(
+                "Easy mode enabled. PlayerId={PlayerId} Stream={Stream}",
+                playerId,
+                state.Puzzle.Stream);
             return Ok(MapState(state));
         }
         catch (DailyPuzzleUnavailableException ex)
@@ -100,11 +124,15 @@ public class GameController(
     }
 
     [HttpGet("solutions")]
-    public async Task<ActionResult<SolutionsResponse>> GetSolutions(CancellationToken cancellationToken)
+    public async Task<ActionResult<SolutionsResponse>> GetSolutions(
+        [FromQuery] PuzzleStream? stream = null,
+        CancellationToken cancellationToken = default)
     {
         try
         {
-            var snapshot = await gameplayService.GetSolutions(cancellationToken);
+            var snapshot = await gameplayService.GetSolutions(
+                stream ?? PuzzleStream.TrackerSupreme,
+                cancellationToken);
             if (!snapshot.CutoffPassed)
             {
                 return StatusCode(StatusCodes.Status403Forbidden,
@@ -168,6 +196,7 @@ public class GameController(
         var solution = state.SolutionRevealed ? state.Puzzle.Solution : null;
 
         return new GameStateResponse(
+            state.Puzzle.Stream,
             state.Puzzle.PuzzleDate,
             state.CutoffPassed,
             state.SolutionRevealed,

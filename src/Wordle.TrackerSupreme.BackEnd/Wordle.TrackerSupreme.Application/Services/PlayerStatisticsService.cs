@@ -49,6 +49,7 @@ public class PlayerStatisticsService : IPlayerStatisticsService
 
         return new PlayerStatistics
         {
+            Streams = filterOptions.Streams,
             TotalAttempts = totalAttempts,
             Wins = wins,
             Failures = failures,
@@ -66,6 +67,12 @@ public class PlayerStatisticsService : IPlayerStatisticsService
         Func<PlayerPuzzleAttempt, bool> isAfterReveal)
     {
         var isAfter = isAfterReveal(attempt);
+        var stream = attempt.DailyPuzzle?.Stream ?? PuzzleStream.TrackerSupreme;
+        if (!filter.Streams.Contains(stream))
+        {
+            return false;
+        }
+
         if (isAfter)
         {
             if (!filter.IncludeAfterReveal)

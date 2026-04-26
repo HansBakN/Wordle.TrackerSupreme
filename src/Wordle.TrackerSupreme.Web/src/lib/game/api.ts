@@ -1,6 +1,11 @@
 import { getApiBase, notifyUnauthorizedResponse } from '$lib/api';
 import { StatsService } from '$lib/api-client/services/StatsService';
-import type { GameStateResponse, PlayerStatsResponse, SolutionsResponse } from './types';
+import type {
+	GameStateResponse,
+	PlayerStatsResponse,
+	PuzzleStream,
+	SolutionsResponse
+} from './types';
 
 export class ApiResponseError extends Error {
 	readonly status: number;
@@ -54,25 +59,42 @@ async function apiFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
 	return (await response.json()) as T;
 }
 
-export function fetchGameState(): Promise<GameStateResponse> {
-	return apiFetch<GameStateResponse>('/api/game/state');
+function withStream(path: string, stream: PuzzleStream): string {
+	if (stream === 'TrackerSupreme') {
+		return path;
+	}
+
+	return `${path}?stream=${encodeURIComponent(stream)}`;
 }
 
-export function submitGuess(guess: string): Promise<GameStateResponse> {
-	return apiFetch<GameStateResponse>('/api/game/guess', {
+export function fetchGameState(
+	stream: PuzzleStream = 'TrackerSupreme'
+): Promise<GameStateResponse> {
+	return apiFetch<GameStateResponse>(withStream('/api/game/state', stream));
+}
+
+export function submitGuess(
+	guess: string,
+	stream: PuzzleStream = 'TrackerSupreme'
+): Promise<GameStateResponse> {
+	return apiFetch<GameStateResponse>(withStream('/api/game/guess', stream), {
 		method: 'POST',
 		body: JSON.stringify({ guess })
 	});
 }
 
-export function enableEasyMode(): Promise<GameStateResponse> {
-	return apiFetch<GameStateResponse>('/api/game/easy-mode', {
+export function enableEasyMode(
+	stream: PuzzleStream = 'TrackerSupreme'
+): Promise<GameStateResponse> {
+	return apiFetch<GameStateResponse>(withStream('/api/game/easy-mode', stream), {
 		method: 'POST'
 	});
 }
 
-export function fetchSolutions(): Promise<SolutionsResponse> {
-	return apiFetch<SolutionsResponse>('/api/game/solutions');
+export function fetchSolutions(
+	stream: PuzzleStream = 'TrackerSupreme'
+): Promise<SolutionsResponse> {
+	return apiFetch<SolutionsResponse>(withStream('/api/game/solutions', stream));
 }
 
 export function fetchMyStats(): Promise<PlayerStatsResponse> {

@@ -529,6 +529,15 @@
 		"/api/game/state": {
 			"get": {
 				"tags": ["Game"],
+				"parameters": [
+					{
+						"name": "stream",
+						"in": "query",
+						"schema": {
+							"$ref": "#/components/schemas/PuzzleStream"
+						}
+					}
+				],
 				"responses": {
 					"200": {
 						"description": "OK",
@@ -566,6 +575,15 @@
 		"/api/game/guess": {
 			"post": {
 				"tags": ["Game"],
+				"parameters": [
+					{
+						"name": "stream",
+						"in": "query",
+						"schema": {
+							"$ref": "#/components/schemas/PuzzleStream"
+						}
+					}
+				],
 				"requestBody": {
 					"content": {
 						"application/json": {
@@ -642,6 +660,15 @@
 		"/api/game/easy-mode": {
 			"post": {
 				"tags": ["Game"],
+				"parameters": [
+					{
+						"name": "stream",
+						"in": "query",
+						"schema": {
+							"$ref": "#/components/schemas/PuzzleStream"
+						}
+					}
+				],
 				"responses": {
 					"200": {
 						"description": "OK",
@@ -689,6 +716,15 @@
 		"/api/game/solutions": {
 			"get": {
 				"tags": ["Game"],
+				"parameters": [
+					{
+						"name": "stream",
+						"in": "query",
+						"schema": {
+							"$ref": "#/components/schemas/PuzzleStream"
+						}
+					}
+				],
 				"responses": {
 					"200": {
 						"description": "OK",
@@ -836,6 +872,14 @@
 							"format": "int32",
 							"default": 10
 						}
+					},
+					{
+						"name": "includeNewYorkTimes",
+						"in": "query",
+						"schema": {
+							"type": "boolean",
+							"default": false
+						}
 					}
 				],
 				"responses": {
@@ -865,6 +909,16 @@
 		"/api/stats/leaderboard/today": {
 			"get": {
 				"tags": ["Stats"],
+				"parameters": [
+					{
+						"name": "includeNewYorkTimes",
+						"in": "query",
+						"schema": {
+							"type": "boolean",
+							"default": false
+						}
+					}
+				],
 				"responses": {
 					"200": {
 						"description": "OK",
@@ -934,6 +988,9 @@
 					"puzzleDate": {
 						"type": "string",
 						"format": "date"
+					},
+					"stream": {
+						"$ref": "#/components/schemas/PuzzleStream"
 					},
 					"status": {
 						"type": "string"
@@ -1102,6 +1159,9 @@
 			"GameStateResponse": {
 				"type": "object",
 				"properties": {
+					"stream": {
+						"$ref": "#/components/schemas/PuzzleStream"
+					},
 					"puzzleDate": {
 						"type": "string",
 						"format": "date"
@@ -1139,6 +1199,10 @@
 					}
 				},
 				"additionalProperties": false
+			},
+			"PuzzleStream": {
+				"enum": ["TrackerSupreme", "NewYorkTimes"],
+				"type": "string"
 			},
 			"GuessResponse": {
 				"type": "object",
@@ -1182,6 +1246,13 @@
 			"LeaderboardPageResponse": {
 				"type": "object",
 				"properties": {
+					"streams": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/PuzzleStream"
+						},
+						"nullable": true
+					},
 					"items": {
 						"type": "array",
 						"items": {
@@ -1321,6 +1392,13 @@
 						"type": "integer",
 						"format": "int32",
 						"nullable": true
+					},
+					"streams": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/PuzzleStream"
+						},
+						"nullable": true
 					}
 				},
 				"additionalProperties": false
@@ -1328,6 +1406,13 @@
 			"PlayerStatsResponse": {
 				"type": "object",
 				"properties": {
+					"streams": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/PuzzleStream"
+						},
+						"nullable": true
+					},
 					"totalAttempts": {
 						"type": "integer",
 						"format": "int32"

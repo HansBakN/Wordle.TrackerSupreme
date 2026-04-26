@@ -248,7 +248,12 @@ public class PlayerStatisticsServiceTests
         int guessCount,
         Guid? id = null)
     {
-        var puzzle = new DailyPuzzle { Id = Guid.NewGuid(), PuzzleDate = puzzleDate };
+        var puzzle = new DailyPuzzle
+        {
+            Id = Guid.NewGuid(),
+            PuzzleDate = puzzleDate,
+            Stream = PuzzleStream.TrackerSupreme
+        };
         var attempt = new PlayerPuzzleAttempt
         {
             Id = id ?? Guid.NewGuid(),

@@ -23,7 +23,9 @@ test('leaderboard shows ranked hard mode entries', async ({ page }) => {
 		});
 	});
 
+	const leaderboardRequests: string[] = [];
 	await page.route('**/api/stats/leaderboard**', async (route) => {
+		leaderboardRequests.push(route.request().url());
 		await route.fulfill({
 			status: 200,
 			contentType: 'application/json',
@@ -68,7 +70,14 @@ test('leaderboard shows ranked hard mode entries', async ({ page }) => {
 	await page.getByText('Loading your session...').waitFor({ state: 'hidden' });
 
 	await expect(page.getByRole('heading', { name: 'Hard mode before noon' })).toBeVisible();
+	await expect(page.getByLabel('Include New York Times')).toBeVisible();
 	await expect(page.getByRole('cell', { name: 'Rival' })).toBeVisible();
 	await expect(page.getByRole('cell', { name: 'Challenger' })).toBeVisible();
 	await expect(page.getByRole('cell', { name: '1' })).toBeVisible();
+	expect(leaderboardRequests[0]).not.toContain('includeNewYorkTimes=true');
+
+	await page.getByLabel('Include New York Times').check();
+	await expect
+		.poll(() => leaderboardRequests.some((url) => url.includes('includeNewYorkTimes=true')))
+		.toBe(true);
 });

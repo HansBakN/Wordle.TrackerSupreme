@@ -58,7 +58,7 @@ public class GameControllerTests
         var repo = new FakeGameRepository();
         var controller = CreateController(repo, clock);
 
-        var result = await controller.GetState(CancellationToken.None);
+        var result = await controller.GetState(cancellationToken: CancellationToken.None);
 
         result.Result.Should().BeOfType<OkObjectResult>();
         var state = (result.Result as OkObjectResult)!.Value as Api.Models.Game.GameStateResponse;
@@ -69,6 +69,41 @@ public class GameControllerTests
     }
 
     [Fact]
+    public async Task GetState_defaults_to_tracker_supreme_stream()
+    {
+        var clock = new FakeGameClock(new DateOnly(2025, 1, 10));
+        var repo = new FakeGameRepository();
+        var controller = CreateController(repo, clock);
+
+        var result = await controller.GetState(null, CancellationToken.None);
+
+        result.Result.Should().BeOfType<OkObjectResult>();
+        var state = (result.Result as OkObjectResult)!.Value as Api.Models.Game.GameStateResponse;
+        state.Should().NotBeNull();
+        state!.Stream.Should().Be(PuzzleStream.TrackerSupreme);
+    }
+
+    [Fact]
+    public async Task SubmitGuess_accepts_new_york_times_stream()
+    {
+        var clock = new FakeGameClock(new DateOnly(2025, 1, 10));
+        var repo = new FakeGameRepository();
+        var controller = CreateController(repo, clock, "CRANE");
+
+        var result = await controller.SubmitGuess(
+            new Api.Models.Game.SubmitGuessRequest { Guess = "CRANE" },
+            PuzzleStream.NewYorkTimes,
+            CancellationToken.None);
+
+        result.Result.Should().BeOfType<OkObjectResult>();
+        var state = (result.Result as OkObjectResult)!.Value as Api.Models.Game.GameStateResponse;
+        state.Should().NotBeNull();
+        state!.Stream.Should().Be(PuzzleStream.NewYorkTimes);
+        repo.Attempts.Should().ContainSingle();
+        repo.Attempts.Single().DailyPuzzle.Stream.Should().Be(PuzzleStream.NewYorkTimes);
+    }
+
+    [Fact]
     public async Task GetState_returns_service_unavailable_when_official_provider_fails()
     {
         var clock = new FakeGameClock(new DateOnly(2025, 1, 12));
@@ -76,7 +111,7 @@ public class GameControllerTests
         var failingProvider = new FakeOfficialWordProvider((_, _) => throw new InvalidOperationException("boom"));
         var controller = CreateController(repo, clock, officialWordProvider: failingProvider);
 
-        var result = await controller.GetState(CancellationToken.None);
+        var result = await controller.GetState(PuzzleStream.NewYorkTimes, CancellationToken.None);
 
         var objectResult = result.Result.Should().BeOfType<ObjectResult>().Which;
         objectResult.StatusCode.Should().Be(StatusCodes.Status503ServiceUnavailable);
@@ -91,8 +126,12 @@ public class GameControllerTests
         var repo = new FakeGameRepository();
         var controller = CreateController(repo, clock, "PLANT");
 
-        await controller.SubmitGuess(new Api.Models.Game.SubmitGuessRequest { Guess = "PLANT" }, CancellationToken.None);
-        var second = await controller.SubmitGuess(new Api.Models.Game.SubmitGuessRequest { Guess = "PLANT" }, CancellationToken.None);
+        await controller.SubmitGuess(
+            new Api.Models.Game.SubmitGuessRequest { Guess = "PLANT" },
+            cancellationToken: CancellationToken.None);
+        var second = await controller.SubmitGuess(
+            new Api.Models.Game.SubmitGuessRequest { Guess = "PLANT" },
+            cancellationToken: CancellationToken.None);
 
         second.Result.Should().BeOfType<ConflictObjectResult>();
     }
@@ -107,7 +146,7 @@ public class GameControllerTests
 
         var result = await controller.SubmitGuess(
             new Api.Models.Game.SubmitGuessRequest { Guess = "ZZZZZ" },
-            CancellationToken.None);
+            cancellationToken: CancellationToken.None);
 
         result.Result.Should().BeOfType<BadRequestObjectResult>();
     }
@@ -124,7 +163,7 @@ public class GameControllerTests
 
         var result = await controller.SubmitGuess(
             new Api.Models.Game.SubmitGuessRequest { Guess = "CRANE" },
-            CancellationToken.None);
+            cancellationToken: CancellationToken.None);
 
         var conflict = result.Result.Should().BeOfType<ConflictObjectResult>().Which;
         var pd = conflict.Value.Should().BeOfType<ProblemDetails>().Which;
@@ -138,7 +177,7 @@ public class GameControllerTests
         var repo = new FakeGameRepository();
         var controller = CreateController(repo, clock, "CRANE");
 
-        var result = await controller.EnableEasyMode(CancellationToken.None);
+        var result = await controller.EnableEasyMode(cancellationToken: CancellationToken.None);
 
         result.Result.Should().BeOfType<OkObjectResult>();
         var state = (result.Result as OkObjectResult)!.Value as Api.Models.Game.GameStateResponse;
@@ -153,7 +192,7 @@ public class GameControllerTests
         var repo = new FakeGameRepository();
         var controller = CreateController(repo, clock, "CRANE");
 
-        var result = await controller.GetSolutions(CancellationToken.None);
+        var result = await controller.GetSolutions(cancellationToken: CancellationToken.None);
 
         result.Result.Should().BeOfType<ObjectResult>()
             .Which.StatusCode.Should().Be(StatusCodes.Status403Forbidden);
@@ -205,7 +244,7 @@ public class GameControllerTests
 
         var controller = CreateController(repo, clock, puzzle.Solution!);
 
-        var response = await controller.GetSolutions(CancellationToken.None);
+        var response = await controller.GetSolutions(PuzzleStream.NewYorkTimes, CancellationToken.None);
 
         var ok = response.Result.Should().BeOfType<OkObjectResult>().Which;
         var payload = ok.Value as Api.Models.Game.SolutionsResponse;

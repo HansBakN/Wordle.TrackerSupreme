@@ -25,6 +25,7 @@ export type { PlayerResponse } from './models/PlayerResponse';
 export type { PlayerStatsEntryResponse } from './models/PlayerStatsEntryResponse';
 export type { PlayerStatsFilterRequest } from './models/PlayerStatsFilterRequest';
 export type { PlayerStatsResponse } from './models/PlayerStatsResponse';
+export type { PuzzleStream } from './models/PuzzleStream';
 export type { ProblemDetails } from './models/ProblemDetails';
 export type { SignInRequest } from './models/SignInRequest';
 export type { SignUpRequest } from './models/SignUpRequest';
