@@ -3,10 +3,6 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 FRONTEND_DIR="$ROOT_DIR/src/Wordle.TrackerSupreme.Web"
-source "$ROOT_DIR/scripts/lib/compose.sh"
-
-resolve_compose_command
-compose=("${COMPOSE_CMD[@]}")
 
 usage() {
   cat <<'EOF'
@@ -22,11 +18,11 @@ EOF
 }
 
 run_backend() {
-  "${compose[@]}" --profile tests run --rm tests-backend
+  docker compose --profile tests run --rm tests-backend
 }
 
 run_frontend() {
-  "${compose[@]}" --profile tests run --rm tests-frontend
+  docker compose --profile tests run --rm tests-frontend
 }
 
 run_lint() {
