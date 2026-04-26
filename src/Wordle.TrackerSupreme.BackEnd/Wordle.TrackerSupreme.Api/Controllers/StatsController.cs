@@ -41,6 +41,47 @@ public class StatsController(
         return Ok(MapStats(stats));
     }
 
+    [HttpGet("me/history")]
+    public async Task<ActionResult<IReadOnlyList<PuzzleHistoryEntryResponse>>> GetMyHistory(CancellationToken cancellationToken)
+    {
+        var playerIdClaim = User.FindFirstValue("playerId");
+        if (!Guid.TryParse(playerIdClaim, out var playerId))
+        {
+            return Unauthorized();
+        }
+
+        var player = await playerRepository.GetPlayerWithAttemptsAndGuesses(playerId, cancellationToken);
+        if (player is null)
+        {
+            return Unauthorized();
+        }
+
+        var history = player.Attempts
+            .Where(a => a.DailyPuzzle is not null)
+            .OrderByDescending(a => a.DailyPuzzle!.PuzzleDate)
+            .Select(a => new PuzzleHistoryEntryResponse(
+                a.DailyPuzzle!.PuzzleDate,
+                gameClock.HasRevealPassed(a.DailyPuzzle.PuzzleDate) ? a.DailyPuzzle.Solution : null,
+                a.Status,
+                a.PlayedInHardMode,
+                gameClock.IsAfterReveal(a),
+                a.Guesses.Count,
+                a.Guesses
+                    .OrderBy(g => g.GuessNumber)
+                    .Select(g => new GuessResponse(
+                        g.Id,
+                        g.GuessNumber,
+                        g.GuessWord,
+                        g.Feedback
+                            .OrderBy(f => f.Position)
+                            .Select(f => new LetterFeedbackResponse(f.Position, f.Letter, f.Result))
+                            .ToList()))
+                    .ToList()))
+            .ToList();
+
+        return Ok(history);
+    }
+
     [HttpPost("players")]
     public async Task<ActionResult<IReadOnlyList<PlayerStatsEntryResponse>>> GetPlayers(
         [FromBody] PlayerStatsFilterRequest? request,

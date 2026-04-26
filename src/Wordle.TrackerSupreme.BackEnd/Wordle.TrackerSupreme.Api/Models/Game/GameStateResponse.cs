@@ -10,4 +10,5 @@ public record GameStateResponse(
     bool IsHardMode,
     bool CanGuess,
     AttemptResponse? Attempt,
-    string? Solution);
+    string? Solution,
+    bool IsReplay = false);

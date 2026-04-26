@@ -153,31 +153,49 @@
 						"content": {
 							"text/plain": {
 								"schema": {
-									"type": "array",
-									"items": {
-										"$ref": "#/components/schemas/AdminPlayerSummaryResponse"
-									}
+									"$ref": "#/components/schemas/AdminPlayersPageResponse"
 								}
 							},
 							"application/json": {
 								"schema": {
-									"type": "array",
-									"items": {
-										"$ref": "#/components/schemas/AdminPlayerSummaryResponse"
-									}
+									"$ref": "#/components/schemas/AdminPlayersPageResponse"
 								}
 							},
 							"text/json": {
 								"schema": {
-									"type": "array",
-									"items": {
-										"$ref": "#/components/schemas/AdminPlayerSummaryResponse"
-									}
+									"$ref": "#/components/schemas/AdminPlayersPageResponse"
 								}
 							}
 						}
 					}
-				}
+				},
+				"parameters": [
+					{
+						"name": "search",
+						"in": "query",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "page",
+						"in": "query",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 1
+						}
+					},
+					{
+						"name": "pageSize",
+						"in": "query",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 20
+						}
+					}
+				]
 			}
 		},
 		"/api/Admin/players/{playerId}": {
@@ -529,6 +547,17 @@
 		"/api/game/state": {
 			"get": {
 				"tags": ["Game"],
+				"parameters": [
+					{
+						"name": "date",
+						"in": "query",
+						"schema": {
+							"type": "string",
+							"format": "date",
+							"nullable": true
+						}
+					}
+				],
 				"responses": {
 					"200": {
 						"description": "OK",
@@ -566,6 +595,17 @@
 		"/api/game/guess": {
 			"post": {
 				"tags": ["Game"],
+				"parameters": [
+					{
+						"name": "date",
+						"in": "query",
+						"schema": {
+							"type": "string",
+							"format": "date",
+							"nullable": true
+						}
+					}
+				],
 				"requestBody": {
 					"content": {
 						"application/json": {
@@ -642,6 +682,17 @@
 		"/api/game/easy-mode": {
 			"post": {
 				"tags": ["Game"],
+				"parameters": [
+					{
+						"name": "date",
+						"in": "query",
+						"schema": {
+							"type": "string",
+							"format": "date",
+							"nullable": true
+						}
+					}
+				],
 				"responses": {
 					"200": {
 						"description": "OK",
@@ -923,6 +974,218 @@
 					}
 				}
 			}
+		},
+		"/api/stats/me/history": {
+			"get": {
+				"tags": ["Stats"],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/PuzzleHistoryEntryResponse"
+									}
+								}
+							},
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/PuzzleHistoryEntryResponse"
+									}
+								}
+							},
+							"text/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/PuzzleHistoryEntryResponse"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/Admin/puzzles": {
+			"get": {
+				"tags": ["Admin"],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/AdminPuzzleResponse"
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"post": {
+				"tags": ["Admin"],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminCreatePuzzleRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminPuzzleResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "Conflict",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/Admin/puzzles/{puzzleId}": {
+			"get": {
+				"tags": ["Admin"],
+				"parameters": [
+					{
+						"name": "puzzleId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"format": "uuid"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminPuzzleResponse"
+								}
+							}
+						}
+					}
+				}
+			},
+			"put": {
+				"tags": ["Admin"],
+				"parameters": [
+					{
+						"name": "puzzleId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"format": "uuid"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminUpdatePuzzleRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminPuzzleResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "Conflict",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": ["Admin"],
+				"parameters": [
+					{
+						"name": "puzzleId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"format": "uuid"
+						}
+					}
+				],
+				"responses": {
+					"204": {
+						"description": "No Content"
+					},
+					"409": {
+						"description": "Conflict",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	},
 	"components": {
@@ -1152,6 +1415,9 @@
 					"solution": {
 						"type": "string",
 						"nullable": true
+					},
+					"isReplay": {
+						"type": "boolean"
 					}
 				},
 				"additionalProperties": false
@@ -1552,6 +1818,85 @@
 				},
 				"additionalProperties": false
 			},
+			"AdminPuzzleResponse": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"puzzleDate": {
+						"type": "string",
+						"format": "date"
+					},
+					"solution": {
+						"type": "string"
+					},
+					"attemptCount": {
+						"type": "integer",
+						"format": "int32"
+					}
+				},
+				"additionalProperties": false
+			},
+			"AdminCreatePuzzleRequest": {
+				"required": ["puzzleDate", "solution"],
+				"type": "object",
+				"properties": {
+					"puzzleDate": {
+						"type": "string",
+						"format": "date"
+					},
+					"solution": {
+						"maxLength": 10,
+						"minLength": 1,
+						"type": "string"
+					}
+				},
+				"additionalProperties": false
+			},
+			"AdminUpdatePuzzleRequest": {
+				"required": ["puzzleDate", "solution"],
+				"type": "object",
+				"properties": {
+					"puzzleDate": {
+						"type": "string",
+						"format": "date"
+					},
+					"solution": {
+						"maxLength": 10,
+						"minLength": 1,
+						"type": "string"
+					}
+				},
+				"additionalProperties": false
+			},
+			"AdminPlayersPageResponse": {
+				"type": "object",
+				"properties": {
+					"players": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/AdminPlayerSummaryResponse"
+						},
+						"nullable": true
+					},
+					"totalCount": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"page": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"pageSize": {
+						"type": "integer",
+						"format": "int32"
+					}
+				},
+				"additionalProperties": false,
+				"required": ["totalCount", "page", "pageSize"]
+			},
 			"ProblemDetails": {
 				"type": "object",
 				"properties": {
@@ -1578,6 +1923,47 @@
 					}
 				},
 				"additionalProperties": {}
+			},
+			"PuzzleHistoryEntryResponse": {
+				"type": "object",
+				"properties": {
+					"puzzleDate": {
+						"type": "string",
+						"format": "date"
+					},
+					"solution": {
+						"type": "string",
+						"nullable": true
+					},
+					"status": {
+						"type": "string"
+					},
+					"playedInHardMode": {
+						"type": "boolean"
+					},
+					"isAfterReveal": {
+						"type": "boolean"
+					},
+					"guessCount": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"guesses": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/GuessResponse"
+						}
+					}
+				},
+				"additionalProperties": false,
+				"required": [
+					"puzzleDate",
+					"status",
+					"playedInHardMode",
+					"isAfterReveal",
+					"guessCount",
+					"guesses"
+				]
 			}
 		},
 		"securitySchemes": {

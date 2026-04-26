@@ -82,11 +82,21 @@ test('leaderboard can switch from all-time rankings to today standings', async (
 		'aria-selected',
 		'true'
 	);
+	await expect(page.getByRole('tab', { name: 'All-time' })).toHaveAttribute('tabindex', '0');
+	await expect(page.getByRole('tab', { name: "Today's puzzle" })).toHaveAttribute('tabindex', '-1');
 	await expect(page.getByRole('cell', { name: 'Rival' })).toBeVisible();
 	expect(allTimeRequests).toBe(1);
 	expect(todayRequests).toBe(0);
 
-	await page.getByRole('tab', { name: "Today's puzzle" }).click();
+	await page.getByRole('tab', { name: 'All-time' }).focus();
+	await page.keyboard.press('ArrowRight');
+
+	await expect(page.getByRole('tab', { name: "Today's puzzle" })).toHaveAttribute(
+		'aria-selected',
+		'true'
+	);
+	await expect(page.getByRole('tab', { name: "Today's puzzle" })).toHaveAttribute('tabindex', '0');
+	await expect(page.getByRole('tab', { name: "Today's puzzle" })).toBeFocused();
 
 	await expect(page.getByRole('heading', { name: "Today's puzzle" })).toBeVisible();
 	await expect(page.getByRole('cell', { name: 'Today Winner' })).toBeVisible();
