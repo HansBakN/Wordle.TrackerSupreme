@@ -115,6 +115,10 @@ services:
     build:
       context: ./src/Wordle.TrackerSupreme.Web
       dockerfile: Dockerfile
+      args:
+        COMMIT_SHA: ${COMMIT_SHA:-DEV}
+        BUILD_NUMBER: ${BUILD_NUMBER:-xxxxxxxx}
+        REPO_URL: ${REPO_URL:-https://github.com/HansBakN/wordle.trackersupreme}
     depends_on:
       - api
     networks:

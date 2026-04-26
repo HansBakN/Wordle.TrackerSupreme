@@ -4,6 +4,7 @@
 	import { auth } from '$lib/auth/store';
 	import { ApiError } from '$lib/api-client';
 	import { AdminService } from '$lib/api-client/services/AdminService';
+	import PuzzleManager from '$lib/admin/PuzzleManager.svelte';
 	import type { AdminPlayerAttemptResponse as ApiAdminPlayerAttemptResponse } from '$lib/api-client/models/AdminPlayerAttemptResponse';
 	import type { AdminPlayerDetailResponse as ApiAdminPlayerDetailResponse } from '$lib/api-client/models/AdminPlayerDetailResponse';
 	import type { AdminPlayerSummaryResponse as ApiAdminPlayerSummaryResponse } from '$lib/api-client/models/AdminPlayerSummaryResponse';
@@ -57,7 +58,11 @@
 	let players = $state<AdminPlayerSummary[]>([]);
 	let selectedPlayer = $state<AdminPlayerDetail | null>(null);
 	let query = $state('');
-	let filteredPlayers = $state<AdminPlayerSummary[]>([]);
+	let page = $state(1);
+	const pageSize = 20;
+	let totalCount = $state(0);
+	let totalPages = $derived(Math.max(1, Math.ceil(totalCount / pageSize)));
+	let searchTimeout: ReturnType<typeof setTimeout> | null = null;
 
 	let displayNameDraft = $state('');
 	let emailDraft = $state('');
@@ -82,19 +87,23 @@
 	);
 	let passwordValidationError = $derived(getAdminPasswordValidationError(passwordDraft));
 
-	$effect(() => {
-		const term = query.trim().toLowerCase();
-		if (!term) {
-			filteredPlayers = players;
+	function handleSearchInput() {
+		if (searchTimeout) {
+			clearTimeout(searchTimeout);
+		}
+		searchTimeout = setTimeout(() => {
+			page = 1;
+			void loadPlayers();
+		}, 300);
+	}
+
+	function goToPage(newPage: number) {
+		if (newPage < 1 || newPage > totalPages || loading) {
 			return;
 		}
-
-		filteredPlayers = players.filter((player) => {
-			return (
-				player.displayName.toLowerCase().includes(term) || player.email.toLowerCase().includes(term)
-			);
-		});
-	});
+		page = newPage;
+		void loadPlayers();
+	}
 
 	function formatDate(value: string) {
 		const date = new Date(value);
@@ -140,8 +149,13 @@
 		loading = true;
 		error = null;
 		try {
-			const response = await AdminService.getApiAdminPlayers();
-			players = response.map(normalizeSummary);
+			const response = await AdminService.getApiAdminPlayers({
+				search: query.trim() || undefined,
+				page,
+				pageSize
+			});
+			players = (response.players ?? []).map(normalizeSummary);
+			totalCount = response.totalCount ?? 0;
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Unable to load admin roster.';
 		} finally {
@@ -443,6 +457,10 @@
 			</div>
 		</section>
 
+		<section class="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-xl">
+			<PuzzleManager />
+		</section>
+
 		{#if error}
 			<div class="rounded-2xl border border-rose-300/30 bg-rose-500/10 p-4 text-sm text-rose-100">
 				{error}
@@ -453,23 +471,26 @@
 			<div class="rounded-3xl border border-white/10 bg-black/30 p-6 shadow-xl">
 				<div class="flex items-center justify-between">
 					<h2 class="text-sm font-semibold tracking-[0.2em] text-slate-200/70 uppercase">Roster</h2>
-					<span class="text-xs text-slate-200/60">{players.length} players</span>
+					<span class="text-xs text-slate-200/60" data-testid="admin-player-count"
+						>{totalCount} players</span
+					>
 				</div>
 				<div class="mt-4">
 					<input
 						class="w-full rounded-xl border border-white/10 bg-black/40 px-3 py-2 text-sm text-white outline-none focus:border-emerald-400/60"
 						placeholder="Search by name or email"
 						bind:value={query}
+						on:input={handleSearchInput}
 						data-testid="admin-search"
 					/>
 				</div>
 				<div class="mt-5 space-y-2">
 					{#if loading && players.length === 0}
 						<div class="text-sm text-slate-200/70">Loading roster...</div>
-					{:else if filteredPlayers.length === 0}
+					{:else if players.length === 0}
 						<div class="text-sm text-slate-200/70">No players match this search.</div>
 					{:else}
-						{#each filteredPlayers as player (player.id)}
+						{#each players as player (player.id)}
 							<button
 								class={`flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left text-sm transition ${
 									selectedPlayer?.id === player.id
@@ -493,6 +514,29 @@
 						{/each}
 					{/if}
 				</div>
+				{#if totalPages > 1}
+					<div class="mt-4 flex items-center justify-between border-t border-white/10 pt-4">
+						<button
+							class="rounded-xl border border-white/20 bg-white/5 px-3 py-1.5 text-xs font-semibold text-white/70 transition hover:border-white/40 hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
+							on:click={() => goToPage(page - 1)}
+							disabled={page <= 1 || loading}
+							data-testid="admin-prev-page"
+						>
+							Previous
+						</button>
+						<span class="text-xs text-slate-200/60" data-testid="admin-page-indicator">
+							Page {page} of {totalPages}
+						</span>
+						<button
+							class="rounded-xl border border-white/20 bg-white/5 px-3 py-1.5 text-xs font-semibold text-white/70 transition hover:border-white/40 hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
+							on:click={() => goToPage(page + 1)}
+							disabled={page >= totalPages || loading}
+							data-testid="admin-next-page"
+						>
+							Next
+						</button>
+					</div>
+				{/if}
 			</div>
 
 			<div class="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-xl">

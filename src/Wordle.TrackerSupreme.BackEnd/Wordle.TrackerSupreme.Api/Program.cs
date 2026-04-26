@@ -11,9 +11,11 @@ using System.Threading.RateLimiting;
 using Wordle.TrackerSupreme.Api.Auth;
 using Wordle.TrackerSupreme.Api.Middleware;
 using Wordle.TrackerSupreme.Application.Services.Admin;
+using Wordle.TrackerSupreme.Application.Services.Analyzer;
 using Wordle.TrackerSupreme.Application.Services.Game;
 using Wordle.TrackerSupreme.Application.Services;
 using Wordle.TrackerSupreme.Domain.Services;
+using Wordle.TrackerSupreme.Domain.Services.Analyzer;
 using Wordle.TrackerSupreme.Domain.Services.Game;
 using Wordle.TrackerSupreme.Infrastructure;
 using Wordle.TrackerSupreme.Infrastructure.Database;
@@ -166,10 +168,14 @@ builder.Services.AddRateLimiter(options =>
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection(JwtSettings.SectionName));
 builder.Services.Configure<GameOptions>(builder.Configuration.GetSection(GameOptions.SectionName));
 builder.Services.AddSingleton(sp => sp.GetRequiredService<IOptions<GameOptions>>().Value);
+builder.Services.Configure<AnalyzerOptions>(builder.Configuration.GetSection(AnalyzerOptions.SectionName));
+builder.Services.AddSingleton(sp => sp.GetRequiredService<IOptions<AnalyzerOptions>>().Value);
 builder.Services.AddScoped<JwtTokenService>();
 builder.Services.AddScoped<PasswordHasher<Wordle.TrackerSupreme.Domain.Models.Player>>();
 builder.Services.AddSingleton<IGameClock, GameClock>();
-builder.Services.AddSingleton<IWordSelector, WordSelector>();
+builder.Services.AddSingleton<WordSelector>();
+builder.Services.AddSingleton<IWordSelector>(sp => sp.GetRequiredService<WordSelector>());
+builder.Services.AddSingleton<IAnswerPoolProvider>(sp => sp.GetRequiredService<WordSelector>());
 builder.Services.AddSingleton<WordListValidator>();
 builder.Services.AddSingleton<IWordValidator>(sp => sp.GetRequiredService<WordListValidator>());
 builder.Services.AddSingleton<IWordListProvider>(sp => sp.GetRequiredService<WordListValidator>());
@@ -190,6 +196,7 @@ builder.Services.AddScoped<IGameplayService, GameplayService>();
 builder.Services.AddScoped<IDailyPuzzleService, DailyPuzzleService>();
 builder.Services.AddScoped<IPlayerStatisticsService, PlayerStatisticsService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddSingleton<IAnalyzerService, AnalyzerService>();
 
 var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ??
     ["http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173", "http://127.0.0.1:3000"];

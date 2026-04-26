@@ -7,13 +7,17 @@ export { CancelablePromise, CancelError } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
+export type { AdminCreatePuzzleRequest } from './models/AdminCreatePuzzleRequest';
 export type { AdminPlayerAttemptResponse } from './models/AdminPlayerAttemptResponse';
 export type { AdminPlayerDetailResponse } from './models/AdminPlayerDetailResponse';
+export type { AdminPlayersPageResponse } from './models/AdminPlayersPageResponse';
 export type { AdminPlayerSummaryResponse } from './models/AdminPlayerSummaryResponse';
+export type { AdminPuzzleResponse } from './models/AdminPuzzleResponse';
 export type { AdminResetPasswordRequest } from './models/AdminResetPasswordRequest';
 export type { AdminSetAdminStatusRequest } from './models/AdminSetAdminStatusRequest';
 export type { AdminUpdateAttemptRequest } from './models/AdminUpdateAttemptRequest';
 export type { AdminUpdatePlayerRequest } from './models/AdminUpdatePlayerRequest';
+export type { AdminUpdatePuzzleRequest } from './models/AdminUpdatePuzzleRequest';
 export type { AttemptResponse } from './models/AttemptResponse';
 export type { AuthResponse } from './models/AuthResponse';
 export type { CalendarDayResponse } from './models/CalendarDayResponse';

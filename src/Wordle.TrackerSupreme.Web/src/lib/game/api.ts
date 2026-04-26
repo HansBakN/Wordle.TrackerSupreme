@@ -55,19 +55,23 @@ async function apiFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
 	return (await response.json()) as T;
 }
 
-export function fetchGameState(): Promise<GameStateResponse> {
-	return apiFetch<GameStateResponse>('/api/game/state');
+function dateQuery(date?: string): string {
+	return date ? `?date=${date}` : '';
 }
 
-export function submitGuess(guess: string): Promise<GameStateResponse> {
-	return apiFetch<GameStateResponse>('/api/game/guess', {
+export function fetchGameState(date?: string): Promise<GameStateResponse> {
+	return apiFetch<GameStateResponse>(`/api/game/state${dateQuery(date)}`);
+}
+
+export function submitGuess(guess: string, date?: string): Promise<GameStateResponse> {
+	return apiFetch<GameStateResponse>(`/api/game/guess${dateQuery(date)}`, {
 		method: 'POST',
 		body: JSON.stringify({ guess })
 	});
 }
 
-export function enableEasyMode(): Promise<GameStateResponse> {
-	return apiFetch<GameStateResponse>('/api/game/easy-mode', {
+export function enableEasyMode(date?: string): Promise<GameStateResponse> {
+	return apiFetch<GameStateResponse>(`/api/game/easy-mode${dateQuery(date)}`, {
 		method: 'POST'
 	});
 }

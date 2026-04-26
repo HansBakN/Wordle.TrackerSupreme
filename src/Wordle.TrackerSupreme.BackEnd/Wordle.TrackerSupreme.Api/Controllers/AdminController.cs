@@ -14,14 +14,25 @@ namespace Wordle.TrackerSupreme.Api.Controllers;
 public class AdminController(IAdminService adminService) : ControllerBase
 {
     [HttpGet("players")]
-    public async Task<ActionResult<IReadOnlyList<AdminPlayerSummaryResponse>>> GetPlayers(CancellationToken cancellationToken)
+    public async Task<ActionResult<AdminPlayersPageResponse>> GetPlayers(
+        [FromQuery] string? search,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 20,
+        CancellationToken cancellationToken = default)
     {
-        var players = await adminService.GetPlayers(cancellationToken);
-        var response = players
-            .OrderBy(player => player.DisplayName)
-            .Select(MapSummary)
-            .ToList();
-        return Ok(response);
+        if (page < 1)
+        {
+            page = 1;
+        }
+
+        if (pageSize is < 1 or > 100)
+        {
+            pageSize = 20;
+        }
+
+        var (players, totalCount) = await adminService.GetPlayersPage(search, page, pageSize, cancellationToken);
+        var entries = players.Select(MapSummary).ToList();
+        return Ok(new AdminPlayersPageResponse(entries, totalCount, page, pageSize));
     }
 
     [HttpGet("players/{playerId:guid}")]
@@ -150,6 +161,89 @@ public class AdminController(IAdminService adminService) : ControllerBase
         }
     }
 
+    [HttpGet("puzzles")]
+    public async Task<ActionResult<IReadOnlyList<AdminPuzzleResponse>>> GetPuzzles(CancellationToken cancellationToken)
+    {
+        var puzzles = await adminService.GetPuzzles(cancellationToken);
+        var response = puzzles.Select(MapPuzzle).ToList();
+        return Ok(response);
+    }
+
+    [HttpGet("puzzles/{puzzleId:guid}")]
+    public async Task<ActionResult<AdminPuzzleResponse>> GetPuzzle(Guid puzzleId, CancellationToken cancellationToken)
+    {
+        var puzzle = await adminService.GetPuzzle(puzzleId, cancellationToken);
+        if (puzzle is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(MapPuzzle(puzzle));
+    }
+
+    [HttpPost("puzzles")]
+    public async Task<ActionResult<AdminPuzzleResponse>> CreatePuzzle(
+        [FromBody] AdminCreatePuzzleRequest request,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var puzzle = await adminService.CreatePuzzle(request.PuzzleDate, request.Solution, cancellationToken);
+            return CreatedAtAction(nameof(GetPuzzle), new { puzzleId = puzzle.Id }, MapPuzzle(puzzle));
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new ProblemDetails { Status = StatusCodes.Status400BadRequest, Detail = ex.Message });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Conflict(new ProblemDetails { Status = StatusCodes.Status409Conflict, Detail = ex.Message });
+        }
+    }
+
+    [HttpPut("puzzles/{puzzleId:guid}")]
+    public async Task<ActionResult<AdminPuzzleResponse>> UpdatePuzzle(
+        Guid puzzleId,
+        [FromBody] AdminUpdatePuzzleRequest request,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var puzzle = await adminService.UpdatePuzzle(puzzleId, request.PuzzleDate, request.Solution, cancellationToken);
+            return Ok(MapPuzzle(puzzle));
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new ProblemDetails { Status = StatusCodes.Status400BadRequest, Detail = ex.Message });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Conflict(new ProblemDetails { Status = StatusCodes.Status409Conflict, Detail = ex.Message });
+        }
+    }
+
+    [HttpDelete("puzzles/{puzzleId:guid}")]
+    public async Task<IActionResult> DeletePuzzle(Guid puzzleId, CancellationToken cancellationToken)
+    {
+        try
+        {
+            await adminService.DeletePuzzle(puzzleId, cancellationToken);
+            return NoContent();
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Conflict(new ProblemDetails { Status = StatusCodes.Status409Conflict, Detail = ex.Message });
+        }
+    }
+
     private static AdminPlayerSummaryResponse MapSummary(Player player)
         => new(
             player.Id,
@@ -201,4 +295,11 @@ public class AdminController(IAdminService adminService) : ControllerBase
             attempt.CompletedOn,
             guesses);
     }
+
+    private static AdminPuzzleResponse MapPuzzle(DailyPuzzle puzzle)
+        => new(
+            puzzle.Id,
+            puzzle.PuzzleDate,
+            puzzle.Solution ?? string.Empty,
+            puzzle.Attempts.Count);
 }

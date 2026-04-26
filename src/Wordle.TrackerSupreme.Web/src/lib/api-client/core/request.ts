@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { notifyUnauthorizedResponse } from '$lib/api';
 import { ApiError } from './ApiError';
 import type { ApiRequestOptions } from './ApiRequestOptions';
 import type { ApiResult } from './ApiResult';
@@ -330,10 +329,6 @@ export const request = <T>(
 					statusText: response.statusText,
 					body: responseHeader ?? responseBody
 				};
-
-				const isAuthBootstrapRequest =
-					options.url === '/api/Auth/me' || options.url === '/api/auth/me';
-				notifyUnauthorizedResponse(response.status === 401 && !isAuthBootstrapRequest);
 
 				catchErrorCodes(options, result);
 
