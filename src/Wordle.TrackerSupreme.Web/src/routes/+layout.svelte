@@ -7,7 +7,7 @@
 	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import HowToPlay from '$lib/game/HowToPlay.svelte';
-	
+
 	let { children } = $props();
 	let booting = $state(true);
 	let showHowToPlay = $state(false);
@@ -40,6 +40,14 @@
 		showHowToPlay = false;
 		localStorage.setItem(STORAGE_KEY, '1');
 	}
+
+	function openCommitLink() {
+		if (!PUBLIC_COMMIT_URL) {
+			return;
+		}
+
+		window.open(PUBLIC_COMMIT_URL, '_blank', 'noopener,noreferrer');
+	}
 </script>
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
@@ -59,18 +67,19 @@
 				</div>
 			</div>
 			<div class="flex items-center gap-4">
-				{#if $auth.user}
-					<nav
-						class="hidden items-center gap-4 text-xs font-semibold tracking-[0.2em] text-slate-200/70 uppercase md:flex"
-					>
+				<nav
+					class="hidden items-center gap-4 text-xs font-semibold tracking-[0.2em] text-slate-200/70 uppercase md:flex"
+				>
+					{#if $auth.user}
 						<a href={resolve('/')} class="transition hover:text-white">Play</a>
 						<a href={resolve('/stats')} class="transition hover:text-white">Stats</a>
 						<a href={resolve('/leaderboard')} class="transition hover:text-white">Leaderboard</a>
 						{#if $auth.user?.isAdmin}
 							<a href={resolve('/admin')} class="transition hover:text-white">Admin</a>
 						{/if}
-					</nav>
-				{/if}
+					{/if}
+					<a href={resolve('/release-notes')} class="transition hover:text-white">Release notes</a>
+				</nav>
 				<button
 					class="flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/5 text-white/70 transition hover:border-white/40 hover:bg-white/10 hover:text-white"
 					onclick={openHowToPlay}
@@ -95,6 +104,12 @@
 				</button>
 			</div>
 			<div class="flex items-center gap-3 text-sm">
+				<a
+					href={resolve('/release-notes')}
+					class="text-xs font-semibold tracking-[0.16em] text-slate-200/70 uppercase transition hover:text-white md:hidden"
+				>
+					Notes
+				</a>
 				<button
 					class={`flex h-8 w-8 items-center justify-center rounded-full border transition ${$colorMode ? 'border-blue-400/60 bg-blue-400/15 text-blue-300 hover:border-blue-400/80 hover:bg-blue-400/25' : 'border-white/20 bg-white/5 text-white/60 hover:border-white/40 hover:bg-white/10 hover:text-white'}`}
 					onclick={() => colorMode.toggle()}
@@ -162,16 +177,15 @@
 	{#if PUBLIC_COMMIT_SHA}
 		<div class="fixed bottom-2 left-2 text-[14px]" style="display: flex">
 			<div class="text-slate-200/80">{PUBLIC_BUILD_NUMBER}.</div>
-			<a
-				href={PUBLIC_COMMIT_URL}
-				target="_blank"
-				rel="noopener noreferrer"
-				class="text-slate-400/60 hover:text-slate-200 transition"
-				title={`Commit: ${PUBLIC_COMMIT_SHA}`}
+			<button
+				type="button"
+				class="text-slate-400/60 transition hover:text-slate-200"
+				title={PUBLIC_COMMIT_URL ? `Commit: ${PUBLIC_COMMIT_SHA}` : PUBLIC_COMMIT_SHA}
 				data-testid="commit-hash"
+				onclick={openCommitLink}
 			>
 				{PUBLIC_COMMIT_SHA.slice(0, 7)}
-			</a>
+			</button>
 		</div>
 	{/if}
 </div>

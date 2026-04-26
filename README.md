@@ -81,6 +81,11 @@ If you want one repeatable verification entrypoint from the repo root, use:
 Supported targets are `backend`, `frontend`, `lint`, `e2e`, and `all`.
 The repo scripts auto-detect `docker compose` first and fall back to legacy `docker-compose` when that is the only Compose CLI available.
 
+## Release branch workflow
+Feature and fix branches should merge into a dedicated release branch first, such as `release/2026-04-20` or `release/1.2.0`. Before that release branch is merged to `main`, update the frontend release-note data in `src/Wordle.TrackerSupreme.Web/src/lib/release-notes/releases.ts` so the public `/release-notes` page summarizes the player-facing changes and operational notes for the deploy.
+
+Run the normal PR verification on the release branch before promoting it to `main`. Keep detailed test logs in the pull request and keep `/release-notes` focused on concise change summaries.
+
 ## End-to-end (E2E) tests
 The E2E runner starts the backend + frontend, resets deterministic seed data, and runs Playwright headlessly.
 
