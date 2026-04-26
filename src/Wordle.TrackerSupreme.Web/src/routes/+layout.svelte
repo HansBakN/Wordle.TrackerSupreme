@@ -72,8 +72,10 @@
 				>
 					{#if $auth.user}
 						<a href={resolve('/')} class="transition hover:text-white">Play</a>
-						<a href={resolve('/replay')} class="transition hover:text-white" data-testid="nav-replay"
-							>Replay</a
+						<a
+							href={resolve('/replay')}
+							class="transition hover:text-white"
+							data-testid="nav-replay">Replay</a
 						>
 						<a href={resolve('/stats')} class="transition hover:text-white">Stats</a>
 						<a href={resolve('/leaderboard')} class="transition hover:text-white">Leaderboard</a>

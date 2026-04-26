@@ -241,6 +241,248 @@ public class AdminServiceTests
     }
 
     [Fact]
+    public async Task CreatePuzzle_adds_puzzle_with_normalized_solution()
+    {
+        var options = new GameOptions { WordLength = 5, MaxGuesses = 6 };
+        var validator = new FakeWordValidator(["CRANE"]);
+        var guessService = new GuessEvaluationService(options, validator);
+        var gameRepo = new FakeGameRepository();
+        var playerRepo = new FakeAdminPlayerRepository([]);
+        var passwordHasher = new PasswordHasher<Player>();
+        var service = new AdminService(playerRepo, gameRepo, guessService, passwordHasher, options);
+
+        var puzzle = await service.CreatePuzzle(new DateOnly(2025, 6, 1), "crane", CancellationToken.None);
+
+        puzzle.Solution.Should().Be("CRANE");
+        puzzle.PuzzleDate.Should().Be(new DateOnly(2025, 6, 1));
+        gameRepo.Puzzles.Should().ContainSingle(p => p.Id == puzzle.Id);
+    }
+
+    [Fact]
+    public async Task CreatePuzzle_rejects_wrong_length_solution()
+    {
+        var options = new GameOptions { WordLength = 5, MaxGuesses = 6 };
+        var validator = new FakeWordValidator();
+        var guessService = new GuessEvaluationService(options, validator);
+        var gameRepo = new FakeGameRepository();
+        var playerRepo = new FakeAdminPlayerRepository([]);
+        var passwordHasher = new PasswordHasher<Player>();
+        var service = new AdminService(playerRepo, gameRepo, guessService, passwordHasher, options);
+
+        var action = () => service.CreatePuzzle(new DateOnly(2025, 6, 1), "AB", CancellationToken.None);
+
+        await action.Should().ThrowAsync<ArgumentException>()
+            .WithMessage("*exactly 5 letters*");
+    }
+
+    [Fact]
+    public async Task CreatePuzzle_rejects_non_letter_solution()
+    {
+        var options = new GameOptions { WordLength = 5, MaxGuesses = 6 };
+        var validator = new FakeWordValidator();
+        var guessService = new GuessEvaluationService(options, validator);
+        var gameRepo = new FakeGameRepository();
+        var playerRepo = new FakeAdminPlayerRepository([]);
+        var passwordHasher = new PasswordHasher<Player>();
+        var service = new AdminService(playerRepo, gameRepo, guessService, passwordHasher, options);
+
+        var action = () => service.CreatePuzzle(new DateOnly(2025, 6, 1), "A B C", CancellationToken.None);
+
+        await action.Should().ThrowAsync<ArgumentException>()
+            .WithMessage("*only letters*");
+    }
+
+    [Fact]
+    public async Task CreatePuzzle_rejects_duplicate_date()
+    {
+        var options = new GameOptions { WordLength = 5, MaxGuesses = 6 };
+        var validator = new FakeWordValidator();
+        var guessService = new GuessEvaluationService(options, validator);
+        var gameRepo = new FakeGameRepository();
+        var playerRepo = new FakeAdminPlayerRepository([]);
+        var passwordHasher = new PasswordHasher<Player>();
+        var service = new AdminService(playerRepo, gameRepo, guessService, passwordHasher, options);
+
+        await gameRepo.AddPuzzle(new DailyPuzzle
+        {
+            Id = Guid.NewGuid(),
+            PuzzleDate = new DateOnly(2025, 6, 1),
+            Solution = "CRANE"
+        }, CancellationToken.None);
+
+        var action = () => service.CreatePuzzle(new DateOnly(2025, 6, 1), "PLANT", CancellationToken.None);
+
+        await action.Should().ThrowAsync<InvalidOperationException>()
+            .WithMessage("*already exists*");
+    }
+
+    [Fact]
+    public async Task UpdatePuzzle_rejects_non_letter_solution()
+    {
+        var options = new GameOptions { WordLength = 5, MaxGuesses = 6 };
+        var validator = new FakeWordValidator();
+        var guessService = new GuessEvaluationService(options, validator);
+        var gameRepo = new FakeGameRepository();
+        var playerRepo = new FakeAdminPlayerRepository([]);
+        var passwordHasher = new PasswordHasher<Player>();
+        var service = new AdminService(playerRepo, gameRepo, guessService, passwordHasher, options);
+
+        var puzzle = new DailyPuzzle
+        {
+            Id = Guid.NewGuid(),
+            PuzzleDate = DateOnly.FromDateTime(DateTime.Now).AddDays(1),
+            Solution = "CRANE"
+        };
+        await gameRepo.AddPuzzle(puzzle, CancellationToken.None);
+
+        var action = () => service.UpdatePuzzle(puzzle.Id, new DateOnly(2025, 6, 1), "12345", CancellationToken.None);
+
+        await action.Should().ThrowAsync<ArgumentException>()
+            .WithMessage("*only letters*");
+    }
+
+    [Fact]
+    public async Task UpdatePuzzle_rejects_modification_when_attempts_exist()
+    {
+        var options = new GameOptions { WordLength = 5, MaxGuesses = 6 };
+        var validator = new FakeWordValidator();
+        var guessService = new GuessEvaluationService(options, validator);
+        var gameRepo = new FakeGameRepository();
+        var playerRepo = new FakeAdminPlayerRepository([]);
+        var passwordHasher = new PasswordHasher<Player>();
+        var service = new AdminService(playerRepo, gameRepo, guessService, passwordHasher, options);
+
+        var puzzle = new DailyPuzzle
+        {
+            Id = Guid.NewGuid(),
+            PuzzleDate = new DateOnly(2025, 6, 1),
+            Solution = "CRANE",
+            Attempts = [new PlayerPuzzleAttempt
+            {
+                Id = Guid.NewGuid(),
+                PlayerId = Guid.NewGuid(),
+                DailyPuzzleId = Guid.NewGuid(),
+                Status = AttemptStatus.Solved,
+                CreatedOn = DateTime.UtcNow
+            }]
+        };
+        await gameRepo.AddPuzzle(puzzle, CancellationToken.None);
+
+        var action = () => service.UpdatePuzzle(puzzle.Id, new DateOnly(2025, 6, 2), "PLANT", CancellationToken.None);
+
+        await action.Should().ThrowAsync<InvalidOperationException>()
+            .WithMessage("*already has player attempts*");
+    }
+
+    [Fact]
+    public async Task UpdatePuzzle_rejects_modification_for_today_puzzle_without_attempts()
+    {
+        var options = new GameOptions { WordLength = 5, MaxGuesses = 6 };
+        var validator = new FakeWordValidator();
+        var guessService = new GuessEvaluationService(options, validator);
+        var gameRepo = new FakeGameRepository();
+        var playerRepo = new FakeAdminPlayerRepository([]);
+        var passwordHasher = new PasswordHasher<Player>();
+        var service = new AdminService(playerRepo, gameRepo, guessService, passwordHasher, options);
+        var today = DateOnly.FromDateTime(DateTime.Now);
+
+        var puzzle = new DailyPuzzle
+        {
+            Id = Guid.NewGuid(),
+            PuzzleDate = today,
+            Solution = "CRANE"
+        };
+        await gameRepo.AddPuzzle(puzzle, CancellationToken.None);
+
+        var action = () => service.UpdatePuzzle(puzzle.Id, today.AddDays(1), "PLANT", CancellationToken.None);
+
+        await action.Should().ThrowAsync<InvalidOperationException>()
+            .WithMessage("*live*");
+    }
+
+    [Fact]
+    public async Task DeletePuzzle_rejects_deletion_for_past_puzzle_without_attempts()
+    {
+        var options = new GameOptions { WordLength = 5, MaxGuesses = 6 };
+        var validator = new FakeWordValidator();
+        var guessService = new GuessEvaluationService(options, validator);
+        var gameRepo = new FakeGameRepository();
+        var playerRepo = new FakeAdminPlayerRepository([]);
+        var passwordHasher = new PasswordHasher<Player>();
+        var service = new AdminService(playerRepo, gameRepo, guessService, passwordHasher, options);
+
+        var puzzle = new DailyPuzzle
+        {
+            Id = Guid.NewGuid(),
+            PuzzleDate = DateOnly.FromDateTime(DateTime.Now).AddDays(-1),
+            Solution = "CRANE"
+        };
+        await gameRepo.AddPuzzle(puzzle, CancellationToken.None);
+
+        var action = () => service.DeletePuzzle(puzzle.Id, CancellationToken.None);
+
+        await action.Should().ThrowAsync<InvalidOperationException>()
+            .WithMessage("*live*");
+    }
+
+    [Fact]
+    public async Task DeletePuzzle_removes_puzzle_without_attempts()
+    {
+        var options = new GameOptions { WordLength = 5, MaxGuesses = 6 };
+        var validator = new FakeWordValidator();
+        var guessService = new GuessEvaluationService(options, validator);
+        var gameRepo = new FakeGameRepository();
+        var playerRepo = new FakeAdminPlayerRepository([]);
+        var passwordHasher = new PasswordHasher<Player>();
+        var service = new AdminService(playerRepo, gameRepo, guessService, passwordHasher, options);
+
+        var puzzle = new DailyPuzzle
+        {
+            Id = Guid.NewGuid(),
+            PuzzleDate = DateOnly.FromDateTime(DateTime.Now).AddDays(1),
+            Solution = "CRANE"
+        };
+        await gameRepo.AddPuzzle(puzzle, CancellationToken.None);
+
+        await service.DeletePuzzle(puzzle.Id, CancellationToken.None);
+
+        gameRepo.Puzzles.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task DeletePuzzle_rejects_deletion_when_attempts_exist()
+    {
+        var options = new GameOptions { WordLength = 5, MaxGuesses = 6 };
+        var validator = new FakeWordValidator();
+        var guessService = new GuessEvaluationService(options, validator);
+        var gameRepo = new FakeGameRepository();
+        var playerRepo = new FakeAdminPlayerRepository([]);
+        var passwordHasher = new PasswordHasher<Player>();
+        var service = new AdminService(playerRepo, gameRepo, guessService, passwordHasher, options);
+
+        var puzzle = new DailyPuzzle
+        {
+            Id = Guid.NewGuid(),
+            PuzzleDate = new DateOnly(2025, 6, 1),
+            Solution = "CRANE",
+            Attempts = [new PlayerPuzzleAttempt
+            {
+                Id = Guid.NewGuid(),
+                PlayerId = Guid.NewGuid(),
+                DailyPuzzleId = Guid.NewGuid(),
+                Status = AttemptStatus.Solved,
+                CreatedOn = DateTime.UtcNow
+            }]
+        };
+        await gameRepo.AddPuzzle(puzzle, CancellationToken.None);
+
+        var action = () => service.DeletePuzzle(puzzle.Id, CancellationToken.None);
+
+        await action.Should().ThrowAsync<InvalidOperationException>()
+            .WithMessage("*already has player attempts*");
+    }
+
+    [Fact]
     public async Task GetPlayersPage_returns_paged_results_matching_search()
     {
         var options = new GameOptions { WordLength = 5, MaxGuesses = 6 };

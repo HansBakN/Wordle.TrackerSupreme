@@ -13,9 +13,23 @@ public class GameRepository(WordleTrackerSupremeDbContext dbContext) : IGameRepo
             p => p.PuzzleDate == puzzleDate && p.Stream == stream,
             cancellationToken);
 
+    public Task<DailyPuzzle?> GetPuzzleById(Guid puzzleId, CancellationToken cancellationToken)
+        => dbContext.DailyPuzzles
+            .Include(p => p.Attempts)
+            .FirstOrDefaultAsync(p => p.Id == puzzleId, cancellationToken);
+
+    public Task<List<DailyPuzzle>> GetPuzzles(CancellationToken cancellationToken)
+        => dbContext.DailyPuzzles.OrderByDescending(p => p.PuzzleDate).ToListAsync(cancellationToken);
+
     public Task AddPuzzle(DailyPuzzle puzzle, CancellationToken cancellationToken)
     {
         dbContext.DailyPuzzles.Add(puzzle);
+        return Task.CompletedTask;
+    }
+
+    public Task RemovePuzzle(DailyPuzzle puzzle, CancellationToken cancellationToken)
+    {
+        dbContext.DailyPuzzles.Remove(puzzle);
         return Task.CompletedTask;
     }
 

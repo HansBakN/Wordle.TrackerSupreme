@@ -4,6 +4,7 @@
 	import { auth } from '$lib/auth/store';
 	import { ApiError } from '$lib/api-client';
 	import { AdminService } from '$lib/api-client/services/AdminService';
+	import PuzzleManager from '$lib/admin/PuzzleManager.svelte';
 	import type { AdminPlayerAttemptResponse as ApiAdminPlayerAttemptResponse } from '$lib/api-client/models/AdminPlayerAttemptResponse';
 	import type { AdminPlayerDetailResponse as ApiAdminPlayerDetailResponse } from '$lib/api-client/models/AdminPlayerDetailResponse';
 	import type { AdminPlayerSummaryResponse as ApiAdminPlayerSummaryResponse } from '$lib/api-client/models/AdminPlayerSummaryResponse';
@@ -454,6 +455,10 @@
 					{loading ? 'Refreshing...' : 'Refresh roster'}
 				</button>
 			</div>
+		</section>
+
+		<section class="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-xl">
+			<PuzzleManager />
 		</section>
 
 		{#if error}

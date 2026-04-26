@@ -165,6 +165,84 @@ public class AdminService(
         await _gameRepository.SaveChanges(cancellationToken);
     }
 
+    public async Task<IReadOnlyList<DailyPuzzle>> GetPuzzles(CancellationToken cancellationToken)
+        => await _gameRepository.GetPuzzles(cancellationToken);
+
+    public Task<DailyPuzzle?> GetPuzzle(Guid puzzleId, CancellationToken cancellationToken)
+        => _gameRepository.GetPuzzleById(puzzleId, cancellationToken);
+
+    public async Task<DailyPuzzle> CreatePuzzle(DateOnly puzzleDate, string solution, CancellationToken cancellationToken)
+    {
+        var normalized = NormalizePuzzleSolution(solution);
+
+        var existing = await _gameRepository.GetPuzzleByDate(puzzleDate, PuzzleStream.NewYorkTimes, cancellationToken);
+        if (existing is not null)
+        {
+            throw new InvalidOperationException($"A puzzle already exists for {puzzleDate:yyyy-MM-dd}.");
+        }
+
+        var puzzle = new DailyPuzzle
+        {
+            Id = Guid.NewGuid(),
+            PuzzleDate = puzzleDate,
+            Solution = normalized
+        };
+
+        await _gameRepository.AddPuzzle(puzzle, cancellationToken);
+        await _gameRepository.SaveChanges(cancellationToken);
+        return puzzle;
+    }
+
+    public async Task<DailyPuzzle> UpdatePuzzle(Guid puzzleId, DateOnly puzzleDate, string solution, CancellationToken cancellationToken)
+    {
+        var puzzle = await _gameRepository.GetPuzzleById(puzzleId, cancellationToken);
+        if (puzzle is null)
+        {
+            throw new KeyNotFoundException("Puzzle not found.");
+        }
+
+        if (puzzle.Attempts.Count > 0)
+        {
+            throw new InvalidOperationException("Cannot modify a puzzle that already has player attempts.");
+        }
+
+        var normalized = NormalizePuzzleSolution(solution);
+        EnsurePuzzleIsStillScheduled(puzzle, "modify");
+
+        if (puzzle.PuzzleDate != puzzleDate)
+        {
+            var existing = await _gameRepository.GetPuzzleByDate(puzzleDate, puzzle.Stream, cancellationToken);
+            if (existing is not null)
+            {
+                throw new InvalidOperationException($"A puzzle already exists for {puzzleDate:yyyy-MM-dd}.");
+            }
+        }
+
+        puzzle.PuzzleDate = puzzleDate;
+        puzzle.Solution = normalized;
+        await _gameRepository.SaveChanges(cancellationToken);
+        return puzzle;
+    }
+
+    public async Task DeletePuzzle(Guid puzzleId, CancellationToken cancellationToken)
+    {
+        var puzzle = await _gameRepository.GetPuzzleById(puzzleId, cancellationToken);
+        if (puzzle is null)
+        {
+            throw new KeyNotFoundException("Puzzle not found.");
+        }
+
+        if (puzzle.Attempts.Count > 0)
+        {
+            throw new InvalidOperationException("Cannot delete a puzzle that already has player attempts.");
+        }
+
+        EnsurePuzzleIsStillScheduled(puzzle, "delete");
+
+        await _gameRepository.RemovePuzzle(puzzle, cancellationToken);
+        await _gameRepository.SaveChanges(cancellationToken);
+    }
+
     private void UpdateAttemptStatus(PlayerPuzzleAttempt attempt, IReadOnlyList<string> guesses, string solution)
     {
         if (guesses.Count == 0)
@@ -191,6 +269,31 @@ public class AdminService(
         {
             attempt.Status = AttemptStatus.InProgress;
             attempt.CompletedOn = null;
+        }
+    }
+
+    private string NormalizePuzzleSolution(string solution)
+    {
+        var normalized = solution.Trim().ToUpperInvariant();
+        if (normalized.Length != _options.WordLength)
+        {
+            throw new ArgumentException($"Solution must be exactly {_options.WordLength} letters.", nameof(solution));
+        }
+
+        if (normalized.Any(character => character < 'A' || character > 'Z'))
+        {
+            throw new ArgumentException("Solution must contain only letters.", nameof(solution));
+        }
+
+        return normalized;
+    }
+
+    private static void EnsurePuzzleIsStillScheduled(DailyPuzzle puzzle, string action)
+    {
+        var today = DateOnly.FromDateTime(DateTimeOffset.Now.Date);
+        if (puzzle.PuzzleDate <= today)
+        {
+            throw new InvalidOperationException($"Cannot {action} a puzzle that is already live.");
         }
     }
 }
