@@ -31,6 +31,7 @@ export type { PlayerStatsFilterRequest } from './models/PlayerStatsFilterRequest
 export type { PlayerStatsResponse } from './models/PlayerStatsResponse';
 export type { PracticeStateResponse } from './models/PracticeStateResponse';
 export type { ProblemDetails } from './models/ProblemDetails';
+export type { PuzzleHistoryEntryResponse } from './models/PuzzleHistoryEntryResponse';
 export type { SignInRequest } from './models/SignInRequest';
 export type { SignUpRequest } from './models/SignUpRequest';
 export type { SolutionEntryResponse } from './models/SolutionEntryResponse';
