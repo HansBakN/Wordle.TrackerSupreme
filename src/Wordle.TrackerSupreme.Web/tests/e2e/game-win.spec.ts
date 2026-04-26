@@ -1,5 +1,74 @@
 import { expect, test } from '@playwright/test';
-import { getTodaySolution, signUp } from './helpers';
+import { signUp } from './helpers';
+
+/**
+ * Compute today's puzzle solution using the same deterministic formula as the backend
+ * WordSelector. The word list and anchor date must stay in sync with
+ * Wordle.TrackerSupreme.Application.Services.Game.WordSelector.
+ */
+function getTodaySolution(): string {
+	const words = [
+		'SLATE',
+		'CRANE',
+		'BRAVE',
+		'TRAIN',
+		'SHINE',
+		'GLASS',
+		'FROND',
+		'QUIET',
+		'PLANT',
+		'ROAST',
+		'TRAIL',
+		'SNAKE',
+		'CLOUD',
+		'BRINK',
+		'DRIVE',
+		'STEAM',
+		'WATER',
+		'GRAPE',
+		'PANEL',
+		'CROWN',
+		'STARE',
+		'GHOST',
+		'PLUSH',
+		'MONEY',
+		'LIGHT',
+		'RANGE',
+		'BRICK',
+		'FLAME',
+		'WOUND',
+		'SCORE',
+		'CHIME',
+		'PRIDE',
+		'STONE',
+		'HOUSE',
+		'PIVOT',
+		'CHALK',
+		'FROST',
+		'BLINK',
+		'SHARD',
+		'TOWEL',
+		'NORTH',
+		'SOUTH',
+		'EAGER',
+		'QUEST',
+		'FRAME',
+		'GRIND',
+		'WRIST',
+		'TRICK',
+		'VOICE',
+		'YEARN'
+	];
+	// Use the local-time constructor so anchor and today are both in local
+	// midnight, matching the backend WordSelector which works in server-local time.
+	const anchor = new Date(2025, 0, 1); // 1 Jan 2025, local midnight
+	const now = new Date();
+	const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // local midnight
+	const msPerDay = 24 * 60 * 60 * 1000;
+	const offset = Math.round((today.getTime() - anchor.getTime()) / msPerDay);
+	const index = ((offset % words.length) + words.length) % words.length;
+	return words[index];
+}
 
 test('player wins the daily puzzle and sees victory stats', async ({ page }) => {
 	const nonce = Date.now();
@@ -16,6 +85,8 @@ test('player wins the daily puzzle and sees victory stats', async ({ page }) => 
 	await page.click('body');
 	await page.keyboard.type(solution);
 	await page.keyboard.press('Enter');
+
+	await expect(page.getByTestId('confetti')).toBeVisible({ timeout: 10_000 });
 
 	// Wait for the win-stats panel to appear (tile flip + confetti delay ~1.5 s)
 	const winStats = page.getByTestId('win-stats');
@@ -46,6 +117,8 @@ test('player wins the daily puzzle in easy mode and sees victory stats', async (
 	await page.click('body');
 	await page.keyboard.type(solution);
 	await page.keyboard.press('Enter');
+
+	await expect(page.getByTestId('confetti')).toBeVisible({ timeout: 10_000 });
 
 	const winStats = page.getByTestId('win-stats');
 	await expect(winStats).toBeVisible({ timeout: 10_000 });

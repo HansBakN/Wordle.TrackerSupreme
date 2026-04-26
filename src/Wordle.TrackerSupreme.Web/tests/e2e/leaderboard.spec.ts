@@ -1,5 +1,67 @@
 import { expect, test } from '@playwright/test';
-import { getTodaySolution, signUp } from './helpers';
+import { signUp } from './helpers';
+
+function getTodaySolution(): string {
+	const words = [
+		'SLATE',
+		'CRANE',
+		'BRAVE',
+		'TRAIN',
+		'SHINE',
+		'GLASS',
+		'FROND',
+		'QUIET',
+		'PLANT',
+		'ROAST',
+		'TRAIL',
+		'SNAKE',
+		'CLOUD',
+		'BRINK',
+		'DRIVE',
+		'STEAM',
+		'WATER',
+		'GRAPE',
+		'PANEL',
+		'CROWN',
+		'STARE',
+		'GHOST',
+		'PLUSH',
+		'MONEY',
+		'LIGHT',
+		'RANGE',
+		'BRICK',
+		'FLAME',
+		'WOUND',
+		'SCORE',
+		'CHIME',
+		'PRIDE',
+		'STONE',
+		'HOUSE',
+		'PIVOT',
+		'CHALK',
+		'FROST',
+		'BLINK',
+		'SHARD',
+		'TOWEL',
+		'NORTH',
+		'SOUTH',
+		'EAGER',
+		'QUEST',
+		'FRAME',
+		'GRIND',
+		'WRIST',
+		'TRICK',
+		'VOICE',
+		'YEARN'
+	];
+	const anchor = new Date(2025, 0, 1);
+	const now = new Date();
+	const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+	const msPerDay = 24 * 60 * 60 * 1000;
+	const offset = Math.round((today.getTime() - anchor.getTime()) / msPerDay);
+	const index = ((offset % words.length) + words.length) % words.length;
+	return words[index];
+}
 
 test('leaderboard renders seeded entries for signed-in users', async ({ page }) => {
 	const nonce = Date.now();
@@ -15,6 +77,13 @@ test('leaderboard renders seeded entries for signed-in users', async ({ page }) 
 	await expect(page.getByTestId('leaderboard-table')).toBeVisible();
 	await expect(page.getByTestId('leaderboard-row').first()).toBeVisible();
 	await expect(page.getByTestId('leaderboard-min-games-toggle')).not.toBeChecked();
+
+	await page.getByRole('tab', { name: "Today's puzzle" }).click();
+
+	await expect(page.getByRole('heading', { name: "Today's puzzle" })).toBeVisible();
+	await expect(page.getByTestId('leaderboard-table')).toBeVisible();
+	await expect(page.getByText('Solved').first()).toBeVisible();
+	await expect(page.getByText('In progress').first()).toBeVisible();
 });
 
 test('leaderboard can opt in to players with fewer than ten games', async ({ page }) => {
