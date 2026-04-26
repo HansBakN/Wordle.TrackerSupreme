@@ -529,6 +529,17 @@
 		"/api/game/state": {
 			"get": {
 				"tags": ["Game"],
+				"parameters": [
+					{
+						"name": "date",
+						"in": "query",
+						"schema": {
+							"type": "string",
+							"format": "date",
+							"nullable": true
+						}
+					}
+				],
 				"responses": {
 					"200": {
 						"description": "OK",
@@ -566,6 +577,17 @@
 		"/api/game/guess": {
 			"post": {
 				"tags": ["Game"],
+				"parameters": [
+					{
+						"name": "date",
+						"in": "query",
+						"schema": {
+							"type": "string",
+							"format": "date",
+							"nullable": true
+						}
+					}
+				],
 				"requestBody": {
 					"content": {
 						"application/json": {
@@ -642,6 +664,17 @@
 		"/api/game/easy-mode": {
 			"post": {
 				"tags": ["Game"],
+				"parameters": [
+					{
+						"name": "date",
+						"in": "query",
+						"schema": {
+							"type": "string",
+							"format": "date",
+							"nullable": true
+						}
+					}
+				],
 				"responses": {
 					"200": {
 						"description": "OK",
@@ -1136,6 +1169,9 @@
 					"solution": {
 						"type": "string",
 						"nullable": true
+					},
+					"isReplay": {
+						"type": "boolean"
 					}
 				},
 				"additionalProperties": false

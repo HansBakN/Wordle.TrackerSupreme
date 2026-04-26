@@ -18,7 +18,7 @@ public class GameController(
     ILogger<GameController> logger) : ControllerBase
 {
     [HttpGet("state")]
-    public async Task<ActionResult<GameStateResponse>> GetState(CancellationToken cancellationToken)
+    public async Task<ActionResult<GameStateResponse>> GetState([FromQuery] DateOnly? date = null, CancellationToken cancellationToken = default)
     {
         var playerId = GetPlayerId();
         if (playerId is null)
@@ -28,17 +28,25 @@ public class GameController(
 
         try
         {
-            var state = await gameplayService.GetState(playerId.Value, cancellationToken);
+            var state = await gameplayService.GetState(playerId.Value, date, cancellationToken);
             return Ok(MapState(state));
         }
         catch (DailyPuzzleUnavailableException ex)
         {
             return PuzzleUnavailable(ex.Message);
         }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new ProblemDetails { Status = StatusCodes.Status404NotFound, Detail = ex.Message });
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new ProblemDetails { Status = StatusCodes.Status400BadRequest, Detail = ex.Message });
+        }
     }
 
     [HttpPost("guess")]
-    public async Task<ActionResult<GameStateResponse>> SubmitGuess([FromBody] SubmitGuessRequest request, CancellationToken cancellationToken)
+    public async Task<ActionResult<GameStateResponse>> SubmitGuess([FromBody] SubmitGuessRequest request, [FromQuery] DateOnly? date = null, CancellationToken cancellationToken = default)
     {
         var playerId = GetPlayerId();
         if (playerId is null)
@@ -48,13 +56,17 @@ public class GameController(
 
         try
         {
-            var state = await gameplayService.SubmitGuess(playerId.Value, request.Guess, cancellationToken);
+            var state = await gameplayService.SubmitGuess(playerId.Value, request.Guess, date, cancellationToken);
             logger.LogInformation("Guess submitted. PlayerId={PlayerId} PuzzleDate={PuzzleDate}", playerId, state.Puzzle.PuzzleDate);
             return Ok(MapState(state));
         }
         catch (DailyPuzzleUnavailableException ex)
         {
             return PuzzleUnavailable(ex.Message);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new ProblemDetails { Status = StatusCodes.Status404NotFound, Detail = ex.Message });
         }
         catch (ArgumentException ex)
         {
@@ -71,7 +83,7 @@ public class GameController(
     }
 
     [HttpPost("easy-mode")]
-    public async Task<ActionResult<GameStateResponse>> EnableEasyMode(CancellationToken cancellationToken)
+    public async Task<ActionResult<GameStateResponse>> EnableEasyMode([FromQuery] DateOnly? date = null, CancellationToken cancellationToken = default)
     {
         var playerId = GetPlayerId();
         if (playerId is null)
@@ -81,13 +93,21 @@ public class GameController(
 
         try
         {
-            var state = await gameplayService.EnableEasyMode(playerId.Value, cancellationToken);
+            var state = await gameplayService.EnableEasyMode(playerId.Value, date, cancellationToken);
             logger.LogInformation("Easy mode enabled. PlayerId={PlayerId}", playerId);
             return Ok(MapState(state));
         }
         catch (DailyPuzzleUnavailableException ex)
         {
             return PuzzleUnavailable(ex.Message);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new ProblemDetails { Status = StatusCodes.Status404NotFound, Detail = ex.Message });
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new ProblemDetails { Status = StatusCodes.Status400BadRequest, Detail = ex.Message });
         }
         catch (DuplicatePuzzleAttemptException ex)
         {
@@ -177,7 +197,8 @@ public class GameController(
             isHardMode,
             canGuess,
             attemptResponse,
-            solution);
+            solution,
+            state.IsReplay);
     }
 
     private SolutionsResponse MapSolutions(SolutionsSnapshot snapshot)
