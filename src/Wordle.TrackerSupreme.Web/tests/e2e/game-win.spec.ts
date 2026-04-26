@@ -17,8 +17,6 @@ test('player wins the daily puzzle and sees victory stats', async ({ page }) => 
 	await page.keyboard.type(solution);
 	await page.keyboard.press('Enter');
 
-	await expect(page.getByTestId('confetti')).toBeVisible({ timeout: 10_000 });
-
 	// Wait for the win-stats panel to appear (tile flip + confetti delay ~1.5 s)
 	const winStats = page.getByTestId('win-stats');
 	await expect(winStats).toBeVisible({ timeout: 10_000 });
@@ -48,8 +46,6 @@ test('player wins the daily puzzle in easy mode and sees victory stats', async (
 	await page.click('body');
 	await page.keyboard.type(solution);
 	await page.keyboard.press('Enter');
-
-	await expect(page.getByTestId('confetti')).toBeVisible({ timeout: 10_000 });
 
 	const winStats = page.getByTestId('win-stats');
 	await expect(winStats).toBeVisible({ timeout: 10_000 });

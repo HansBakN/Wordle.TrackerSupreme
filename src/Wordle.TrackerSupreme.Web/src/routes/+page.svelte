@@ -10,11 +10,6 @@
 		submitGuess
 	} from '$lib/game/api';
 	import { getRevealDurationMs, shouldTriggerSolveCelebration } from '$lib/game/celebration';
-	import {
-		buildConfettiPieces,
-		defaultConfettiPieceCount,
-		type ConfettiPiece
-	} from '$lib/game/confetti';
 	import type { GameStateResponse, LetterResult, PlayerStatsResponse } from '$lib/game/types';
 	import { onDestroy, onMount, tick } from 'svelte';
 
@@ -41,6 +36,17 @@
 	let countdown = '';
 	const keyboardRows = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'];
 	const confettiDurationMs = 1200;
+
+	type ConfettiPiece = {
+		id: number;
+		dx: number;
+		dy: number;
+		rotation: number;
+		hue: number;
+		delay: number;
+		duration: number;
+		size: number;
+	};
 
 	onMount(() => {
 		const unsubscribe = auth.subscribe(async (current) => {
@@ -366,12 +372,31 @@
 		statsError = null;
 	}
 
+	function buildConfettiPieces(count: number): ConfettiPiece[] {
+		const pieces: ConfettiPiece[] = [];
+		for (let i = 0; i < count; i += 1) {
+			const dx = Math.round((Math.random() - 0.5) * 320);
+			const dy = Math.round((Math.random() - 0.2) * 260);
+			pieces.push({
+				id: i,
+				dx,
+				dy,
+				rotation: Math.round(Math.random() * 360),
+				hue: Math.round(Math.random() * 360),
+				delay: Math.round(Math.random() * 150),
+				duration: 800 + Math.round(Math.random() * 500),
+				size: 6 + Math.round(Math.random() * 6)
+			});
+		}
+		return pieces;
+	}
+
 	async function triggerWinCelebration() {
 		if (!state) {
 			return;
 		}
 		resetCelebration();
-		confettiPieces = buildConfettiPieces(defaultConfettiPieceCount);
+		confettiPieces = buildConfettiPieces(36);
 		const revealDelayMs = getRevealDurationMs(state.wordLength ?? 5);
 		const statsPromise = fetchMyStats().catch((err) => {
 			statsError = err instanceof Error ? err.message : 'Unable to load stats.';

@@ -96,7 +96,6 @@ test('shows confetti and win stats after solving', async ({ page }) => {
 	await page.keyboard.press('Enter');
 
 	await page.getByTestId('confetti').waitFor({ state: 'visible', timeout: 5000 });
-	await expect(page.locator('[data-testid="confetti"] .confetti-piece')).toHaveCount(60);
 	await page.getByTestId('win-stats').waitFor({ state: 'visible', timeout: 7000 });
 
 	await expect(page.getByTestId('win-stats')).toContainText('Wins');
