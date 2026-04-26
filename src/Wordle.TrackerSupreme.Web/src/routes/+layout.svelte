@@ -180,38 +180,19 @@
 		{/if}
 	</main>
 
-	{#if PUBLIC_COMMIT_SHA}
-		<div class="fixed bottom-2 left-2 text-[14px]" style="display: flex">
-			<div class="text-slate-200/80">{PUBLIC_BUILD_NUMBER}.</div>
-<<<<<<< HEAD
+		{#if PUBLIC_COMMIT_SHA}
+			<div class="fixed bottom-2 left-2 text-[14px]" style="display: flex">
+				<div class="text-slate-200/80">{PUBLIC_BUILD_NUMBER}.</div>
 				<button
 					type="button"
 					class="text-slate-400/60 transition hover:text-slate-200"
-					title={`Commit: ${PUBLIC_COMMIT_SHA}`}
+					title={PUBLIC_COMMIT_URL ? `Commit: ${PUBLIC_COMMIT_SHA}` : PUBLIC_COMMIT_SHA}
 					data-testid="commit-hash"
-					onclick={() => window.open(PUBLIC_COMMIT_URL, '_blank', 'noopener,noreferrer')}
+					onclick={openCommitLink}
 				>
-||||||| d64a65f
-			<a
-				href={PUBLIC_COMMIT_URL}
-				target="_blank"
-				rel="noopener noreferrer"
-				class="text-slate-400/60 hover:text-slate-200 transition"
-				title={`Commit: ${PUBLIC_COMMIT_SHA}`}
-				data-testid="commit-hash"
-			>
-=======
-			<button
-				type="button"
-				class="text-slate-400/60 transition hover:text-slate-200"
-				title={PUBLIC_COMMIT_URL ? `Commit: ${PUBLIC_COMMIT_SHA}` : PUBLIC_COMMIT_SHA}
-				data-testid="commit-hash"
-				onclick={openCommitLink}
-			>
->>>>>>> origin/release/1.1
-				{PUBLIC_COMMIT_SHA.slice(0, 7)}
-			</button>
-		</div>
+					{PUBLIC_COMMIT_SHA.slice(0, 7)}
+				</button>
+			</div>
 	{/if}
 </div>
 
