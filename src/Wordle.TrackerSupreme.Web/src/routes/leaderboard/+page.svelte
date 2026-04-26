@@ -271,13 +271,13 @@
 			<p class="mt-2 max-w-2xl text-sm text-slate-200/80">{getTabContent(activeTab).description}</p>
 			{#if activeTab === 'all-time'}
 				<label class="mt-5 inline-flex items-center gap-3 text-sm text-slate-200/80">
-					<input
-						type="checkbox"
-						bind:checked={includeLowVolumePlayers}
-						on:change={handleMinimumGamesToggle}
-						class="h-4 w-4 rounded border-white/20 bg-white/10 text-emerald-400 focus:ring-emerald-300"
-						data-testid="leaderboard-min-games-toggle"
-					/>
+						<input
+							type="checkbox"
+							bind:checked={includeLowVolumePlayers}
+							onchange={handleMinimumGamesToggle}
+							class="h-4 w-4 rounded border-white/20 bg-white/10 text-emerald-400 focus:ring-emerald-300"
+							data-testid="leaderboard-min-games-toggle"
+						/>
 					<span>Include players with fewer than {defaultLeaderboardMinimumGames} games</span>
 				</label>
 			{/if}
