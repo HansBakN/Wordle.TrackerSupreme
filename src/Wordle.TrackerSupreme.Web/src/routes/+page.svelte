@@ -50,6 +50,7 @@
 	let shakeTimer: ReturnType<typeof setTimeout> | null = null;
 	let countdownInterval: ReturnType<typeof setInterval> | null = null;
 	let countdown = '';
+	let countdownReloaded = false;
 	let announcement: string | null = null;
 	let announcementIsError = false;
 	const keyboardRows = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'];
@@ -353,9 +354,14 @@
 		if (countdownInterval) {
 			return;
 		}
+		countdownReloaded = false;
 		countdown = computeCountdown();
 		countdownInterval = setInterval(() => {
 			countdown = computeCountdown();
+			if (countdown === '00:00:00' && !countdownReloaded) {
+				countdownReloaded = true;
+				void loadState();
+			}
 		}, 1000);
 	}
 
@@ -364,6 +370,7 @@
 			clearInterval(countdownInterval);
 			countdownInterval = null;
 		}
+		countdownReloaded = false;
 	}
 
 	function resetCelebration() {
