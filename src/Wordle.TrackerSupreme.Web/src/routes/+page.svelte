@@ -266,7 +266,7 @@
 
 	function tileClass(result: LetterResult | null, useHighContrast: boolean) {
 		const base =
-			'flex h-14 w-14 items-center justify-center rounded-xl border text-lg font-semibold transition';
+			'flex h-14 w-full items-center justify-center rounded-xl border text-lg font-semibold transition';
 		if (result === 'Correct') {
 			return useHighContrast
 				? `${base} border-orange-500 bg-orange-500 text-white shadow-lg`
@@ -312,7 +312,7 @@
 		useHighContrast: boolean
 	) {
 		const base =
-			'flex h-11 items-center justify-center rounded-xl border px-3 text-sm font-semibold uppercase transition';
+			'flex h-10 min-w-0 flex-1 items-center justify-center rounded-xl border px-1.5 text-sm font-semibold uppercase transition sm:h-11 sm:flex-none sm:px-3';
 		const stateKey = keyState(letter, guesses);
 		if (stateKey === 'Correct') {
 			return useHighContrast
@@ -430,7 +430,7 @@
 {:else if $auth.user}
 	<div class="mx-auto grid max-w-6xl gap-6">
 		<section
-			class="relative rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-8 shadow-2xl"
+			class="relative rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-4 shadow-2xl sm:p-8"
 			data-high-contrast={highContrast}
 		>
 			{#if showConfetti}
@@ -482,12 +482,14 @@
 				</div>
 			{:else if state}
 				<div class="mt-6">
-					<div class="space-y-4 rounded-2xl border border-white/10 bg-black/20 p-6 shadow-inner">
+					<div
+						class="space-y-4 rounded-2xl border border-white/10 bg-black/20 p-4 pb-36 shadow-inner sm:p-6"
+					>
 						<div class="grid grid-rows-6 gap-1.5" role="grid" aria-label="Wordle board">
 							{#each Array(state.maxGuesses).keys() as rowIndex (rowIndex)}
 								<div
 									class={`grid justify-center gap-1.5${shakingRow === rowIndex ? ' animate-shake' : ''}`}
-									style={`grid-template-columns: repeat(${state.wordLength}, 3.5rem);`}
+									style={`grid-template-columns: repeat(${state.wordLength}, min(3.5rem, calc((min(100vw, 640px) - 8rem) / ${state.wordLength})));`}
 									data-testid={`board-row-${rowIndex}`}
 									role="row"
 									aria-label={`Guess row ${rowIndex + 1}`}
@@ -541,13 +543,18 @@
 							</div>
 						{/if}
 
-						<div class="space-y-3 pt-3" role="group" aria-label="On-screen keyboard">
+						<div
+							class="fixed right-0 bottom-0 left-0 z-30 space-y-2 border-t border-white/10 bg-slate-950/95 px-3 pt-3 pb-[calc(env(safe-area-inset-bottom)+0.75rem)] shadow-2xl backdrop-blur sm:static sm:space-y-3 sm:border-0 sm:bg-transparent sm:px-0 sm:pt-3 sm:pb-0 sm:shadow-none sm:backdrop-blur-none"
+							role="group"
+							aria-label="On-screen keyboard"
+						>
 							{#each keyboardRows as row, rowIndex (rowIndex)}
-								<div class="flex items-center justify-center gap-2">
+								<div class="flex w-full items-center justify-center gap-1 sm:gap-2">
 									{#if rowIndex === 2}
 										<button
-											class="flex h-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 text-xs font-semibold tracking-[0.15em] text-white/80 uppercase transition hover:border-white/30"
+											class="flex h-11 min-w-0 flex-[1.5] items-center justify-center rounded-xl border border-white/10 bg-white/5 px-2 text-xs font-semibold tracking-[0.08em] text-white/80 uppercase transition hover:border-white/30 sm:h-12 sm:flex-none sm:px-4 sm:tracking-[0.15em]"
 											onclick={removeLetter}
+											onpointerdown={(e) => e.preventDefault()}
 											disabled={guessInputLocked}
 											data-testid="remove-letter"
 											aria-label="Remove letter"
@@ -559,6 +566,7 @@
 										<button
 											class={keyClass(letter, state?.attempt?.guesses, highContrast)}
 											onclick={() => pushLetter(letter)}
+											onpointerdown={(e) => e.preventDefault()}
 											disabled={guessInputLocked}
 											data-testid={`keyboard-key-${letter}`}
 											data-state={(
@@ -570,8 +578,9 @@
 									{/each}
 									{#if rowIndex === 2}
 										<button
-											class="flex h-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 text-xs font-semibold tracking-[0.15em] text-white/80 uppercase transition hover:border-white/30"
+											class="flex h-11 min-w-0 flex-[1.5] items-center justify-center rounded-xl border border-white/10 bg-white/5 px-2 text-xs font-semibold tracking-[0.08em] text-white/80 uppercase transition hover:border-white/30 sm:h-12 sm:flex-none sm:px-4 sm:tracking-[0.15em]"
 											onclick={submitFromKeyboard}
+											onpointerdown={(e) => e.preventDefault()}
 											disabled={guessInputLocked}
 											data-testid="submit-guess"
 											aria-label="Submit guess"
