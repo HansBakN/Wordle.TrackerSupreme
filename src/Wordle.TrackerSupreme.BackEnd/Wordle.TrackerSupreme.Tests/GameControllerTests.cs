@@ -58,7 +58,7 @@ public class GameControllerTests
         var repo = new FakeGameRepository();
         var controller = CreateController(repo, clock);
 
-        var result = await controller.GetState(CancellationToken.None);
+        var result = await controller.GetState(null, CancellationToken.None);
 
         result.Result.Should().BeOfType<OkObjectResult>();
         var state = (result.Result as OkObjectResult)!.Value as Api.Models.Game.GameStateResponse;
@@ -76,7 +76,7 @@ public class GameControllerTests
         var failingProvider = new FakeOfficialWordProvider((_, _) => throw new InvalidOperationException("boom"));
         var controller = CreateController(repo, clock, officialWordProvider: failingProvider);
 
-        var result = await controller.GetState(CancellationToken.None);
+        var result = await controller.GetState(null, CancellationToken.None);
 
         var objectResult = result.Result.Should().BeOfType<ObjectResult>().Which;
         objectResult.StatusCode.Should().Be(StatusCodes.Status503ServiceUnavailable);
@@ -91,8 +91,8 @@ public class GameControllerTests
         var repo = new FakeGameRepository();
         var controller = CreateController(repo, clock, "PLANT");
 
-        await controller.SubmitGuess(new Api.Models.Game.SubmitGuessRequest { Guess = "PLANT" }, CancellationToken.None);
-        var second = await controller.SubmitGuess(new Api.Models.Game.SubmitGuessRequest { Guess = "PLANT" }, CancellationToken.None);
+        await controller.SubmitGuess(new Api.Models.Game.SubmitGuessRequest { Guess = "PLANT" }, null, CancellationToken.None);
+        var second = await controller.SubmitGuess(new Api.Models.Game.SubmitGuessRequest { Guess = "PLANT" }, null, CancellationToken.None);
 
         second.Result.Should().BeOfType<ConflictObjectResult>();
     }
@@ -107,6 +107,7 @@ public class GameControllerTests
 
         var result = await controller.SubmitGuess(
             new Api.Models.Game.SubmitGuessRequest { Guess = "ZZZZZ" },
+            null,
             CancellationToken.None);
 
         result.Result.Should().BeOfType<BadRequestObjectResult>();
@@ -124,6 +125,7 @@ public class GameControllerTests
 
         var result = await controller.SubmitGuess(
             new Api.Models.Game.SubmitGuessRequest { Guess = "CRANE" },
+            null,
             CancellationToken.None);
 
         var conflict = result.Result.Should().BeOfType<ConflictObjectResult>().Which;
@@ -138,12 +140,103 @@ public class GameControllerTests
         var repo = new FakeGameRepository();
         var controller = CreateController(repo, clock, "CRANE");
 
-        var result = await controller.EnableEasyMode(CancellationToken.None);
+        var result = await controller.EnableEasyMode(null, CancellationToken.None);
 
         result.Result.Should().BeOfType<OkObjectResult>();
         var state = (result.Result as OkObjectResult)!.Value as Api.Models.Game.GameStateResponse;
         state.Should().NotBeNull();
         state!.IsHardMode.Should().BeFalse();
+    }
+
+    [Fact]
+    public async Task GetState_returns_replay_for_existing_past_puzzle()
+    {
+        var clock = new FakeGameClock(new DateOnly(2025, 1, 20));
+        var repo = new FakeGameRepository();
+        var puzzle = new DailyPuzzle
+        {
+            Id = Guid.NewGuid(),
+            PuzzleDate = new DateOnly(2025, 1, 5),
+            Solution = "GHOST",
+            Stream = PuzzleStream.NewYorkTimes
+        };
+        await repo.AddPuzzle(puzzle, CancellationToken.None);
+        var controller = CreateController(repo, clock, "GHOST");
+
+        var result = await controller.GetState(puzzle.PuzzleDate, CancellationToken.None);
+
+        result.Result.Should().BeOfType<OkObjectResult>();
+        var state = (result.Result as OkObjectResult)!.Value as Api.Models.Game.GameStateResponse;
+        state.Should().NotBeNull();
+        state!.PuzzleDate.Should().Be(puzzle.PuzzleDate);
+        state.IsReplay.Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task GetState_returns_not_found_when_no_puzzle_exists_for_date()
+    {
+        var clock = new FakeGameClock(new DateOnly(2025, 1, 20));
+        var repo = new FakeGameRepository();
+        var controller = CreateController(repo, clock);
+
+        var result = await controller.GetState(new DateOnly(2024, 12, 1), CancellationToken.None);
+
+        result.Result.Should().BeOfType<NotFoundObjectResult>();
+    }
+
+    [Fact]
+    public async Task GetState_returns_bad_request_for_future_date()
+    {
+        var clock = new FakeGameClock(new DateOnly(2025, 1, 20));
+        var repo = new FakeGameRepository();
+        var controller = CreateController(repo, clock);
+
+        var result = await controller.GetState(new DateOnly(2025, 1, 25), CancellationToken.None);
+
+        result.Result.Should().BeOfType<BadRequestObjectResult>();
+    }
+
+    [Fact]
+    public async Task GetState_for_today_does_not_flag_replay()
+    {
+        var clock = new FakeGameClock(new DateOnly(2025, 1, 20));
+        var repo = new FakeGameRepository();
+        var controller = CreateController(repo, clock);
+
+        var result = await controller.GetState(clock.Today, CancellationToken.None);
+
+        result.Result.Should().BeOfType<OkObjectResult>();
+        var state = (result.Result as OkObjectResult)!.Value as Api.Models.Game.GameStateResponse;
+        state.Should().NotBeNull();
+        state!.IsReplay.Should().BeFalse();
+    }
+
+    [Fact]
+    public async Task SubmitGuess_persists_replay_attempt_against_past_puzzle()
+    {
+        var clock = new FakeGameClock(new DateOnly(2025, 1, 20));
+        var repo = new FakeGameRepository();
+        var puzzle = new DailyPuzzle
+        {
+            Id = Guid.NewGuid(),
+            PuzzleDate = new DateOnly(2025, 1, 5),
+            Solution = "GHOST",
+            Stream = PuzzleStream.NewYorkTimes
+        };
+        await repo.AddPuzzle(puzzle, CancellationToken.None);
+        var controller = CreateController(repo, clock, "GHOST");
+
+        var result = await controller.SubmitGuess(
+            new Api.Models.Game.SubmitGuessRequest { Guess = "GHOST" },
+            puzzle.PuzzleDate,
+            CancellationToken.None);
+
+        result.Result.Should().BeOfType<OkObjectResult>();
+        var state = (result.Result as OkObjectResult)!.Value as Api.Models.Game.GameStateResponse;
+        state.Should().NotBeNull();
+        state!.IsReplay.Should().BeTrue();
+        state.PuzzleDate.Should().Be(puzzle.PuzzleDate);
+        repo.Attempts.Should().ContainSingle(a => a.DailyPuzzleId == puzzle.Id);
     }
 
     [Fact]

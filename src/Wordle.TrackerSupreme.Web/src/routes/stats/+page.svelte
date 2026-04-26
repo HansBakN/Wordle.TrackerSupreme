@@ -4,6 +4,7 @@
 	import { auth } from '$lib/auth/store';
 	import { StatsService } from '$lib/api-client/services/StatsService';
 	import type { PlayerStatsEntryResponse } from '$lib/api-client/models/PlayerStatsEntryResponse';
+	import type { PuzzleHistoryEntryResponse } from '$lib/api-client/models/PuzzleHistoryEntryResponse';
 	import {
 		buildStatsFilterRequest,
 		defaultStatsFilterState,
@@ -15,6 +16,11 @@
 	let entries = $state<PlayerStatsEntryResponse[]>([]);
 	let hasLoaded = $state(false);
 	let filters = $state<StatsFilterState>({ ...defaultStatsFilterState });
+
+	let historyLoading = $state(false);
+	let historyError = $state<string | null>(null);
+	let history = $state<PuzzleHistoryEntryResponse[]>([]);
+	let historyExpanded = $state<Record<string, boolean>>({});
 
 	function formatAverage(value: number | null | undefined) {
 		if (value === null || value === undefined) {
@@ -52,10 +58,34 @@
 		void loadStats();
 	}
 
+	async function loadHistory() {
+		if (!$auth.user) return;
+		historyLoading = true;
+		historyError = null;
+		try {
+			history = await StatsService.getApiStatsMeHistory();
+		} catch (err) {
+			historyError = err instanceof Error ? err.message : 'Unable to load puzzle history.';
+		} finally {
+			historyLoading = false;
+		}
+	}
+
+	function tileColor(result: string | undefined) {
+		if (result === 'Correct') return 'bg-emerald-500';
+		if (result === 'Present') return 'bg-amber-400';
+		return 'bg-slate-600';
+	}
+
+	function toggleHistory(attemptId: string) {
+		historyExpanded = { ...historyExpanded, [attemptId]: !historyExpanded[attemptId] };
+	}
+
 	onMount(() => {
 		if ($auth.user) {
 			hasLoaded = true;
 			void loadStats();
+			void loadHistory();
 		}
 	});
 
@@ -63,11 +93,13 @@
 		if ($auth.user && !hasLoaded) {
 			hasLoaded = true;
 			void loadStats();
+			void loadHistory();
 		}
 
 		if (!$auth.user && hasLoaded) {
 			hasLoaded = false;
 			entries = [];
+			history = [];
 		}
 	});
 </script>
@@ -118,6 +150,122 @@
 					</button>
 				</div>
 			</div>
+		</section>
+
+		<section
+			class="rounded-3xl border border-white/10 bg-white/5 p-8 shadow-2xl"
+			data-testid="puzzle-history-section"
+		>
+			<p class="text-sm tracking-[0.2em] text-emerald-200/80 uppercase">Puzzle history</p>
+			<h2 class="mt-3 text-2xl font-semibold text-white">Your past attempts</h2>
+
+			{#if historyError}
+				<div
+					class="mt-4 rounded-2xl border border-rose-400/40 bg-rose-500/10 px-5 py-4 text-sm text-rose-50"
+					data-testid="history-error"
+				>
+					{historyError}
+				</div>
+			{:else if historyLoading}
+				<div class="mt-4 text-sm text-slate-200/70" data-testid="history-loading">
+					Loading puzzle history...
+				</div>
+			{:else if history.length === 0}
+				<div class="mt-4 text-sm text-slate-200/70" data-testid="history-empty">
+					No puzzle history yet. Play today's puzzle to get started!
+				</div>
+			{:else}
+				<div class="mt-4 space-y-3" data-testid="history-list">
+					{#each history as entry (entry.puzzleDate)}
+						{@const expanded = historyExpanded[entry.puzzleDate ?? ''] ?? false}
+						<div
+							class="overflow-hidden rounded-2xl border border-white/10 bg-black/20"
+							data-testid="history-entry"
+						>
+							<button
+								class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition hover:bg-white/5"
+								on:click={() => toggleHistory(entry.puzzleDate ?? '')}
+								aria-expanded={expanded}
+								data-testid="history-toggle"
+							>
+								<div class="flex items-center gap-4">
+									<span class="text-sm font-semibold text-white" data-testid="history-date">
+										{entry.puzzleDate}
+									</span>
+									{#if entry.status === 'Solved'}
+										<span
+											class="rounded-full bg-emerald-500/20 px-2 py-0.5 text-xs font-semibold text-emerald-300"
+											data-testid="history-status"
+										>
+											Solved in {entry.guessCount}
+										</span>
+									{:else if entry.status === 'Failed'}
+										<span
+											class="rounded-full bg-rose-500/20 px-2 py-0.5 text-xs font-semibold text-rose-300"
+											data-testid="history-status"
+										>
+											Failed
+										</span>
+									{:else}
+										<span
+											class="rounded-full bg-slate-500/20 px-2 py-0.5 text-xs font-semibold text-slate-300"
+											data-testid="history-status"
+										>
+											In progress
+										</span>
+									{/if}
+									{#if entry.playedInHardMode}
+										<span
+											class="rounded-full bg-amber-500/20 px-2 py-0.5 text-xs font-semibold text-amber-300"
+											data-testid="history-hard-mode"
+										>
+											Hard
+										</span>
+									{/if}
+									{#if entry.isAfterReveal}
+										<span
+											class="rounded-full bg-slate-500/20 px-2 py-0.5 text-xs font-semibold text-slate-400"
+											data-testid="history-practice"
+										>
+											Practice
+										</span>
+									{/if}
+									{#if entry.solution}
+										<span
+											class="font-mono text-xs tracking-widest text-slate-300/70 uppercase"
+											data-testid="history-solution"
+										>
+											{entry.solution}
+										</span>
+									{/if}
+								</div>
+								<span class="text-xs text-slate-400 transition" class:rotate-180={expanded}>▲</span>
+							</button>
+
+							{#if expanded && entry.guesses && entry.guesses.length > 0}
+								<div class="border-t border-white/10 px-5 py-4" data-testid="history-guesses">
+									<div class="space-y-1.5">
+										{#each entry.guesses as guess (guess.guessNumber)}
+											<div class="flex gap-1.5" data-testid="history-guess-row">
+												{#each guess.feedback ?? [] as fb (fb.position)}
+													<div
+														class="flex h-9 w-9 items-center justify-center rounded text-sm font-bold text-white {tileColor(
+															fb.result
+														)}"
+														data-testid="history-tile"
+													>
+														{fb.letter?.toUpperCase() ?? ''}
+													</div>
+												{/each}
+											</div>
+										{/each}
+									</div>
+								</div>
+							{/if}
+						</div>
+					{/each}
+				</div>
+			{/if}
 		</section>
 
 		<section class="grid gap-6 lg:grid-cols-[minmax(0,_1fr)_minmax(0,_2fr)]">

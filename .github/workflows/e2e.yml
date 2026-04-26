@@ -19,6 +19,10 @@ jobs:
           node-version: '20'
 
       - name: Run E2E
+        env:
+          COMMIT_SHA: ${{ github.sha }}
+          BUILD_NUMBER: ${{ github.run_number }}
+          REPO_URL: https://github.com/${{ github.repository }}
         run: ./scripts/e2e.sh
 
       - name: Upload E2E artifacts

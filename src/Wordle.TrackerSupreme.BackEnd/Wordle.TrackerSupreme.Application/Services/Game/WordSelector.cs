@@ -2,9 +2,9 @@ using Wordle.TrackerSupreme.Domain.Services.Game;
 
 namespace Wordle.TrackerSupreme.Application.Services.Game;
 
-public class WordSelector : IWordSelector
+public class WordSelector : IWordSelector, IAnswerPoolProvider
 {
-    private static readonly string[] Words =
+    private static readonly string[] Pool =
     [
         "SLATE", "CRANE", "BRAVE", "TRAIN", "SHINE", "GLASS", "FROND", "QUIET", "PLANT", "ROAST",
         "TRAIL", "SNAKE", "CLOUD", "BRINK", "DRIVE", "STEAM", "WATER", "GRAPE", "PANEL", "CROWN",
@@ -13,13 +13,18 @@ public class WordSelector : IWordSelector
         "NORTH", "SOUTH", "EAGER", "QUEST", "FRAME", "GRIND", "WRIST", "TRICK", "VOICE", "YEARN"
     ];
 
+    private static readonly IReadOnlyList<string> SortedAnswers =
+        Pool.OrderBy(word => word, StringComparer.Ordinal).ToArray();
+
     // Keep the rotation deterministic so every node agrees on the solution without extra storage.
     private static readonly DateOnly Anchor = new(2025, 1, 1);
+
+    public IReadOnlyList<string> Answers => SortedAnswers;
 
     public string GetSolutionFor(DateOnly puzzleDate)
     {
         var offset = puzzleDate.DayNumber - Anchor.DayNumber;
-        var index = ((offset % Words.Length) + Words.Length) % Words.Length;
-        return Words[index];
+        var index = ((offset % Pool.Length) + Pool.Length) % Pool.Length;
+        return Pool[index];
     }
 }
