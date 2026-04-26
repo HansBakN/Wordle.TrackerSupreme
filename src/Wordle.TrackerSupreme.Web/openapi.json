@@ -959,6 +959,42 @@
 				}
 			}
 		},
+		"/api/stats/me/history": {
+			"get": {
+				"tags": ["Stats"],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/PuzzleHistoryEntryResponse"
+									}
+								}
+							},
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/PuzzleHistoryEntryResponse"
+									}
+								}
+							},
+							"text/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/PuzzleHistoryEntryResponse"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/api/Admin/puzzles": {
 			"get": {
 				"tags": ["Admin"],
@@ -1871,6 +1907,47 @@
 					}
 				},
 				"additionalProperties": {}
+			},
+			"PuzzleHistoryEntryResponse": {
+				"type": "object",
+				"properties": {
+					"puzzleDate": {
+						"type": "string",
+						"format": "date"
+					},
+					"solution": {
+						"type": "string",
+						"nullable": true
+					},
+					"status": {
+						"type": "string"
+					},
+					"playedInHardMode": {
+						"type": "boolean"
+					},
+					"isAfterReveal": {
+						"type": "boolean"
+					},
+					"guessCount": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"guesses": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/GuessResponse"
+						}
+					}
+				},
+				"additionalProperties": false,
+				"required": [
+					"puzzleDate",
+					"status",
+					"playedInHardMode",
+					"isAfterReveal",
+					"guessCount",
+					"guesses"
+				]
 			}
 		},
 		"securitySchemes": {
