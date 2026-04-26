@@ -18,6 +18,7 @@
 	} from '$lib/game/confetti';
 	import { colorMode } from '$lib/game/colorMode';
 	import { getKeyboardLetterState } from '$lib/game/keyboard';
+	import { buildShareText } from '$lib/game/share';
 	import type {
 		GameStateResponse,
 		GuessResponse,
@@ -40,6 +41,8 @@
 	let showWinStats = false;
 	let winStats: PlayerStatsResponse | null = null;
 	let statsError: string | null = null;
+	let copied = false;
+	let copyTimer: ReturnType<typeof setTimeout> | null = null;
 	let confettiPieces: ConfettiPiece[] = [];
 	let confettiTimer: ReturnType<typeof setTimeout> | null = null;
 	let statsTimer: ReturnType<typeof setTimeout> | null = null;
@@ -47,6 +50,7 @@
 	let shakeTimer: ReturnType<typeof setTimeout> | null = null;
 	let countdownInterval: ReturnType<typeof setInterval> | null = null;
 	let countdown = '';
+	let countdownReloaded = false;
 	let announcement: string | null = null;
 	let announcementIsError = false;
 	const keyboardRows = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'];
@@ -94,6 +98,9 @@
 		return () => {
 			window.removeEventListener('keydown', keyHandler);
 			stopCountdown();
+			if (copyTimer) {
+				clearTimeout(copyTimer);
+			}
 			unsubscribe();
 		};
 	});
@@ -260,7 +267,7 @@
 
 	function tileClass(result: LetterResult | null, useHighContrast: boolean) {
 		const base =
-			'flex h-14 w-14 items-center justify-center rounded-xl border text-lg font-semibold transition';
+			'flex h-14 w-full items-center justify-center rounded-xl border text-lg font-semibold transition';
 		if (result === 'Correct') {
 			return useHighContrast
 				? `${base} border-orange-500 bg-orange-500 text-white shadow-lg`
@@ -306,7 +313,7 @@
 		useHighContrast: boolean
 	) {
 		const base =
-			'flex h-11 items-center justify-center rounded-xl border px-3 text-sm font-semibold uppercase transition';
+			'flex h-10 min-w-0 flex-1 items-center justify-center rounded-xl border px-1.5 text-sm font-semibold uppercase transition sm:h-11 sm:flex-none sm:px-3';
 		const stateKey = keyState(letter, guesses);
 		if (stateKey === 'Correct') {
 			return useHighContrast
@@ -347,9 +354,14 @@
 		if (countdownInterval) {
 			return;
 		}
+		countdownReloaded = false;
 		countdown = computeCountdown();
 		countdownInterval = setInterval(() => {
 			countdown = computeCountdown();
+			if (countdown === '00:00:00' && !countdownReloaded) {
+				countdownReloaded = true;
+				void loadState();
+			}
 		}, 1000);
 	}
 
@@ -358,6 +370,7 @@
 			clearInterval(countdownInterval);
 			countdownInterval = null;
 		}
+		countdownReloaded = false;
 	}
 
 	function resetCelebration() {
@@ -373,6 +386,22 @@
 		showWinStats = false;
 		winStats = null;
 		statsError = null;
+	}
+
+	async function copyResult() {
+		if (!state) {
+			return;
+		}
+		const text = buildShareText(state);
+		await navigator.clipboard.writeText(text);
+		if (copyTimer) {
+			clearTimeout(copyTimer);
+		}
+		copied = true;
+		copyTimer = setTimeout(() => {
+			copied = false;
+			copyTimer = null;
+		}, 2000);
 	}
 
 	async function triggerWinCelebration() {
@@ -408,7 +437,7 @@
 {:else if $auth.user}
 	<div class="mx-auto grid max-w-6xl gap-6">
 		<section
-			class="relative rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-8 shadow-2xl"
+			class="relative rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-4 shadow-2xl sm:p-8"
 			data-high-contrast={highContrast}
 		>
 			{#if showConfetti}
@@ -460,12 +489,14 @@
 				</div>
 			{:else if state}
 				<div class="mt-6">
-					<div class="space-y-4 rounded-2xl border border-white/10 bg-black/20 p-6 shadow-inner">
+					<div
+						class="space-y-4 rounded-2xl border border-white/10 bg-black/20 p-4 pb-36 shadow-inner sm:p-6"
+					>
 						<div class="grid grid-rows-6 gap-1.5" role="grid" aria-label="Wordle board">
 							{#each Array(state.maxGuesses).keys() as rowIndex (rowIndex)}
 								<div
 									class={`grid justify-center gap-1.5${shakingRow === rowIndex ? ' animate-shake' : ''}`}
-									style={`grid-template-columns: repeat(${state.wordLength}, 3.5rem);`}
+									style={`grid-template-columns: repeat(${state.wordLength}, min(3.5rem, calc((min(100vw, 640px) - 8rem) / ${state.wordLength})));`}
 									data-testid={`board-row-${rowIndex}`}
 									role="row"
 									aria-label={`Guess row ${rowIndex + 1}`}
@@ -519,13 +550,18 @@
 							</div>
 						{/if}
 
-						<div class="space-y-3 pt-3" role="group" aria-label="On-screen keyboard">
+						<div
+							class="fixed right-0 bottom-0 left-0 z-30 space-y-2 border-t border-white/10 bg-slate-950/95 px-3 pt-3 pb-[calc(env(safe-area-inset-bottom)+0.75rem)] shadow-2xl backdrop-blur sm:static sm:space-y-3 sm:border-0 sm:bg-transparent sm:px-0 sm:pt-3 sm:pb-0 sm:shadow-none sm:backdrop-blur-none"
+							role="group"
+							aria-label="On-screen keyboard"
+						>
 							{#each keyboardRows as row, rowIndex (rowIndex)}
-								<div class="flex items-center justify-center gap-2">
+								<div class="flex w-full items-center justify-center gap-1 sm:gap-2">
 									{#if rowIndex === 2}
 										<button
-											class="flex h-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 text-xs font-semibold tracking-[0.15em] text-white/80 uppercase transition hover:border-white/30"
+											class="flex h-11 min-w-0 flex-[1.5] items-center justify-center rounded-xl border border-white/10 bg-white/5 px-2 text-xs font-semibold tracking-[0.08em] text-white/80 uppercase transition hover:border-white/30 sm:h-12 sm:flex-none sm:px-4 sm:tracking-[0.15em]"
 											onclick={removeLetter}
+											onpointerdown={(e) => e.preventDefault()}
 											disabled={guessInputLocked}
 											data-testid="remove-letter"
 											aria-label="Remove letter"
@@ -537,6 +573,7 @@
 										<button
 											class={keyClass(letter, state?.attempt?.guesses, highContrast)}
 											onclick={() => pushLetter(letter)}
+											onpointerdown={(e) => e.preventDefault()}
 											disabled={guessInputLocked}
 											data-testid={`keyboard-key-${letter}`}
 											data-state={(
@@ -548,8 +585,9 @@
 									{/each}
 									{#if rowIndex === 2}
 										<button
-											class="flex h-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 text-xs font-semibold tracking-[0.15em] text-white/80 uppercase transition hover:border-white/30"
+											class="flex h-11 min-w-0 flex-[1.5] items-center justify-center rounded-xl border border-white/10 bg-white/5 px-2 text-xs font-semibold tracking-[0.08em] text-white/80 uppercase transition hover:border-white/30 sm:h-12 sm:flex-none sm:px-4 sm:tracking-[0.15em]"
 											onclick={submitFromKeyboard}
+											onpointerdown={(e) => e.preventDefault()}
 											disabled={guessInputLocked}
 											data-testid="submit-guess"
 											aria-label="Submit guess"
@@ -591,11 +629,21 @@
 							</div>
 						{/if}
 						{#if state?.attempt?.status === 'Solved' || state?.attempt?.status === 'Failed'}
-							<div
-								class="mt-4 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-center text-sm text-slate-200/80"
-								data-testid="countdown-timer"
-							>
-								Next puzzle in: <span class="font-mono font-semibold text-white">{countdown}</span>
+							<div class="mt-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+								<div
+									class="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-center text-sm text-slate-200/80"
+									data-testid="countdown-timer"
+								>
+									Next puzzle in: <span class="font-mono font-semibold text-white">{countdown}</span
+									>
+								</div>
+								<button
+									class="rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-sm font-semibold text-white/80 transition hover:border-white/40 hover:bg-white/10"
+									onclick={copyResult}
+									data-testid="copy-result"
+								>
+									{copied ? '✓ Copied!' : 'Copy result'}
+								</button>
 							</div>
 							<div class="mt-3 flex justify-center">
 								<a

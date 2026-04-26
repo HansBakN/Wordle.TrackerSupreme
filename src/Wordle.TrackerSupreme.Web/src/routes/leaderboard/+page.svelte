@@ -45,6 +45,8 @@
 		'all-time': false,
 		today: false
 	});
+	let allTimeTabButton = $state<HTMLButtonElement | null>(null);
+	let todayTabButton = $state<HTMLButtonElement | null>(null);
 
 	function formatAverage(value: number | null | undefined) {
 		if (value === null || value === undefined) {
@@ -125,6 +127,44 @@
 		await loadLeaderboard(tab);
 	}
 
+	function focusTab(tab: LeaderboardTab) {
+		if (tab === 'all-time') {
+			allTimeTabButton?.focus();
+		} else {
+			todayTabButton?.focus();
+		}
+	}
+
+	async function handleTabKeydown(evt: KeyboardEvent, tab: LeaderboardTab) {
+		if (
+			evt.key !== 'ArrowLeft' &&
+			evt.key !== 'ArrowRight' &&
+			evt.key !== 'Home' &&
+			evt.key !== 'End'
+		) {
+			return;
+		}
+
+		evt.preventDefault();
+
+		const tabs: LeaderboardTab[] = ['all-time', 'today'];
+		const currentIndex = tabs.indexOf(tab);
+		let nextTab = tab;
+
+		if (evt.key === 'ArrowLeft') {
+			nextTab = tabs[(currentIndex - 1 + tabs.length) % tabs.length];
+		} else if (evt.key === 'ArrowRight') {
+			nextTab = tabs[(currentIndex + 1) % tabs.length];
+		} else if (evt.key === 'Home') {
+			nextTab = tabs[0];
+		} else if (evt.key === 'End') {
+			nextTab = tabs[tabs.length - 1];
+		}
+
+		await selectTab(nextTab);
+		focusTab(nextTab);
+	}
+
 	onMount(() => {
 		if ($auth.user) {
 			hasLoaded = true;
@@ -179,26 +219,32 @@
 				<button
 					type="button"
 					role="tab"
+					bind:this={allTimeTabButton}
 					class={`rounded-full px-4 py-2 text-sm font-semibold transition ${
 						activeTab === 'all-time'
 							? 'bg-emerald-400 text-slate-950'
 							: 'text-slate-200/70 hover:text-white'
 					}`}
 					aria-selected={activeTab === 'all-time'}
-					on:click={() => void selectTab('all-time')}
+					tabindex={activeTab === 'all-time' ? 0 : -1}
+					onclick={() => void selectTab('all-time')}
+					onkeydown={(evt) => void handleTabKeydown(evt, 'all-time')}
 				>
 					All-time
 				</button>
 				<button
 					type="button"
 					role="tab"
+					bind:this={todayTabButton}
 					class={`rounded-full px-4 py-2 text-sm font-semibold transition ${
 						activeTab === 'today'
 							? 'bg-emerald-400 text-slate-950'
 							: 'text-slate-200/70 hover:text-white'
 					}`}
 					aria-selected={activeTab === 'today'}
-					on:click={() => void selectTab('today')}
+					tabindex={activeTab === 'today' ? 0 : -1}
+					onclick={() => void selectTab('today')}
+					onkeydown={(evt) => void handleTabKeydown(evt, 'today')}
 				>
 					Today's puzzle
 				</button>
@@ -272,7 +318,7 @@
 							class="rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold text-white/80 transition hover:bg-white/15 disabled:cursor-not-allowed disabled:opacity-40"
 							disabled={allTimePage <= 1 || loading}
 							data-testid="leaderboard-prev"
-							on:click={() => void goToPage(allTimePage - 1)}
+							onclick={() => void goToPage(allTimePage - 1)}
 						>
 							← Previous
 						</button>
@@ -280,7 +326,7 @@
 							class="rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold text-white/80 transition hover:bg-white/15 disabled:cursor-not-allowed disabled:opacity-40"
 							disabled={allTimePage >= allTimeTotalPages || loading}
 							data-testid="leaderboard-next"
-							on:click={() => void goToPage(allTimePage + 1)}
+							onclick={() => void goToPage(allTimePage + 1)}
 						>
 							Next →
 						</button>

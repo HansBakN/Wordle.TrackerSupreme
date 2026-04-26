@@ -9,6 +9,7 @@ export type { OpenAPIConfig } from './core/OpenAPI';
 
 export type { AdminPlayerAttemptResponse } from './models/AdminPlayerAttemptResponse';
 export type { AdminPlayerDetailResponse } from './models/AdminPlayerDetailResponse';
+export type { AdminPlayersPageResponse } from './models/AdminPlayersPageResponse';
 export type { AdminPlayerSummaryResponse } from './models/AdminPlayerSummaryResponse';
 export type { AdminResetPasswordRequest } from './models/AdminResetPasswordRequest';
 export type { AdminSetAdminStatusRequest } from './models/AdminSetAdminStatusRequest';

@@ -4,7 +4,7 @@
 /* eslint-disable */
 import type { AdminPlayerAttemptResponse } from '../models/AdminPlayerAttemptResponse';
 import type { AdminPlayerDetailResponse } from '../models/AdminPlayerDetailResponse';
-import type { AdminPlayerSummaryResponse } from '../models/AdminPlayerSummaryResponse';
+import type { AdminPlayersPageResponse } from '../models/AdminPlayersPageResponse';
 import type { AdminResetPasswordRequest } from '../models/AdminResetPasswordRequest';
 import type { AdminSetAdminStatusRequest } from '../models/AdminSetAdminStatusRequest';
 import type { AdminUpdateAttemptRequest } from '../models/AdminUpdateAttemptRequest';
@@ -14,13 +14,26 @@ import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 export class AdminService {
 	/**
-	 * @returns AdminPlayerSummaryResponse OK
+	 * @returns AdminPlayersPageResponse OK
 	 * @throws ApiError
 	 */
-	public static getApiAdminPlayers(): CancelablePromise<Array<AdminPlayerSummaryResponse>> {
+	public static getApiAdminPlayers({
+		search,
+		page = 1,
+		pageSize = 20
+	}: {
+		search?: string;
+		page?: number;
+		pageSize?: number;
+	}): CancelablePromise<AdminPlayersPageResponse> {
 		return __request(OpenAPI, {
 			method: 'GET',
-			url: '/api/Admin/players'
+			url: '/api/Admin/players',
+			query: {
+				search: search,
+				page: page,
+				pageSize: pageSize
+			}
 		});
 	}
 	/**

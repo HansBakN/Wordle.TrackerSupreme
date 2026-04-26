@@ -2,6 +2,9 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "$ROOT_DIR/scripts/lib/compose.sh"
+FRONTEND_DIR="$ROOT_DIR/src/Wordle.TrackerSupreme.Web"
+
 ARTIFACT_DIR="${ARTIFACT_DIR:-$ROOT_DIR/artifacts/e2e}"
 BACKEND_URL="${BACKEND_URL:-http://localhost:8080}"
 FRONTEND_URL="${FRONTEND_URL:-http://localhost:3000}"
@@ -23,7 +26,8 @@ fi
 rm -rf "$ARTIFACT_DIR"
 mkdir -p "$ARTIFACT_DIR"
 
-compose=(docker compose)
+resolve_compose_command
+compose=("${COMPOSE_CMD[@]}")
 if [[ "$is_ci" == "true" ]]; then
   compose+=(-f "$ROOT_DIR/docker-compose.yml")
 fi
@@ -58,36 +62,60 @@ FRONTEND_LOG_PID=$!
 "$ROOT_DIR/scripts/wait-for-url.sh" "$BACKEND_HEALTH_URL" 180
 "$ROOT_DIR/scripts/wait-for-url.sh" "$FRONTEND_HEALTH_URL" 180
 
-"${compose[@]}" --profile migrate run --rm --build migrator
+if compose_supports_run_build; then
+  "${compose[@]}" --profile migrate run --rm --build migrator
+else
+  "${compose[@]}" --profile migrate build migrator
+  "${compose[@]}" --profile migrate run --rm migrator
+fi
 
-E2E_RESET_ENABLED=true \
-  Seeder__AllowReseed=true \
-  Seeder__ResetDatabase=true \
-  DOTNET_ENVIRONMENT=Development \
-  "${compose[@]}" --profile seed run --rm --build \
-  -e E2E_RESET_ENABLED=true \
-  -e Seeder__AllowReseed=true \
-  -e Seeder__ResetDatabase=true \
-  -e DOTNET_ENVIRONMENT=Development \
-  seeder
+if compose_supports_run_build; then
+  E2E_RESET_ENABLED=true \
+    Seeder__AllowReseed=true \
+    Seeder__ResetDatabase=true \
+    DOTNET_ENVIRONMENT=Development \
+    "${compose[@]}" --profile seed run --rm --build \
+    -e E2E_RESET_ENABLED=true \
+    -e Seeder__AllowReseed=true \
+    -e Seeder__ResetDatabase=true \
+    -e DOTNET_ENVIRONMENT=Development \
+    seeder
+else
+  "${compose[@]}" --profile seed build seeder
+  E2E_RESET_ENABLED=true \
+    Seeder__AllowReseed=true \
+    Seeder__ResetDatabase=true \
+    DOTNET_ENVIRONMENT=Development \
+    "${compose[@]}" --profile seed run --rm \
+    -e E2E_RESET_ENABLED=true \
+    -e Seeder__AllowReseed=true \
+    -e Seeder__ResetDatabase=true \
+    -e DOTNET_ENVIRONMENT=Development \
+    seeder
+fi
 
 export E2E_BASE_URL
 export E2E_ARTIFACT_DIR="$ARTIFACT_DIR/playwright"
 
-if [[ "$is_ci" == "true" ]]; then
-  if [[ -d "$ROOT_DIR/src/Wordle.TrackerSupreme.Web/node_modules" ]]; then
-    if command -v sudo >/dev/null 2>&1; then
-      sudo rm -rf "$ROOT_DIR/src/Wordle.TrackerSupreme.Web/node_modules"
-    else
-      rm -rf "$ROOT_DIR/src/Wordle.TrackerSupreme.Web/node_modules"
-    fi
-  fi
-  (cd "$ROOT_DIR/src/Wordle.TrackerSupreme.Web" && npm ci)
-elif [[ ! -d "$ROOT_DIR/src/Wordle.TrackerSupreme.Web/node_modules" ]]; then
-  (cd "$ROOT_DIR/src/Wordle.TrackerSupreme.Web" && npm ci)
+playwright_cli="$FRONTEND_DIR/node_modules/.bin/playwright"
+needs_frontend_install=false
+
+if [[ "$is_ci" == "true" || ! -x "$playwright_cli" ]]; then
+  needs_frontend_install=true
 fi
 
-(cd "$ROOT_DIR/src/Wordle.TrackerSupreme.Web" && {
+if [[ "$needs_frontend_install" == "true" ]]; then
+  if [[ -d "$FRONTEND_DIR/node_modules" ]]; then
+    if command -v sudo >/dev/null 2>&1; then
+      sudo rm -rf "$FRONTEND_DIR/node_modules"
+    else
+      rm -rf "$FRONTEND_DIR/node_modules"
+    fi
+  fi
+  (cd "$FRONTEND_DIR" && npm ci)
+fi
+
+(cd "$FRONTEND_DIR" && {
   if [[ "$is_ci" == "true" && "$(uname -s)" == "Linux" ]]; then
     if command -v sudo >/dev/null 2>&1; then
       sudo npx playwright install-deps chromium
