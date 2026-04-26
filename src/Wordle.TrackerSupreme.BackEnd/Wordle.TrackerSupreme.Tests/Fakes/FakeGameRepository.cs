@@ -82,6 +82,21 @@ public class FakeGameRepository : IGameRepository
         return Task.FromResult<DailyPuzzle?>(puzzle);
     }
 
+    public Task<DailyPuzzle?> GetPuzzleById(Guid puzzleId, CancellationToken cancellationToken)
+    {
+        var puzzle = _puzzles.FirstOrDefault(p => p.Id == puzzleId);
+        return Task.FromResult<DailyPuzzle?>(puzzle);
+    }
+
+    public Task<List<DailyPuzzle>> GetPuzzles(CancellationToken cancellationToken)
+        => Task.FromResult(_puzzles.OrderByDescending(p => p.PuzzleDate).ToList());
+
+    public Task RemovePuzzle(DailyPuzzle puzzle, CancellationToken cancellationToken)
+    {
+        _puzzles.Remove(puzzle);
+        return Task.CompletedTask;
+    }
+
     public Task RemoveGuesses(IReadOnlyCollection<GuessAttempt> guesses, CancellationToken cancellationToken)
     {
         foreach (var guess in guesses)

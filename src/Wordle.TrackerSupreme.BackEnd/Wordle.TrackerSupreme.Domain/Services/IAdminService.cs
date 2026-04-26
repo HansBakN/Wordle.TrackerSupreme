@@ -12,4 +12,9 @@ public interface IAdminService
     Task<Player> SetAdminStatus(Guid playerId, bool isAdmin, CancellationToken cancellationToken);
     Task<PlayerPuzzleAttempt> UpdateAttempt(Guid attemptId, IReadOnlyList<string> guesses, bool playedInHardMode, CancellationToken cancellationToken);
     Task DeleteAttempt(Guid attemptId, CancellationToken cancellationToken);
+    Task<IReadOnlyList<DailyPuzzle>> GetPuzzles(CancellationToken cancellationToken);
+    Task<DailyPuzzle?> GetPuzzle(Guid puzzleId, CancellationToken cancellationToken);
+    Task<DailyPuzzle> CreatePuzzle(DateOnly puzzleDate, string solution, CancellationToken cancellationToken);
+    Task<DailyPuzzle> UpdatePuzzle(Guid puzzleId, DateOnly puzzleDate, string solution, CancellationToken cancellationToken);
+    Task DeletePuzzle(Guid puzzleId, CancellationToken cancellationToken);
 }

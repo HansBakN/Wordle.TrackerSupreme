@@ -1058,6 +1058,182 @@
 					}
 				}
 			}
+		},
+		"/api/Admin/puzzles": {
+			"get": {
+				"tags": ["Admin"],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/AdminPuzzleResponse"
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"post": {
+				"tags": ["Admin"],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminCreatePuzzleRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminPuzzleResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "Conflict",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/Admin/puzzles/{puzzleId}": {
+			"get": {
+				"tags": ["Admin"],
+				"parameters": [
+					{
+						"name": "puzzleId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"format": "uuid"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminPuzzleResponse"
+								}
+							}
+						}
+					}
+				}
+			},
+			"put": {
+				"tags": ["Admin"],
+				"parameters": [
+					{
+						"name": "puzzleId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"format": "uuid"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminUpdatePuzzleRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminPuzzleResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "Conflict",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": ["Admin"],
+				"parameters": [
+					{
+						"name": "puzzleId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"format": "uuid"
+						}
+					}
+				],
+				"responses": {
+					"204": {
+						"description": "No Content"
+					},
+					"409": {
+						"description": "Conflict",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	},
 	"components": {
@@ -1690,38 +1866,58 @@
 				},
 				"additionalProperties": false
 			},
-			"PracticeStateResponse": {
+			"AdminPuzzleResponse": {
 				"type": "object",
 				"properties": {
-					"puzzleId": {
+					"id": {
 						"type": "string",
 						"format": "uuid"
 					},
-					"solutionRevealed": {
-						"type": "boolean"
-					},
-					"wordLength": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"maxGuesses": {
-						"type": "integer",
-						"format": "int32"
-					},
-					"canGuess": {
-						"type": "boolean"
-					},
-					"attempt": {
-						"$ref": "#/components/schemas/AttemptResponse",
-						"nullable": true
+					"puzzleDate": {
+						"type": "string",
+						"format": "date"
 					},
 					"solution": {
-						"type": "string",
-						"nullable": true
+						"type": "string"
+					},
+					"attemptCount": {
+						"type": "integer",
+						"format": "int32"
 					}
 				},
-				"additionalProperties": false,
-				"required": ["puzzleId", "solutionRevealed", "wordLength", "maxGuesses", "canGuess"]
+				"additionalProperties": false
+			},
+			"AdminCreatePuzzleRequest": {
+				"required": ["puzzleDate", "solution"],
+				"type": "object",
+				"properties": {
+					"puzzleDate": {
+						"type": "string",
+						"format": "date"
+					},
+					"solution": {
+						"maxLength": 10,
+						"minLength": 1,
+						"type": "string"
+					}
+				},
+				"additionalProperties": false
+			},
+			"AdminUpdatePuzzleRequest": {
+				"required": ["puzzleDate", "solution"],
+				"type": "object",
+				"properties": {
+					"puzzleDate": {
+						"type": "string",
+						"format": "date"
+					},
+					"solution": {
+						"maxLength": 10,
+						"minLength": 1,
+						"type": "string"
+					}
+				},
+				"additionalProperties": false
 			},
 			"AdminPlayersPageResponse": {
 				"type": "object",
@@ -1775,6 +1971,39 @@
 					}
 				},
 				"additionalProperties": {}
+			},
+			"PracticeStateResponse": {
+				"type": "object",
+				"properties": {
+					"puzzleId": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"solutionRevealed": {
+						"type": "boolean"
+					},
+					"wordLength": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"maxGuesses": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"canGuess": {
+						"type": "boolean"
+					},
+					"attempt": {
+						"$ref": "#/components/schemas/AttemptResponse",
+						"nullable": true
+					},
+					"solution": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"additionalProperties": false,
+				"required": ["puzzleId", "solutionRevealed", "wordLength", "maxGuesses", "canGuess"]
 			}
 		},
 		"securitySchemes": {
