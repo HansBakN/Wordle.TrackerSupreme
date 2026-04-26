@@ -5,7 +5,11 @@
 	import { StatsService } from '$lib/api-client/services/StatsService';
 	import type { LeaderboardEntryResponse } from '$lib/api-client/models/LeaderboardEntryResponse';
 	import type { TodayLeaderboardEntryResponse } from '$lib/api-client/models/TodayLeaderboardEntryResponse';
-	import { formatTodayLeaderboardMeta } from '$lib/stats/leaderboard';
+	import {
+		defaultLeaderboardMinimumGames,
+		formatTodayLeaderboardMeta,
+		getLeaderboardMinimumGames
+	} from '$lib/stats/leaderboard';
 
 	const PAGE_SIZE = 10;
 
@@ -41,6 +45,7 @@
 	let todayEntries = $state<TodayLeaderboardEntryResponse[]>([]);
 	let hasLoaded = $state(false);
 	let activeTab = $state<LeaderboardTab>('all-time');
+	let includeLowVolumePlayers = $state(false);
 	let loadedTabs = $state<Record<LeaderboardTab, boolean>>({
 		'all-time': false,
 		today: false
@@ -81,7 +86,11 @@
 		loading = true;
 		error = null;
 		try {
-			const data = await StatsService.getApiStatsLeaderboard({ page, pageSize: PAGE_SIZE });
+			const data = await StatsService.getApiStatsLeaderboard({
+				page,
+				pageSize: PAGE_SIZE,
+				minGames: getLeaderboardMinimumGames(includeLowVolumePlayers)
+			});
 			allTimeEntries = data.items ?? [];
 			allTimePage = data.page ?? 1;
 			allTimeTotalPages = data.totalPages ?? 1;
@@ -117,6 +126,14 @@
 
 	async function goToPage(page: number) {
 		await loadAllTime(page);
+	}
+
+	function handleMinimumGamesToggle() {
+		if (!$auth.user || activeTab !== 'all-time') {
+			return;
+		}
+
+		void loadAllTime(1);
 	}
 
 	async function selectTab(tab: LeaderboardTab) {
@@ -183,6 +200,7 @@
 			allTimeEntries = [];
 			todayEntries = [];
 			activeTab = 'all-time';
+			includeLowVolumePlayers = false;
 			loadedTabs = {
 				'all-time': false,
 				today: false
@@ -251,6 +269,18 @@
 			</div>
 			<h1 class="mt-4 text-3xl font-semibold text-white">{getTabContent(activeTab).title}</h1>
 			<p class="mt-2 max-w-2xl text-sm text-slate-200/80">{getTabContent(activeTab).description}</p>
+			{#if activeTab === 'all-time'}
+				<label class="mt-5 inline-flex items-center gap-3 text-sm text-slate-200/80">
+						<input
+							type="checkbox"
+							bind:checked={includeLowVolumePlayers}
+							onchange={handleMinimumGamesToggle}
+							class="h-4 w-4 rounded border-white/20 bg-white/10 text-emerald-400 focus:ring-emerald-300"
+							data-testid="leaderboard-min-games-toggle"
+						/>
+					<span>Include players with fewer than {defaultLeaderboardMinimumGames} games</span>
+				</label>
+			{/if}
 		</section>
 
 		{#if error}

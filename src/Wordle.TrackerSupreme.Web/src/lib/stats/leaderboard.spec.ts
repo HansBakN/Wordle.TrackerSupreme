@@ -1,7 +1,20 @@
 import { describe, expect, it } from 'vitest';
-import { formatTodayLeaderboardMeta } from './leaderboard';
+import {
+	defaultLeaderboardMinimumGames,
+	formatTodayLeaderboardMeta,
+	getLeaderboardMinimumGames
+} from './leaderboard';
 
 describe('leaderboard helpers', () => {
+	it('defaults to the ten-game minimum', () => {
+		expect(defaultLeaderboardMinimumGames).toBe(10);
+		expect(getLeaderboardMinimumGames(false)).toBe(10);
+	});
+
+	it('drops the threshold when low-volume players are included', () => {
+		expect(getLeaderboardMinimumGames(true)).toBe(0);
+	});
+
 	it('formats today rows for finished and in-progress attempts', () => {
 		expect(
 			formatTodayLeaderboardMeta({

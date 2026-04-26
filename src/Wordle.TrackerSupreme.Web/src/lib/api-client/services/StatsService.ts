@@ -44,17 +44,20 @@ export class StatsService {
 	 */
 	public static getApiStatsLeaderboard({
 		page = 1,
-		pageSize = 10
+		pageSize = 10,
+		minGames = 10
 	}: {
 		page?: number;
 		pageSize?: number;
+		minGames?: number;
 	}): CancelablePromise<LeaderboardPageResponse> {
 		return __request(OpenAPI, {
 			method: 'GET',
 			url: '/api/stats/leaderboard',
 			query: {
 				page: page,
-				pageSize: pageSize
+				pageSize: pageSize,
+				minGames: minGames
 			}
 		});
 	}

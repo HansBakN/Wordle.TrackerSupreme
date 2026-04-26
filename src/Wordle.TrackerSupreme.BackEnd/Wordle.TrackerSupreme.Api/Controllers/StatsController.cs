@@ -104,10 +104,12 @@ public class StatsController(
     public async Task<ActionResult<LeaderboardPageResponse>> GetLeaderboard(
         [FromQuery] int page = 1,
         [FromQuery] int pageSize = 10,
+        [FromQuery] int minGames = 10,
         CancellationToken cancellationToken = default)
     {
         page = Math.Max(1, page);
         pageSize = Math.Clamp(pageSize, 1, 100);
+        minGames = Math.Max(minGames, 0);
 
         var filter = new PlayerStatsFilterRequest(
             IncludeHardMode: true,
@@ -133,7 +135,7 @@ public class StatsController(
                     WinRate = winRate
                 };
             })
-            .Where(entry => entry.Stats.TotalAttempts > 0)
+            .Where(entry => entry.Stats.TotalAttempts >= minGames && entry.Stats.TotalAttempts > 0)
             .OrderByDescending(entry => entry.WinRate ?? 0)
             .ThenBy(entry => entry.Stats.AverageGuessCount ?? double.MaxValue)
             .ThenByDescending(entry => entry.Stats.Wins)
