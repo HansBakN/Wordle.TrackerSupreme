@@ -362,6 +362,13 @@ public class StatsControllerTests
                 player.Email == email && (excludePlayerId == null || player.Id != excludePlayerId)));
         }
 
+        public Task<(List<Player> Players, int TotalCount)> GetPlayersPage(string? search, int page, int pageSize, CancellationToken cancellationToken)
+        {
+            var all = _players.OrderBy(p => p.DisplayName).ToList();
+            var paged = all.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            return Task.FromResult((paged, all.Count));
+        }
+
         public Task SaveChanges(CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
