@@ -43,17 +43,23 @@ export class StatsService {
 	 */
 	public static getApiStatsLeaderboard({
 		page = 1,
-		pageSize = 10
+		pageSize = 10,
+		sort = 'winRate',
+		direction = 'desc'
 	}: {
 		page?: number;
 		pageSize?: number;
+		sort?: string;
+		direction?: string;
 	}): CancelablePromise<LeaderboardPageResponse> {
 		return __request(OpenAPI, {
 			method: 'GET',
 			url: '/api/stats/leaderboard',
 			query: {
 				page: page,
-				pageSize: pageSize
+				pageSize: pageSize,
+				sort: sort,
+				direction: direction
 			}
 		});
 	}
