@@ -15,24 +15,31 @@ namespace Wordle.TrackerSupreme.Application.Services.Analyzer;
 /// Recommendation, skill, luck, analyzer solve path and explanations are
 /// intentionally absent from this version — they arrive in subsequent slices
 /// and will be guarded behind a higher <c>analyzerVersion</c>.
+///
+/// Plausible answers are drawn from <see cref="IAnswerPoolProvider"/> (the
+/// analyzer's answer-domain lexicon), not from the full guess validator.
+/// Issue #117 requires the returned remaining-answer probabilities to sum to 1
+/// — when truncation kicks in, the visible items are renormalized so the
+/// returned list is itself a valid probability distribution. The authoritative
+/// total is always exposed via <c>PossibleAnswersRemainingCount</c>.
 /// </summary>
 public class AnalyzerService : IAnalyzerService
 {
     private readonly AnalyzerOptions _options;
     private readonly GameOptions _gameOptions;
     private readonly IWordValidator _wordValidator;
-    private readonly IWordListProvider _wordListProvider;
+    private readonly IAnswerPoolProvider _answerPoolProvider;
 
     public AnalyzerService(
         AnalyzerOptions options,
         GameOptions gameOptions,
         IWordValidator wordValidator,
-        IWordListProvider wordListProvider)
+        IAnswerPoolProvider answerPoolProvider)
     {
         _options = options;
         _gameOptions = gameOptions;
         _wordValidator = wordValidator;
-        _wordListProvider = wordListProvider;
+        _answerPoolProvider = answerPoolProvider;
     }
 
     public AnalyzerResult Analyze(AnalyzerInput input)
@@ -42,11 +49,17 @@ public class AnalyzerService : IAnalyzerService
         var (guesses, answer) = ValidateAndNormalize(input);
         var solved = string.Equals(guesses[^1], answer, StringComparison.Ordinal);
 
-        var candidates = _wordListProvider.Words
+        var candidates = _answerPoolProvider.Answers
             .Select(word => word.ToUpperInvariant())
             .Distinct(StringComparer.Ordinal)
             .OrderBy(word => word, StringComparer.Ordinal)
             .ToList();
+
+        if (!candidates.Contains(answer, StringComparer.Ordinal))
+        {
+            throw new AnalyzerInputException(
+                $"answer '{answer}' is not in the analyzer answer pool.");
+        }
 
         var turns = new List<AnalyzerTurn>(guesses.Count);
 
@@ -57,19 +70,38 @@ public class AnalyzerService : IAnalyzerService
                 .Where(candidate => WordleFeedback.Equal(WordleFeedback.Compute(candidate, guess), feedback))
                 .ToList();
 
-            var probability = candidates.Count == 0 ? 0d : 1d / candidates.Count;
-            var truncated = candidates.Count > _options.MaxRemainingAnswersInResult;
-            var listed = (truncated
-                    ? candidates.Take(_options.MaxRemainingAnswersInResult)
-                    : candidates)
-                .Select(word => new RemainingAnswer(word, probability))
+            var totalCount = candidates.Count;
+            var truePosterior = totalCount == 0 ? 0d : 1d / totalCount;
+
+            var ordered = candidates
+                .OrderByDescending(_ => truePosterior)
+                .ThenBy(word => word, StringComparer.Ordinal)
+                .ToList();
+
+            var truncated = totalCount > _options.MaxRemainingAnswersInResult;
+            var visible = truncated
+                ? ordered.Take(_options.MaxRemainingAnswersInResult).ToList()
+                : ordered;
+
+            // When the visible list is the full plausible set, the per-item
+            // probability is the true posterior (1 / totalCount). When the
+            // list is truncated we renormalize across the visible subset so
+            // the returned list itself sums to 1 — see class doc comment.
+            var visibleProbability = visible.Count == 0
+                ? 0d
+                : truncated
+                    ? 1d / visible.Count
+                    : truePosterior;
+
+            var listed = visible
+                .Select(word => new RemainingAnswer(word, visibleProbability))
                 .ToList();
 
             turns.Add(new AnalyzerTurn
             {
                 Guess = guess,
                 Feedback = feedback,
-                PossibleAnswersRemainingCount = candidates.Count,
+                PossibleAnswersRemainingCount = totalCount,
                 PossibleAnswersRemaining = listed,
             });
         }

@@ -110,6 +110,42 @@ public class AnalyzerServiceTests
     }
 
     [Fact]
+    public void Analyze_RenormalizesVisibleProbabilitiesWhenTruncated()
+    {
+        var service = BuildService(new AnalyzerOptions { CurrentVersion = Version, MaxRemainingAnswersInResult = 3 });
+
+        var result = service.Analyze(Input(["CRANE", "PLANT", "AROSE", "BLEAT", "BLINK", "BLAST"], "BLAST"));
+
+        foreach (var turn in result.Turns)
+        {
+            if (turn.PossibleAnswersRemaining.Count == 0)
+            {
+                continue;
+            }
+
+            turn.PossibleAnswersRemaining.Sum(r => r.Probability)
+                .Should().BeApproximately(1d, 1e-9);
+        }
+    }
+
+    [Fact]
+    public void Analyze_RejectsAnswerOutsideAnswerPool()
+    {
+        var validator = new InMemoryWordList(["CRANE", "BRAIN", "PLANT"]);
+        var answerPool = new InMemoryAnswerPool(["BRAIN", "PLANT"]);
+        var service = new AnalyzerService(
+            new AnalyzerOptions { CurrentVersion = Version, MaxRemainingAnswersInResult = 50 },
+            new GameOptions(),
+            validator,
+            answerPool);
+
+        var act = () => service.Analyze(Input(["CRANE"], "CRANE"));
+
+        act.Should().Throw<AnalyzerInputException>()
+            .WithMessage("*answer pool*");
+    }
+
+    [Fact]
     public void Analyze_FailedGameWithSixGuesses_IsAccepted()
     {
         var service = BuildService();
@@ -247,7 +283,7 @@ public class AnalyzerServiceTests
         result.Turns[0].Guess.Should().Be("CRANE");
     }
 
-    private sealed class InMemoryWordList : IWordValidator, IWordListProvider
+    private sealed class InMemoryWordList : IWordValidator, IWordListProvider, IAnswerPoolProvider
     {
         private readonly HashSet<string> _set;
 
@@ -259,6 +295,21 @@ public class AnalyzerServiceTests
 
         public IReadOnlyList<string> Words { get; }
 
+        public IReadOnlyList<string> Answers => Words;
+
         public bool IsValid(string word) => _set.Contains(word.ToUpperInvariant());
+    }
+
+    private sealed class InMemoryAnswerPool : IAnswerPoolProvider
+    {
+        public InMemoryAnswerPool(IEnumerable<string> answers)
+        {
+            Answers = answers.Select(w => w.ToUpperInvariant())
+                .Distinct(StringComparer.Ordinal)
+                .OrderBy(w => w, StringComparer.Ordinal)
+                .ToList();
+        }
+
+        public IReadOnlyList<string> Answers { get; }
     }
 }

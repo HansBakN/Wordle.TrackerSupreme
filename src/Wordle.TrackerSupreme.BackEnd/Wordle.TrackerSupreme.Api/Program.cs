@@ -173,7 +173,9 @@ builder.Services.AddSingleton(sp => sp.GetRequiredService<IOptions<AnalyzerOptio
 builder.Services.AddScoped<JwtTokenService>();
 builder.Services.AddScoped<PasswordHasher<Wordle.TrackerSupreme.Domain.Models.Player>>();
 builder.Services.AddSingleton<IGameClock, GameClock>();
-builder.Services.AddSingleton<IWordSelector, WordSelector>();
+builder.Services.AddSingleton<WordSelector>();
+builder.Services.AddSingleton<IWordSelector>(sp => sp.GetRequiredService<WordSelector>());
+builder.Services.AddSingleton<IAnswerPoolProvider>(sp => sp.GetRequiredService<WordSelector>());
 builder.Services.AddSingleton<WordListValidator>();
 builder.Services.AddSingleton<IWordValidator>(sp => sp.GetRequiredService<WordListValidator>());
 builder.Services.AddSingleton<IWordListProvider>(sp => sp.GetRequiredService<WordListValidator>());
