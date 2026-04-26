@@ -9,7 +9,8 @@ public record GameplayState(
     bool SolutionRevealed,
     bool AllowLatePlay,
     int WordLength,
-    int MaxGuesses);
+    int MaxGuesses,
+    bool IsReplay = false);
 
 public record SolutionsSnapshot(
     DailyPuzzle Puzzle,

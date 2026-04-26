@@ -4,11 +4,11 @@
 /* eslint-disable */
 import type { GuessResponse } from './GuessResponse';
 export type PuzzleHistoryEntryResponse = {
-	puzzleDate?: string;
+	puzzleDate: string;
 	solution?: string | null;
-	status?: string;
-	playedInHardMode?: boolean;
-	isAfterReveal?: boolean;
-	guessCount?: number;
-	guesses?: Array<GuessResponse>;
+	status: string;
+	playedInHardMode: boolean;
+	isAfterReveal: boolean;
+	guessCount: number;
+	guesses: Array<GuessResponse>;
 };

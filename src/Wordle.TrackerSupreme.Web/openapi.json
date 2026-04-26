@@ -153,31 +153,49 @@
 						"content": {
 							"text/plain": {
 								"schema": {
-									"type": "array",
-									"items": {
-										"$ref": "#/components/schemas/AdminPlayerSummaryResponse"
-									}
+									"$ref": "#/components/schemas/AdminPlayersPageResponse"
 								}
 							},
 							"application/json": {
 								"schema": {
-									"type": "array",
-									"items": {
-										"$ref": "#/components/schemas/AdminPlayerSummaryResponse"
-									}
+									"$ref": "#/components/schemas/AdminPlayersPageResponse"
 								}
 							},
 							"text/json": {
 								"schema": {
-									"type": "array",
-									"items": {
-										"$ref": "#/components/schemas/AdminPlayerSummaryResponse"
-									}
+									"$ref": "#/components/schemas/AdminPlayersPageResponse"
 								}
 							}
 						}
 					}
-				}
+				},
+				"parameters": [
+					{
+						"name": "search",
+						"in": "query",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "page",
+						"in": "query",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 1
+						}
+					},
+					{
+						"name": "pageSize",
+						"in": "query",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 20
+						}
+					}
+				]
 			}
 		},
 		"/api/Admin/players/{playerId}": {
@@ -529,6 +547,17 @@
 		"/api/game/state": {
 			"get": {
 				"tags": ["Game"],
+				"parameters": [
+					{
+						"name": "date",
+						"in": "query",
+						"schema": {
+							"type": "string",
+							"format": "date",
+							"nullable": true
+						}
+					}
+				],
 				"responses": {
 					"200": {
 						"description": "OK",
@@ -566,6 +595,17 @@
 		"/api/game/guess": {
 			"post": {
 				"tags": ["Game"],
+				"parameters": [
+					{
+						"name": "date",
+						"in": "query",
+						"schema": {
+							"type": "string",
+							"format": "date",
+							"nullable": true
+						}
+					}
+				],
 				"requestBody": {
 					"content": {
 						"application/json": {
@@ -642,6 +682,17 @@
 		"/api/game/easy-mode": {
 			"post": {
 				"tags": ["Game"],
+				"parameters": [
+					{
+						"name": "date",
+						"in": "query",
+						"schema": {
+							"type": "string",
+							"format": "date",
+							"nullable": true
+						}
+					}
+				],
 				"responses": {
 					"200": {
 						"description": "OK",
@@ -1172,6 +1223,9 @@
 					"solution": {
 						"type": "string",
 						"nullable": true
+					},
+					"isReplay": {
+						"type": "boolean"
 					}
 				},
 				"additionalProperties": false
@@ -1612,6 +1666,32 @@
 					"guessCount",
 					"guesses"
 				]
+			},
+			"AdminPlayersPageResponse": {
+				"type": "object",
+				"properties": {
+					"players": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/AdminPlayerSummaryResponse"
+						},
+						"nullable": true
+					},
+					"totalCount": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"page": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"pageSize": {
+						"type": "integer",
+						"format": "int32"
+					}
+				},
+				"additionalProperties": false,
+				"required": ["totalCount", "page", "pageSize"]
 			},
 			"ProblemDetails": {
 				"type": "object",

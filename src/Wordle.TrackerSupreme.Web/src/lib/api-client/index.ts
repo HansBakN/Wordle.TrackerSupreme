@@ -9,6 +9,7 @@ export type { OpenAPIConfig } from './core/OpenAPI';
 
 export type { AdminPlayerAttemptResponse } from './models/AdminPlayerAttemptResponse';
 export type { AdminPlayerDetailResponse } from './models/AdminPlayerDetailResponse';
+export type { AdminPlayersPageResponse } from './models/AdminPlayersPageResponse';
 export type { AdminPlayerSummaryResponse } from './models/AdminPlayerSummaryResponse';
 export type { AdminResetPasswordRequest } from './models/AdminResetPasswordRequest';
 export type { AdminSetAdminStatusRequest } from './models/AdminSetAdminStatusRequest';
@@ -25,8 +26,8 @@ export type { PlayerResponse } from './models/PlayerResponse';
 export type { PlayerStatsEntryResponse } from './models/PlayerStatsEntryResponse';
 export type { PlayerStatsFilterRequest } from './models/PlayerStatsFilterRequest';
 export type { PlayerStatsResponse } from './models/PlayerStatsResponse';
-export type { PuzzleHistoryEntryResponse } from './models/PuzzleHistoryEntryResponse';
 export type { ProblemDetails } from './models/ProblemDetails';
+export type { PuzzleHistoryEntryResponse } from './models/PuzzleHistoryEntryResponse';
 export type { SignInRequest } from './models/SignInRequest';
 export type { SignUpRequest } from './models/SignUpRequest';
 export type { SolutionEntryResponse } from './models/SolutionEntryResponse';

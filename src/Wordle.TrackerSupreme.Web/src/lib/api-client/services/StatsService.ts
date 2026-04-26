@@ -23,16 +23,6 @@ export class StatsService {
 		});
 	}
 	/**
-	 * @returns PuzzleHistoryEntryResponse OK
-	 * @throws ApiError
-	 */
-	public static getApiStatsMeHistory(): CancelablePromise<Array<PuzzleHistoryEntryResponse>> {
-		return __request(OpenAPI, {
-			method: 'GET',
-			url: '/api/stats/me/history'
-		});
-	}
-	/**
 	 * @returns PlayerStatsEntryResponse OK
 	 * @throws ApiError
 	 */
@@ -78,6 +68,16 @@ export class StatsService {
 		return __request(OpenAPI, {
 			method: 'GET',
 			url: '/api/stats/leaderboard/today'
+		});
+	}
+	/**
+	 * @returns PuzzleHistoryEntryResponse OK
+	 * @throws ApiError
+	 */
+	public static getApiStatsMeHistory(): CancelablePromise<Array<PuzzleHistoryEntryResponse>> {
+		return __request(OpenAPI, {
+			method: 'GET',
+			url: '/api/stats/me/history'
 		});
 	}
 }

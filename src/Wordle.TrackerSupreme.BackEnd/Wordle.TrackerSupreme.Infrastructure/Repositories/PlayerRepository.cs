@@ -47,6 +47,31 @@ public class PlayerRepository(WordleTrackerSupremeDbContext dbContext) : IPlayer
                 .ThenInclude(a => a.Guesses)
             .ToListAsync(cancellationToken);
 
+    public async Task<(List<Player> Players, int TotalCount)> GetPlayersPage(string? search, int page, int pageSize, CancellationToken cancellationToken)
+    {
+        var query = dbContext.Players
+            .Include(p => p.Attempts)
+            .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            var term = search.Trim().ToLower();
+            query = query.Where(p =>
+                p.DisplayName.ToLower().Contains(term) ||
+                p.Email.ToLower().Contains(term));
+        }
+
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        var players = await query
+            .OrderBy(p => p.DisplayName)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+
+        return (players, totalCount);
+    }
+
     public Task<bool> IsDisplayNameTaken(string displayName, Guid? excludePlayerId, CancellationToken cancellationToken)
     {
         return dbContext.Players.AnyAsync(
