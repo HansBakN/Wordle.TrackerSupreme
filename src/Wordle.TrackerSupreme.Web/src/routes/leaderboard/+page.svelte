@@ -41,6 +41,7 @@
 	let todayEntries = $state<TodayLeaderboardEntryResponse[]>([]);
 	let hasLoaded = $state(false);
 	let activeTab = $state<LeaderboardTab>('all-time');
+	let includeNewYorkTimes = $state(false);
 	let loadedTabs = $state<Record<LeaderboardTab, boolean>>({
 		'all-time': false,
 		today: false
@@ -79,7 +80,11 @@
 		loading = true;
 		error = null;
 		try {
-			const data = await StatsService.getApiStatsLeaderboard({ page, pageSize: PAGE_SIZE });
+			const data = await StatsService.getApiStatsLeaderboard({
+				page,
+				pageSize: PAGE_SIZE,
+				includeNewYorkTimes: includeNewYorkTimes ? true : undefined
+			});
 			allTimeEntries = data.items ?? [];
 			allTimePage = data.page ?? 1;
 			allTimeTotalPages = data.totalPages ?? 1;
@@ -103,7 +108,9 @@
 				await loadAllTime(1);
 				return;
 			} else {
-				todayEntries = await StatsService.getApiStatsLeaderboardToday();
+				todayEntries = await StatsService.getApiStatsLeaderboardToday({
+					includeNewYorkTimes: includeNewYorkTimes ? true : undefined
+				});
 			}
 			loadedTabs[tab] = true;
 		} catch (err) {
@@ -125,6 +132,14 @@
 		await loadLeaderboard(tab);
 	}
 
+	async function toggleNewYorkTimes() {
+		loadedTabs = {
+			'all-time': false,
+			today: false
+		};
+		await loadLeaderboard(activeTab);
+	}
+
 	onMount(() => {
 		if ($auth.user) {
 			hasLoaded = true;
@@ -143,6 +158,7 @@
 			allTimeEntries = [];
 			todayEntries = [];
 			activeTab = 'all-time';
+			includeNewYorkTimes = false;
 			loadedTabs = {
 				'all-time': false,
 				today: false
@@ -205,6 +221,15 @@
 			</div>
 			<h1 class="mt-4 text-3xl font-semibold text-white">{getTabContent(activeTab).title}</h1>
 			<p class="mt-2 max-w-2xl text-sm text-slate-200/80">{getTabContent(activeTab).description}</p>
+			<label class="mt-5 flex w-fit items-center gap-2 text-sm text-slate-100/80">
+				<input
+					type="checkbox"
+					bind:checked={includeNewYorkTimes}
+					on:change={() => void toggleNewYorkTimes()}
+					data-testid="leaderboard-include-nyt"
+				/>
+				Include New York Times
+			</label>
 		</section>
 
 		{#if error}

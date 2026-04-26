@@ -55,6 +55,7 @@ export type SolutionsResponse = {
 };
 
 export type PlayerStatsResponse = {
+	streams?: PuzzleStream[] | null;
 	totalAttempts: number;
 	wins: number;
 	failures: number;

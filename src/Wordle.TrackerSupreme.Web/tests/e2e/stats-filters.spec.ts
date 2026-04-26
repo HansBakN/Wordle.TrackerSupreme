@@ -18,6 +18,7 @@ test('stats apply sends chosen filter payload', async ({ page }) => {
 	await page.getByTestId('filter-easy-mode').setChecked(true);
 	await page.getByTestId('filter-before-reveal').setChecked(false);
 	await page.getByTestId('filter-after-reveal').setChecked(true);
+	await page.getByTestId('filter-include-nyt').setChecked(true);
 	await page.getByTestId('filter-count-practice').setChecked(true);
 	await page.getByTestId('filter-solved').setChecked(true);
 	await page.getByTestId('filter-failed').setChecked(false);
@@ -42,6 +43,7 @@ test('stats apply sends chosen filter payload', async ({ page }) => {
 		includeSolved: true,
 		includeFailed: false,
 		includeInProgress: true,
+		streams: ['TrackerSupreme', 'NewYorkTimes'],
 		countPracticeAttempts: true,
 		fromDate: '2025-01-01',
 		toDate: '2025-02-01',

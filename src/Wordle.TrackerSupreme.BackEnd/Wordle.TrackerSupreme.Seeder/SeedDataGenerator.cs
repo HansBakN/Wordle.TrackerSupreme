@@ -38,7 +38,7 @@ public class SeedDataGenerator(
         var random = new Random(_options.RandomSeed);
         var players = BuildPlayers(random, anchorDate);
         var puzzles = BuildPuzzles(anchorDate, random);
-        var attempts = BuildAttempts(random, anchorDate, players, puzzles);
+        var attempts = BuildAttempts(random, players, puzzles);
         EnsureFeaturedAttempts(attempts, players, puzzles);
 
         return new SeedData(players, puzzles, attempts);
@@ -103,65 +103,97 @@ public class SeedDataGenerator(
     {
         var requiredDays = _options.MaxSolvedPuzzles + _options.FailedPuzzlesMax + _options.InProgressPuzzlesMax;
         var totalDays = Math.Max(_options.PuzzleDays, requiredDays);
-        var puzzles = new List<DailyPuzzle>(totalDays);
+        var streams = Enum.GetValues<PuzzleStream>();
+        var puzzles = new List<DailyPuzzle>(totalDays * streams.Length);
 
-        for (int i = 0; i < totalDays; i++)
+        for (int i = totalDays - 1; i >= 0; i--)
         {
             var date = anchorDate.AddDays(-i);
-            puzzles.Add(new DailyPuzzle
+            foreach (var stream in streams)
             {
-                Id = Guid.NewGuid(),
-                PuzzleDate = date,
-                Solution = _wordSelector.GetSolutionFor(date),
-                IsArchived = date < anchorDate
-            });
+                puzzles.Add(new DailyPuzzle
+                {
+                    Id = Guid.NewGuid(),
+                    PuzzleDate = date,
+                    Stream = stream,
+                    Solution = GetSeedSolution(date, stream),
+                    IsArchived = date < anchorDate
+                });
+            }
         }
 
-        puzzles.Reverse();
         return puzzles;
+    }
+
+    private string GetSeedSolution(DateOnly date, PuzzleStream stream)
+    {
+        if (stream == PuzzleStream.TrackerSupreme)
+        {
+            return _wordSelector.GetSolutionFor(date);
+        }
+
+        return _wordSelector.GetSolutionFor(date.AddDays(17));
     }
 
     private List<PlayerPuzzleAttempt> BuildAttempts(
         Random random,
-        DateOnly anchorDate,
         IReadOnlyList<Player> players,
         IReadOnlyList<DailyPuzzle> puzzles)
     {
         var attempts = new List<PlayerPuzzleAttempt>();
-        var totalDays = puzzles.Count;
         var maxGuesses = _gameOptions.MaxGuesses;
+        var puzzlesByStream = puzzles
+            .GroupBy(puzzle => puzzle.Stream)
+            .OrderBy(group => group.Key)
+            .ToList();
 
         foreach (var player in players)
         {
-            var solvedCount = random.Next(_options.MinSolvedPuzzles, _options.MaxSolvedPuzzles + 1);
-            var failedCount = random.Next(_options.FailedPuzzlesMin, _options.FailedPuzzlesMax + 1);
-            var inProgressCount = random.Next(_options.InProgressPuzzlesMin, _options.InProgressPuzzlesMax + 1);
-            var totalCount = Math.Min(totalDays, solvedCount + failedCount + inProgressCount);
-
-            var puzzleOrder = puzzles
-                .OrderBy(_ => random.Next())
-                .Take(totalCount)
-                .ToList();
-
-            var solved = puzzleOrder.Take(Math.Min(solvedCount, puzzleOrder.Count)).ToList();
-            var remaining = puzzleOrder.Skip(solved.Count).ToList();
-            var failed = remaining.Take(Math.Min(failedCount, remaining.Count)).ToList();
-            var inProgress = remaining.Skip(failed.Count).Take(Math.Min(inProgressCount, remaining.Count - failed.Count)).ToList();
-
-            foreach (var puzzle in solved)
+            foreach (var streamPuzzles in puzzlesByStream)
             {
-                attempts.Add(BuildSolvedAttempt(player, puzzle, random, maxGuesses));
+                attempts.AddRange(BuildAttemptsForStream(random, player, streamPuzzles.ToList(), maxGuesses));
             }
+        }
 
-            foreach (var puzzle in failed)
-            {
-                attempts.Add(BuildFailedAttempt(player, puzzle, random, maxGuesses));
-            }
+        return attempts;
+    }
 
-            foreach (var puzzle in inProgress)
-            {
-                attempts.Add(BuildInProgressAttempt(player, puzzle, random, maxGuesses));
-            }
+    private List<PlayerPuzzleAttempt> BuildAttemptsForStream(
+        Random random,
+        Player player,
+        IReadOnlyList<DailyPuzzle> puzzles,
+        int maxGuesses)
+    {
+        var attempts = new List<PlayerPuzzleAttempt>();
+        var totalDays = puzzles.Count;
+        var solvedCount = random.Next(_options.MinSolvedPuzzles, _options.MaxSolvedPuzzles + 1);
+        var failedCount = random.Next(_options.FailedPuzzlesMin, _options.FailedPuzzlesMax + 1);
+        var inProgressCount = random.Next(_options.InProgressPuzzlesMin, _options.InProgressPuzzlesMax + 1);
+        var totalCount = Math.Min(totalDays, solvedCount + failedCount + inProgressCount);
+
+        var puzzleOrder = puzzles
+            .OrderBy(_ => random.Next())
+            .Take(totalCount)
+            .ToList();
+
+        var solved = puzzleOrder.Take(Math.Min(solvedCount, puzzleOrder.Count)).ToList();
+        var remaining = puzzleOrder.Skip(solved.Count).ToList();
+        var failed = remaining.Take(Math.Min(failedCount, remaining.Count)).ToList();
+        var inProgress = remaining.Skip(failed.Count).Take(Math.Min(inProgressCount, remaining.Count - failed.Count)).ToList();
+
+        foreach (var puzzle in solved)
+        {
+            attempts.Add(BuildSolvedAttempt(player, puzzle, random, maxGuesses));
+        }
+
+        foreach (var puzzle in failed)
+        {
+            attempts.Add(BuildFailedAttempt(player, puzzle, random, maxGuesses));
+        }
+
+        foreach (var puzzle in inProgress)
+        {
+            attempts.Add(BuildInProgressAttempt(player, puzzle, random, maxGuesses));
         }
 
         return attempts;

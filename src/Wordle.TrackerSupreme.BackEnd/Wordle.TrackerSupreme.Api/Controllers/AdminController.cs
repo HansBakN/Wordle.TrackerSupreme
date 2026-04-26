@@ -195,6 +195,7 @@ public class AdminController(IAdminService adminService) : ControllerBase
         return new AdminPlayerAttemptResponse(
             attempt.Id,
             attempt.DailyPuzzle.PuzzleDate,
+            attempt.DailyPuzzle.Stream,
             attempt.Status,
             attempt.PlayedInHardMode,
             attempt.CreatedOn,
