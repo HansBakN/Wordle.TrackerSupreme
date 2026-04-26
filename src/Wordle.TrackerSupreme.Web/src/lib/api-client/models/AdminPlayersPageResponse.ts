@@ -5,7 +5,7 @@
 import type { AdminPlayerSummaryResponse } from './AdminPlayerSummaryResponse';
 export type AdminPlayersPageResponse = {
 	players?: Array<AdminPlayerSummaryResponse> | null;
-	totalCount?: number;
-	page?: number;
-	pageSize?: number;
+	totalCount: number;
+	page: number;
+	pageSize: number;
 };
