@@ -271,15 +271,15 @@
 			{#if activeTab === 'all-time'}
 				<div class="mt-5 flex flex-wrap items-center gap-3 text-sm text-slate-200/80">
 					<label class="font-semibold text-white" for="leaderboard-sort">Sort leaderboard by</label>
-					<select
-						id="leaderboard-sort"
-						class="rounded-full border border-white/15 bg-black/30 px-4 py-2 text-sm text-white"
-						bind:value={allTimeSortBy}
-						on:change={(event) =>
-							void changeAllTimeSort(
-								(event.currentTarget as HTMLSelectElement).value as LeaderboardSortKey
-							)}
-					>
+						<select
+							id="leaderboard-sort"
+							class="rounded-full border border-white/15 bg-black/30 px-4 py-2 text-sm text-white"
+							bind:value={allTimeSortBy}
+							onchange={(event) =>
+								void changeAllTimeSort(
+									(event.currentTarget as HTMLSelectElement).value as LeaderboardSortKey
+								)}
+						>
 						{#each leaderboardSortOptions as option (option.value)}
 							<option value={option.value}>{option.label}</option>
 						{/each}
