@@ -72,15 +72,9 @@ scripts/
 - Hard mode: guesses must keep all confirmed letters in their exact positions and include all revealed letters.
 - Guesses are normalised to uppercase before evaluation.
 
-## Known open issues
+## Open issues
 
-| #                                                                  | Summary                                        | Root cause                                                                                                                                                                                                                                                                                                                  |
-| ------------------------------------------------------------------ | ---------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [#6](https://github.com/HansBakN/Wordle.TrackerSupreme/issues/6)   | Average guesses always 0                       | `GetPlayersWithAttempts` / `GetPlayerWithAttempts` don't include `Guesses` nav-prop; `GuessCount` returns 0 instead of the real count. Fix: add `.ThenInclude(a => a.Guesses)` to both repository methods.                                                                                                                  |
-| [#7](https://github.com/HansBakN/Wordle.TrackerSupreme/issues/7)   | Double submits possible                        | On-screen Enter button `disabled` doesn't include `\|\| submitting`, so the button stays visually active during in-flight submission. A physical-Enter + on-screen-Enter combo can fire two events before the `submitting` guard is visible. Fix: add `\|\| submitting` to all interactive game button `disabled` bindings. |
-| [#10](https://github.com/HansBakN/Wordle.TrackerSupreme/issues/10) | No rate limiting on auth endpoints             | `/api/auth/signin` and `/api/auth/signup` are unprotected; brute-force and bulk-registration possible. Fix: add ASP.NET Core `RateLimiter` middleware.                                                                                                                                                                      |
-| [#11](https://github.com/HansBakN/Wordle.TrackerSupreme/issues/11) | No input length validation on signup DTOs      | `SignUpRequest` and admin update DTOs have no `[StringLength]` guards; an oversized `Password` causes intentionally-slow bcrypt to become a DoS vector.                                                                                                                                                                     |
-| [#12](https://github.com/HansBakN/Wordle.TrackerSupreme/issues/12) | `AuthController` accesses `DbContext` directly | Bypasses `IPlayerRepository`, breaking testability and consistency.                                                                                                                                                                                                                                                         |
+Active work is tracked on GitHub: see [open issues](https://github.com/HansBakN/Wordle.TrackerSupreme/issues) and [open PRs](https://github.com/HansBakN/Wordle.TrackerSupreme/pulls). Before starting on an issue, check whether an open PR already covers it to avoid duplicate work.
 
 ## Working patterns
 
@@ -159,10 +153,10 @@ Setup (one-time):
 
 1. The `docker-compose.override.yml` already exposes port 5432 to the host.
 2. Set `POSTGRES_URL` in your shell (or add it to `.env.local` for reference — but don't commit it):
-   ```bash
-   export POSTGRES_URL="postgresql://wordle_user:<password>@localhost:5432/wordle_trackersupreme"
-   ```
-   Substitute the values from your `.env.local` (`POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB`).
+    ```bash
+    export POSTGRES_URL="postgresql://wordle_user:<password>@localhost:5432/wordle_trackersupreme"
+    ```
+    Substitute the values from your `.env.local` (`POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB`).
 3. The MCP server starts automatically when Claude Code loads this project.
 
 Use the `db-inspector` subagent for read-only queries, or invoke `mcp__postgres__*` tools directly.
