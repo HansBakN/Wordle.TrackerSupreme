@@ -1,4 +1,5 @@
 import { getApiBase, notifyUnauthorizedResponse } from '$lib/api';
+import type { CalendarResponse } from '$lib/api-client/models/CalendarResponse';
 import type { PracticeStateResponse } from '$lib/api-client/models/PracticeStateResponse';
 import { PracticeService } from '$lib/api-client/services/PracticeService';
 import { StatsService } from '$lib/api-client/services/StatsService';
@@ -83,6 +84,10 @@ export function fetchSolutions(): Promise<SolutionsResponse> {
 
 export function fetchMyStats(): Promise<PlayerStatsResponse> {
 	return StatsService.getApiStatsMe();
+}
+
+export function fetchMyCalendar(days = 90): Promise<CalendarResponse> {
+	return StatsService.getApiStatsMeCalendar({ days });
 }
 
 export function startPracticeGame(): Promise<PracticeStateResponse> {

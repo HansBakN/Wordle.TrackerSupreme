@@ -959,6 +959,44 @@
 				}
 			}
 		},
+		"/api/stats/me/calendar": {
+			"get": {
+				"tags": ["Stats"],
+				"parameters": [
+					{
+						"name": "days",
+						"in": "query",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 90
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"$ref": "#/components/schemas/CalendarResponse"
+								}
+							},
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CalendarResponse"
+								}
+							},
+							"text/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CalendarResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/api/practice/start": {
 			"post": {
 				"tags": ["Practice"],
@@ -2008,6 +2046,41 @@
 				},
 				"additionalProperties": {}
 			},
+			"CalendarDayResponse": {
+				"type": "object",
+				"properties": {
+					"date": {
+						"type": "string",
+						"format": "date"
+					},
+					"outcome": {
+						"type": "string"
+					},
+					"guessCount": {
+						"type": "integer",
+						"format": "int32",
+						"nullable": true
+					},
+					"isAfterReveal": {
+						"type": "boolean"
+					}
+				},
+				"additionalProperties": false,
+				"required": ["date", "outcome", "isAfterReveal"]
+			},
+			"CalendarResponse": {
+				"type": "object",
+				"properties": {
+					"days": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/CalendarDayResponse"
+						}
+					}
+				},
+				"additionalProperties": false,
+				"required": ["days"]
+			},
 			"PracticeStateResponse": {
 				"type": "object",
 				"properties": {
@@ -2082,7 +2155,7 @@
 					"guesses"
 				]
 			}
-		},
+			},
 		"securitySchemes": {
 			"Bearer": {
 				"type": "http",

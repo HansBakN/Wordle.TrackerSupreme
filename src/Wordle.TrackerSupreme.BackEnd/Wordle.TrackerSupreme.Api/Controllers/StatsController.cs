@@ -100,6 +100,61 @@ public class StatsController(
         return Ok(entries);
     }
 
+    [HttpGet("me/calendar")]
+    public async Task<ActionResult<CalendarResponse>> GetMyCalendar(
+        [FromQuery] int days = 90,
+        CancellationToken cancellationToken = default)
+    {
+        var playerIdClaim = User.FindFirstValue("playerId");
+        if (!Guid.TryParse(playerIdClaim, out var playerId))
+        {
+            return Unauthorized();
+        }
+
+        var player = await playerRepository.GetPlayerWithAttempts(playerId, cancellationToken);
+        if (player is null)
+        {
+            return Unauthorized();
+        }
+
+        days = Math.Clamp(days, 1, 365);
+        var today = gameClock.Today;
+        var startDate = today.AddDays(-(days - 1));
+
+        var attemptsByDate = player.Attempts
+            .Where(a => a.DailyPuzzle is not null)
+            .GroupBy(a => a.DailyPuzzle!.PuzzleDate)
+            .ToDictionary(g => g.Key, g => g.ToList());
+
+        var calendarDays = new List<CalendarDayResponse>();
+        for (var date = startDate; date <= today; date = date.AddDays(1))
+        {
+            if (attemptsByDate.TryGetValue(date, out var attemptsForDay))
+            {
+                var primary = attemptsForDay
+                    .OrderBy(a => a.CreatedOn)
+                    .First();
+
+                var isAfterReveal = gameClock.IsAfterReveal(primary);
+                var outcome = primary.Status switch
+                {
+                    Domain.Models.AttemptStatus.Solved => "won",
+                    Domain.Models.AttemptStatus.Failed => "failed",
+                    _ => "in_progress"
+                };
+                var guessCount = primary.Guesses?.Count;
+
+                calendarDays.Add(new CalendarDayResponse(date, outcome, guessCount, isAfterReveal));
+            }
+            else
+            {
+                calendarDays.Add(new CalendarDayResponse(date, "none", null, false));
+            }
+        }
+
+        return Ok(new CalendarResponse(calendarDays));
+    }
+
     [HttpGet("leaderboard")]
     public async Task<ActionResult<LeaderboardPageResponse>> GetLeaderboard(
         [FromQuery] int page = 1,

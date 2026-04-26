@@ -10,6 +10,7 @@
 		defaultStatsFilterState,
 		type StatsFilterState
 	} from '$lib/stats/filters';
+	import StreakCalendar from '$lib/stats/StreakCalendar.svelte';
 
 	let loading = $state(false);
 	let error = $state<string | null>(null);
@@ -121,6 +122,8 @@
 	</div>
 {:else}
 	<div class="space-y-6">
+		<StreakCalendar />
+
 		<section class="rounded-3xl border border-white/10 bg-white/5 p-8 shadow-2xl">
 			<div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
 				<div>

@@ -441,6 +441,40 @@ public class StatsControllerTests
     }
 
     [Fact]
+    public async Task GetMyCalendar_returns_daily_outcomes_for_date_range()
+    {
+        var today = new DateOnly(2025, 1, 10);
+        var player = CreatePlayer("Tester");
+        player.Attempts.Add(CreateAttempt(player, new DateOnly(2025, 1, 8), AttemptStatus.Solved, true, 3));
+        player.Attempts.Add(CreateAttempt(player, new DateOnly(2025, 1, 9), AttemptStatus.Failed, true, 6));
+
+        var repo = new FakePlayerRepository([player]);
+        var clock = new FakeGameClock(today);
+        var controller = new StatsController(repo, new PlayerStatisticsService(), clock)
+        {
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new ClaimsPrincipal(new ClaimsIdentity(new[]
+                    {
+                        new Claim("playerId", player.Id.ToString())
+                    }, "Test"))
+                }
+            }
+        };
+
+        var result = await controller.GetMyCalendar(days: 5, CancellationToken.None);
+
+        var ok = result.Result.Should().BeOfType<OkObjectResult>().Which;
+        var calendar = ok.Value.Should().BeOfType<CalendarResponse>().Which;
+        calendar.Days.Should().HaveCount(5);
+        calendar.Days.Should().Contain(d => d.Date == new DateOnly(2025, 1, 8) && d.Outcome == "won" && d.GuessCount == 3);
+        calendar.Days.Should().Contain(d => d.Date == new DateOnly(2025, 1, 9) && d.Outcome == "failed");
+        calendar.Days.Should().Contain(d => d.Date == new DateOnly(2025, 1, 10) && d.Outcome == "none");
+    }
+
+    [Fact]
     public async Task GetMine_counts_practice_wins_in_personal_stats()
     {
         var player = CreatePlayer("Practitioner");
