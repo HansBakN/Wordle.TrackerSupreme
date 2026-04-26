@@ -65,6 +65,32 @@ public class StatsControllerTests
     }
 
     [Fact]
+    public async Task GetLeaderboard_sorts_by_requested_metric()
+    {
+        var alpha = CreatePlayer("Alpha");
+        alpha.Attempts.Add(CreateAttempt(alpha, new DateOnly(2025, 1, 1), AttemptStatus.Solved, true, 2));
+        alpha.Attempts.Add(CreateAttempt(alpha, new DateOnly(2025, 1, 2), AttemptStatus.Failed, true, 6));
+
+        var beta = CreatePlayer("Beta");
+        beta.Attempts.Add(CreateAttempt(beta, new DateOnly(2025, 1, 1), AttemptStatus.Solved, true, 3));
+        beta.Attempts.Add(CreateAttempt(beta, new DateOnly(2025, 1, 2), AttemptStatus.Solved, true, 4));
+        beta.Attempts.Add(CreateAttempt(beta, new DateOnly(2025, 1, 3), AttemptStatus.Solved, true, 5));
+
+        var repo = new FakePlayerRepository([alpha, beta]);
+        var controller = new StatsController(repo, new PlayerStatisticsService(), new FakeGameClock(new DateOnly(2025, 1, 4)));
+
+        var result = await controller.GetLeaderboard(sortBy: "wins", cancellationToken: CancellationToken.None);
+        var okResult = result.Result as OkObjectResult;
+
+        okResult.Should().NotBeNull();
+        var payload = okResult!.Value.Should().BeOfType<LeaderboardPageResponse>().Subject;
+
+        payload.Items.Should().HaveCount(2);
+        payload.Items.Select(item => item.DisplayName).Should().Equal("Beta", "Alpha");
+        payload.Items.Select(item => item.Rank).Should().Equal(1, 2);
+    }
+
+    [Fact]
     public async Task GetPlayers_respects_easy_mode_and_after_reveal_filters()
     {
         var easyPlayer = CreatePlayer("Easy");
@@ -132,7 +158,7 @@ public class StatsControllerTests
         var repo = new FakePlayerRepository(players);
         var controller = new StatsController(repo, new PlayerStatisticsService(), new FakeGameClock(new DateOnly(2025, 1, 6)));
 
-        var result = await controller.GetLeaderboard(page: 2, pageSize: 2, CancellationToken.None);
+        var result = await controller.GetLeaderboard(page: 2, pageSize: 2, cancellationToken: CancellationToken.None);
         var okResult = result.Result as OkObjectResult;
 
         okResult.Should().NotBeNull();
@@ -157,7 +183,7 @@ public class StatsControllerTests
         var repo = new FakePlayerRepository([player]);
         var controller = new StatsController(repo, new PlayerStatisticsService(), new FakeGameClock(new DateOnly(2025, 1, 2)));
 
-        var result = await controller.GetLeaderboard(page: 99, pageSize: 10, CancellationToken.None);
+        var result = await controller.GetLeaderboard(page: 99, pageSize: 10, cancellationToken: CancellationToken.None);
         var okResult = result.Result as OkObjectResult;
 
         var payload = okResult!.Value.Should().BeOfType<LeaderboardPageResponse>().Subject;
