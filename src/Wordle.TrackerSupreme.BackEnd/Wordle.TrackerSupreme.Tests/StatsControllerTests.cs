@@ -226,6 +226,220 @@ public class StatsControllerTests
         payload.Single().DisplayName.Should().Be("Active");
     }
 
+    private static StatsController CreateControllerForPlayer(
+        Player player,
+        FakeGameClock clock)
+    {
+        var repo = new FakePlayerRepository([player]);
+        var controller = new StatsController(repo, new PlayerStatisticsService(), clock)
+        {
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new ClaimsPrincipal(new ClaimsIdentity(
+                        [new Claim("playerId", player.Id.ToString())], "Test"))
+                }
+            }
+        };
+        return controller;
+    }
+
+    [Fact]
+    public async Task GetMyHistory_returns_unauthorized_when_player_id_claim_is_missing()
+    {
+        var repo = new FakePlayerRepository([]);
+        var controller = new StatsController(repo, new PlayerStatisticsService(), new FakeGameClock(new DateOnly(2025, 1, 2)))
+        {
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new ClaimsPrincipal()
+                }
+            }
+        };
+
+        var result = await controller.GetMyHistory(CancellationToken.None);
+
+        result.Result.Should().BeOfType<UnauthorizedResult>();
+    }
+
+    [Fact]
+    public async Task GetMyHistory_returns_unauthorized_when_player_not_found()
+    {
+        var repo = new FakePlayerRepository([]);
+        var controller = new StatsController(repo, new PlayerStatisticsService(), new FakeGameClock(new DateOnly(2025, 1, 2)))
+        {
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new ClaimsPrincipal(new ClaimsIdentity(
+                        [new Claim("playerId", Guid.NewGuid().ToString())], "Test"))
+                }
+            }
+        };
+
+        var result = await controller.GetMyHistory(CancellationToken.None);
+
+        result.Result.Should().BeOfType<UnauthorizedResult>();
+    }
+
+    [Fact]
+    public async Task GetMyHistory_returns_empty_list_when_player_has_no_attempts()
+    {
+        var player = CreatePlayer("Alice");
+        var clock = new FakeGameClock(new DateOnly(2025, 1, 2));
+        var controller = CreateControllerForPlayer(player, clock);
+
+        var result = await controller.GetMyHistory(CancellationToken.None);
+
+        var ok = result.Result.Should().BeOfType<OkObjectResult>().Which;
+        var history = ok.Value.Should().BeAssignableTo<IReadOnlyList<PuzzleHistoryEntryResponse>>().Subject;
+        history.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task GetMyHistory_returns_attempts_ordered_most_recent_first()
+    {
+        var player = CreatePlayer("Alice");
+        player.Attempts.Add(CreateAttempt(player, new DateOnly(2025, 1, 1), AttemptStatus.Solved, true, 3));
+        player.Attempts.Add(CreateAttempt(player, new DateOnly(2025, 1, 3), AttemptStatus.Failed, false, 6));
+        player.Attempts.Add(CreateAttempt(player, new DateOnly(2025, 1, 2), AttemptStatus.Solved, true, 4));
+
+        var clock = new FakeGameClock(new DateOnly(2025, 1, 4), revealPassed: true);
+        var controller = CreateControllerForPlayer(player, clock);
+
+        var result = await controller.GetMyHistory(CancellationToken.None);
+
+        var ok = result.Result.Should().BeOfType<OkObjectResult>().Which;
+        var history = ok.Value.Should().BeAssignableTo<IReadOnlyList<PuzzleHistoryEntryResponse>>().Subject;
+
+        history.Should().HaveCount(3);
+        history.Select(h => h.PuzzleDate).Should().Equal(
+            new DateOnly(2025, 1, 3),
+            new DateOnly(2025, 1, 2),
+            new DateOnly(2025, 1, 1));
+    }
+
+    [Fact]
+    public async Task GetMyHistory_includes_guesses_with_feedback()
+    {
+        var player = CreatePlayer("Alice");
+        var puzzle = new DailyPuzzle { Id = Guid.NewGuid(), PuzzleDate = new DateOnly(2025, 1, 1), Solution = "CRANE" };
+        var attempt = new PlayerPuzzleAttempt
+        {
+            Id = Guid.NewGuid(),
+            Player = player,
+            PlayerId = player.Id,
+            DailyPuzzle = puzzle,
+            DailyPuzzleId = puzzle.Id,
+            Status = AttemptStatus.Solved,
+            PlayedInHardMode = true,
+            CreatedOn = new DateTime(2025, 1, 1),
+            Guesses = []
+        };
+
+        var guess = new GuessAttempt
+        {
+            Id = Guid.NewGuid(),
+            GuessNumber = 1,
+            GuessWord = "CRANE",
+            PlayerPuzzleAttempt = attempt,
+            Feedback =
+            [
+                new LetterEvaluation { Id = Guid.NewGuid(), Position = 0, Letter = 'C', Result = LetterResult.Correct },
+                new LetterEvaluation { Id = Guid.NewGuid(), Position = 1, Letter = 'R', Result = LetterResult.Correct },
+                new LetterEvaluation { Id = Guid.NewGuid(), Position = 2, Letter = 'A', Result = LetterResult.Correct },
+                new LetterEvaluation { Id = Guid.NewGuid(), Position = 3, Letter = 'N', Result = LetterResult.Correct },
+                new LetterEvaluation { Id = Guid.NewGuid(), Position = 4, Letter = 'E', Result = LetterResult.Correct }
+            ]
+        };
+
+        attempt.Guesses.Add(guess);
+        player.Attempts.Add(attempt);
+
+        var clock = new FakeGameClock(new DateOnly(2025, 1, 2), revealPassed: true);
+        var controller = CreateControllerForPlayer(player, clock);
+
+        var result = await controller.GetMyHistory(CancellationToken.None);
+
+        var ok = result.Result.Should().BeOfType<OkObjectResult>().Which;
+        var history = ok.Value.Should().BeAssignableTo<IReadOnlyList<PuzzleHistoryEntryResponse>>().Subject;
+
+        history.Should().HaveCount(1);
+        var entry = history.Single();
+        entry.Status.Should().Be(AttemptStatus.Solved);
+        entry.GuessCount.Should().Be(1);
+        entry.Guesses.Should().HaveCount(1);
+        entry.Guesses.Single().GuessWord.Should().Be("CRANE");
+        entry.Guesses.Single().Feedback.Should().HaveCount(5);
+        entry.Guesses.Single().Feedback.All(f => f.Result == LetterResult.Correct).Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task GetMyHistory_hides_solution_when_reveal_has_not_passed()
+    {
+        var player = CreatePlayer("Alice");
+        var puzzle = new DailyPuzzle { Id = Guid.NewGuid(), PuzzleDate = new DateOnly(2025, 1, 1), Solution = "CRANE" };
+        var attempt = new PlayerPuzzleAttempt
+        {
+            Id = Guid.NewGuid(),
+            Player = player,
+            PlayerId = player.Id,
+            DailyPuzzle = puzzle,
+            DailyPuzzleId = puzzle.Id,
+            Status = AttemptStatus.InProgress,
+            PlayedInHardMode = false,
+            CreatedOn = new DateTime(2025, 1, 1),
+            Guesses = []
+        };
+        player.Attempts.Add(attempt);
+
+        // revealPassed = false so solution should be null
+        var clock = new FakeGameClock(new DateOnly(2025, 1, 1), revealPassed: false);
+        var controller = CreateControllerForPlayer(player, clock);
+
+        var result = await controller.GetMyHistory(CancellationToken.None);
+
+        var ok = result.Result.Should().BeOfType<OkObjectResult>().Which;
+        var history = ok.Value.Should().BeAssignableTo<IReadOnlyList<PuzzleHistoryEntryResponse>>().Subject;
+
+        history.Single().Solution.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task GetMyHistory_exposes_solution_when_reveal_has_passed()
+    {
+        var player = CreatePlayer("Alice");
+        var puzzle = new DailyPuzzle { Id = Guid.NewGuid(), PuzzleDate = new DateOnly(2025, 1, 1), Solution = "CRANE" };
+        var attempt = new PlayerPuzzleAttempt
+        {
+            Id = Guid.NewGuid(),
+            Player = player,
+            PlayerId = player.Id,
+            DailyPuzzle = puzzle,
+            DailyPuzzleId = puzzle.Id,
+            Status = AttemptStatus.Failed,
+            PlayedInHardMode = false,
+            CreatedOn = new DateTime(2025, 1, 1),
+            Guesses = []
+        };
+        player.Attempts.Add(attempt);
+
+        // revealPassed = true so solution should be visible
+        var clock = new FakeGameClock(new DateOnly(2025, 1, 2), revealPassed: true);
+        var controller = CreateControllerForPlayer(player, clock);
+
+        var result = await controller.GetMyHistory(CancellationToken.None);
+
+        var ok = result.Result.Should().BeOfType<OkObjectResult>().Which;
+        var history = ok.Value.Should().BeAssignableTo<IReadOnlyList<PuzzleHistoryEntryResponse>>().Subject;
+
+        history.Single().Solution.Should().Be("CRANE");
+    }
+
     [Fact]
     public async Task GetMyCalendar_returns_daily_outcomes_for_date_range()
     {
