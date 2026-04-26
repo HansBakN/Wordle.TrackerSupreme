@@ -180,19 +180,19 @@
 		{/if}
 	</main>
 
-	{#if PUBLIC_COMMIT_SHA}
-		<div class="fixed bottom-2 left-2 text-[14px]" style="display: flex">
-			<div class="text-slate-200/80">{PUBLIC_BUILD_NUMBER}.</div>
-			<button
-				type="button"
-				class="text-slate-400/60 transition hover:text-slate-200"
-				title={PUBLIC_COMMIT_URL ? `Commit: ${PUBLIC_COMMIT_SHA}` : PUBLIC_COMMIT_SHA}
-				data-testid="commit-hash"
-				onclick={openCommitLink}
-			>
-				{PUBLIC_COMMIT_SHA.slice(0, 7)}
-			</button>
-		</div>
+		{#if PUBLIC_COMMIT_SHA}
+			<div class="fixed bottom-2 left-2 text-[14px]" style="display: flex">
+				<div class="text-slate-200/80">{PUBLIC_BUILD_NUMBER}.</div>
+				<button
+					type="button"
+					class="text-slate-400/60 transition hover:text-slate-200"
+					title={PUBLIC_COMMIT_URL ? `Commit: ${PUBLIC_COMMIT_SHA}` : PUBLIC_COMMIT_SHA}
+					data-testid="commit-hash"
+					onclick={openCommitLink}
+				>
+					{PUBLIC_COMMIT_SHA.slice(0, 7)}
+				</button>
+			</div>
 	{/if}
 </div>
 

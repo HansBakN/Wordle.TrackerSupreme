@@ -17,6 +17,8 @@ public class StatsController(
     IPlayerStatisticsService statisticsService,
     IGameClock gameClock) : ControllerBase
 {
+    private const string DefaultLeaderboardSortBy = "winRate";
+
     [HttpGet("me")]
     public async Task<ActionResult<PlayerStatsResponse>> GetMine(CancellationToken cancellationToken)
     {
@@ -159,10 +161,12 @@ public class StatsController(
     public async Task<ActionResult<LeaderboardPageResponse>> GetLeaderboard(
         [FromQuery] int page = 1,
         [FromQuery] int pageSize = 10,
+        [FromQuery] string sortBy = DefaultLeaderboardSortBy,
         CancellationToken cancellationToken = default)
     {
         page = Math.Max(1, page);
         pageSize = Math.Clamp(pageSize, 1, 100);
+        sortBy = NormalizeLeaderboardSortBy(sortBy);
 
         var filter = new PlayerStatsFilterRequest(
             IncludeHardMode: true,
@@ -189,11 +193,47 @@ public class StatsController(
                 };
             })
             .Where(entry => entry.Stats.TotalAttempts > 0)
-            .OrderByDescending(entry => entry.WinRate ?? 0)
-            .ThenBy(entry => entry.Stats.AverageGuessCount ?? double.MaxValue)
-            .ThenByDescending(entry => entry.Stats.Wins)
-            .ThenBy(entry => entry.Player.DisplayName)
             .ToList();
+
+        ranked = sortBy switch
+        {
+            "averageGuessCount" => ranked
+                .OrderBy(entry => entry.Stats.AverageGuessCount ?? double.MaxValue)
+                .ThenByDescending(entry => entry.WinRate ?? 0)
+                .ThenByDescending(entry => entry.Stats.Wins)
+                .ThenBy(entry => entry.Player.DisplayName)
+                .ToList(),
+            "wins" => ranked
+                .OrderByDescending(entry => entry.Stats.Wins)
+                .ThenByDescending(entry => entry.WinRate ?? 0)
+                .ThenBy(entry => entry.Stats.AverageGuessCount ?? double.MaxValue)
+                .ThenBy(entry => entry.Player.DisplayName)
+                .ToList(),
+            "totalAttempts" => ranked
+                .OrderByDescending(entry => entry.Stats.TotalAttempts)
+                .ThenByDescending(entry => entry.WinRate ?? 0)
+                .ThenBy(entry => entry.Stats.AverageGuessCount ?? double.MaxValue)
+                .ThenBy(entry => entry.Player.DisplayName)
+                .ToList(),
+            "currentStreak" => ranked
+                .OrderByDescending(entry => entry.Stats.CurrentStreak)
+                .ThenByDescending(entry => entry.Stats.LongestStreak)
+                .ThenByDescending(entry => entry.WinRate ?? 0)
+                .ThenBy(entry => entry.Player.DisplayName)
+                .ToList(),
+            "longestStreak" => ranked
+                .OrderByDescending(entry => entry.Stats.LongestStreak)
+                .ThenByDescending(entry => entry.Stats.CurrentStreak)
+                .ThenByDescending(entry => entry.WinRate ?? 0)
+                .ThenBy(entry => entry.Player.DisplayName)
+                .ToList(),
+            _ => ranked
+                .OrderByDescending(entry => entry.WinRate ?? 0)
+                .ThenBy(entry => entry.Stats.AverageGuessCount ?? double.MaxValue)
+                .ThenByDescending(entry => entry.Stats.Wins)
+                .ThenBy(entry => entry.Player.DisplayName)
+                .ToList()
+        };
 
         var total = ranked.Count;
         var totalPages = total == 0 ? 1 : (int)Math.Ceiling((double)total / pageSize);
@@ -281,5 +321,18 @@ public class StatsController(
             stats.LongestStreak,
             stats.AverageGuessCount,
             stats.GuessDistribution);
+    }
+
+    private static string NormalizeLeaderboardSortBy(string? sortBy)
+    {
+        return sortBy switch
+        {
+            "averageGuessCount" => "averageGuessCount",
+            "wins" => "wins",
+            "totalAttempts" => "totalAttempts",
+            "currentStreak" => "currentStreak",
+            "longestStreak" => "longestStreak",
+            _ => DefaultLeaderboardSortBy
+        };
     }
 }

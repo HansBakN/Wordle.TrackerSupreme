@@ -887,6 +887,22 @@
 							"format": "int32",
 							"default": 10
 						}
+					},
+					{
+						"name": "sortBy",
+						"in": "query",
+						"schema": {
+							"type": "string",
+							"enum": [
+								"winRate",
+								"averageGuessCount",
+								"wins",
+								"totalAttempts",
+								"currentStreak",
+								"longestStreak"
+							],
+							"default": "winRate"
+						}
 					}
 				],
 				"responses": {

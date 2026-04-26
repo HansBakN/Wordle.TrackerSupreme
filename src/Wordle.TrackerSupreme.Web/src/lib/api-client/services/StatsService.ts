@@ -45,17 +45,26 @@ export class StatsService {
 	 */
 	public static getApiStatsLeaderboard({
 		page = 1,
-		pageSize = 10
+		pageSize = 10,
+		sortBy = 'winRate'
 	}: {
 		page?: number;
 		pageSize?: number;
+		sortBy?:
+			| 'winRate'
+			| 'averageGuessCount'
+			| 'wins'
+			| 'totalAttempts'
+			| 'currentStreak'
+			| 'longestStreak';
 	}): CancelablePromise<LeaderboardPageResponse> {
 		return __request(OpenAPI, {
 			method: 'GET',
 			url: '/api/stats/leaderboard',
 			query: {
 				page: page,
-				pageSize: pageSize
+				pageSize: pageSize,
+				sortBy: sortBy
 			}
 		});
 	}

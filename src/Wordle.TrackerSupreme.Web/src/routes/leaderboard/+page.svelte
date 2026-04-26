@@ -5,7 +5,11 @@
 	import { StatsService } from '$lib/api-client/services/StatsService';
 	import type { LeaderboardEntryResponse } from '$lib/api-client/models/LeaderboardEntryResponse';
 	import type { TodayLeaderboardEntryResponse } from '$lib/api-client/models/TodayLeaderboardEntryResponse';
-	import { formatTodayLeaderboardMeta } from '$lib/stats/leaderboard';
+	import {
+		formatTodayLeaderboardMeta,
+		leaderboardSortOptions,
+		type LeaderboardSortKey
+	} from '$lib/stats/leaderboard';
 
 	const PAGE_SIZE = 10;
 
@@ -38,6 +42,7 @@
 	let allTimePage = $state(1);
 	let allTimeTotalPages = $state(1);
 	let allTimeTotal = $state(0);
+	let allTimeSortBy = $state<LeaderboardSortKey>('winRate');
 	let todayEntries = $state<TodayLeaderboardEntryResponse[]>([]);
 	let hasLoaded = $state(false);
 	let activeTab = $state<LeaderboardTab>('all-time');
@@ -76,16 +81,23 @@
 		return 'bg-amber-400/15 text-amber-100 ring-1 ring-amber-300/20';
 	}
 
-	async function loadAllTime(page: number) {
-		if (!$auth.user) return;
+	async function loadAllTime(page: number, sortBy: LeaderboardSortKey = allTimeSortBy) {
+		if (!$auth.user) {
+			return;
+		}
 		loading = true;
 		error = null;
 		try {
-			const data = await StatsService.getApiStatsLeaderboard({ page, pageSize: PAGE_SIZE });
+			const data = await StatsService.getApiStatsLeaderboard({
+				page,
+				pageSize: PAGE_SIZE,
+				sortBy
+			});
 			allTimeEntries = data.items ?? [];
 			allTimePage = data.page ?? 1;
 			allTimeTotalPages = data.totalPages ?? 1;
 			allTimeTotal = data.total ?? 0;
+			allTimeSortBy = sortBy;
 			loadedTabs['all-time'] = true;
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Unable to load leaderboard.';
@@ -117,6 +129,10 @@
 
 	async function goToPage(page: number) {
 		await loadAllTime(page);
+	}
+
+	async function changeAllTimeSort(sortBy: LeaderboardSortKey) {
+		await loadAllTime(1, sortBy);
 	}
 
 	async function selectTab(tab: LeaderboardTab) {
@@ -187,6 +203,7 @@
 				'all-time': false,
 				today: false
 			};
+			allTimeSortBy = 'winRate';
 		}
 	});
 </script>
@@ -251,6 +268,24 @@
 			</div>
 			<h1 class="mt-4 text-3xl font-semibold text-white">{getTabContent(activeTab).title}</h1>
 			<p class="mt-2 max-w-2xl text-sm text-slate-200/80">{getTabContent(activeTab).description}</p>
+			{#if activeTab === 'all-time'}
+				<div class="mt-5 flex flex-wrap items-center gap-3 text-sm text-slate-200/80">
+					<label class="font-semibold text-white" for="leaderboard-sort">Sort leaderboard by</label>
+						<select
+							id="leaderboard-sort"
+							class="rounded-full border border-white/15 bg-black/30 px-4 py-2 text-sm text-white"
+							bind:value={allTimeSortBy}
+							onchange={(event) =>
+								void changeAllTimeSort(
+									(event.currentTarget as HTMLSelectElement).value as LeaderboardSortKey
+								)}
+						>
+						{#each leaderboardSortOptions as option (option.value)}
+							<option value={option.value}>{option.label}</option>
+						{/each}
+					</select>
+				</div>
+			{/if}
 		</section>
 
 		{#if error}
