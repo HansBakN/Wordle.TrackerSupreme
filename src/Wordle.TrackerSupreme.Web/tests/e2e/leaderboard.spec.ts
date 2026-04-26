@@ -35,9 +35,10 @@ test('leaderboard can opt in to players with fewer than ten games', async ({ pag
 	await page.goto('/leaderboard');
 	await page.getByText('Loading your session...').waitFor({ state: 'hidden' });
 	await expect(page.getByRole('heading', { name: 'Hard mode before noon' })).toBeVisible();
-	await expect(page.getByText(displayName)).toHaveCount(0);
+	const leaderboardTable = page.getByTestId('leaderboard-table');
+	await expect(leaderboardTable.getByText(displayName)).toHaveCount(0);
 
 	await page.getByTestId('leaderboard-min-games-toggle').check();
 
-	await expect(page.getByText(displayName)).toBeVisible();
+	await expect(leaderboardTable.getByText(displayName)).toBeVisible();
 });
