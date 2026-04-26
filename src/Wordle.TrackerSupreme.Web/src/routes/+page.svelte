@@ -645,6 +645,15 @@
 									{copied ? '✓ Copied!' : 'Copy result'}
 								</button>
 							</div>
+							<div class="mt-3 flex justify-center">
+								<a
+									href={resolve('/practice')}
+									class="rounded-full border border-cyan-300/40 bg-cyan-400/10 px-5 py-2.5 text-sm font-semibold tracking-[0.2em] text-cyan-100 uppercase transition hover:border-cyan-300/60 hover:bg-cyan-400/20"
+									data-testid="practice-mode-link"
+								>
+									Practice mode
+								</a>
+							</div>
 						{/if}
 					</div>
 				</div>

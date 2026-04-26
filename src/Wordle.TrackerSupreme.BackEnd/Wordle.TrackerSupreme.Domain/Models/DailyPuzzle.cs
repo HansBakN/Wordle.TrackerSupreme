@@ -7,5 +7,6 @@ public class DailyPuzzle
     public PuzzleStream Stream { get; set; } = PuzzleStream.NewYorkTimes;
     public string? Solution { get; set; }
     public bool IsArchived { get; set; }
+    public bool IsPractice { get; set; }
     public ICollection<PlayerPuzzleAttempt> Attempts { get; set; } = [];
 }

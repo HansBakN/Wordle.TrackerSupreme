@@ -27,4 +27,10 @@ public class WordSelector : IWordSelector, IAnswerPoolProvider
         var index = ((offset % Pool.Length) + Pool.Length) % Pool.Length;
         return Pool[index];
     }
+
+    public string SelectRandomWord()
+    {
+        var index = Random.Shared.Next(Pool.Length);
+        return Pool[index];
+    }
 }

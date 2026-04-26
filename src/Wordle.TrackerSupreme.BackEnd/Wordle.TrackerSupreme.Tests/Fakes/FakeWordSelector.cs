@@ -5,4 +5,5 @@ namespace Wordle.TrackerSupreme.Tests.Fakes;
 public class FakeWordSelector(string solution) : IWordSelector
 {
     public string GetSolutionFor(DateOnly puzzleDate) => solution;
+    public string SelectRandomWord() => solution;
 }

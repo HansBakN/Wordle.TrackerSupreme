@@ -997,6 +997,106 @@
 				}
 			}
 		},
+		"/api/practice/start": {
+			"post": {
+				"tags": ["Practice"],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"$ref": "#/components/schemas/PracticeStateResponse"
+								}
+							},
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PracticeStateResponse"
+								}
+							},
+							"text/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PracticeStateResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/practice/state": {
+			"get": {
+				"tags": ["Practice"],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"$ref": "#/components/schemas/PracticeStateResponse"
+								}
+							},
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PracticeStateResponse"
+								}
+							},
+							"text/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PracticeStateResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/practice/guess": {
+			"post": {
+				"tags": ["Practice"],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/SubmitGuessRequest"
+							}
+						},
+						"text/json": {
+							"schema": {
+								"$ref": "#/components/schemas/SubmitGuessRequest"
+							}
+						},
+						"application/*+json": {
+							"schema": {
+								"$ref": "#/components/schemas/SubmitGuessRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"$ref": "#/components/schemas/PracticeStateResponse"
+								}
+							},
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PracticeStateResponse"
+								}
+							},
+							"text/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PracticeStateResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/api/stats/me/history": {
 			"get": {
 				"tags": ["Stats"],
@@ -1980,6 +2080,39 @@
 				},
 				"additionalProperties": false,
 				"required": ["days"]
+			},
+			"PracticeStateResponse": {
+				"type": "object",
+				"properties": {
+					"puzzleId": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"solutionRevealed": {
+						"type": "boolean"
+					},
+					"wordLength": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"maxGuesses": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"canGuess": {
+						"type": "boolean"
+					},
+					"attempt": {
+						"$ref": "#/components/schemas/AttemptResponse",
+						"nullable": true
+					},
+					"solution": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"additionalProperties": false,
+				"required": ["puzzleId", "solutionRevealed", "wordLength", "maxGuesses", "canGuess"]
 			},
 			"PuzzleHistoryEntryResponse": {
 				"type": "object",
