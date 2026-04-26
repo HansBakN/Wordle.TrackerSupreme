@@ -15,6 +15,8 @@ test('admin can manage player profiles and attempts', async ({ page }) => {
 
 	const attemptCards = page.getByTestId('admin-attempt-card');
 	await expect(attemptCards.first()).toBeVisible();
+	await expect(attemptCards.filter({ hasText: 'Tracker Supreme' }).first()).toBeVisible();
+	await expect(attemptCards.filter({ hasText: 'New York Times' }).first()).toBeVisible();
 
 	await page.getByTestId('admin-email').fill('invalid-email');
 	await expect(page.getByText('Email must be a valid email address.')).toBeVisible();

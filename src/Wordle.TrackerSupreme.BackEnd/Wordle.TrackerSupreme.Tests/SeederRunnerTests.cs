@@ -49,9 +49,9 @@ public class SeederRunnerTests
 
         var totalPlayers = options.PlayerCount + 1;
         dbContext.Players.Should().HaveCount(totalPlayers);
-        dbContext.DailyPuzzles.Should().HaveCount(options.PuzzleDays);
+        dbContext.DailyPuzzles.Should().HaveCount(options.PuzzleDays * 2);
         var featuredCount = Math.Min(4, totalPlayers);
-        dbContext.Attempts.Should().HaveCount(totalPlayers * 5 + featuredCount);
+        dbContext.Attempts.Should().HaveCount(totalPlayers * 10 + featuredCount);
 
         var attempts = await dbContext.Attempts
             .Include(a => a.DailyPuzzle)
@@ -79,7 +79,7 @@ public class SeederRunnerTests
         await runner.SeedAsync();
 
         dbContext.Players.Should().HaveCount(totalPlayers);
-        dbContext.Attempts.Should().HaveCount(totalPlayers * 5 + featuredCount);
+        dbContext.Attempts.Should().HaveCount(totalPlayers * 10 + featuredCount);
     }
 
     [Fact]
@@ -133,7 +133,8 @@ public class SeederRunnerTests
             options.PuzzleDays,
             options.MinSolvedPuzzles + options.FailedPuzzlesMin + options.InProgressPuzzlesMin);
         dbContext.Players.Count().Should().Be(totalPlayers);
-        dbContext.Attempts.Count().Should().Be(totalPlayers * expectedPerPlayer + featuredCount);
+        dbContext.DailyPuzzles.Count().Should().Be(options.PuzzleDays * 2);
+        dbContext.Attempts.Count().Should().Be(totalPlayers * expectedPerPlayer * 2 + featuredCount);
     }
 
     [Fact]

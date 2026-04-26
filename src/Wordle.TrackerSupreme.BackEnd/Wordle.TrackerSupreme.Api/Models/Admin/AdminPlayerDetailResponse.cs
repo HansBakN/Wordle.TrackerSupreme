@@ -14,6 +14,7 @@ public record AdminPlayerDetailResponse(
 public record AdminPlayerAttemptResponse(
     Guid AttemptId,
     DateOnly PuzzleDate,
+    PuzzleStream Stream,
     AttemptStatus Status,
     bool PlayedInHardMode,
     DateTime CreatedOn,
