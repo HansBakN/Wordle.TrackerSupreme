@@ -84,6 +84,33 @@ public class PlayerStatisticsServiceTests
     }
 
     [Fact]
+    public void Calculate_does_not_count_practice_attempts_toward_streaks()
+    {
+        var practiceWinId = Guid.NewGuid();
+        var player = CreatePlayer();
+        player.Attempts =
+        [
+            CreateAttempt(player, new DateOnly(2025, 1, 5), AttemptStatus.Solved, true, 2),
+            CreateAttempt(player, new DateOnly(2025, 1, 7), AttemptStatus.Solved, true, 3, practiceWinId)
+        ];
+
+        var filter = new PlayerStatisticsFilter
+        {
+            IncludeAfterReveal = true,
+            CountPracticeAttempts = true
+        };
+
+        var service = new PlayerStatisticsService();
+        var stats = service.Calculate(player, filter, attempt => attempt.Id == practiceWinId);
+
+        stats.TotalAttempts.Should().Be(2);
+        stats.Wins.Should().Be(2);
+        stats.PracticeAttempts.Should().Be(1);
+        stats.CurrentStreak.Should().Be(1);
+        stats.LongestStreak.Should().Be(1);
+    }
+
+    [Fact]
     public void Calculate_filters_by_guess_count_range()
     {
         var player = CreatePlayer();
@@ -174,6 +201,43 @@ public class PlayerStatisticsServiceTests
 
         stats.TotalAttempts.Should().Be(1);
         stats.PracticeAttempts.Should().Be(1);
+    }
+
+    [Fact]
+    public void Calculate_returns_guess_distribution_for_solved_attempts()
+    {
+        var player = CreatePlayer();
+        player.Attempts =
+        [
+            CreateAttempt(player, new DateOnly(2025, 3, 1), AttemptStatus.Solved, true, 2),
+            CreateAttempt(player, new DateOnly(2025, 3, 2), AttemptStatus.Solved, true, 3),
+            CreateAttempt(player, new DateOnly(2025, 3, 3), AttemptStatus.Solved, true, 3),
+            CreateAttempt(player, new DateOnly(2025, 3, 4), AttemptStatus.Failed, true, 6),
+        ];
+
+        var service = new PlayerStatisticsService();
+        var stats = service.Calculate(player, null, _ => false);
+
+        stats.GuessDistribution.Should().BeEquivalentTo(new Dictionary<int, int>
+        {
+            [2] = 1,
+            [3] = 2
+        });
+    }
+
+    [Fact]
+    public void Calculate_returns_empty_distribution_when_no_solved_attempts()
+    {
+        var player = CreatePlayer();
+        player.Attempts =
+        [
+            CreateAttempt(player, new DateOnly(2025, 3, 5), AttemptStatus.Failed, true, 6),
+        ];
+
+        var service = new PlayerStatisticsService();
+        var stats = service.Calculate(player, null, _ => false);
+
+        stats.GuessDistribution.Should().BeEmpty();
     }
 
     private static PlayerPuzzleAttempt CreateAttempt(

@@ -2,10 +2,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { LeaderboardEntryResponse } from '../models/LeaderboardEntryResponse';
+import type { LeaderboardPageResponse } from '../models/LeaderboardPageResponse';
 import type { PlayerStatsEntryResponse } from '../models/PlayerStatsEntryResponse';
 import type { PlayerStatsFilterRequest } from '../models/PlayerStatsFilterRequest';
 import type { PlayerStatsResponse } from '../models/PlayerStatsResponse';
+import type { TodayLeaderboardEntryResponse } from '../models/TodayLeaderboardEntryResponse';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
@@ -37,20 +38,38 @@ export class StatsService {
 		});
 	}
 	/**
-	 * @returns LeaderboardEntryResponse OK
+	 * @returns LeaderboardPageResponse OK
 	 * @throws ApiError
 	 */
 	public static getApiStatsLeaderboard({
+		page = 1,
+		pageSize = 10,
 		minGames = 10
 	}: {
+		page?: number;
+		pageSize?: number;
 		minGames?: number;
-	}): CancelablePromise<Array<LeaderboardEntryResponse>> {
+	}): CancelablePromise<LeaderboardPageResponse> {
 		return __request(OpenAPI, {
 			method: 'GET',
 			url: '/api/stats/leaderboard',
 			query: {
+				page: page,
+				pageSize: pageSize,
 				minGames: minGames
 			}
+		});
+	}
+	/**
+	 * @returns TodayLeaderboardEntryResponse OK
+	 * @throws ApiError
+	 */
+	public static getApiStatsLeaderboardToday(): CancelablePromise<
+		Array<TodayLeaderboardEntryResponse>
+	> {
+		return __request(OpenAPI, {
+			method: 'GET',
+			url: '/api/stats/leaderboard/today'
 		});
 	}
 }

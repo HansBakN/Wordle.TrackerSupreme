@@ -17,7 +17,7 @@ public class GameplayService(
 
     public async Task<GameplayState> GetState(Guid playerId, CancellationToken cancellationToken = default)
     {
-        var puzzle = await puzzleService.GetOrCreatePuzzle(gameClock.Today, cancellationToken);
+        var puzzle = await puzzleService.GetOrCreatePuzzle(gameClock.Today, PuzzleStream.NewYorkTimes, cancellationToken);
         var attempt = await LoadAttempt(playerId, puzzle.Id, cancellationToken);
 
         var cutoffPassed = gameClock.HasRevealPassed(puzzle.PuzzleDate);
@@ -36,7 +36,7 @@ public class GameplayService(
     public async Task<GameplayState> SubmitGuess(Guid playerId, string guessWord, CancellationToken cancellationToken = default)
     {
         var normalizedGuess = _guessEvaluationService.NormalizeGuess(guessWord);
-        var puzzle = await puzzleService.GetOrCreatePuzzle(gameClock.Today, cancellationToken);
+        var puzzle = await puzzleService.GetOrCreatePuzzle(gameClock.Today, PuzzleStream.NewYorkTimes, cancellationToken);
 
         var attempt = await LoadAttempt(playerId, puzzle.Id, cancellationToken);
         if (attempt is null)
@@ -122,7 +122,7 @@ public class GameplayService(
 
     public async Task<GameplayState> EnableEasyMode(Guid playerId, CancellationToken cancellationToken = default)
     {
-        var puzzle = await puzzleService.GetOrCreatePuzzle(gameClock.Today, cancellationToken);
+        var puzzle = await puzzleService.GetOrCreatePuzzle(gameClock.Today, PuzzleStream.NewYorkTimes, cancellationToken);
         var attempt = await LoadAttempt(playerId, puzzle.Id, cancellationToken);
 
         if (attempt is null)
@@ -164,7 +164,7 @@ public class GameplayService(
 
     public async Task<SolutionsSnapshot> GetSolutions(CancellationToken cancellationToken = default)
     {
-        var puzzle = await puzzleService.GetOrCreatePuzzle(gameClock.Today, cancellationToken);
+        var puzzle = await puzzleService.GetOrCreatePuzzle(gameClock.Today, PuzzleStream.NewYorkTimes, cancellationToken);
         var cutoffPassed = gameClock.HasRevealPassed(puzzle.PuzzleDate);
 
         var attempts = await gameRepository.GetAttemptsForPuzzle(puzzle.Id, cancellationToken);

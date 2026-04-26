@@ -14,7 +14,8 @@ namespace Wordle.TrackerSupreme.Api.Controllers;
 [Authorize]
 public class GameController(
     IGameplayService gameplayService,
-    IGameClock gameClock) : ControllerBase
+    IGameClock gameClock,
+    ILogger<GameController> logger) : ControllerBase
 {
     [HttpGet("state")]
     public async Task<ActionResult<GameStateResponse>> GetState(CancellationToken cancellationToken)
@@ -32,7 +33,7 @@ public class GameController(
         }
         catch (DailyPuzzleUnavailableException ex)
         {
-            return StatusCode(StatusCodes.Status503ServiceUnavailable, new { code = "puzzle_unavailable", message = ex.Message });
+            return PuzzleUnavailable(ex.Message);
         }
     }
 
@@ -48,23 +49,24 @@ public class GameController(
         try
         {
             var state = await gameplayService.SubmitGuess(playerId.Value, request.Guess, cancellationToken);
+            logger.LogInformation("Guess submitted. PlayerId={PlayerId} PuzzleDate={PuzzleDate}", playerId, state.Puzzle.PuzzleDate);
             return Ok(MapState(state));
         }
         catch (DailyPuzzleUnavailableException ex)
         {
-            return StatusCode(StatusCodes.Status503ServiceUnavailable, new { code = "puzzle_unavailable", message = ex.Message });
+            return PuzzleUnavailable(ex.Message);
         }
         catch (ArgumentException ex)
         {
-            return BadRequest(new { message = ex.Message });
+            return BadRequest(new ProblemDetails { Status = StatusCodes.Status400BadRequest, Detail = ex.Message });
         }
         catch (DuplicatePuzzleAttemptException ex)
         {
-            return Conflict(new { message = ex.Message });
+            return Conflict(new ProblemDetails { Status = StatusCodes.Status409Conflict, Detail = ex.Message });
         }
         catch (InvalidOperationException ex)
         {
-            return Conflict(new { message = ex.Message });
+            return Conflict(new ProblemDetails { Status = StatusCodes.Status409Conflict, Detail = ex.Message });
         }
     }
 
@@ -80,19 +82,20 @@ public class GameController(
         try
         {
             var state = await gameplayService.EnableEasyMode(playerId.Value, cancellationToken);
+            logger.LogInformation("Easy mode enabled. PlayerId={PlayerId}", playerId);
             return Ok(MapState(state));
         }
         catch (DailyPuzzleUnavailableException ex)
         {
-            return StatusCode(StatusCodes.Status503ServiceUnavailable, new { code = "puzzle_unavailable", message = ex.Message });
+            return PuzzleUnavailable(ex.Message);
         }
         catch (DuplicatePuzzleAttemptException ex)
         {
-            return Conflict(new { message = ex.Message });
+            return Conflict(new ProblemDetails { Status = StatusCodes.Status409Conflict, Detail = ex.Message });
         }
         catch (InvalidOperationException ex)
         {
-            return Conflict(new { message = ex.Message });
+            return Conflict(new ProblemDetails { Status = StatusCodes.Status409Conflict, Detail = ex.Message });
         }
     }
 
@@ -104,15 +107,27 @@ public class GameController(
             var snapshot = await gameplayService.GetSolutions(cancellationToken);
             if (!snapshot.CutoffPassed)
             {
-                return StatusCode(StatusCodes.Status403Forbidden, new { message = "Solutions unlock after 12:00 PM local time." });
+                return StatusCode(StatusCodes.Status403Forbidden,
+                    new ProblemDetails { Status = StatusCodes.Status403Forbidden, Detail = "Solutions unlock after 12:00 PM local time." });
             }
 
             return Ok(MapSolutions(snapshot));
         }
         catch (DailyPuzzleUnavailableException ex)
         {
-            return StatusCode(StatusCodes.Status503ServiceUnavailable, new { code = "puzzle_unavailable", message = ex.Message });
+            return PuzzleUnavailable(ex.Message);
         }
+    }
+
+    private ObjectResult PuzzleUnavailable(string detail)
+    {
+        var pd = new ProblemDetails
+        {
+            Status = StatusCodes.Status503ServiceUnavailable,
+            Detail = detail
+        };
+        pd.Extensions["code"] = "puzzle_unavailable";
+        return StatusCode(StatusCodes.Status503ServiceUnavailable, pd);
     }
 
     private Guid? GetPlayerId()

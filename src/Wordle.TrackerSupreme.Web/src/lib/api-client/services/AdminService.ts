@@ -58,7 +58,11 @@ export class AdminService {
 				playerId: playerId
 			},
 			body: requestBody,
-			mediaType: 'application/json'
+			mediaType: 'application/json',
+			errors: {
+				400: `Bad Request`,
+				409: `Conflict`
+			}
 		});
 	}
 	/**
@@ -79,7 +83,11 @@ export class AdminService {
 				playerId: playerId
 			},
 			body: requestBody,
-			mediaType: 'application/json'
+			mediaType: 'application/json',
+			errors: {
+				400: `Bad Request`,
+				409: `Conflict`
+			}
 		});
 	}
 	/**
@@ -100,7 +108,11 @@ export class AdminService {
 				playerId: playerId
 			},
 			body: requestBody,
-			mediaType: 'application/json'
+			mediaType: 'application/json',
+			errors: {
+				400: `Bad Request`,
+				409: `Conflict`
+			}
 		});
 	}
 	/**
@@ -121,7 +133,11 @@ export class AdminService {
 				attemptId: attemptId
 			},
 			body: requestBody,
-			mediaType: 'application/json'
+			mediaType: 'application/json',
+			errors: {
+				400: `Bad Request`,
+				409: `Conflict`
+			}
 		});
 	}
 	/**

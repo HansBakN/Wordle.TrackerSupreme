@@ -9,6 +9,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Threading.RateLimiting;
 using Wordle.TrackerSupreme.Api.Auth;
+using Wordle.TrackerSupreme.Api.Middleware;
 using Wordle.TrackerSupreme.Application.Services.Admin;
 using Wordle.TrackerSupreme.Application.Services.Game;
 using Wordle.TrackerSupreme.Application.Services;
@@ -19,6 +20,20 @@ using Wordle.TrackerSupreme.Infrastructure.Database;
 using Wordle.TrackerSupreme.Migrations;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Logging.ClearProviders();
+if (builder.Environment.IsDevelopment())
+{
+    builder.Logging.AddConsole();
+}
+else
+{
+    builder.Logging.AddJsonConsole(options =>
+    {
+        options.IncludeScopes = true;
+        options.TimestampFormat = "o";
+    });
+}
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -202,6 +217,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseForwardedHeaders();
+app.UseMiddleware<CorrelationIdMiddleware>();
 app.UseCors();
 app.UseRateLimiter();
 app.UseAuthentication();

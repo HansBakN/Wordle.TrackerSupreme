@@ -37,7 +37,15 @@ public class PlayerStatisticsService : IPlayerStatisticsService
             ? guessCounts.Average()
             : null;
 
-        var (currentStreak, longestStreak) = CalculateStreaks(countedAttempts);
+        var streakAttempts = filteredAttempts
+            .Where(a => !isAfterRevealFn(a))
+            .ToList();
+        var (currentStreak, longestStreak) = CalculateStreaks(streakAttempts);
+
+        var guessDistribution = countedAttempts
+            .Where(a => a.Status == AttemptStatus.Solved && a.GuessCount.HasValue)
+            .GroupBy(a => a.GuessCount!.Value)
+            .ToDictionary(g => g.Key, g => g.Count());
 
         return new PlayerStatistics
         {
@@ -47,7 +55,8 @@ public class PlayerStatisticsService : IPlayerStatisticsService
             CurrentStreak = currentStreak,
             LongestStreak = longestStreak,
             AverageGuessCount = averageGuesses,
-            PracticeAttempts = practiceAttempts.Count
+            PracticeAttempts = practiceAttempts.Count,
+            GuessDistribution = guessDistribution
         };
     }
 

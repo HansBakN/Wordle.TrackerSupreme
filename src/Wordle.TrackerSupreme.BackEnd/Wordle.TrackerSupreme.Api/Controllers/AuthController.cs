@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,8 @@ public class AuthController(
     IPlayerRepository playerRepository,
     JwtTokenService tokenService,
     PasswordHasher<Player> passwordHasher,
-    IWebHostEnvironment environment)
+    IWebHostEnvironment environment,
+    ILogger<AuthController> logger)
     : ControllerBase
 {
     [EnableRateLimiting(AuthRateLimiting.PolicyName)]
@@ -28,12 +30,12 @@ public class AuthController(
 
         if (await playerRepository.IsDisplayNameTaken(displayName, null, cancellationToken))
         {
-            return Conflict(new { message = "Display name is already taken." });
+            return Conflict(new ProblemDetails { Status = StatusCodes.Status409Conflict, Detail = "Display name is already taken." });
         }
 
         if (await playerRepository.IsEmailTaken(email, null, cancellationToken))
         {
-            return Conflict(new { message = "Email is already registered." });
+            return Conflict(new ProblemDetails { Status = StatusCodes.Status409Conflict, Detail = "Email is already registered." });
         }
 
         var player = new Player
@@ -49,6 +51,7 @@ public class AuthController(
 
         await playerRepository.AddPlayer(player, cancellationToken);
 
+        logger.LogInformation("Player registered. PlayerId={PlayerId} DisplayName={DisplayName}", player.Id, player.DisplayName);
         SignInPlayer(player);
         return Ok(new AuthResponse(MapPlayer(player), null));
     }
@@ -63,15 +66,18 @@ public class AuthController(
 
         if (player is null)
         {
-            return Unauthorized(new { message = "Invalid credentials." });
+            logger.LogWarning("Sign-in failed: email not found. Email={Email}", email);
+            return Unauthorized(new ProblemDetails { Status = StatusCodes.Status401Unauthorized, Detail = "Invalid credentials." });
         }
 
         var verification = passwordHasher.VerifyHashedPassword(player, player.PasswordHash, request.Password);
         if (verification == PasswordVerificationResult.Failed)
         {
-            return Unauthorized(new { message = "Invalid credentials." });
+            logger.LogWarning("Sign-in failed: wrong password. PlayerId={PlayerId}", player.Id);
+            return Unauthorized(new ProblemDetails { Status = StatusCodes.Status401Unauthorized, Detail = "Invalid credentials." });
         }
 
+        logger.LogInformation("Player signed in. PlayerId={PlayerId}", player.Id);
         SignInPlayer(player);
         return Ok(new AuthResponse(MapPlayer(player), null));
     }

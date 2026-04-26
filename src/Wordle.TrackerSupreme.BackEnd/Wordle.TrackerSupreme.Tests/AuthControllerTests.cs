@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using Wordle.TrackerSupreme.Api.Auth;
 using Wordle.TrackerSupreme.Api.Controllers;
@@ -41,7 +42,8 @@ public class AuthControllerTests
             repository,
             new JwtTokenService(jwtSettings),
             new PasswordHasher<Player>(),
-            env)
+            env,
+            NullLogger<AuthController>.Instance)
         {
             ControllerContext = new ControllerContext
             {

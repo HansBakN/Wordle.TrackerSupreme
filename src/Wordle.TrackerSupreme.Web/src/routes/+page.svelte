@@ -9,9 +9,22 @@
 		fetchMyStats,
 		submitGuess
 	} from '$lib/game/api';
+	import { describeTileForScreenReader } from '$lib/game/accessibility';
 	import { getRevealDurationMs, shouldTriggerSolveCelebration } from '$lib/game/celebration';
-	import type { GameStateResponse, LetterResult, PlayerStatsResponse } from '$lib/game/types';
-	import { onDestroy, onMount, tick } from 'svelte';
+	import {
+		buildConfettiPieces,
+		defaultConfettiPieceCount,
+		type ConfettiPiece
+	} from '$lib/game/confetti';
+	import { colorMode } from '$lib/game/colorMode';
+	import { getKeyboardLetterState } from '$lib/game/keyboard';
+	import type {
+		GameStateResponse,
+		GuessResponse,
+		LetterResult,
+		PlayerStatsResponse
+	} from '$lib/game/types';
+	import { onMount, tick } from 'svelte';
 
 	let checking = true;
 	let loadingState = true;
@@ -34,19 +47,10 @@
 	let shakeTimer: ReturnType<typeof setTimeout> | null = null;
 	let countdownInterval: ReturnType<typeof setInterval> | null = null;
 	let countdown = '';
+	let announcement: string | null = null;
+	let announcementIsError = false;
 	const keyboardRows = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'];
 	const confettiDurationMs = 1200;
-
-	type ConfettiPiece = {
-		id: number;
-		dx: number;
-		dy: number;
-		rotation: number;
-		hue: number;
-		delay: number;
-		duration: number;
-		size: number;
-	};
 
 	onMount(() => {
 		const unsubscribe = auth.subscribe(async (current) => {
@@ -87,12 +91,11 @@
 		};
 
 		window.addEventListener('keydown', keyHandler);
-
-		onDestroy(() => {
+		return () => {
 			window.removeEventListener('keydown', keyHandler);
 			stopCountdown();
 			unsubscribe();
-		});
+		};
 	});
 
 	$: {
@@ -105,6 +108,9 @@
 	}
 
 	$: guessInputLocked = !state || !state.canGuess || submitting;
+	$: announcement = error ?? message;
+	$: announcementIsError = error !== null;
+	$: highContrast = $colorMode;
 
 	async function loadEverything() {
 		await loadState();
@@ -134,7 +140,9 @@
 	}
 
 	function triggerShake() {
-		if (shakeTimer) clearTimeout(shakeTimer);
+		if (shakeTimer) {
+			clearTimeout(shakeTimer);
+		}
 		shakingRow = state?.attempt?.guesses.length ?? 0;
 		shakeTimer = setTimeout(() => {
 			shakingRow = null;
@@ -143,7 +151,9 @@
 	}
 
 	function completedMessage(s: GameStateResponse | null): string | null {
-		if (!s?.attempt) return null;
+		if (!s?.attempt) {
+			return null;
+		}
 		const guessCount = s.attempt.guesses.length;
 		if (s.attempt.status === 'Solved') {
 			return `You solved it in ${guessCount} ${guessCount === 1 ? 'guess' : 'guesses'}! Come back tomorrow.`;
@@ -248,14 +258,18 @@
 		}
 	}
 
-	function tileClass(result: LetterResult | null) {
+	function tileClass(result: LetterResult | null, useHighContrast: boolean) {
 		const base =
 			'flex h-14 w-14 items-center justify-center rounded-xl border text-lg font-semibold transition';
 		if (result === 'Correct') {
-			return `${base} border-emerald-400 bg-emerald-400 text-slate-900 shadow-lg`;
+			return useHighContrast
+				? `${base} border-orange-500 bg-orange-500 text-white shadow-lg`
+				: `${base} border-emerald-400 bg-emerald-400 text-slate-900 shadow-lg`;
 		}
 		if (result === 'Present') {
-			return `${base} border-amber-300/70 bg-amber-300 text-slate-900 shadow`;
+			return useHighContrast
+				? `${base} border-blue-400 bg-blue-400 text-white shadow`
+				: `${base} border-amber-300/70 bg-amber-300 text-slate-900 shadow`;
 		}
 		if (result === 'Absent') {
 			return `${base} border-white/15 bg-white/5 text-white/60`;
@@ -279,46 +293,33 @@
 		return `animation-delay:${position * 220}ms`;
 	}
 
-	function keyState(letter: string): LetterResult | 'Used' | null {
-		if (!state?.attempt?.guesses?.length) {
-			return null;
-		}
-		let best: LetterResult | 'Used' | null = null;
-
-		for (const guessItem of state.attempt.guesses) {
-			for (const fb of guessItem.feedback) {
-				if (fb.letter !== letter) {
-					continue;
-				}
-				if (fb.result === 'Correct') {
-					return 'Correct';
-				}
-				if (fb.result === 'Present') {
-					best = 'Present';
-				} else if (!best) {
-					best = 'Used';
-				}
-			}
-			if (!best && guessItem.guessWord.includes(letter)) {
-				best = 'Used';
-			}
-		}
-
-		return best;
+	function keyState(
+		letter: string,
+		guesses: GuessResponse[] | null | undefined
+	): LetterResult | null {
+		return getKeyboardLetterState(guesses, letter);
 	}
 
-	function keyClass(letter: string) {
+	function keyClass(
+		letter: string,
+		guesses: GuessResponse[] | null | undefined,
+		useHighContrast: boolean
+	) {
 		const base =
 			'flex h-11 items-center justify-center rounded-xl border px-3 text-sm font-semibold uppercase transition';
-		const stateKey = keyState(letter);
+		const stateKey = keyState(letter, guesses);
 		if (stateKey === 'Correct') {
-			return `${base} border-emerald-400 bg-emerald-400 text-slate-900`;
+			return useHighContrast
+				? `${base} border-orange-500 bg-orange-500 text-white`
+				: `${base} border-emerald-400 bg-emerald-400 text-slate-900`;
 		}
 		if (stateKey === 'Present') {
-			return `${base} border-amber-300/70 bg-amber-300 text-slate-900`;
+			return useHighContrast
+				? `${base} border-blue-400 bg-blue-400 text-white`
+				: `${base} border-amber-300/70 bg-amber-300 text-slate-900`;
 		}
-		if (stateKey === 'Used') {
-			return `${base} border-white/25 bg-white/50 text-slate-900`;
+		if (stateKey === 'Absent') {
+			return `${base} border-slate-500/70 bg-slate-600 text-slate-100`;
 		}
 		return `${base} border-white/60 bg-white/90 text-slate-900 shadow hover:border-white hover:bg-white`;
 	}
@@ -343,7 +344,9 @@
 	}
 
 	function startCountdown() {
-		if (countdownInterval) return;
+		if (countdownInterval) {
+			return;
+		}
 		countdown = computeCountdown();
 		countdownInterval = setInterval(() => {
 			countdown = computeCountdown();
@@ -372,31 +375,12 @@
 		statsError = null;
 	}
 
-	function buildConfettiPieces(count: number): ConfettiPiece[] {
-		const pieces: ConfettiPiece[] = [];
-		for (let i = 0; i < count; i += 1) {
-			const dx = Math.round((Math.random() - 0.5) * 320);
-			const dy = Math.round((Math.random() - 0.2) * 260);
-			pieces.push({
-				id: i,
-				dx,
-				dy,
-				rotation: Math.round(Math.random() * 360),
-				hue: Math.round(Math.random() * 360),
-				delay: Math.round(Math.random() * 150),
-				duration: 800 + Math.round(Math.random() * 500),
-				size: 6 + Math.round(Math.random() * 6)
-			});
-		}
-		return pieces;
-	}
-
 	async function triggerWinCelebration() {
 		if (!state) {
 			return;
 		}
 		resetCelebration();
-		confettiPieces = buildConfettiPieces(36);
+		confettiPieces = buildConfettiPieces(defaultConfettiPieceCount);
 		const revealDelayMs = getRevealDurationMs(state.wordLength ?? 5);
 		const statsPromise = fetchMyStats().catch((err) => {
 			statsError = err instanceof Error ? err.message : 'Unable to load stats.';
@@ -425,6 +409,7 @@
 	<div class="mx-auto grid max-w-6xl gap-6">
 		<section
 			class="relative rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-8 shadow-2xl"
+			data-high-contrast={highContrast}
 		>
 			{#if showConfetti}
 				<div class="confetti-layer" data-testid="confetti">
@@ -476,21 +461,25 @@
 			{:else if state}
 				<div class="mt-6">
 					<div class="space-y-4 rounded-2xl border border-white/10 bg-black/20 p-6 shadow-inner">
-						<div class="grid grid-rows-6 gap-1.5">
+						<div class="grid grid-rows-6 gap-1.5" role="grid" aria-label="Wordle board">
 							{#each Array(state.maxGuesses).keys() as rowIndex (rowIndex)}
 								<div
 									class={`grid justify-center gap-1.5${shakingRow === rowIndex ? ' animate-shake' : ''}`}
 									style={`grid-template-columns: repeat(${state.wordLength}, 3.5rem);`}
 									data-testid={`board-row-${rowIndex}`}
+									role="row"
+									aria-label={`Guess row ${rowIndex + 1}`}
 								>
 									{#if state.attempt?.guesses[rowIndex]}
 										{#each state.attempt.guesses[rowIndex].feedback as fb (fb.position)}
 											<div
-												class={`${tileClass(fb.result)} ${tileAnimationClass(state.attempt.guesses[rowIndex].guessId, fb.result)}`}
+												class={`${tileClass(fb.result, highContrast)} ${tileAnimationClass(state.attempt.guesses[rowIndex].guessId, fb.result)}`}
 												style={tileAnimationDelay(
 													state.attempt.guesses[rowIndex].guessId,
 													fb.position
 												)}
+												role="gridcell"
+												aria-label={describeTileForScreenReader(fb.letter, fb.result)}
 											>
 												{fb.letter}
 											</div>
@@ -498,9 +487,19 @@
 									{:else}
 										{#each Array(state.wordLength).keys() as col (col)}
 											{#if rowIndex === (state.attempt?.guesses.length ?? 0)}
-												<div class={tileClass(null)}>{(guess[col] ?? '').toUpperCase()}</div>
+												<div
+													class={tileClass(null, highContrast)}
+													role="gridcell"
+													aria-label={describeTileForScreenReader(guess[col] ?? '', null)}
+												>
+													{(guess[col] ?? '').toUpperCase()}
+												</div>
 											{:else}
-												<div class={tileClass(null)}></div>
+												<div
+													class={tileClass(null, highContrast)}
+													role="gridcell"
+													aria-label={describeTileForScreenReader('', null)}
+												></div>
 											{/if}
 										{/each}
 									{/if}
@@ -508,23 +507,19 @@
 							{/each}
 						</div>
 
-						{#if message}
+						{#if announcement}
 							<div
-								class={`rounded-xl border px-4 py-3 text-sm ${state?.attempt?.status === 'Failed' ? 'border-amber-300/40 bg-amber-400/10 text-amber-50' : 'border-emerald-300/40 bg-emerald-400/10 text-emerald-50'}`}
-								data-testid="completed-message"
+								class={`rounded-xl border px-4 py-3 text-sm ${announcementIsError ? 'border-rose-400/40 bg-rose-500/10 text-rose-50' : state?.attempt?.status === 'Failed' ? 'border-amber-300/40 bg-amber-400/10 text-amber-50' : 'border-emerald-300/40 bg-emerald-400/10 text-emerald-50'}`}
+								data-testid={announcementIsError ? 'error-message' : 'completed-message'}
+								role="status"
+								aria-live="polite"
+								aria-atomic="true"
 							>
-								{message}
-							</div>
-						{/if}
-						{#if error}
-							<div
-								class="rounded-xl border border-rose-400/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-50"
-							>
-								{error}
+								{announcement}
 							</div>
 						{/if}
 
-						<div class="space-y-3 pt-3">
+						<div class="space-y-3 pt-3" role="group" aria-label="On-screen keyboard">
 							{#each keyboardRows as row, rowIndex (rowIndex)}
 								<div class="flex items-center justify-center gap-2">
 									{#if rowIndex === 2}
@@ -533,16 +528,20 @@
 											onclick={removeLetter}
 											disabled={guessInputLocked}
 											data-testid="remove-letter"
+											aria-label="Remove letter"
 										>
 											Back
 										</button>
 									{/if}
 									{#each row.split('') as letter (letter)}
 										<button
-											class={keyClass(letter)}
+											class={keyClass(letter, state?.attempt?.guesses, highContrast)}
 											onclick={() => pushLetter(letter)}
 											disabled={guessInputLocked}
 											data-testid={`keyboard-key-${letter}`}
+											data-state={(
+												keyState(letter, state?.attempt?.guesses) ?? 'unused'
+											).toLowerCase()}
 										>
 											{letter}
 										</button>
@@ -553,6 +552,7 @@
 											onclick={submitFromKeyboard}
 											disabled={guessInputLocked}
 											data-testid="submit-guess"
+											aria-label="Submit guess"
 										>
 											Enter
 										</button>
@@ -655,6 +655,19 @@
 		--end-bg: rgba(255, 255, 255, 0.08);
 		--end-border: rgba(255, 255, 255, 0.2);
 		--end-text: rgba(255, 255, 255, 0.6);
+	}
+
+	/* High-contrast overrides */
+	:global([data-high-contrast='true'] .reveal-correct) {
+		--end-bg: #f97316;
+		--end-border: #f97316;
+		--end-text: #ffffff;
+	}
+
+	:global([data-high-contrast='true'] .reveal-present) {
+		--end-bg: #60a5fa;
+		--end-border: #60a5fa;
+		--end-text: #ffffff;
 	}
 
 	@keyframes reveal-flip {

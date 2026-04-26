@@ -39,7 +39,7 @@
 		try {
 			const request = buildStatsFilterRequest(filters);
 			const data = await StatsService.postApiStatsPlayers({ requestBody: request });
-			entries = data.filter((entry) => entry.playerId !== $auth.user?.id);
+			entries = data;
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Unable to load player stats.';
 		} finally {
@@ -321,6 +321,32 @@
 										<div class="text-lg font-semibold text-white">{entry.stats.longestStreak}</div>
 									</div>
 								</div>
+								{#if entry.stats.guessDistribution && Object.keys(entry.stats.guessDistribution).length > 0}
+									{@const dist = entry.stats.guessDistribution}
+									{@const maxCount = Math.max(...Object.values(dist))}
+									<div class="mt-4" data-testid="guess-distribution">
+										<p class="text-xs tracking-[0.2em] text-slate-200/60 uppercase">
+											Guess distribution
+										</p>
+										<div class="mt-2 space-y-1">
+											{#each [1, 2, 3, 4, 5, 6] as n (n)}
+												{@const count = dist[n] ?? 0}
+												<div class="flex items-center gap-2 text-xs">
+													<span class="w-3 shrink-0 text-right text-slate-200/70">{n}</span>
+													<div class="flex-1">
+														<div
+															class="h-5 rounded-sm bg-emerald-500/70 transition-all"
+															style="width: {maxCount > 0
+																? Math.max((count / maxCount) * 100, count > 0 ? 4 : 0)
+																: 0}%"
+														></div>
+													</div>
+													<span class="w-5 text-right text-slate-200/80">{count}</span>
+												</div>
+											{/each}
+										</div>
+									</div>
+								{/if}
 							</div>
 						{/each}
 					</div>

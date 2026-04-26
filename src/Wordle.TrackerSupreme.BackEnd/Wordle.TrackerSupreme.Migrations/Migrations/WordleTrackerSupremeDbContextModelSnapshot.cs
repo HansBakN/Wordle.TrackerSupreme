@@ -38,9 +38,12 @@ namespace Wordle.TrackerSupreme.Migrations.Migrations
                         .HasMaxLength(5)
                         .HasColumnType("character varying(5)");
 
+                    b.Property<int>("Stream")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("PuzzleDate")
+                    b.HasIndex("PuzzleDate", "Stream")
                         .IsUnique();
 
                     b.ToTable("DailyPuzzles");
