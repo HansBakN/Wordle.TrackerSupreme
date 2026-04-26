@@ -14,14 +14,25 @@ namespace Wordle.TrackerSupreme.Api.Controllers;
 public class AdminController(IAdminService adminService) : ControllerBase
 {
     [HttpGet("players")]
-    public async Task<ActionResult<IReadOnlyList<AdminPlayerSummaryResponse>>> GetPlayers(CancellationToken cancellationToken)
+    public async Task<ActionResult<AdminPlayersPageResponse>> GetPlayers(
+        [FromQuery] string? search,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 20,
+        CancellationToken cancellationToken = default)
     {
-        var players = await adminService.GetPlayers(cancellationToken);
-        var response = players
-            .OrderBy(player => player.DisplayName)
-            .Select(MapSummary)
-            .ToList();
-        return Ok(response);
+        if (page < 1)
+        {
+            page = 1;
+        }
+
+        if (pageSize is < 1 or > 100)
+        {
+            pageSize = 20;
+        }
+
+        var (players, totalCount) = await adminService.GetPlayersPage(search, page, pageSize, cancellationToken);
+        var entries = players.Select(MapSummary).ToList();
+        return Ok(new AdminPlayersPageResponse(entries, totalCount, page, pageSize));
     }
 
     [HttpGet("players/{playerId:guid}")]

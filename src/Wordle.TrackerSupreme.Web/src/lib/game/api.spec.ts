@@ -156,4 +156,43 @@ describe('api helpers', () => {
 		expect((init as RequestInit)?.method).toBe('POST');
 		expect((init as RequestInit)?.body).toBe(JSON.stringify({ guess: 'CRANE' }));
 	});
+
+	it('appends the date query string when fetching a replay state', async () => {
+		const mockResponse = {
+			ok: true,
+			status: 200,
+			json: () => Promise.resolve({ puzzleDate: '2025-04-01', isReplay: true })
+		} as Response;
+		const fetchSpy = vi.spyOn(globalThis, 'fetch' as never).mockResolvedValue(mockResponse);
+
+		await fetchGameState('2025-04-01');
+
+		expect(fetchSpy.mock.calls[0][0]).toBe('http://api.test/api/game/state?date=2025-04-01');
+	});
+
+	it('appends the date query string when submitting a replay guess', async () => {
+		const mockResponse = {
+			ok: true,
+			status: 200,
+			json: () => Promise.resolve({ puzzleDate: '2025-04-01', isReplay: true })
+		} as Response;
+		const fetchSpy = vi.spyOn(globalThis, 'fetch' as never).mockResolvedValue(mockResponse);
+
+		await submitGuess('CRANE', '2025-04-01');
+
+		expect(fetchSpy.mock.calls[0][0]).toBe('http://api.test/api/game/guess?date=2025-04-01');
+	});
+
+	it('appends the date query string when enabling easy mode for a replay', async () => {
+		const mockResponse = {
+			ok: true,
+			status: 200,
+			json: () => Promise.resolve({ puzzleDate: '2025-04-01', isReplay: true, isHardMode: false })
+		} as Response;
+		const fetchSpy = vi.spyOn(globalThis, 'fetch' as never).mockResolvedValue(mockResponse);
+
+		await enableEasyMode('2025-04-01');
+
+		expect(fetchSpy.mock.calls[0][0]).toBe('http://api.test/api/game/easy-mode?date=2025-04-01');
+	});
 });

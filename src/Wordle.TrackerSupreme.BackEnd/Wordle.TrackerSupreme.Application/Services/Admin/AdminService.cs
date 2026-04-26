@@ -23,6 +23,12 @@ public class AdminService(
     public async Task<IReadOnlyList<Player>> GetPlayers(CancellationToken cancellationToken)
         => await _playerRepository.GetPlayersWithAttempts(cancellationToken);
 
+    public async Task<(IReadOnlyList<Player> Players, int TotalCount)> GetPlayersPage(string? search, int page, int pageSize, CancellationToken cancellationToken)
+    {
+        var (players, totalCount) = await _playerRepository.GetPlayersPage(search, page, pageSize, cancellationToken);
+        return (players, totalCount);
+    }
+
     public Task<Player?> GetPlayer(Guid playerId, CancellationToken cancellationToken)
         => _playerRepository.GetPlayerWithAttemptsAndGuesses(playerId, cancellationToken);
 

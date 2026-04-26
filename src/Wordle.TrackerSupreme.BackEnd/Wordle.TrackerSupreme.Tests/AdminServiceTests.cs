@@ -482,6 +482,53 @@ public class AdminServiceTests
             .WithMessage("*already has player attempts*");
     }
 
+    [Fact]
+    public async Task GetPlayersPage_returns_paged_results_matching_search()
+    {
+        var options = new GameOptions { WordLength = 5, MaxGuesses = 6 };
+        var validator = new FakeWordValidator([]);
+        var guessService = new GuessEvaluationService(options, validator);
+        var gameRepo = new FakeGameRepository();
+        var passwordHasher = new PasswordHasher<Player>();
+
+        var players = new List<Player>
+        {
+            new() { Id = Guid.NewGuid(), DisplayName = "Alice", Email = "alice@example.com", PasswordHash = "x" },
+            new() { Id = Guid.NewGuid(), DisplayName = "Bob", Email = "bob@example.com", PasswordHash = "x" },
+            new() { Id = Guid.NewGuid(), DisplayName = "Charlie", Email = "charlie@example.com", PasswordHash = "x" }
+        };
+        var playerRepo = new FakeAdminPlayerRepository(players);
+        var service = new AdminService(playerRepo, gameRepo, guessService, passwordHasher, options);
+
+        var (paged, total) = await service.GetPlayersPage("ali", 1, 10, CancellationToken.None);
+
+        total.Should().Be(1);
+        paged.Should().ContainSingle(p => p.DisplayName == "Alice");
+    }
+
+    [Fact]
+    public async Task GetPlayersPage_paginates_correctly()
+    {
+        var options = new GameOptions { WordLength = 5, MaxGuesses = 6 };
+        var validator = new FakeWordValidator([]);
+        var guessService = new GuessEvaluationService(options, validator);
+        var gameRepo = new FakeGameRepository();
+        var passwordHasher = new PasswordHasher<Player>();
+
+        var players = Enumerable.Range(1, 25)
+            .Select(i => new Player { Id = Guid.NewGuid(), DisplayName = $"Player{i:D2}", Email = $"p{i}@e.com", PasswordHash = "x" })
+            .ToList();
+        var playerRepo = new FakeAdminPlayerRepository(players);
+        var service = new AdminService(playerRepo, gameRepo, guessService, passwordHasher, options);
+
+        var (page1, total) = await service.GetPlayersPage(null, 1, 20, CancellationToken.None);
+        var (page2, _) = await service.GetPlayersPage(null, 2, 20, CancellationToken.None);
+
+        total.Should().Be(25);
+        page1.Should().HaveCount(20);
+        page2.Should().HaveCount(5);
+    }
+
     private sealed class FakeAdminPlayerRepository : IPlayerRepository
     {
         private readonly List<Player> _players;
@@ -537,6 +584,19 @@ public class AdminServiceTests
         {
             return Task.FromResult(_players.Any(player =>
                 player.Email == email && (excludePlayerId == null || player.Id != excludePlayerId)));
+        }
+
+        public Task<(List<Player> Players, int TotalCount)> GetPlayersPage(string? search, int page, int pageSize, CancellationToken cancellationToken)
+        {
+            var query = _players.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                var term = search.Trim().ToLower();
+                query = query.Where(p => p.DisplayName.ToLower().Contains(term) || p.Email.ToLower().Contains(term));
+            }
+            var all = query.OrderBy(p => p.DisplayName).ToList();
+            var paged = all.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            return Task.FromResult((paged, all.Count));
         }
 
         public Task SaveChanges(CancellationToken cancellationToken)

@@ -23,6 +23,7 @@
 - Apply migrations only when needed: `docker compose --env-file .env.local --profile migrate up --build migrator`
 - Seed local dev data (after migrations): `docker compose --env-file .env.local --profile seed run --rm seeder`
 - Verification wrapper: `./scripts/verify.sh all`
+- Repo scripts auto-detect `docker compose` first and fall back to legacy `docker-compose` when needed on this VM.
 - Tests (preferred):
   - Backend: `docker compose --profile tests run --rm tests-backend`
   - Frontend + UI: `docker compose --profile tests run --rm tests-frontend`
@@ -32,6 +33,7 @@
 
 ## E2E workflow (required for feature work)
 - Use the single entrypoint: `./scripts/e2e.sh` (starts backend/frontend, resets data, runs headless Playwright, writes artifacts).
+- `./scripts/e2e.sh` supports both Compose v2 and legacy `docker-compose v1`; prefer it over ad-hoc compose commands for full-stack verification.
 - After any user-visible change, you MUST:
   1) Update existing E2E tests and/or add new E2E tests covering the new behavior.
   2) Run the full E2E suite (existing + new) via `./scripts/e2e.sh`.

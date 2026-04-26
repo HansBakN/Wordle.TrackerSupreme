@@ -5,6 +5,7 @@ namespace Wordle.TrackerSupreme.Domain.Services;
 public interface IAdminService
 {
     Task<IReadOnlyList<Player>> GetPlayers(CancellationToken cancellationToken);
+    Task<(IReadOnlyList<Player> Players, int TotalCount)> GetPlayersPage(string? search, int page, int pageSize, CancellationToken cancellationToken);
     Task<Player?> GetPlayer(Guid playerId, CancellationToken cancellationToken);
     Task<Player> UpdatePlayerProfile(Guid playerId, string displayName, string email, CancellationToken cancellationToken);
     Task<Player> ResetPassword(Guid playerId, string newPassword, CancellationToken cancellationToken);
