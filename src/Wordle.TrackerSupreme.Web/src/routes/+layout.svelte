@@ -1,7 +1,7 @@
 <script lang="ts">
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
-	import { PUBLIC_COMMIT_SHA, PUBLIC_COMMIT_URL, PUBLIC_BUILD_NUMBER } from '$env/static/public';
+	import { PUBLIC_COMMIT_SHA, PUBLIC_COMMIT_URL, PUBLIC_BUILD_ID, PUBLIC_BUILD_URL } from '$env/static/public';
 	import { auth, bootstrapAuth, signOut } from '$lib/auth/store';
 	import { colorMode } from '$lib/game/colorMode';
 	import { resolve } from '$app/paths';
@@ -161,7 +161,14 @@
 
 	{#if PUBLIC_COMMIT_SHA}
 		<div class="fixed bottom-2 left-2 text-[14px]" style="display: flex">
-			<div class="text-slate-200/80">{PUBLIC_BUILD_NUMBER}.</div>
+			<a
+				href={PUBLIC_BUILD_URL}
+				target="_blank"
+				rel="noopener noreferrer"
+				class="text-slate-200/80"
+				title={`Build id: ${PUBLIC_BUILD_ID}`}
+				data-testid="build-id"
+			>{PUBLIC_BUILD_ID}.</a>
 			<a
 				href={PUBLIC_COMMIT_URL}
 				target="_blank"

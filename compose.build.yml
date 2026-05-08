@@ -1,0 +1,35 @@
+services:
+  api:
+    image: registry.trackersupreme.dk/wordle-trackersupreme-api:${IMAGE_TAG}
+    build:
+      context: ./src/Wordle.TrackerSupreme.BackEnd
+      dockerfile: Wordle.TrackerSupreme.Api/Dockerfile
+    profiles:
+      - app
+      - build-app
+
+  migrator:
+    image: registry.trackersupreme.dk/wordle-trackersupreme-migrator:${IMAGE_TAG}
+    build:
+      context: ./src/Wordle.TrackerSupreme.BackEnd
+      dockerfile: Wordle.TrackerSupreme.Migrations/Dockerfile
+    profiles:
+      - migrate
+      - build-app
+
+  seeder:
+    image: registry.trackersupreme.dk/wordle-trackersupreme-seeder:${IMAGE_TAG}
+    build:
+      context: ./src/Wordle.TrackerSupreme.BackEnd
+      dockerfile: Wordle.TrackerSupreme.Seeder/Dockerfile
+    profiles:
+      - seed
+
+  web:
+    image: registry.trackersupreme.dk/wordle-trackersupreme-web:${IMAGE_TAG}
+    build:
+      context: ./src/Wordle.TrackerSupreme.Web
+      dockerfile: Dockerfile
+    profiles:
+      - app
+      - build-app

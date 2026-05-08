@@ -1,6 +1,5 @@
 .idea/
 .vscode/
-.env
-.env.local
+.env*
 /artifacts/
 /src/Wordle.TrackerSupreme.Web/test-results/
