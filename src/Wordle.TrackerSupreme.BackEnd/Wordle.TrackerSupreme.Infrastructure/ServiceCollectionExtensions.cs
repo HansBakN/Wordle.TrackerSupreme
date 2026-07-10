@@ -29,5 +29,6 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<IGameRepository, GameRepository>();
         services.AddScoped<IPlayerRepository, PlayerRepository>();
+        services.AddScoped<INytImportRepository, NytImportRepository>();
     }
 }

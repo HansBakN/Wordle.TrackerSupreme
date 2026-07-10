@@ -9,6 +9,7 @@ export type StatsFilterState = {
 	includeFailed: boolean;
 	includeInProgress: boolean;
 	countPracticeAttempts: boolean;
+	includeImportedNyt: boolean;
 	fromDate: string;
 	toDate: string;
 	minGuessCount: string | number;
@@ -24,6 +25,7 @@ export const defaultStatsFilterState: StatsFilterState = {
 	includeFailed: true,
 	includeInProgress: false,
 	countPracticeAttempts: false,
+	includeImportedNyt: false,
 	fromDate: '',
 	toDate: '',
 	minGuessCount: '',
@@ -60,6 +62,7 @@ export function buildStatsFilterRequest(state: StatsFilterState): PlayerStatsFil
 		includeFailed: state.includeFailed,
 		includeInProgress: state.includeInProgress,
 		countPracticeAttempts: state.countPracticeAttempts,
+		includeImportedNyt: state.includeImportedNyt,
 		fromDate: state.fromDate || undefined,
 		toDate: state.toDate || undefined,
 		minGuessCount: toOptionalNumber(state.minGuessCount),

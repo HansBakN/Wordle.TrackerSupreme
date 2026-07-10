@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Wordle.TrackerSupreme.Application.Services.Game;
+using Wordle.TrackerSupreme.Application.Services.Import;
 using Xunit;
 
 namespace Wordle.TrackerSupreme.Tests;
@@ -13,12 +14,26 @@ namespace Wordle.TrackerSupreme.Tests;
 public class OfficialWordProviderTests
 {
     [Fact]
+    public async Task Development_provider_resolves_latest_embedded_catalogue_entry()
+    {
+        var catalogue = new NytPuzzleCatalogue();
+        var latest = catalogue.Published.MaxBy(entry => entry.PrintDate)!;
+        var provider = new DevelopmentOfficialWordProvider(new WordSelector(), catalogue);
+
+        var metadata = await provider.GetMetadataForDateAsync(latest.PrintDate, CancellationToken.None);
+
+        metadata.PrintDate.Should().Be(latest.PrintDate);
+        metadata.NytPuzzleId.Should().Be(latest.NytPuzzleId);
+        metadata.Solution.Should().HaveLength(5);
+    }
+
+    [Fact]
     public async Task Returns_uppercase_solution()
     {
         var handler = new TestHttpMessageHandler((request, _) =>
         {
             request.RequestUri?.AbsolutePath.Should().Contain("/svc/wordle/v2/2025-01-01.json");
-            var payload = "{\"solution\":\"wander\"}";
+            var payload = "{\"id\":42,\"solution\":\"wander\",\"print_date\":\"2025-01-01\",\"days_since_launch\":1291}";
             return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent(payload, Encoding.UTF8, "application/json")

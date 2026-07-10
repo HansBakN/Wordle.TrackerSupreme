@@ -35,21 +35,31 @@ public class DailyPuzzleService : IDailyPuzzleService
         var existing = await _gameRepository.GetPuzzleByDate(puzzleDate, stream, cancellationToken);
         if (existing is not null)
         {
-            if (string.IsNullOrWhiteSpace(existing.Solution))
+            if (string.IsNullOrWhiteSpace(existing.Solution) ||
+                (stream == PuzzleStream.NewYorkTimes && existing.NytPuzzleId is null))
             {
-                existing.Solution = await ResolveSolution(puzzleDate, cancellationToken);
+                var metadata = await ResolveMetadata(puzzleDate, cancellationToken);
+                existing.Solution = metadata.Solution;
+                if (stream == PuzzleStream.NewYorkTimes)
+                {
+                    existing.NytPuzzleId = metadata.NytPuzzleId;
+                    existing.PublicPuzzleNumber = metadata.PublicPuzzleNumber;
+                }
                 await _gameRepository.SaveChanges(cancellationToken);
             }
 
             return existing;
         }
 
+        var official = await ResolveMetadata(puzzleDate, cancellationToken);
         var puzzle = new DailyPuzzle
         {
             Id = Guid.NewGuid(),
             PuzzleDate = puzzleDate,
             Stream = stream,
-            Solution = await ResolveSolution(puzzleDate, cancellationToken),
+            Solution = official.Solution,
+            NytPuzzleId = stream == PuzzleStream.NewYorkTimes ? official.NytPuzzleId : null,
+            PublicPuzzleNumber = stream == PuzzleStream.NewYorkTimes ? official.PublicPuzzleNumber : null,
             IsArchived = false
         };
 
@@ -58,11 +68,11 @@ public class DailyPuzzleService : IDailyPuzzleService
         return puzzle;
     }
 
-    private async Task<string> ResolveSolution(DateOnly puzzleDate, CancellationToken cancellationToken)
+    private async Task<NytPuzzleMetadata> ResolveMetadata(DateOnly puzzleDate, CancellationToken cancellationToken)
     {
         try
         {
-            return await _officialWordProvider.GetSolutionForDateAsync(puzzleDate, cancellationToken);
+            return await _officialWordProvider.GetMetadataForDateAsync(puzzleDate, cancellationToken);
         }
         catch (OperationCanceledException)
         {

@@ -54,7 +54,7 @@ test('replay landing page navigates to the chosen historical puzzle', async ({ p
 
 	await expect(page).toHaveURL(/\/replay\/2025-04-01$/);
 	await expect(page.getByText('Puzzle for 01/04-2025')).toBeVisible();
-	await expect(page.getByText('Practice', { exact: true })).toBeVisible();
+	await expect(page.getByRole('main').getByText('Practice', { exact: true })).toBeVisible();
 });
 
 test('replay page sends the date query parameter when fetching state', async ({ page }) => {

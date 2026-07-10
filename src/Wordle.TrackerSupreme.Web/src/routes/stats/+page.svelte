@@ -276,6 +276,18 @@
 				<h2 class="text-sm font-semibold tracking-[0.2em] text-slate-200/70 uppercase">Filters</h2>
 				<div class="mt-4 space-y-5 text-sm text-slate-100/80">
 					<div class="space-y-3">
+						<p class="text-xs tracking-[0.2em] text-slate-200/60 uppercase">Source</p>
+						<label class="flex items-center gap-2">
+							<input
+								type="checkbox"
+								bind:checked={filters.includeImportedNyt}
+								data-testid="filter-imported-nyt"
+							/>
+							Imported NYT history
+						</label>
+					</div>
+
+					<div class="space-y-3">
 						<p class="text-xs tracking-[0.2em] text-slate-200/60 uppercase">Mode</p>
 						<label class="flex items-center gap-2">
 							<input

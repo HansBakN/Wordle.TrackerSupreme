@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Wordle.TrackerSupreme.Domain.Services.Game;
+using Wordle.TrackerSupreme.Domain.Models;
 
 namespace Wordle.TrackerSupreme.Tests.Fakes;
 
@@ -25,5 +26,12 @@ public class FakeOfficialWordProvider : IOfficialWordProvider
     {
         CallCount++;
         return _resolver(puzzleDate, cancellationToken);
+    }
+
+    public async Task<NytPuzzleMetadata> GetMetadataForDateAsync(DateOnly puzzleDate, CancellationToken cancellationToken)
+    {
+        var solution = await GetSolutionForDateAsync(puzzleDate, cancellationToken);
+        var number = puzzleDate.DayNumber - new DateOnly(2021, 6, 19).DayNumber;
+        return new NytPuzzleMetadata(number + 1, puzzleDate, number, solution);
     }
 }

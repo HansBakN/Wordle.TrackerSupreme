@@ -252,6 +252,33 @@ public class StatsControllerTests
         payload.Single().DisplayName.Should().Be("Active");
     }
 
+    [Fact]
+    public async Task GetTodayLeaderboard_excludes_imported_nyt_attempts()
+    {
+        var anchorDate = new DateOnly(2025, 1, 2);
+
+        var tracker = CreatePlayer("Tracker");
+        tracker.Attempts.Add(CreateAttempt(tracker, anchorDate, AttemptStatus.Solved, true, 2));
+
+        var imported = CreatePlayer("Imported");
+        var importedAttempt = CreateAttempt(imported, anchorDate, AttemptStatus.Solved, true, 1);
+        importedAttempt.DailyPuzzle.Stream = PuzzleStream.NewYorkTimes;
+        importedAttempt.NytImportSessionId = Guid.NewGuid();
+        imported.Attempts.Add(importedAttempt);
+
+        var repo = new FakePlayerRepository([tracker, imported]);
+        var controller = new StatsController(repo, new PlayerStatisticsService(), new FakeGameClock(anchorDate));
+
+        var result = await controller.GetTodayLeaderboard(CancellationToken.None);
+        var okResult = result.Result as OkObjectResult;
+
+        okResult.Should().NotBeNull();
+        var payload = okResult!.Value.Should().BeAssignableTo<IReadOnlyList<TodayLeaderboardEntryResponse>>().Subject;
+
+        payload.Should().ContainSingle();
+        payload.Single().DisplayName.Should().Be("Tracker");
+    }
+
     private static StatsController CreateControllerForPlayer(
         Player player,
         FakeGameClock clock)
@@ -552,7 +579,7 @@ public class StatsControllerTests
         bool hardMode,
         int guessCount)
     {
-        var puzzle = new DailyPuzzle { Id = Guid.NewGuid(), PuzzleDate = puzzleDate };
+        var puzzle = new DailyPuzzle { Id = Guid.NewGuid(), PuzzleDate = puzzleDate, Stream = PuzzleStream.TrackerSupreme };
         var attempt = new PlayerPuzzleAttempt
         {
             Id = Guid.NewGuid(),

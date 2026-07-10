@@ -10,6 +10,7 @@ public record PlayerStatisticsFilter
     public bool IncludeFailed { get; init; } = true;
     public bool IncludeInProgress { get; init; } = true;
     public bool CountPracticeAttempts { get; init; } = false;
+    public bool IncludeImportedNyt { get; init; } = true;
     public DateOnly? FromDate { get; init; }
     public DateOnly? ToDate { get; init; }
     public int? MinGuessCount { get; init; }

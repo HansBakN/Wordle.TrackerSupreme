@@ -14,6 +14,8 @@ using Wordle.TrackerSupreme.Application.Services.Admin;
 using Wordle.TrackerSupreme.Application.Services.Analyzer;
 using Wordle.TrackerSupreme.Application.Services.Game;
 using Wordle.TrackerSupreme.Application.Services;
+using Wordle.TrackerSupreme.Application.Services.Import;
+using Wordle.TrackerSupreme.Domain.Services.Import;
 using Wordle.TrackerSupreme.Domain.Services;
 using Wordle.TrackerSupreme.Domain.Services.Analyzer;
 using Wordle.TrackerSupreme.Domain.Services.Game;
@@ -163,6 +165,27 @@ builder.Services.AddRateLimiter(options =>
                 QueueLimit = 0,
                 AutoReplenishment = true
             }));
+
+    options.AddPolicy(NytImportRateLimiting.SessionPolicy, httpContext =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            httpContext.User.FindFirst("playerId")?.Value ?? httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+            _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 5,
+                Window = TimeSpan.FromMinutes(10),
+                QueueLimit = 0,
+                AutoReplenishment = true
+            }));
+    options.AddPolicy(NytImportRateLimiting.SubmissionPolicy, httpContext =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+            _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 20,
+                Window = TimeSpan.FromMinutes(10),
+                QueueLimit = 0,
+                AutoReplenishment = true
+            }));
 });
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection(JwtSettings.SectionName));
@@ -170,6 +193,11 @@ builder.Services.Configure<GameOptions>(builder.Configuration.GetSection(GameOpt
 builder.Services.AddSingleton(sp => sp.GetRequiredService<IOptions<GameOptions>>().Value);
 builder.Services.Configure<AnalyzerOptions>(builder.Configuration.GetSection(AnalyzerOptions.SectionName));
 builder.Services.AddSingleton(sp => sp.GetRequiredService<IOptions<AnalyzerOptions>>().Value);
+builder.Services.Configure<NytImportOptions>(builder.Configuration.GetSection(NytImportOptions.SectionName));
+builder.Services.AddSingleton(sp => sp.GetRequiredService<IOptions<NytImportOptions>>().Value);
+builder.Services.AddSingleton(TimeProvider.System);
+builder.Services.AddSingleton(_ => new NytPuzzleCatalogue());
+builder.Services.AddScoped<INytImportService, NytImportService>();
 builder.Services.AddScoped<JwtTokenService>();
 builder.Services.AddScoped<PasswordHasher<Wordle.TrackerSupreme.Domain.Models.Player>>();
 builder.Services.AddSingleton<IGameClock, GameClock>();
@@ -227,9 +255,9 @@ if (!app.Environment.IsDevelopment())
 app.UseForwardedHeaders();
 app.UseMiddleware<CorrelationIdMiddleware>();
 app.UseCors();
-app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseRateLimiter();
 
 app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
 app.MapGet("/health/ready", async (WordleTrackerSupremeDbContext dbContext, CancellationToken cancellationToken) =>

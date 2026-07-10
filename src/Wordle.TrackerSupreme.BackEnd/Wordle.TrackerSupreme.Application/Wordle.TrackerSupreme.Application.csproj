@@ -16,6 +16,7 @@
 
     <ItemGroup>
         <EmbeddedResource Include="Services\\Game\\wordlist-nyt.txt" />
+        <EmbeddedResource Include="Services\\Import\\nyt-puzzle-catalogue.json" />
     </ItemGroup>
 
 </Project>

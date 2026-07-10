@@ -19,10 +19,10 @@ public class PlayerStatisticsService : IPlayerStatisticsService
             .Where(a => MatchesFilter(a, filterOptions, isAfterRevealFn))
             .ToList();
 
-        var practiceAttempts = filteredAttempts.Where(a => isAfterRevealFn(a) || (a.DailyPuzzle?.IsPractice ?? false)).ToList();
+        var practiceAttempts = filteredAttempts.Where(a => IsPracticeAttempt(a, isAfterRevealFn)).ToList();
         var countedAttempts = filterOptions.CountPracticeAttempts
             ? filteredAttempts
-            : filteredAttempts.Where(a => !isAfterRevealFn(a) && !(a.DailyPuzzle?.IsPractice ?? false)).ToList();
+            : filteredAttempts.Where(a => !IsPracticeAttempt(a, isAfterRevealFn)).ToList();
 
         var totalAttempts = countedAttempts.Count;
         var wins = countedAttempts.Count(a => a.Status == AttemptStatus.Solved);
@@ -38,7 +38,7 @@ public class PlayerStatisticsService : IPlayerStatisticsService
             : null;
 
         var streakAttempts = filteredAttempts
-            .Where(a => !isAfterRevealFn(a))
+            .Where(a => !IsPracticeAttempt(a, isAfterRevealFn))
             .ToList();
         var (currentStreak, longestStreak) = CalculateStreaks(streakAttempts);
 
@@ -65,6 +65,11 @@ public class PlayerStatisticsService : IPlayerStatisticsService
         PlayerStatisticsFilter filter,
         Func<PlayerPuzzleAttempt, bool> isAfterReveal)
     {
+        if (attempt.NytImportSessionId is not null && !filter.IncludeImportedNyt)
+        {
+            return false;
+        }
+
         var isAfter = isAfterReveal(attempt);
         if (isAfter)
         {
@@ -131,6 +136,9 @@ public class PlayerStatisticsService : IPlayerStatisticsService
 
         return true;
     }
+
+    private static bool IsPracticeAttempt(PlayerPuzzleAttempt attempt, Func<PlayerPuzzleAttempt, bool> isAfterReveal)
+        => attempt.IsImportedArchive || isAfterReveal(attempt) || (attempt.DailyPuzzle?.IsPractice ?? false);
 
     private static (int currentStreak, int longestStreak) CalculateStreaks(IEnumerable<PlayerPuzzleAttempt> attempts)
     {

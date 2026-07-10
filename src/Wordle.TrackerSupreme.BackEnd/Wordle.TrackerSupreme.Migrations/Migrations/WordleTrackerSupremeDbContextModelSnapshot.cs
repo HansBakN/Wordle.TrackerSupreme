@@ -36,6 +36,12 @@ namespace Wordle.TrackerSupreme.Migrations.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValue(false);
 
+                    b.Property<int?>("NytPuzzleId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("PublicPuzzleNumber")
+                        .HasColumnType("integer");
+
                     b.Property<DateOnly>("PuzzleDate")
                         .HasColumnType("date");
 
@@ -47,6 +53,10 @@ namespace Wordle.TrackerSupreme.Migrations.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("NytPuzzleId")
+                        .IsUnique()
+                        .HasFilter("\"NytPuzzleId\" IS NOT NULL");
 
                     b.HasIndex("PuzzleDate", "Stream")
                         .IsUnique()
@@ -104,6 +114,63 @@ namespace Wordle.TrackerSupreme.Migrations.Migrations
                         .IsUnique();
 
                     b.ToTable("LetterEvaluations");
+                });
+
+            modelBuilder.Entity("Wordle.TrackerSupreme.Domain.Models.NytImportSession", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int?>("AggregateGamesPlayed")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("CodeHash")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Conflicts")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Duplicates")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Imported")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("MissingFromNyt")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("PlayerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Rejected")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Requested")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("UsedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CodeHash")
+                        .IsUnique();
+
+                    b.HasIndex("PlayerId", "CreatedOn");
+
+                    b.ToTable("NytImportSessions");
                 });
 
             modelBuilder.Entity("Wordle.TrackerSupreme.Domain.Models.Player", b =>
@@ -165,6 +232,14 @@ namespace Wordle.TrackerSupreme.Migrations.Migrations
                     b.Property<Guid>("DailyPuzzleId")
                         .HasColumnType("uuid");
 
+                    b.Property<bool>("IsImportedArchive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<Guid?>("NytImportSessionId")
+                        .HasColumnType("uuid");
+
                     b.Property<bool>("PlayedInHardMode")
                         .HasColumnType("boolean");
 
@@ -179,6 +254,8 @@ namespace Wordle.TrackerSupreme.Migrations.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DailyPuzzleId");
+
+                    b.HasIndex("NytImportSessionId");
 
                     b.HasIndex("PlayerId", "DailyPuzzleId")
                         .IsUnique();
@@ -208,6 +285,17 @@ namespace Wordle.TrackerSupreme.Migrations.Migrations
                     b.Navigation("GuessAttempt");
                 });
 
+            modelBuilder.Entity("Wordle.TrackerSupreme.Domain.Models.NytImportSession", b =>
+                {
+                    b.HasOne("Wordle.TrackerSupreme.Domain.Models.Player", "Player")
+                        .WithMany()
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Player");
+                });
+
             modelBuilder.Entity("Wordle.TrackerSupreme.Domain.Models.PlayerPuzzleAttempt", b =>
                 {
                     b.HasOne("Wordle.TrackerSupreme.Domain.Models.DailyPuzzle", "DailyPuzzle")
@@ -216,6 +304,11 @@ namespace Wordle.TrackerSupreme.Migrations.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Wordle.TrackerSupreme.Domain.Models.NytImportSession", "NytImportSession")
+                        .WithMany("ImportedAttempts")
+                        .HasForeignKey("NytImportSessionId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("Wordle.TrackerSupreme.Domain.Models.Player", "Player")
                         .WithMany("Attempts")
                         .HasForeignKey("PlayerId")
@@ -223,6 +316,8 @@ namespace Wordle.TrackerSupreme.Migrations.Migrations
                         .IsRequired();
 
                     b.Navigation("DailyPuzzle");
+
+                    b.Navigation("NytImportSession");
 
                     b.Navigation("Player");
                 });
@@ -235,6 +330,11 @@ namespace Wordle.TrackerSupreme.Migrations.Migrations
             modelBuilder.Entity("Wordle.TrackerSupreme.Domain.Models.GuessAttempt", b =>
                 {
                     b.Navigation("Feedback");
+                });
+
+            modelBuilder.Entity("Wordle.TrackerSupreme.Domain.Models.NytImportSession", b =>
+                {
+                    b.Navigation("ImportedAttempts");
                 });
 
             modelBuilder.Entity("Wordle.TrackerSupreme.Domain.Models.Player", b =>

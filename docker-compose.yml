@@ -153,7 +153,7 @@ services:
     volumes:
       - .:/workspace
     entrypoint: ["/bin/bash"]
-    command: ["-lc", "npm ci && npx playwright install chromium && npm test -- --run && npx playwright test"]
+    command: ["-lc", "npm ci && npx playwright install chromium && npm test -- --run && npx playwright test && cd ../Wordle.TrackerSupreme.Extension && npm test"]
     profiles:
       - tests
       - tests-all

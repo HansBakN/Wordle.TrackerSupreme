@@ -4,3 +4,5 @@
 .env.local
 /artifacts/
 /src/Wordle.TrackerSupreme.Web/test-results/
+src/Wordle.TrackerSupreme.Extension/dist/
+src/Wordle.TrackerSupreme.Extension/wordle-tracker-supreme-extension.zip

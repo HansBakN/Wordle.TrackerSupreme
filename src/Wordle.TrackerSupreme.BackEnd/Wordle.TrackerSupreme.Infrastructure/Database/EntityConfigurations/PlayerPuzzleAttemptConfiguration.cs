@@ -16,11 +16,19 @@ public class PlayerPuzzleAttemptConfiguration : IEntityTypeConfiguration<PlayerP
         builder.Property(attempt => attempt.CreatedOn)
             .HasDefaultValueSql("now() at time zone 'utc'");
 
+        builder.Property(attempt => attempt.IsImportedArchive)
+            .HasDefaultValue(false);
+
         builder.HasIndex(attempt => new { attempt.PlayerId, attempt.DailyPuzzleId })
             .IsUnique();
 
         builder.HasMany(attempt => attempt.Guesses)
             .WithOne(guess => guess.PlayerPuzzleAttempt)
             .HasForeignKey(guess => guess.PlayerPuzzleAttemptId);
+
+        builder.HasOne(attempt => attempt.NytImportSession)
+            .WithMany(session => session.ImportedAttempts)
+            .HasForeignKey(attempt => attempt.NytImportSessionId)
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }

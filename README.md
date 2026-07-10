@@ -4,6 +4,7 @@ Wordle Tracker Supreme is a Docker-first daily Wordle tracker with:
 - a .NET 10 API
 - a Postgres database
 - a SvelteKit frontend
+- a user-activated Manifest V3 Chrome extension for private NYT history imports
 - Playwright/Vitest/XUnit test coverage
 
 Repo-specific agent guidance lives in `AGENTS.md`. Use this README for local setup, verification, and high-level project orientation.
@@ -127,9 +128,20 @@ Reset safety:
 ## Repo map
 - `src/Wordle.TrackerSupreme.BackEnd` – API, application, domain, infrastructure, migrations, seeder, XUnit tests
 - `src/Wordle.TrackerSupreme.Web` – SvelteKit app, generated API client, Vitest tests, Playwright tests
+- `src/Wordle.TrackerSupreme.Extension` – Chrome extension, extraction tests, unpacked/ZIP build
 - `scripts/e2e.sh` – one-command E2E entrypoint used locally and in CI
 - `scripts/verify.sh` – repo-level verification wrapper for backend, frontend, lint, and E2E checks
 - `.github/workflows/e2e.yml` – GitHub Actions E2E workflow
+
+## NYT import catalogue and extension
+
+The API embeds a versioned catalogue containing only published NYT puzzle IDs, print dates, and public puzzle numbers. Incrementally refresh it through the current date with:
+
+```bash
+node scripts/sync-nyt-catalogue.mjs
+```
+
+The synchronizer fetches only dates missing from the checked-in catalogue. It never writes solutions to the catalogue. Extension development, unpacked loading, API-base configuration, contracts, ZIP builds, and historical-data limitations are documented in `src/Wordle.TrackerSupreme.Extension/README.md`.
 
 ## Notes
 - The puzzle screen auto-refreshes when the next daily puzzle unlocks, so leaving it open will advance to the next puzzle after midnight.

@@ -22,6 +22,10 @@ public class DailyPuzzleConfiguration : IEntityTypeConfiguration<DailyPuzzle>
         builder.Property(puzzle => puzzle.IsPractice)
             .HasDefaultValue(false);
 
+        builder.HasIndex(puzzle => puzzle.NytPuzzleId)
+            .IsUnique()
+            .HasFilter("\"NytPuzzleId\" IS NOT NULL");
+
         builder.HasIndex(puzzle => new { puzzle.PuzzleDate, puzzle.Stream })
             .IsUnique()
             .HasFilter("\"IsPractice\" = false");

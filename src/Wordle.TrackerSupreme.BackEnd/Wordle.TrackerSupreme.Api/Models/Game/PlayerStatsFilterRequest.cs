@@ -14,7 +14,8 @@ public record PlayerStatsFilterRequest(
     DateOnly? FromDate = null,
     DateOnly? ToDate = null,
     int? MinGuessCount = null,
-    int? MaxGuessCount = null)
+    int? MaxGuessCount = null,
+    bool IncludeImportedNyt = false)
 {
     public PlayerStatisticsFilter ToFilter()
         => new()
@@ -30,6 +31,7 @@ public record PlayerStatsFilterRequest(
             FromDate = FromDate,
             ToDate = ToDate,
             MinGuessCount = MinGuessCount,
-            MaxGuessCount = MaxGuessCount
+            MaxGuessCount = MaxGuessCount,
+            IncludeImportedNyt = IncludeImportedNyt
         };
 }

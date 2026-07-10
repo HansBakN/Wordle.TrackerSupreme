@@ -1,7 +1,7 @@
 <script lang="ts">
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
-	import { PUBLIC_COMMIT_SHA, PUBLIC_COMMIT_URL, PUBLIC_BUILD_NUMBER } from '$env/static/public';
+	import { env } from '$env/dynamic/public';
 	import { auth, bootstrapAuth, signOut } from '$lib/auth/store';
 	import { colorMode } from '$lib/game/colorMode';
 	import { resolve } from '$app/paths';
@@ -14,6 +14,9 @@
 	const isTestMode = import.meta.env.MODE === 'test';
 	const STORAGE_KEY = 'wts_hasSeenHowToPlay';
 	const TEST_AUTO_OPEN_KEY = 'wts_enableHowToPlayAutoOpen';
+	const PUBLIC_COMMIT_SHA = env.PUBLIC_COMMIT_SHA ?? '';
+	const PUBLIC_COMMIT_URL = env.PUBLIC_COMMIT_URL ?? '';
+	const PUBLIC_BUILD_NUMBER = env.PUBLIC_BUILD_NUMBER ?? '';
 
 	onMount(async () => {
 		colorMode.init();
@@ -79,6 +82,11 @@
 							data-testid="nav-replay">Replay</a
 						>
 						<a href={resolve('/stats')} class="transition hover:text-white">Stats</a>
+						<a
+							href={resolve('/import/nyt')}
+							class="transition hover:text-white"
+							data-testid="nav-nyt-import">Import</a
+						>
 						<a href={resolve('/leaderboard')} class="transition hover:text-white">Leaderboard</a>
 						{#if $auth.user?.isAdmin}
 							<a href={resolve('/admin')} class="transition hover:text-white">Admin</a>
@@ -180,19 +188,19 @@
 		{/if}
 	</main>
 
-		{#if PUBLIC_COMMIT_SHA}
-			<div class="fixed bottom-2 left-2 text-[14px]" style="display: flex">
-				<div class="text-slate-200/80">{PUBLIC_BUILD_NUMBER}.</div>
-				<button
-					type="button"
-					class="text-slate-400/60 transition hover:text-slate-200"
-					title={PUBLIC_COMMIT_URL ? `Commit: ${PUBLIC_COMMIT_SHA}` : PUBLIC_COMMIT_SHA}
-					data-testid="commit-hash"
-					onclick={openCommitLink}
-				>
-					{PUBLIC_COMMIT_SHA.slice(0, 7)}
-				</button>
-			</div>
+	{#if PUBLIC_COMMIT_SHA}
+		<div class="fixed bottom-2 left-2 text-[14px]" style="display: flex">
+			<div class="text-slate-200/80">{PUBLIC_BUILD_NUMBER}.</div>
+			<button
+				type="button"
+				class="text-slate-400/60 transition hover:text-slate-200"
+				title={PUBLIC_COMMIT_URL ? `Commit: ${PUBLIC_COMMIT_SHA}` : PUBLIC_COMMIT_SHA}
+				data-testid="commit-hash"
+				onclick={openCommitLink}
+			>
+				{PUBLIC_COMMIT_SHA.slice(0, 7)}
+			</button>
+		</div>
 	{/if}
 </div>
 

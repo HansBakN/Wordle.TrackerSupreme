@@ -253,6 +253,8 @@ public class GameRepositoryTests
                 PuzzleDate TEXT NOT NULL,
                 Stream INTEGER NOT NULL,
                 Solution TEXT NULL,
+                NytPuzzleId INTEGER NULL,
+                PublicPuzzleNumber INTEGER NULL,
                 IsPractice INTEGER NOT NULL DEFAULT 0,
                 IsArchived INTEGER NOT NULL DEFAULT 0
             );
@@ -260,6 +262,10 @@ public class GameRepositoryTests
             CREATE UNIQUE INDEX IX_DailyPuzzles_PuzzleDate_Stream
                 ON DailyPuzzles (PuzzleDate, Stream)
                 WHERE IsPractice = 0;
+
+            CREATE UNIQUE INDEX IX_DailyPuzzles_NytPuzzleId
+                ON DailyPuzzles (NytPuzzleId)
+                WHERE NytPuzzleId IS NOT NULL;
             """);
     }
 

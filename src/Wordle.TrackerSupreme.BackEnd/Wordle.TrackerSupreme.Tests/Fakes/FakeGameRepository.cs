@@ -18,6 +18,7 @@ public class FakeGameRepository : IGameRepository
 
     public Task AddGuess(GuessAttempt guessAttempt, IReadOnlyCollection<LetterEvaluation> feedback, CancellationToken cancellationToken)
     {
+        guessAttempt.Feedback = feedback.ToList();
         _guesses.Add(guessAttempt);
         return Task.CompletedTask;
     }
@@ -31,6 +32,10 @@ public class FakeGameRepository : IGameRepository
     public Task<PlayerPuzzleAttempt?> GetAttempt(Guid playerId, Guid puzzleId, CancellationToken cancellationToken)
     {
         var attempt = _attempts.FirstOrDefault(a => a.PlayerId == playerId && a.DailyPuzzleId == puzzleId);
+        if (attempt is not null)
+        {
+            attempt.Guesses = _guesses.Where(g => g.PlayerPuzzleAttemptId == attempt.Id).OrderBy(g => g.GuessNumber).ToList();
+        }
         return Task.FromResult<PlayerPuzzleAttempt?>(attempt);
     }
 

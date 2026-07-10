@@ -11,6 +11,9 @@ public class PlayerPuzzleAttempt
     public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
     public DateTime? CompletedOn { get; set; }
     public bool PlayedInHardMode { get; set; }
+    public bool IsImportedArchive { get; set; }
+    public Guid? NytImportSessionId { get; set; }
+    public NytImportSession? NytImportSession { get; set; }
     public ICollection<GuessAttempt> Guesses { get; set; } = [];
 
     public int? GuessCount => Guesses?.Count;

@@ -35,7 +35,7 @@ public class StatsController(
             return Unauthorized();
         }
 
-        var filter = new PlayerStatisticsFilter { CountPracticeAttempts = true };
+        var filter = new PlayerStatisticsFilter { CountPracticeAttempts = true, IncludeImportedNyt = true };
         var stats = statisticsService.Calculate(player, filter, attempt => gameClock.IsAfterReveal(attempt));
 
         return Ok(MapStats(stats));
@@ -270,7 +270,9 @@ public class StatsController(
         var players = await playerRepository.GetPlayersWithAttempts(cancellationToken);
         var ranked = players
             .Select(player => player.Attempts
-                .Where(attempt => attempt.DailyPuzzle?.PuzzleDate == today)
+                .Where(attempt => attempt.DailyPuzzle?.PuzzleDate == today
+                    && !attempt.DailyPuzzle.IsPractice
+                    && attempt.NytImportSessionId is null)
                 .OrderByDescending(attempt => attempt.CreatedOn)
                 .FirstOrDefault())
             .Where(attempt => attempt is not null)

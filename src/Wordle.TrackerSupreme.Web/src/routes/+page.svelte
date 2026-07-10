@@ -108,6 +108,7 @@
 	$: {
 		const status = state?.attempt?.status;
 		if (status === 'Solved' || status === 'Failed') {
+			// eslint-disable-next-line svelte/infinite-reactive-loop -- the interval is guarded and does not mutate status
 			startCountdown();
 		} else {
 			stopCountdown();
@@ -129,6 +130,7 @@
 		noPuzzleToday = false;
 		animatedGuessId = null;
 		try {
+			// eslint-disable-next-line svelte/infinite-reactive-loop -- this is an event-driven async refresh, not a reactive assignment loop
 			state = await fetchGameState();
 			message = completedMessage(state);
 		} catch (err) {
@@ -360,6 +362,7 @@
 			countdown = computeCountdown();
 			if (countdown === '00:00:00' && !countdownReloaded) {
 				countdownReloaded = true;
+				// eslint-disable-next-line svelte/infinite-reactive-loop -- the one-shot guard prevents repeated midnight reloads
 				void loadState();
 			}
 		}, 1000);

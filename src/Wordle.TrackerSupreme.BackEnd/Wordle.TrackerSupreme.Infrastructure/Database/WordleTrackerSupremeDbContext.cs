@@ -11,6 +11,7 @@ public class WordleTrackerSupremeDbContext(DbContextOptions<WordleTrackerSupreme
     public DbSet<PlayerPuzzleAttempt> Attempts { get; set; }
     public DbSet<GuessAttempt> Guesses { get; set; }
     public DbSet<LetterEvaluation> LetterEvaluations { get; set; }
+    public DbSet<NytImportSession> NytImportSessions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

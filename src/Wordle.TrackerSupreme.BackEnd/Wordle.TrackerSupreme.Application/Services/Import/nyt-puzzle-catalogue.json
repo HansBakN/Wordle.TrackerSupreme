@@ -1,0 +1,9242 @@
+[
+  {
+    "NytPuzzleId": 1,
+    "PrintDate": "2021-06-19",
+    "PublicPuzzleNumber": null
+  },
+  {
+    "NytPuzzleId": 2,
+    "PrintDate": "2021-06-20",
+    "PublicPuzzleNumber": 1
+  },
+  {
+    "NytPuzzleId": 3,
+    "PrintDate": "2021-06-21",
+    "PublicPuzzleNumber": 2
+  },
+  {
+    "NytPuzzleId": 4,
+    "PrintDate": "2021-06-22",
+    "PublicPuzzleNumber": 3
+  },
+  {
+    "NytPuzzleId": 5,
+    "PrintDate": "2021-06-23",
+    "PublicPuzzleNumber": 4
+  },
+  {
+    "NytPuzzleId": 6,
+    "PrintDate": "2021-06-24",
+    "PublicPuzzleNumber": 5
+  },
+  {
+    "NytPuzzleId": 7,
+    "PrintDate": "2021-06-25",
+    "PublicPuzzleNumber": 6
+  },
+  {
+    "NytPuzzleId": 8,
+    "PrintDate": "2021-06-26",
+    "PublicPuzzleNumber": 7
+  },
+  {
+    "NytPuzzleId": 9,
+    "PrintDate": "2021-06-27",
+    "PublicPuzzleNumber": 8
+  },
+  {
+    "NytPuzzleId": 10,
+    "PrintDate": "2021-06-28",
+    "PublicPuzzleNumber": 9
+  },
+  {
+    "NytPuzzleId": 11,
+    "PrintDate": "2021-06-29",
+    "PublicPuzzleNumber": 10
+  },
+  {
+    "NytPuzzleId": 12,
+    "PrintDate": "2021-06-30",
+    "PublicPuzzleNumber": 11
+  },
+  {
+    "NytPuzzleId": 13,
+    "PrintDate": "2021-07-01",
+    "PublicPuzzleNumber": 12
+  },
+  {
+    "NytPuzzleId": 14,
+    "PrintDate": "2021-07-02",
+    "PublicPuzzleNumber": 13
+  },
+  {
+    "NytPuzzleId": 15,
+    "PrintDate": "2021-07-03",
+    "PublicPuzzleNumber": 14
+  },
+  {
+    "NytPuzzleId": 16,
+    "PrintDate": "2021-07-04",
+    "PublicPuzzleNumber": 15
+  },
+  {
+    "NytPuzzleId": 17,
+    "PrintDate": "2021-07-05",
+    "PublicPuzzleNumber": 16
+  },
+  {
+    "NytPuzzleId": 18,
+    "PrintDate": "2021-07-06",
+    "PublicPuzzleNumber": 17
+  },
+  {
+    "NytPuzzleId": 19,
+    "PrintDate": "2021-07-07",
+    "PublicPuzzleNumber": 18
+  },
+  {
+    "NytPuzzleId": 20,
+    "PrintDate": "2021-07-08",
+    "PublicPuzzleNumber": 19
+  },
+  {
+    "NytPuzzleId": 21,
+    "PrintDate": "2021-07-09",
+    "PublicPuzzleNumber": 20
+  },
+  {
+    "NytPuzzleId": 22,
+    "PrintDate": "2021-07-10",
+    "PublicPuzzleNumber": 21
+  },
+  {
+    "NytPuzzleId": 23,
+    "PrintDate": "2021-07-11",
+    "PublicPuzzleNumber": 22
+  },
+  {
+    "NytPuzzleId": 24,
+    "PrintDate": "2021-07-12",
+    "PublicPuzzleNumber": 23
+  },
+  {
+    "NytPuzzleId": 25,
+    "PrintDate": "2021-07-13",
+    "PublicPuzzleNumber": 24
+  },
+  {
+    "NytPuzzleId": 26,
+    "PrintDate": "2021-07-14",
+    "PublicPuzzleNumber": 25
+  },
+  {
+    "NytPuzzleId": 27,
+    "PrintDate": "2021-07-15",
+    "PublicPuzzleNumber": 26
+  },
+  {
+    "NytPuzzleId": 28,
+    "PrintDate": "2021-07-16",
+    "PublicPuzzleNumber": 27
+  },
+  {
+    "NytPuzzleId": 29,
+    "PrintDate": "2021-07-17",
+    "PublicPuzzleNumber": 28
+  },
+  {
+    "NytPuzzleId": 30,
+    "PrintDate": "2021-07-18",
+    "PublicPuzzleNumber": 29
+  },
+  {
+    "NytPuzzleId": 31,
+    "PrintDate": "2021-07-19",
+    "PublicPuzzleNumber": 30
+  },
+  {
+    "NytPuzzleId": 32,
+    "PrintDate": "2021-07-20",
+    "PublicPuzzleNumber": 31
+  },
+  {
+    "NytPuzzleId": 33,
+    "PrintDate": "2021-07-21",
+    "PublicPuzzleNumber": 32
+  },
+  {
+    "NytPuzzleId": 34,
+    "PrintDate": "2021-07-22",
+    "PublicPuzzleNumber": 33
+  },
+  {
+    "NytPuzzleId": 35,
+    "PrintDate": "2021-07-23",
+    "PublicPuzzleNumber": 34
+  },
+  {
+    "NytPuzzleId": 36,
+    "PrintDate": "2021-07-24",
+    "PublicPuzzleNumber": 35
+  },
+  {
+    "NytPuzzleId": 37,
+    "PrintDate": "2021-07-25",
+    "PublicPuzzleNumber": 36
+  },
+  {
+    "NytPuzzleId": 38,
+    "PrintDate": "2021-07-26",
+    "PublicPuzzleNumber": 37
+  },
+  {
+    "NytPuzzleId": 39,
+    "PrintDate": "2021-07-27",
+    "PublicPuzzleNumber": 38
+  },
+  {
+    "NytPuzzleId": 40,
+    "PrintDate": "2021-07-28",
+    "PublicPuzzleNumber": 39
+  },
+  {
+    "NytPuzzleId": 41,
+    "PrintDate": "2021-07-29",
+    "PublicPuzzleNumber": 40
+  },
+  {
+    "NytPuzzleId": 42,
+    "PrintDate": "2021-07-30",
+    "PublicPuzzleNumber": 41
+  },
+  {
+    "NytPuzzleId": 43,
+    "PrintDate": "2021-07-31",
+    "PublicPuzzleNumber": 42
+  },
+  {
+    "NytPuzzleId": 44,
+    "PrintDate": "2021-08-01",
+    "PublicPuzzleNumber": 43
+  },
+  {
+    "NytPuzzleId": 45,
+    "PrintDate": "2021-08-02",
+    "PublicPuzzleNumber": 44
+  },
+  {
+    "NytPuzzleId": 46,
+    "PrintDate": "2021-08-03",
+    "PublicPuzzleNumber": 45
+  },
+  {
+    "NytPuzzleId": 47,
+    "PrintDate": "2021-08-04",
+    "PublicPuzzleNumber": 46
+  },
+  {
+    "NytPuzzleId": 48,
+    "PrintDate": "2021-08-05",
+    "PublicPuzzleNumber": 47
+  },
+  {
+    "NytPuzzleId": 49,
+    "PrintDate": "2021-08-06",
+    "PublicPuzzleNumber": 48
+  },
+  {
+    "NytPuzzleId": 50,
+    "PrintDate": "2021-08-07",
+    "PublicPuzzleNumber": 49
+  },
+  {
+    "NytPuzzleId": 51,
+    "PrintDate": "2021-08-08",
+    "PublicPuzzleNumber": 50
+  },
+  {
+    "NytPuzzleId": 52,
+    "PrintDate": "2021-08-09",
+    "PublicPuzzleNumber": 51
+  },
+  {
+    "NytPuzzleId": 53,
+    "PrintDate": "2021-08-10",
+    "PublicPuzzleNumber": 52
+  },
+  {
+    "NytPuzzleId": 54,
+    "PrintDate": "2021-08-11",
+    "PublicPuzzleNumber": 53
+  },
+  {
+    "NytPuzzleId": 55,
+    "PrintDate": "2021-08-12",
+    "PublicPuzzleNumber": 54
+  },
+  {
+    "NytPuzzleId": 56,
+    "PrintDate": "2021-08-13",
+    "PublicPuzzleNumber": 55
+  },
+  {
+    "NytPuzzleId": 57,
+    "PrintDate": "2021-08-14",
+    "PublicPuzzleNumber": 56
+  },
+  {
+    "NytPuzzleId": 58,
+    "PrintDate": "2021-08-15",
+    "PublicPuzzleNumber": 57
+  },
+  {
+    "NytPuzzleId": 59,
+    "PrintDate": "2021-08-16",
+    "PublicPuzzleNumber": 58
+  },
+  {
+    "NytPuzzleId": 60,
+    "PrintDate": "2021-08-17",
+    "PublicPuzzleNumber": 59
+  },
+  {
+    "NytPuzzleId": 61,
+    "PrintDate": "2021-08-18",
+    "PublicPuzzleNumber": 60
+  },
+  {
+    "NytPuzzleId": 62,
+    "PrintDate": "2021-08-19",
+    "PublicPuzzleNumber": 61
+  },
+  {
+    "NytPuzzleId": 63,
+    "PrintDate": "2021-08-20",
+    "PublicPuzzleNumber": 62
+  },
+  {
+    "NytPuzzleId": 64,
+    "PrintDate": "2021-08-21",
+    "PublicPuzzleNumber": 63
+  },
+  {
+    "NytPuzzleId": 65,
+    "PrintDate": "2021-08-22",
+    "PublicPuzzleNumber": 64
+  },
+  {
+    "NytPuzzleId": 66,
+    "PrintDate": "2021-08-23",
+    "PublicPuzzleNumber": 65
+  },
+  {
+    "NytPuzzleId": 67,
+    "PrintDate": "2021-08-24",
+    "PublicPuzzleNumber": 66
+  },
+  {
+    "NytPuzzleId": 68,
+    "PrintDate": "2021-08-25",
+    "PublicPuzzleNumber": 67
+  },
+  {
+    "NytPuzzleId": 69,
+    "PrintDate": "2021-08-26",
+    "PublicPuzzleNumber": 68
+  },
+  {
+    "NytPuzzleId": 70,
+    "PrintDate": "2021-08-27",
+    "PublicPuzzleNumber": 69
+  },
+  {
+    "NytPuzzleId": 71,
+    "PrintDate": "2021-08-28",
+    "PublicPuzzleNumber": 70
+  },
+  {
+    "NytPuzzleId": 72,
+    "PrintDate": "2021-08-29",
+    "PublicPuzzleNumber": 71
+  },
+  {
+    "NytPuzzleId": 73,
+    "PrintDate": "2021-08-30",
+    "PublicPuzzleNumber": 72
+  },
+  {
+    "NytPuzzleId": 74,
+    "PrintDate": "2021-08-31",
+    "PublicPuzzleNumber": 73
+  },
+  {
+    "NytPuzzleId": 75,
+    "PrintDate": "2021-09-01",
+    "PublicPuzzleNumber": 74
+  },
+  {
+    "NytPuzzleId": 76,
+    "PrintDate": "2021-09-02",
+    "PublicPuzzleNumber": 75
+  },
+  {
+    "NytPuzzleId": 77,
+    "PrintDate": "2021-09-03",
+    "PublicPuzzleNumber": 76
+  },
+  {
+    "NytPuzzleId": 78,
+    "PrintDate": "2021-09-04",
+    "PublicPuzzleNumber": 77
+  },
+  {
+    "NytPuzzleId": 79,
+    "PrintDate": "2021-09-05",
+    "PublicPuzzleNumber": 78
+  },
+  {
+    "NytPuzzleId": 80,
+    "PrintDate": "2021-09-06",
+    "PublicPuzzleNumber": 79
+  },
+  {
+    "NytPuzzleId": 81,
+    "PrintDate": "2021-09-07",
+    "PublicPuzzleNumber": 80
+  },
+  {
+    "NytPuzzleId": 82,
+    "PrintDate": "2021-09-08",
+    "PublicPuzzleNumber": 81
+  },
+  {
+    "NytPuzzleId": 83,
+    "PrintDate": "2021-09-09",
+    "PublicPuzzleNumber": 82
+  },
+  {
+    "NytPuzzleId": 84,
+    "PrintDate": "2021-09-10",
+    "PublicPuzzleNumber": 83
+  },
+  {
+    "NytPuzzleId": 85,
+    "PrintDate": "2021-09-11",
+    "PublicPuzzleNumber": 84
+  },
+  {
+    "NytPuzzleId": 86,
+    "PrintDate": "2021-09-12",
+    "PublicPuzzleNumber": 85
+  },
+  {
+    "NytPuzzleId": 87,
+    "PrintDate": "2021-09-13",
+    "PublicPuzzleNumber": 86
+  },
+  {
+    "NytPuzzleId": 88,
+    "PrintDate": "2021-09-14",
+    "PublicPuzzleNumber": 87
+  },
+  {
+    "NytPuzzleId": 89,
+    "PrintDate": "2021-09-15",
+    "PublicPuzzleNumber": 88
+  },
+  {
+    "NytPuzzleId": 90,
+    "PrintDate": "2021-09-16",
+    "PublicPuzzleNumber": 89
+  },
+  {
+    "NytPuzzleId": 91,
+    "PrintDate": "2021-09-17",
+    "PublicPuzzleNumber": 90
+  },
+  {
+    "NytPuzzleId": 92,
+    "PrintDate": "2021-09-18",
+    "PublicPuzzleNumber": 91
+  },
+  {
+    "NytPuzzleId": 93,
+    "PrintDate": "2021-09-19",
+    "PublicPuzzleNumber": 92
+  },
+  {
+    "NytPuzzleId": 94,
+    "PrintDate": "2021-09-20",
+    "PublicPuzzleNumber": 93
+  },
+  {
+    "NytPuzzleId": 95,
+    "PrintDate": "2021-09-21",
+    "PublicPuzzleNumber": 94
+  },
+  {
+    "NytPuzzleId": 96,
+    "PrintDate": "2021-09-22",
+    "PublicPuzzleNumber": 95
+  },
+  {
+    "NytPuzzleId": 97,
+    "PrintDate": "2021-09-23",
+    "PublicPuzzleNumber": 96
+  },
+  {
+    "NytPuzzleId": 98,
+    "PrintDate": "2021-09-24",
+    "PublicPuzzleNumber": 97
+  },
+  {
+    "NytPuzzleId": 99,
+    "PrintDate": "2021-09-25",
+    "PublicPuzzleNumber": 98
+  },
+  {
+    "NytPuzzleId": 100,
+    "PrintDate": "2021-09-26",
+    "PublicPuzzleNumber": 99
+  },
+  {
+    "NytPuzzleId": 101,
+    "PrintDate": "2021-09-27",
+    "PublicPuzzleNumber": 100
+  },
+  {
+    "NytPuzzleId": 102,
+    "PrintDate": "2021-09-28",
+    "PublicPuzzleNumber": 101
+  },
+  {
+    "NytPuzzleId": 103,
+    "PrintDate": "2021-09-29",
+    "PublicPuzzleNumber": 102
+  },
+  {
+    "NytPuzzleId": 104,
+    "PrintDate": "2021-09-30",
+    "PublicPuzzleNumber": 103
+  },
+  {
+    "NytPuzzleId": 105,
+    "PrintDate": "2021-10-01",
+    "PublicPuzzleNumber": 104
+  },
+  {
+    "NytPuzzleId": 106,
+    "PrintDate": "2021-10-02",
+    "PublicPuzzleNumber": 105
+  },
+  {
+    "NytPuzzleId": 107,
+    "PrintDate": "2021-10-03",
+    "PublicPuzzleNumber": 106
+  },
+  {
+    "NytPuzzleId": 108,
+    "PrintDate": "2021-10-04",
+    "PublicPuzzleNumber": 107
+  },
+  {
+    "NytPuzzleId": 109,
+    "PrintDate": "2021-10-05",
+    "PublicPuzzleNumber": 108
+  },
+  {
+    "NytPuzzleId": 110,
+    "PrintDate": "2021-10-06",
+    "PublicPuzzleNumber": 109
+  },
+  {
+    "NytPuzzleId": 111,
+    "PrintDate": "2021-10-07",
+    "PublicPuzzleNumber": 110
+  },
+  {
+    "NytPuzzleId": 112,
+    "PrintDate": "2021-10-08",
+    "PublicPuzzleNumber": 111
+  },
+  {
+    "NytPuzzleId": 113,
+    "PrintDate": "2021-10-09",
+    "PublicPuzzleNumber": 112
+  },
+  {
+    "NytPuzzleId": 114,
+    "PrintDate": "2021-10-10",
+    "PublicPuzzleNumber": 113
+  },
+  {
+    "NytPuzzleId": 115,
+    "PrintDate": "2021-10-11",
+    "PublicPuzzleNumber": 114
+  },
+  {
+    "NytPuzzleId": 116,
+    "PrintDate": "2021-10-12",
+    "PublicPuzzleNumber": 115
+  },
+  {
+    "NytPuzzleId": 117,
+    "PrintDate": "2021-10-13",
+    "PublicPuzzleNumber": 116
+  },
+  {
+    "NytPuzzleId": 118,
+    "PrintDate": "2021-10-14",
+    "PublicPuzzleNumber": 117
+  },
+  {
+    "NytPuzzleId": 119,
+    "PrintDate": "2021-10-15",
+    "PublicPuzzleNumber": 118
+  },
+  {
+    "NytPuzzleId": 120,
+    "PrintDate": "2021-10-16",
+    "PublicPuzzleNumber": 119
+  },
+  {
+    "NytPuzzleId": 121,
+    "PrintDate": "2021-10-17",
+    "PublicPuzzleNumber": 120
+  },
+  {
+    "NytPuzzleId": 122,
+    "PrintDate": "2021-10-18",
+    "PublicPuzzleNumber": 121
+  },
+  {
+    "NytPuzzleId": 123,
+    "PrintDate": "2021-10-19",
+    "PublicPuzzleNumber": 122
+  },
+  {
+    "NytPuzzleId": 124,
+    "PrintDate": "2021-10-20",
+    "PublicPuzzleNumber": 123
+  },
+  {
+    "NytPuzzleId": 125,
+    "PrintDate": "2021-10-21",
+    "PublicPuzzleNumber": 124
+  },
+  {
+    "NytPuzzleId": 126,
+    "PrintDate": "2021-10-22",
+    "PublicPuzzleNumber": 125
+  },
+  {
+    "NytPuzzleId": 127,
+    "PrintDate": "2021-10-23",
+    "PublicPuzzleNumber": 126
+  },
+  {
+    "NytPuzzleId": 128,
+    "PrintDate": "2021-10-24",
+    "PublicPuzzleNumber": 127
+  },
+  {
+    "NytPuzzleId": 129,
+    "PrintDate": "2021-10-25",
+    "PublicPuzzleNumber": 128
+  },
+  {
+    "NytPuzzleId": 130,
+    "PrintDate": "2021-10-26",
+    "PublicPuzzleNumber": 129
+  },
+  {
+    "NytPuzzleId": 131,
+    "PrintDate": "2021-10-27",
+    "PublicPuzzleNumber": 130
+  },
+  {
+    "NytPuzzleId": 132,
+    "PrintDate": "2021-10-28",
+    "PublicPuzzleNumber": 131
+  },
+  {
+    "NytPuzzleId": 133,
+    "PrintDate": "2021-10-29",
+    "PublicPuzzleNumber": 132
+  },
+  {
+    "NytPuzzleId": 134,
+    "PrintDate": "2021-10-30",
+    "PublicPuzzleNumber": 133
+  },
+  {
+    "NytPuzzleId": 135,
+    "PrintDate": "2021-10-31",
+    "PublicPuzzleNumber": 134
+  },
+  {
+    "NytPuzzleId": 136,
+    "PrintDate": "2021-11-01",
+    "PublicPuzzleNumber": 135
+  },
+  {
+    "NytPuzzleId": 137,
+    "PrintDate": "2021-11-02",
+    "PublicPuzzleNumber": 136
+  },
+  {
+    "NytPuzzleId": 138,
+    "PrintDate": "2021-11-03",
+    "PublicPuzzleNumber": 137
+  },
+  {
+    "NytPuzzleId": 139,
+    "PrintDate": "2021-11-04",
+    "PublicPuzzleNumber": 138
+  },
+  {
+    "NytPuzzleId": 140,
+    "PrintDate": "2021-11-05",
+    "PublicPuzzleNumber": 139
+  },
+  {
+    "NytPuzzleId": 141,
+    "PrintDate": "2021-11-06",
+    "PublicPuzzleNumber": 140
+  },
+  {
+    "NytPuzzleId": 142,
+    "PrintDate": "2021-11-07",
+    "PublicPuzzleNumber": 141
+  },
+  {
+    "NytPuzzleId": 143,
+    "PrintDate": "2021-11-08",
+    "PublicPuzzleNumber": 142
+  },
+  {
+    "NytPuzzleId": 144,
+    "PrintDate": "2021-11-09",
+    "PublicPuzzleNumber": 143
+  },
+  {
+    "NytPuzzleId": 145,
+    "PrintDate": "2021-11-10",
+    "PublicPuzzleNumber": 144
+  },
+  {
+    "NytPuzzleId": 146,
+    "PrintDate": "2021-11-11",
+    "PublicPuzzleNumber": 145
+  },
+  {
+    "NytPuzzleId": 147,
+    "PrintDate": "2021-11-12",
+    "PublicPuzzleNumber": 146
+  },
+  {
+    "NytPuzzleId": 148,
+    "PrintDate": "2021-11-13",
+    "PublicPuzzleNumber": 147
+  },
+  {
+    "NytPuzzleId": 149,
+    "PrintDate": "2021-11-14",
+    "PublicPuzzleNumber": 148
+  },
+  {
+    "NytPuzzleId": 150,
+    "PrintDate": "2021-11-15",
+    "PublicPuzzleNumber": 149
+  },
+  {
+    "NytPuzzleId": 151,
+    "PrintDate": "2021-11-16",
+    "PublicPuzzleNumber": 150
+  },
+  {
+    "NytPuzzleId": 152,
+    "PrintDate": "2021-11-17",
+    "PublicPuzzleNumber": 151
+  },
+  {
+    "NytPuzzleId": 153,
+    "PrintDate": "2021-11-18",
+    "PublicPuzzleNumber": 152
+  },
+  {
+    "NytPuzzleId": 154,
+    "PrintDate": "2021-11-19",
+    "PublicPuzzleNumber": 153
+  },
+  {
+    "NytPuzzleId": 155,
+    "PrintDate": "2021-11-20",
+    "PublicPuzzleNumber": 154
+  },
+  {
+    "NytPuzzleId": 156,
+    "PrintDate": "2021-11-21",
+    "PublicPuzzleNumber": 155
+  },
+  {
+    "NytPuzzleId": 157,
+    "PrintDate": "2021-11-22",
+    "PublicPuzzleNumber": 156
+  },
+  {
+    "NytPuzzleId": 158,
+    "PrintDate": "2021-11-23",
+    "PublicPuzzleNumber": 157
+  },
+  {
+    "NytPuzzleId": 159,
+    "PrintDate": "2021-11-24",
+    "PublicPuzzleNumber": 158
+  },
+  {
+    "NytPuzzleId": 160,
+    "PrintDate": "2021-11-25",
+    "PublicPuzzleNumber": 159
+  },
+  {
+    "NytPuzzleId": 161,
+    "PrintDate": "2021-11-26",
+    "PublicPuzzleNumber": 160
+  },
+  {
+    "NytPuzzleId": 162,
+    "PrintDate": "2021-11-27",
+    "PublicPuzzleNumber": 161
+  },
+  {
+    "NytPuzzleId": 163,
+    "PrintDate": "2021-11-28",
+    "PublicPuzzleNumber": 162
+  },
+  {
+    "NytPuzzleId": 164,
+    "PrintDate": "2021-11-29",
+    "PublicPuzzleNumber": 163
+  },
+  {
+    "NytPuzzleId": 165,
+    "PrintDate": "2021-11-30",
+    "PublicPuzzleNumber": 164
+  },
+  {
+    "NytPuzzleId": 166,
+    "PrintDate": "2021-12-01",
+    "PublicPuzzleNumber": 165
+  },
+  {
+    "NytPuzzleId": 167,
+    "PrintDate": "2021-12-02",
+    "PublicPuzzleNumber": 166
+  },
+  {
+    "NytPuzzleId": 168,
+    "PrintDate": "2021-12-03",
+    "PublicPuzzleNumber": 167
+  },
+  {
+    "NytPuzzleId": 169,
+    "PrintDate": "2021-12-04",
+    "PublicPuzzleNumber": 168
+  },
+  {
+    "NytPuzzleId": 170,
+    "PrintDate": "2021-12-05",
+    "PublicPuzzleNumber": 169
+  },
+  {
+    "NytPuzzleId": 171,
+    "PrintDate": "2021-12-06",
+    "PublicPuzzleNumber": 170
+  },
+  {
+    "NytPuzzleId": 172,
+    "PrintDate": "2021-12-07",
+    "PublicPuzzleNumber": 171
+  },
+  {
+    "NytPuzzleId": 173,
+    "PrintDate": "2021-12-08",
+    "PublicPuzzleNumber": 172
+  },
+  {
+    "NytPuzzleId": 174,
+    "PrintDate": "2021-12-09",
+    "PublicPuzzleNumber": 173
+  },
+  {
+    "NytPuzzleId": 175,
+    "PrintDate": "2021-12-10",
+    "PublicPuzzleNumber": 174
+  },
+  {
+    "NytPuzzleId": 176,
+    "PrintDate": "2021-12-11",
+    "PublicPuzzleNumber": 175
+  },
+  {
+    "NytPuzzleId": 177,
+    "PrintDate": "2021-12-12",
+    "PublicPuzzleNumber": 176
+  },
+  {
+    "NytPuzzleId": 178,
+    "PrintDate": "2021-12-13",
+    "PublicPuzzleNumber": 177
+  },
+  {
+    "NytPuzzleId": 179,
+    "PrintDate": "2021-12-14",
+    "PublicPuzzleNumber": 178
+  },
+  {
+    "NytPuzzleId": 180,
+    "PrintDate": "2021-12-15",
+    "PublicPuzzleNumber": 179
+  },
+  {
+    "NytPuzzleId": 181,
+    "PrintDate": "2021-12-16",
+    "PublicPuzzleNumber": 180
+  },
+  {
+    "NytPuzzleId": 182,
+    "PrintDate": "2021-12-17",
+    "PublicPuzzleNumber": 181
+  },
+  {
+    "NytPuzzleId": 183,
+    "PrintDate": "2021-12-18",
+    "PublicPuzzleNumber": 182
+  },
+  {
+    "NytPuzzleId": 184,
+    "PrintDate": "2021-12-19",
+    "PublicPuzzleNumber": 183
+  },
+  {
+    "NytPuzzleId": 185,
+    "PrintDate": "2021-12-20",
+    "PublicPuzzleNumber": 184
+  },
+  {
+    "NytPuzzleId": 186,
+    "PrintDate": "2021-12-21",
+    "PublicPuzzleNumber": 185
+  },
+  {
+    "NytPuzzleId": 187,
+    "PrintDate": "2021-12-22",
+    "PublicPuzzleNumber": 186
+  },
+  {
+    "NytPuzzleId": 188,
+    "PrintDate": "2021-12-23",
+    "PublicPuzzleNumber": 187
+  },
+  {
+    "NytPuzzleId": 189,
+    "PrintDate": "2021-12-24",
+    "PublicPuzzleNumber": 188
+  },
+  {
+    "NytPuzzleId": 190,
+    "PrintDate": "2021-12-25",
+    "PublicPuzzleNumber": 189
+  },
+  {
+    "NytPuzzleId": 191,
+    "PrintDate": "2021-12-26",
+    "PublicPuzzleNumber": 190
+  },
+  {
+    "NytPuzzleId": 192,
+    "PrintDate": "2021-12-27",
+    "PublicPuzzleNumber": 191
+  },
+  {
+    "NytPuzzleId": 193,
+    "PrintDate": "2021-12-28",
+    "PublicPuzzleNumber": 192
+  },
+  {
+    "NytPuzzleId": 194,
+    "PrintDate": "2021-12-29",
+    "PublicPuzzleNumber": 193
+  },
+  {
+    "NytPuzzleId": 195,
+    "PrintDate": "2021-12-30",
+    "PublicPuzzleNumber": 194
+  },
+  {
+    "NytPuzzleId": 196,
+    "PrintDate": "2021-12-31",
+    "PublicPuzzleNumber": 195
+  },
+  {
+    "NytPuzzleId": 197,
+    "PrintDate": "2022-01-01",
+    "PublicPuzzleNumber": 196
+  },
+  {
+    "NytPuzzleId": 198,
+    "PrintDate": "2022-01-02",
+    "PublicPuzzleNumber": 197
+  },
+  {
+    "NytPuzzleId": 199,
+    "PrintDate": "2022-01-03",
+    "PublicPuzzleNumber": 198
+  },
+  {
+    "NytPuzzleId": 200,
+    "PrintDate": "2022-01-04",
+    "PublicPuzzleNumber": 199
+  },
+  {
+    "NytPuzzleId": 201,
+    "PrintDate": "2022-01-05",
+    "PublicPuzzleNumber": 200
+  },
+  {
+    "NytPuzzleId": 202,
+    "PrintDate": "2022-01-06",
+    "PublicPuzzleNumber": 201
+  },
+  {
+    "NytPuzzleId": 203,
+    "PrintDate": "2022-01-07",
+    "PublicPuzzleNumber": 202
+  },
+  {
+    "NytPuzzleId": 204,
+    "PrintDate": "2022-01-08",
+    "PublicPuzzleNumber": 203
+  },
+  {
+    "NytPuzzleId": 205,
+    "PrintDate": "2022-01-09",
+    "PublicPuzzleNumber": 204
+  },
+  {
+    "NytPuzzleId": 206,
+    "PrintDate": "2022-01-10",
+    "PublicPuzzleNumber": 205
+  },
+  {
+    "NytPuzzleId": 207,
+    "PrintDate": "2022-01-11",
+    "PublicPuzzleNumber": 206
+  },
+  {
+    "NytPuzzleId": 208,
+    "PrintDate": "2022-01-12",
+    "PublicPuzzleNumber": 207
+  },
+  {
+    "NytPuzzleId": 209,
+    "PrintDate": "2022-01-13",
+    "PublicPuzzleNumber": 208
+  },
+  {
+    "NytPuzzleId": 210,
+    "PrintDate": "2022-01-14",
+    "PublicPuzzleNumber": 209
+  },
+  {
+    "NytPuzzleId": 211,
+    "PrintDate": "2022-01-15",
+    "PublicPuzzleNumber": 210
+  },
+  {
+    "NytPuzzleId": 212,
+    "PrintDate": "2022-01-16",
+    "PublicPuzzleNumber": 211
+  },
+  {
+    "NytPuzzleId": 213,
+    "PrintDate": "2022-01-17",
+    "PublicPuzzleNumber": 212
+  },
+  {
+    "NytPuzzleId": 214,
+    "PrintDate": "2022-01-18",
+    "PublicPuzzleNumber": 213
+  },
+  {
+    "NytPuzzleId": 215,
+    "PrintDate": "2022-01-19",
+    "PublicPuzzleNumber": 214
+  },
+  {
+    "NytPuzzleId": 216,
+    "PrintDate": "2022-01-20",
+    "PublicPuzzleNumber": 215
+  },
+  {
+    "NytPuzzleId": 217,
+    "PrintDate": "2022-01-21",
+    "PublicPuzzleNumber": 216
+  },
+  {
+    "NytPuzzleId": 218,
+    "PrintDate": "2022-01-22",
+    "PublicPuzzleNumber": 217
+  },
+  {
+    "NytPuzzleId": 219,
+    "PrintDate": "2022-01-23",
+    "PublicPuzzleNumber": 218
+  },
+  {
+    "NytPuzzleId": 220,
+    "PrintDate": "2022-01-24",
+    "PublicPuzzleNumber": 219
+  },
+  {
+    "NytPuzzleId": 221,
+    "PrintDate": "2022-01-25",
+    "PublicPuzzleNumber": 220
+  },
+  {
+    "NytPuzzleId": 222,
+    "PrintDate": "2022-01-26",
+    "PublicPuzzleNumber": 221
+  },
+  {
+    "NytPuzzleId": 223,
+    "PrintDate": "2022-01-27",
+    "PublicPuzzleNumber": 222
+  },
+  {
+    "NytPuzzleId": 224,
+    "PrintDate": "2022-01-28",
+    "PublicPuzzleNumber": 223
+  },
+  {
+    "NytPuzzleId": 225,
+    "PrintDate": "2022-01-29",
+    "PublicPuzzleNumber": 224
+  },
+  {
+    "NytPuzzleId": 226,
+    "PrintDate": "2022-01-30",
+    "PublicPuzzleNumber": 225
+  },
+  {
+    "NytPuzzleId": 227,
+    "PrintDate": "2022-01-31",
+    "PublicPuzzleNumber": 226
+  },
+  {
+    "NytPuzzleId": 228,
+    "PrintDate": "2022-02-01",
+    "PublicPuzzleNumber": 227
+  },
+  {
+    "NytPuzzleId": 229,
+    "PrintDate": "2022-02-02",
+    "PublicPuzzleNumber": 228
+  },
+  {
+    "NytPuzzleId": 230,
+    "PrintDate": "2022-02-03",
+    "PublicPuzzleNumber": 229
+  },
+  {
+    "NytPuzzleId": 231,
+    "PrintDate": "2022-02-04",
+    "PublicPuzzleNumber": 230
+  },
+  {
+    "NytPuzzleId": 232,
+    "PrintDate": "2022-02-05",
+    "PublicPuzzleNumber": 231
+  },
+  {
+    "NytPuzzleId": 233,
+    "PrintDate": "2022-02-06",
+    "PublicPuzzleNumber": 232
+  },
+  {
+    "NytPuzzleId": 234,
+    "PrintDate": "2022-02-07",
+    "PublicPuzzleNumber": 233
+  },
+  {
+    "NytPuzzleId": 235,
+    "PrintDate": "2022-02-08",
+    "PublicPuzzleNumber": 234
+  },
+  {
+    "NytPuzzleId": 236,
+    "PrintDate": "2022-02-09",
+    "PublicPuzzleNumber": 235
+  },
+  {
+    "NytPuzzleId": 237,
+    "PrintDate": "2022-02-10",
+    "PublicPuzzleNumber": 236
+  },
+  {
+    "NytPuzzleId": 238,
+    "PrintDate": "2022-02-11",
+    "PublicPuzzleNumber": 237
+  },
+  {
+    "NytPuzzleId": 239,
+    "PrintDate": "2022-02-12",
+    "PublicPuzzleNumber": 238
+  },
+  {
+    "NytPuzzleId": 240,
+    "PrintDate": "2022-02-13",
+    "PublicPuzzleNumber": 239
+  },
+  {
+    "NytPuzzleId": 241,
+    "PrintDate": "2022-02-14",
+    "PublicPuzzleNumber": 240
+  },
+  {
+    "NytPuzzleId": 242,
+    "PrintDate": "2022-02-15",
+    "PublicPuzzleNumber": 241
+  },
+  {
+    "NytPuzzleId": 243,
+    "PrintDate": "2022-02-16",
+    "PublicPuzzleNumber": 242
+  },
+  {
+    "NytPuzzleId": 244,
+    "PrintDate": "2022-02-17",
+    "PublicPuzzleNumber": 243
+  },
+  {
+    "NytPuzzleId": 245,
+    "PrintDate": "2022-02-18",
+    "PublicPuzzleNumber": 244
+  },
+  {
+    "NytPuzzleId": 246,
+    "PrintDate": "2022-02-19",
+    "PublicPuzzleNumber": 245
+  },
+  {
+    "NytPuzzleId": 247,
+    "PrintDate": "2022-02-20",
+    "PublicPuzzleNumber": 246
+  },
+  {
+    "NytPuzzleId": 248,
+    "PrintDate": "2022-02-21",
+    "PublicPuzzleNumber": 247
+  },
+  {
+    "NytPuzzleId": 249,
+    "PrintDate": "2022-02-22",
+    "PublicPuzzleNumber": 248
+  },
+  {
+    "NytPuzzleId": 250,
+    "PrintDate": "2022-02-23",
+    "PublicPuzzleNumber": 249
+  },
+  {
+    "NytPuzzleId": 251,
+    "PrintDate": "2022-02-24",
+    "PublicPuzzleNumber": 250
+  },
+  {
+    "NytPuzzleId": 252,
+    "PrintDate": "2022-02-25",
+    "PublicPuzzleNumber": 251
+  },
+  {
+    "NytPuzzleId": 253,
+    "PrintDate": "2022-02-26",
+    "PublicPuzzleNumber": 252
+  },
+  {
+    "NytPuzzleId": 254,
+    "PrintDate": "2022-02-27",
+    "PublicPuzzleNumber": 253
+  },
+  {
+    "NytPuzzleId": 255,
+    "PrintDate": "2022-02-28",
+    "PublicPuzzleNumber": 254
+  },
+  {
+    "NytPuzzleId": 256,
+    "PrintDate": "2022-03-01",
+    "PublicPuzzleNumber": 255
+  },
+  {
+    "NytPuzzleId": 257,
+    "PrintDate": "2022-03-02",
+    "PublicPuzzleNumber": 256
+  },
+  {
+    "NytPuzzleId": 258,
+    "PrintDate": "2022-03-03",
+    "PublicPuzzleNumber": 257
+  },
+  {
+    "NytPuzzleId": 259,
+    "PrintDate": "2022-03-04",
+    "PublicPuzzleNumber": 258
+  },
+  {
+    "NytPuzzleId": 260,
+    "PrintDate": "2022-03-05",
+    "PublicPuzzleNumber": 259
+  },
+  {
+    "NytPuzzleId": 261,
+    "PrintDate": "2022-03-06",
+    "PublicPuzzleNumber": 260
+  },
+  {
+    "NytPuzzleId": 262,
+    "PrintDate": "2022-03-07",
+    "PublicPuzzleNumber": 261
+  },
+  {
+    "NytPuzzleId": 263,
+    "PrintDate": "2022-03-08",
+    "PublicPuzzleNumber": 262
+  },
+  {
+    "NytPuzzleId": 264,
+    "PrintDate": "2022-03-09",
+    "PublicPuzzleNumber": 263
+  },
+  {
+    "NytPuzzleId": 265,
+    "PrintDate": "2022-03-10",
+    "PublicPuzzleNumber": 264
+  },
+  {
+    "NytPuzzleId": 266,
+    "PrintDate": "2022-03-11",
+    "PublicPuzzleNumber": 265
+  },
+  {
+    "NytPuzzleId": 267,
+    "PrintDate": "2022-03-12",
+    "PublicPuzzleNumber": 266
+  },
+  {
+    "NytPuzzleId": 268,
+    "PrintDate": "2022-03-13",
+    "PublicPuzzleNumber": 267
+  },
+  {
+    "NytPuzzleId": 269,
+    "PrintDate": "2022-03-14",
+    "PublicPuzzleNumber": 268
+  },
+  {
+    "NytPuzzleId": 270,
+    "PrintDate": "2022-03-15",
+    "PublicPuzzleNumber": 269
+  },
+  {
+    "NytPuzzleId": 271,
+    "PrintDate": "2022-03-16",
+    "PublicPuzzleNumber": 270
+  },
+  {
+    "NytPuzzleId": 272,
+    "PrintDate": "2022-03-17",
+    "PublicPuzzleNumber": 271
+  },
+  {
+    "NytPuzzleId": 273,
+    "PrintDate": "2022-03-18",
+    "PublicPuzzleNumber": 272
+  },
+  {
+    "NytPuzzleId": 274,
+    "PrintDate": "2022-03-19",
+    "PublicPuzzleNumber": 273
+  },
+  {
+    "NytPuzzleId": 275,
+    "PrintDate": "2022-03-20",
+    "PublicPuzzleNumber": 274
+  },
+  {
+    "NytPuzzleId": 276,
+    "PrintDate": "2022-03-21",
+    "PublicPuzzleNumber": 275
+  },
+  {
+    "NytPuzzleId": 277,
+    "PrintDate": "2022-03-22",
+    "PublicPuzzleNumber": 276
+  },
+  {
+    "NytPuzzleId": 278,
+    "PrintDate": "2022-03-23",
+    "PublicPuzzleNumber": 277
+  },
+  {
+    "NytPuzzleId": 279,
+    "PrintDate": "2022-03-24",
+    "PublicPuzzleNumber": 278
+  },
+  {
+    "NytPuzzleId": 280,
+    "PrintDate": "2022-03-25",
+    "PublicPuzzleNumber": 279
+  },
+  {
+    "NytPuzzleId": 281,
+    "PrintDate": "2022-03-26",
+    "PublicPuzzleNumber": 280
+  },
+  {
+    "NytPuzzleId": 282,
+    "PrintDate": "2022-03-27",
+    "PublicPuzzleNumber": 281
+  },
+  {
+    "NytPuzzleId": 283,
+    "PrintDate": "2022-03-28",
+    "PublicPuzzleNumber": 282
+  },
+  {
+    "NytPuzzleId": 284,
+    "PrintDate": "2022-03-29",
+    "PublicPuzzleNumber": 283
+  },
+  {
+    "NytPuzzleId": 285,
+    "PrintDate": "2022-03-30",
+    "PublicPuzzleNumber": 284
+  },
+  {
+    "NytPuzzleId": 286,
+    "PrintDate": "2022-03-31",
+    "PublicPuzzleNumber": 285
+  },
+  {
+    "NytPuzzleId": 287,
+    "PrintDate": "2022-04-01",
+    "PublicPuzzleNumber": 286
+  },
+  {
+    "NytPuzzleId": 288,
+    "PrintDate": "2022-04-02",
+    "PublicPuzzleNumber": 287
+  },
+  {
+    "NytPuzzleId": 289,
+    "PrintDate": "2022-04-03",
+    "PublicPuzzleNumber": 288
+  },
+  {
+    "NytPuzzleId": 290,
+    "PrintDate": "2022-04-04",
+    "PublicPuzzleNumber": 289
+  },
+  {
+    "NytPuzzleId": 291,
+    "PrintDate": "2022-04-05",
+    "PublicPuzzleNumber": 290
+  },
+  {
+    "NytPuzzleId": 292,
+    "PrintDate": "2022-04-06",
+    "PublicPuzzleNumber": 291
+  },
+  {
+    "NytPuzzleId": 293,
+    "PrintDate": "2022-04-07",
+    "PublicPuzzleNumber": 292
+  },
+  {
+    "NytPuzzleId": 294,
+    "PrintDate": "2022-04-08",
+    "PublicPuzzleNumber": 293
+  },
+  {
+    "NytPuzzleId": 295,
+    "PrintDate": "2022-04-09",
+    "PublicPuzzleNumber": 294
+  },
+  {
+    "NytPuzzleId": 296,
+    "PrintDate": "2022-04-10",
+    "PublicPuzzleNumber": 295
+  },
+  {
+    "NytPuzzleId": 297,
+    "PrintDate": "2022-04-11",
+    "PublicPuzzleNumber": 296
+  },
+  {
+    "NytPuzzleId": 298,
+    "PrintDate": "2022-04-12",
+    "PublicPuzzleNumber": 297
+  },
+  {
+    "NytPuzzleId": 299,
+    "PrintDate": "2022-04-13",
+    "PublicPuzzleNumber": 298
+  },
+  {
+    "NytPuzzleId": 300,
+    "PrintDate": "2022-04-14",
+    "PublicPuzzleNumber": 299
+  },
+  {
+    "NytPuzzleId": 301,
+    "PrintDate": "2022-04-15",
+    "PublicPuzzleNumber": 300
+  },
+  {
+    "NytPuzzleId": 302,
+    "PrintDate": "2022-04-16",
+    "PublicPuzzleNumber": 301
+  },
+  {
+    "NytPuzzleId": 303,
+    "PrintDate": "2022-04-17",
+    "PublicPuzzleNumber": 302
+  },
+  {
+    "NytPuzzleId": 304,
+    "PrintDate": "2022-04-18",
+    "PublicPuzzleNumber": 303
+  },
+  {
+    "NytPuzzleId": 305,
+    "PrintDate": "2022-04-19",
+    "PublicPuzzleNumber": 304
+  },
+  {
+    "NytPuzzleId": 306,
+    "PrintDate": "2022-04-20",
+    "PublicPuzzleNumber": 305
+  },
+  {
+    "NytPuzzleId": 307,
+    "PrintDate": "2022-04-21",
+    "PublicPuzzleNumber": 306
+  },
+  {
+    "NytPuzzleId": 308,
+    "PrintDate": "2022-04-22",
+    "PublicPuzzleNumber": 307
+  },
+  {
+    "NytPuzzleId": 309,
+    "PrintDate": "2022-04-23",
+    "PublicPuzzleNumber": 308
+  },
+  {
+    "NytPuzzleId": 310,
+    "PrintDate": "2022-04-24",
+    "PublicPuzzleNumber": 309
+  },
+  {
+    "NytPuzzleId": 311,
+    "PrintDate": "2022-04-25",
+    "PublicPuzzleNumber": 310
+  },
+  {
+    "NytPuzzleId": 312,
+    "PrintDate": "2022-04-26",
+    "PublicPuzzleNumber": 311
+  },
+  {
+    "NytPuzzleId": 313,
+    "PrintDate": "2022-04-27",
+    "PublicPuzzleNumber": 312
+  },
+  {
+    "NytPuzzleId": 314,
+    "PrintDate": "2022-04-28",
+    "PublicPuzzleNumber": 313
+  },
+  {
+    "NytPuzzleId": 315,
+    "PrintDate": "2022-04-29",
+    "PublicPuzzleNumber": 314
+  },
+  {
+    "NytPuzzleId": 316,
+    "PrintDate": "2022-04-30",
+    "PublicPuzzleNumber": 315
+  },
+  {
+    "NytPuzzleId": 317,
+    "PrintDate": "2022-05-01",
+    "PublicPuzzleNumber": 316
+  },
+  {
+    "NytPuzzleId": 318,
+    "PrintDate": "2022-05-02",
+    "PublicPuzzleNumber": 317
+  },
+  {
+    "NytPuzzleId": 319,
+    "PrintDate": "2022-05-03",
+    "PublicPuzzleNumber": 318
+  },
+  {
+    "NytPuzzleId": 320,
+    "PrintDate": "2022-05-04",
+    "PublicPuzzleNumber": 319
+  },
+  {
+    "NytPuzzleId": 321,
+    "PrintDate": "2022-05-05",
+    "PublicPuzzleNumber": 320
+  },
+  {
+    "NytPuzzleId": 322,
+    "PrintDate": "2022-05-06",
+    "PublicPuzzleNumber": 321
+  },
+  {
+    "NytPuzzleId": 323,
+    "PrintDate": "2022-05-07",
+    "PublicPuzzleNumber": 322
+  },
+  {
+    "NytPuzzleId": 324,
+    "PrintDate": "2022-05-08",
+    "PublicPuzzleNumber": 323
+  },
+  {
+    "NytPuzzleId": 325,
+    "PrintDate": "2022-05-09",
+    "PublicPuzzleNumber": 324
+  },
+  {
+    "NytPuzzleId": 326,
+    "PrintDate": "2022-05-10",
+    "PublicPuzzleNumber": 325
+  },
+  {
+    "NytPuzzleId": 327,
+    "PrintDate": "2022-05-11",
+    "PublicPuzzleNumber": 326
+  },
+  {
+    "NytPuzzleId": 328,
+    "PrintDate": "2022-05-12",
+    "PublicPuzzleNumber": 327
+  },
+  {
+    "NytPuzzleId": 329,
+    "PrintDate": "2022-05-13",
+    "PublicPuzzleNumber": 328
+  },
+  {
+    "NytPuzzleId": 330,
+    "PrintDate": "2022-05-14",
+    "PublicPuzzleNumber": 329
+  },
+  {
+    "NytPuzzleId": 331,
+    "PrintDate": "2022-05-15",
+    "PublicPuzzleNumber": 330
+  },
+  {
+    "NytPuzzleId": 332,
+    "PrintDate": "2022-05-16",
+    "PublicPuzzleNumber": 331
+  },
+  {
+    "NytPuzzleId": 333,
+    "PrintDate": "2022-05-17",
+    "PublicPuzzleNumber": 332
+  },
+  {
+    "NytPuzzleId": 334,
+    "PrintDate": "2022-05-18",
+    "PublicPuzzleNumber": 333
+  },
+  {
+    "NytPuzzleId": 335,
+    "PrintDate": "2022-05-19",
+    "PublicPuzzleNumber": 334
+  },
+  {
+    "NytPuzzleId": 336,
+    "PrintDate": "2022-05-20",
+    "PublicPuzzleNumber": 335
+  },
+  {
+    "NytPuzzleId": 337,
+    "PrintDate": "2022-05-21",
+    "PublicPuzzleNumber": 336
+  },
+  {
+    "NytPuzzleId": 338,
+    "PrintDate": "2022-05-22",
+    "PublicPuzzleNumber": 337
+  },
+  {
+    "NytPuzzleId": 339,
+    "PrintDate": "2022-05-23",
+    "PublicPuzzleNumber": 338
+  },
+  {
+    "NytPuzzleId": 340,
+    "PrintDate": "2022-05-24",
+    "PublicPuzzleNumber": 339
+  },
+  {
+    "NytPuzzleId": 341,
+    "PrintDate": "2022-05-25",
+    "PublicPuzzleNumber": 340
+  },
+  {
+    "NytPuzzleId": 342,
+    "PrintDate": "2022-05-26",
+    "PublicPuzzleNumber": 341
+  },
+  {
+    "NytPuzzleId": 343,
+    "PrintDate": "2022-05-27",
+    "PublicPuzzleNumber": 342
+  },
+  {
+    "NytPuzzleId": 344,
+    "PrintDate": "2022-05-28",
+    "PublicPuzzleNumber": 343
+  },
+  {
+    "NytPuzzleId": 345,
+    "PrintDate": "2022-05-29",
+    "PublicPuzzleNumber": 344
+  },
+  {
+    "NytPuzzleId": 346,
+    "PrintDate": "2022-05-30",
+    "PublicPuzzleNumber": 345
+  },
+  {
+    "NytPuzzleId": 347,
+    "PrintDate": "2022-05-31",
+    "PublicPuzzleNumber": 346
+  },
+  {
+    "NytPuzzleId": 348,
+    "PrintDate": "2022-06-01",
+    "PublicPuzzleNumber": 347
+  },
+  {
+    "NytPuzzleId": 349,
+    "PrintDate": "2022-06-02",
+    "PublicPuzzleNumber": 348
+  },
+  {
+    "NytPuzzleId": 350,
+    "PrintDate": "2022-06-03",
+    "PublicPuzzleNumber": 349
+  },
+  {
+    "NytPuzzleId": 351,
+    "PrintDate": "2022-06-04",
+    "PublicPuzzleNumber": 350
+  },
+  {
+    "NytPuzzleId": 352,
+    "PrintDate": "2022-06-05",
+    "PublicPuzzleNumber": 351
+  },
+  {
+    "NytPuzzleId": 353,
+    "PrintDate": "2022-06-06",
+    "PublicPuzzleNumber": 352
+  },
+  {
+    "NytPuzzleId": 354,
+    "PrintDate": "2022-06-07",
+    "PublicPuzzleNumber": 353
+  },
+  {
+    "NytPuzzleId": 355,
+    "PrintDate": "2022-06-08",
+    "PublicPuzzleNumber": 354
+  },
+  {
+    "NytPuzzleId": 356,
+    "PrintDate": "2022-06-09",
+    "PublicPuzzleNumber": 355
+  },
+  {
+    "NytPuzzleId": 357,
+    "PrintDate": "2022-06-10",
+    "PublicPuzzleNumber": 356
+  },
+  {
+    "NytPuzzleId": 358,
+    "PrintDate": "2022-06-11",
+    "PublicPuzzleNumber": 357
+  },
+  {
+    "NytPuzzleId": 359,
+    "PrintDate": "2022-06-12",
+    "PublicPuzzleNumber": 358
+  },
+  {
+    "NytPuzzleId": 360,
+    "PrintDate": "2022-06-13",
+    "PublicPuzzleNumber": 359
+  },
+  {
+    "NytPuzzleId": 361,
+    "PrintDate": "2022-06-14",
+    "PublicPuzzleNumber": 360
+  },
+  {
+    "NytPuzzleId": 362,
+    "PrintDate": "2022-06-15",
+    "PublicPuzzleNumber": 361
+  },
+  {
+    "NytPuzzleId": 363,
+    "PrintDate": "2022-06-16",
+    "PublicPuzzleNumber": 362
+  },
+  {
+    "NytPuzzleId": 364,
+    "PrintDate": "2022-06-17",
+    "PublicPuzzleNumber": 363
+  },
+  {
+    "NytPuzzleId": 365,
+    "PrintDate": "2022-06-18",
+    "PublicPuzzleNumber": 364
+  },
+  {
+    "NytPuzzleId": 366,
+    "PrintDate": "2022-06-19",
+    "PublicPuzzleNumber": 365
+  },
+  {
+    "NytPuzzleId": 367,
+    "PrintDate": "2022-06-20",
+    "PublicPuzzleNumber": 366
+  },
+  {
+    "NytPuzzleId": 368,
+    "PrintDate": "2022-06-21",
+    "PublicPuzzleNumber": 367
+  },
+  {
+    "NytPuzzleId": 369,
+    "PrintDate": "2022-06-22",
+    "PublicPuzzleNumber": 368
+  },
+  {
+    "NytPuzzleId": 370,
+    "PrintDate": "2022-06-23",
+    "PublicPuzzleNumber": 369
+  },
+  {
+    "NytPuzzleId": 371,
+    "PrintDate": "2022-06-24",
+    "PublicPuzzleNumber": 370
+  },
+  {
+    "NytPuzzleId": 372,
+    "PrintDate": "2022-06-25",
+    "PublicPuzzleNumber": 371
+  },
+  {
+    "NytPuzzleId": 373,
+    "PrintDate": "2022-06-26",
+    "PublicPuzzleNumber": 372
+  },
+  {
+    "NytPuzzleId": 374,
+    "PrintDate": "2022-06-27",
+    "PublicPuzzleNumber": 373
+  },
+  {
+    "NytPuzzleId": 375,
+    "PrintDate": "2022-06-28",
+    "PublicPuzzleNumber": 374
+  },
+  {
+    "NytPuzzleId": 376,
+    "PrintDate": "2022-06-29",
+    "PublicPuzzleNumber": 375
+  },
+  {
+    "NytPuzzleId": 377,
+    "PrintDate": "2022-06-30",
+    "PublicPuzzleNumber": 376
+  },
+  {
+    "NytPuzzleId": 378,
+    "PrintDate": "2022-07-01",
+    "PublicPuzzleNumber": 377
+  },
+  {
+    "NytPuzzleId": 379,
+    "PrintDate": "2022-07-02",
+    "PublicPuzzleNumber": 378
+  },
+  {
+    "NytPuzzleId": 380,
+    "PrintDate": "2022-07-03",
+    "PublicPuzzleNumber": 379
+  },
+  {
+    "NytPuzzleId": 381,
+    "PrintDate": "2022-07-04",
+    "PublicPuzzleNumber": 380
+  },
+  {
+    "NytPuzzleId": 382,
+    "PrintDate": "2022-07-05",
+    "PublicPuzzleNumber": 381
+  },
+  {
+    "NytPuzzleId": 383,
+    "PrintDate": "2022-07-06",
+    "PublicPuzzleNumber": 382
+  },
+  {
+    "NytPuzzleId": 384,
+    "PrintDate": "2022-07-07",
+    "PublicPuzzleNumber": 383
+  },
+  {
+    "NytPuzzleId": 385,
+    "PrintDate": "2022-07-08",
+    "PublicPuzzleNumber": 384
+  },
+  {
+    "NytPuzzleId": 386,
+    "PrintDate": "2022-07-09",
+    "PublicPuzzleNumber": 385
+  },
+  {
+    "NytPuzzleId": 387,
+    "PrintDate": "2022-07-10",
+    "PublicPuzzleNumber": 386
+  },
+  {
+    "NytPuzzleId": 388,
+    "PrintDate": "2022-07-11",
+    "PublicPuzzleNumber": 387
+  },
+  {
+    "NytPuzzleId": 389,
+    "PrintDate": "2022-07-12",
+    "PublicPuzzleNumber": 388
+  },
+  {
+    "NytPuzzleId": 390,
+    "PrintDate": "2022-07-13",
+    "PublicPuzzleNumber": 389
+  },
+  {
+    "NytPuzzleId": 391,
+    "PrintDate": "2022-07-14",
+    "PublicPuzzleNumber": 390
+  },
+  {
+    "NytPuzzleId": 392,
+    "PrintDate": "2022-07-15",
+    "PublicPuzzleNumber": 391
+  },
+  {
+    "NytPuzzleId": 393,
+    "PrintDate": "2022-07-16",
+    "PublicPuzzleNumber": 392
+  },
+  {
+    "NytPuzzleId": 394,
+    "PrintDate": "2022-07-17",
+    "PublicPuzzleNumber": 393
+  },
+  {
+    "NytPuzzleId": 395,
+    "PrintDate": "2022-07-18",
+    "PublicPuzzleNumber": 394
+  },
+  {
+    "NytPuzzleId": 396,
+    "PrintDate": "2022-07-19",
+    "PublicPuzzleNumber": 395
+  },
+  {
+    "NytPuzzleId": 397,
+    "PrintDate": "2022-07-20",
+    "PublicPuzzleNumber": 396
+  },
+  {
+    "NytPuzzleId": 398,
+    "PrintDate": "2022-07-21",
+    "PublicPuzzleNumber": 397
+  },
+  {
+    "NytPuzzleId": 399,
+    "PrintDate": "2022-07-22",
+    "PublicPuzzleNumber": 398
+  },
+  {
+    "NytPuzzleId": 400,
+    "PrintDate": "2022-07-23",
+    "PublicPuzzleNumber": 399
+  },
+  {
+    "NytPuzzleId": 401,
+    "PrintDate": "2022-07-24",
+    "PublicPuzzleNumber": 400
+  },
+  {
+    "NytPuzzleId": 402,
+    "PrintDate": "2022-07-25",
+    "PublicPuzzleNumber": 401
+  },
+  {
+    "NytPuzzleId": 403,
+    "PrintDate": "2022-07-26",
+    "PublicPuzzleNumber": 402
+  },
+  {
+    "NytPuzzleId": 404,
+    "PrintDate": "2022-07-27",
+    "PublicPuzzleNumber": 403
+  },
+  {
+    "NytPuzzleId": 405,
+    "PrintDate": "2022-07-28",
+    "PublicPuzzleNumber": 404
+  },
+  {
+    "NytPuzzleId": 406,
+    "PrintDate": "2022-07-29",
+    "PublicPuzzleNumber": 405
+  },
+  {
+    "NytPuzzleId": 407,
+    "PrintDate": "2022-07-30",
+    "PublicPuzzleNumber": 406
+  },
+  {
+    "NytPuzzleId": 408,
+    "PrintDate": "2022-07-31",
+    "PublicPuzzleNumber": 407
+  },
+  {
+    "NytPuzzleId": 409,
+    "PrintDate": "2022-08-01",
+    "PublicPuzzleNumber": 408
+  },
+  {
+    "NytPuzzleId": 410,
+    "PrintDate": "2022-08-02",
+    "PublicPuzzleNumber": 409
+  },
+  {
+    "NytPuzzleId": 411,
+    "PrintDate": "2022-08-03",
+    "PublicPuzzleNumber": 410
+  },
+  {
+    "NytPuzzleId": 412,
+    "PrintDate": "2022-08-04",
+    "PublicPuzzleNumber": 411
+  },
+  {
+    "NytPuzzleId": 413,
+    "PrintDate": "2022-08-05",
+    "PublicPuzzleNumber": 412
+  },
+  {
+    "NytPuzzleId": 414,
+    "PrintDate": "2022-08-06",
+    "PublicPuzzleNumber": 413
+  },
+  {
+    "NytPuzzleId": 415,
+    "PrintDate": "2022-08-07",
+    "PublicPuzzleNumber": 414
+  },
+  {
+    "NytPuzzleId": 416,
+    "PrintDate": "2022-08-08",
+    "PublicPuzzleNumber": 415
+  },
+  {
+    "NytPuzzleId": 417,
+    "PrintDate": "2022-08-09",
+    "PublicPuzzleNumber": 416
+  },
+  {
+    "NytPuzzleId": 418,
+    "PrintDate": "2022-08-10",
+    "PublicPuzzleNumber": 417
+  },
+  {
+    "NytPuzzleId": 419,
+    "PrintDate": "2022-08-11",
+    "PublicPuzzleNumber": 418
+  },
+  {
+    "NytPuzzleId": 420,
+    "PrintDate": "2022-08-12",
+    "PublicPuzzleNumber": 419
+  },
+  {
+    "NytPuzzleId": 421,
+    "PrintDate": "2022-08-13",
+    "PublicPuzzleNumber": 420
+  },
+  {
+    "NytPuzzleId": 422,
+    "PrintDate": "2022-08-14",
+    "PublicPuzzleNumber": 421
+  },
+  {
+    "NytPuzzleId": 423,
+    "PrintDate": "2022-08-15",
+    "PublicPuzzleNumber": 422
+  },
+  {
+    "NytPuzzleId": 424,
+    "PrintDate": "2022-08-16",
+    "PublicPuzzleNumber": 423
+  },
+  {
+    "NytPuzzleId": 425,
+    "PrintDate": "2022-08-17",
+    "PublicPuzzleNumber": 424
+  },
+  {
+    "NytPuzzleId": 426,
+    "PrintDate": "2022-08-18",
+    "PublicPuzzleNumber": 425
+  },
+  {
+    "NytPuzzleId": 427,
+    "PrintDate": "2022-08-19",
+    "PublicPuzzleNumber": 426
+  },
+  {
+    "NytPuzzleId": 428,
+    "PrintDate": "2022-08-20",
+    "PublicPuzzleNumber": 427
+  },
+  {
+    "NytPuzzleId": 429,
+    "PrintDate": "2022-08-21",
+    "PublicPuzzleNumber": 428
+  },
+  {
+    "NytPuzzleId": 430,
+    "PrintDate": "2022-08-22",
+    "PublicPuzzleNumber": 429
+  },
+  {
+    "NytPuzzleId": 431,
+    "PrintDate": "2022-08-23",
+    "PublicPuzzleNumber": 430
+  },
+  {
+    "NytPuzzleId": 432,
+    "PrintDate": "2022-08-24",
+    "PublicPuzzleNumber": 431
+  },
+  {
+    "NytPuzzleId": 433,
+    "PrintDate": "2022-08-25",
+    "PublicPuzzleNumber": 432
+  },
+  {
+    "NytPuzzleId": 434,
+    "PrintDate": "2022-08-26",
+    "PublicPuzzleNumber": 433
+  },
+  {
+    "NytPuzzleId": 435,
+    "PrintDate": "2022-08-27",
+    "PublicPuzzleNumber": 434
+  },
+  {
+    "NytPuzzleId": 436,
+    "PrintDate": "2022-08-28",
+    "PublicPuzzleNumber": 435
+  },
+  {
+    "NytPuzzleId": 437,
+    "PrintDate": "2022-08-29",
+    "PublicPuzzleNumber": 436
+  },
+  {
+    "NytPuzzleId": 438,
+    "PrintDate": "2022-08-30",
+    "PublicPuzzleNumber": 437
+  },
+  {
+    "NytPuzzleId": 439,
+    "PrintDate": "2022-08-31",
+    "PublicPuzzleNumber": 438
+  },
+  {
+    "NytPuzzleId": 440,
+    "PrintDate": "2022-09-01",
+    "PublicPuzzleNumber": 439
+  },
+  {
+    "NytPuzzleId": 441,
+    "PrintDate": "2022-09-02",
+    "PublicPuzzleNumber": 440
+  },
+  {
+    "NytPuzzleId": 442,
+    "PrintDate": "2022-09-03",
+    "PublicPuzzleNumber": 441
+  },
+  {
+    "NytPuzzleId": 443,
+    "PrintDate": "2022-09-04",
+    "PublicPuzzleNumber": 442
+  },
+  {
+    "NytPuzzleId": 444,
+    "PrintDate": "2022-09-05",
+    "PublicPuzzleNumber": 443
+  },
+  {
+    "NytPuzzleId": 445,
+    "PrintDate": "2022-09-06",
+    "PublicPuzzleNumber": 444
+  },
+  {
+    "NytPuzzleId": 446,
+    "PrintDate": "2022-09-07",
+    "PublicPuzzleNumber": 445
+  },
+  {
+    "NytPuzzleId": 447,
+    "PrintDate": "2022-09-08",
+    "PublicPuzzleNumber": 446
+  },
+  {
+    "NytPuzzleId": 448,
+    "PrintDate": "2022-09-09",
+    "PublicPuzzleNumber": 447
+  },
+  {
+    "NytPuzzleId": 449,
+    "PrintDate": "2022-09-10",
+    "PublicPuzzleNumber": 448
+  },
+  {
+    "NytPuzzleId": 450,
+    "PrintDate": "2022-09-11",
+    "PublicPuzzleNumber": 449
+  },
+  {
+    "NytPuzzleId": 451,
+    "PrintDate": "2022-09-12",
+    "PublicPuzzleNumber": 450
+  },
+  {
+    "NytPuzzleId": 452,
+    "PrintDate": "2022-09-13",
+    "PublicPuzzleNumber": 451
+  },
+  {
+    "NytPuzzleId": 453,
+    "PrintDate": "2022-09-14",
+    "PublicPuzzleNumber": 452
+  },
+  {
+    "NytPuzzleId": 454,
+    "PrintDate": "2022-09-15",
+    "PublicPuzzleNumber": 453
+  },
+  {
+    "NytPuzzleId": 455,
+    "PrintDate": "2022-09-16",
+    "PublicPuzzleNumber": 454
+  },
+  {
+    "NytPuzzleId": 456,
+    "PrintDate": "2022-09-17",
+    "PublicPuzzleNumber": 455
+  },
+  {
+    "NytPuzzleId": 457,
+    "PrintDate": "2022-09-18",
+    "PublicPuzzleNumber": 456
+  },
+  {
+    "NytPuzzleId": 458,
+    "PrintDate": "2022-09-19",
+    "PublicPuzzleNumber": 457
+  },
+  {
+    "NytPuzzleId": 459,
+    "PrintDate": "2022-09-20",
+    "PublicPuzzleNumber": 458
+  },
+  {
+    "NytPuzzleId": 460,
+    "PrintDate": "2022-09-21",
+    "PublicPuzzleNumber": 459
+  },
+  {
+    "NytPuzzleId": 461,
+    "PrintDate": "2022-09-22",
+    "PublicPuzzleNumber": 460
+  },
+  {
+    "NytPuzzleId": 462,
+    "PrintDate": "2022-09-23",
+    "PublicPuzzleNumber": 461
+  },
+  {
+    "NytPuzzleId": 463,
+    "PrintDate": "2022-09-24",
+    "PublicPuzzleNumber": 462
+  },
+  {
+    "NytPuzzleId": 464,
+    "PrintDate": "2022-09-25",
+    "PublicPuzzleNumber": 463
+  },
+  {
+    "NytPuzzleId": 465,
+    "PrintDate": "2022-09-26",
+    "PublicPuzzleNumber": 464
+  },
+  {
+    "NytPuzzleId": 466,
+    "PrintDate": "2022-09-27",
+    "PublicPuzzleNumber": 465
+  },
+  {
+    "NytPuzzleId": 467,
+    "PrintDate": "2022-09-28",
+    "PublicPuzzleNumber": 466
+  },
+  {
+    "NytPuzzleId": 468,
+    "PrintDate": "2022-09-29",
+    "PublicPuzzleNumber": 467
+  },
+  {
+    "NytPuzzleId": 469,
+    "PrintDate": "2022-09-30",
+    "PublicPuzzleNumber": 468
+  },
+  {
+    "NytPuzzleId": 470,
+    "PrintDate": "2022-10-01",
+    "PublicPuzzleNumber": 469
+  },
+  {
+    "NytPuzzleId": 471,
+    "PrintDate": "2022-10-02",
+    "PublicPuzzleNumber": 470
+  },
+  {
+    "NytPuzzleId": 472,
+    "PrintDate": "2022-10-03",
+    "PublicPuzzleNumber": 471
+  },
+  {
+    "NytPuzzleId": 473,
+    "PrintDate": "2022-10-04",
+    "PublicPuzzleNumber": 472
+  },
+  {
+    "NytPuzzleId": 474,
+    "PrintDate": "2022-10-05",
+    "PublicPuzzleNumber": 473
+  },
+  {
+    "NytPuzzleId": 475,
+    "PrintDate": "2022-10-06",
+    "PublicPuzzleNumber": 474
+  },
+  {
+    "NytPuzzleId": 476,
+    "PrintDate": "2022-10-07",
+    "PublicPuzzleNumber": 475
+  },
+  {
+    "NytPuzzleId": 477,
+    "PrintDate": "2022-10-08",
+    "PublicPuzzleNumber": 476
+  },
+  {
+    "NytPuzzleId": 478,
+    "PrintDate": "2022-10-09",
+    "PublicPuzzleNumber": 477
+  },
+  {
+    "NytPuzzleId": 479,
+    "PrintDate": "2022-10-10",
+    "PublicPuzzleNumber": 478
+  },
+  {
+    "NytPuzzleId": 480,
+    "PrintDate": "2022-10-11",
+    "PublicPuzzleNumber": 479
+  },
+  {
+    "NytPuzzleId": 481,
+    "PrintDate": "2022-10-12",
+    "PublicPuzzleNumber": 480
+  },
+  {
+    "NytPuzzleId": 482,
+    "PrintDate": "2022-10-13",
+    "PublicPuzzleNumber": 481
+  },
+  {
+    "NytPuzzleId": 483,
+    "PrintDate": "2022-10-14",
+    "PublicPuzzleNumber": 482
+  },
+  {
+    "NytPuzzleId": 484,
+    "PrintDate": "2022-10-15",
+    "PublicPuzzleNumber": 483
+  },
+  {
+    "NytPuzzleId": 485,
+    "PrintDate": "2022-10-16",
+    "PublicPuzzleNumber": 484
+  },
+  {
+    "NytPuzzleId": 486,
+    "PrintDate": "2022-10-17",
+    "PublicPuzzleNumber": 485
+  },
+  {
+    "NytPuzzleId": 487,
+    "PrintDate": "2022-10-18",
+    "PublicPuzzleNumber": 486
+  },
+  {
+    "NytPuzzleId": 488,
+    "PrintDate": "2022-10-19",
+    "PublicPuzzleNumber": 487
+  },
+  {
+    "NytPuzzleId": 489,
+    "PrintDate": "2022-10-20",
+    "PublicPuzzleNumber": 488
+  },
+  {
+    "NytPuzzleId": 490,
+    "PrintDate": "2022-10-21",
+    "PublicPuzzleNumber": 489
+  },
+  {
+    "NytPuzzleId": 491,
+    "PrintDate": "2022-10-22",
+    "PublicPuzzleNumber": 490
+  },
+  {
+    "NytPuzzleId": 492,
+    "PrintDate": "2022-10-23",
+    "PublicPuzzleNumber": 491
+  },
+  {
+    "NytPuzzleId": 493,
+    "PrintDate": "2022-10-24",
+    "PublicPuzzleNumber": 492
+  },
+  {
+    "NytPuzzleId": 494,
+    "PrintDate": "2022-10-25",
+    "PublicPuzzleNumber": 493
+  },
+  {
+    "NytPuzzleId": 495,
+    "PrintDate": "2022-10-26",
+    "PublicPuzzleNumber": 494
+  },
+  {
+    "NytPuzzleId": 496,
+    "PrintDate": "2022-10-27",
+    "PublicPuzzleNumber": 495
+  },
+  {
+    "NytPuzzleId": 497,
+    "PrintDate": "2022-10-28",
+    "PublicPuzzleNumber": 496
+  },
+  {
+    "NytPuzzleId": 498,
+    "PrintDate": "2022-10-29",
+    "PublicPuzzleNumber": 497
+  },
+  {
+    "NytPuzzleId": 499,
+    "PrintDate": "2022-10-30",
+    "PublicPuzzleNumber": 498
+  },
+  {
+    "NytPuzzleId": 500,
+    "PrintDate": "2022-10-31",
+    "PublicPuzzleNumber": 499
+  },
+  {
+    "NytPuzzleId": 501,
+    "PrintDate": "2022-11-01",
+    "PublicPuzzleNumber": 500
+  },
+  {
+    "NytPuzzleId": 502,
+    "PrintDate": "2022-11-02",
+    "PublicPuzzleNumber": 501
+  },
+  {
+    "NytPuzzleId": 503,
+    "PrintDate": "2022-11-03",
+    "PublicPuzzleNumber": 502
+  },
+  {
+    "NytPuzzleId": 504,
+    "PrintDate": "2022-11-04",
+    "PublicPuzzleNumber": 503
+  },
+  {
+    "NytPuzzleId": 505,
+    "PrintDate": "2022-11-05",
+    "PublicPuzzleNumber": 504
+  },
+  {
+    "NytPuzzleId": 506,
+    "PrintDate": "2022-11-06",
+    "PublicPuzzleNumber": 505
+  },
+  {
+    "NytPuzzleId": 1623,
+    "PrintDate": "2022-11-07",
+    "PublicPuzzleNumber": 506
+  },
+  {
+    "NytPuzzleId": 514,
+    "PrintDate": "2022-11-08",
+    "PublicPuzzleNumber": 507
+  },
+  {
+    "NytPuzzleId": 530,
+    "PrintDate": "2022-11-09",
+    "PublicPuzzleNumber": 508
+  },
+  {
+    "NytPuzzleId": 507,
+    "PrintDate": "2022-11-10",
+    "PublicPuzzleNumber": 509
+  },
+  {
+    "NytPuzzleId": 1249,
+    "PrintDate": "2022-11-11",
+    "PublicPuzzleNumber": 510
+  },
+  {
+    "NytPuzzleId": 537,
+    "PrintDate": "2022-11-12",
+    "PublicPuzzleNumber": 511
+  },
+  {
+    "NytPuzzleId": 523,
+    "PrintDate": "2022-11-13",
+    "PublicPuzzleNumber": 512
+  },
+  {
+    "NytPuzzleId": 1255,
+    "PrintDate": "2022-11-14",
+    "PublicPuzzleNumber": 513
+  },
+  {
+    "NytPuzzleId": 508,
+    "PrintDate": "2022-11-15",
+    "PublicPuzzleNumber": 514
+  },
+  {
+    "NytPuzzleId": 509,
+    "PrintDate": "2022-11-16",
+    "PublicPuzzleNumber": 515
+  },
+  {
+    "NytPuzzleId": 510,
+    "PrintDate": "2022-11-17",
+    "PublicPuzzleNumber": 516
+  },
+  {
+    "NytPuzzleId": 511,
+    "PrintDate": "2022-11-18",
+    "PublicPuzzleNumber": 517
+  },
+  {
+    "NytPuzzleId": 539,
+    "PrintDate": "2022-11-19",
+    "PublicPuzzleNumber": 518
+  },
+  {
+    "NytPuzzleId": 969,
+    "PrintDate": "2022-11-20",
+    "PublicPuzzleNumber": 519
+  },
+  {
+    "NytPuzzleId": 1685,
+    "PrintDate": "2022-11-21",
+    "PublicPuzzleNumber": 520
+  },
+  {
+    "NytPuzzleId": 929,
+    "PrintDate": "2022-11-22",
+    "PublicPuzzleNumber": 521
+  },
+  {
+    "NytPuzzleId": 2166,
+    "PrintDate": "2022-11-23",
+    "PublicPuzzleNumber": 522
+  },
+  {
+    "NytPuzzleId": 1438,
+    "PrintDate": "2022-11-24",
+    "PublicPuzzleNumber": 523
+  },
+  {
+    "NytPuzzleId": 1680,
+    "PrintDate": "2022-11-25",
+    "PublicPuzzleNumber": 524
+  },
+  {
+    "NytPuzzleId": 736,
+    "PrintDate": "2022-11-26",
+    "PublicPuzzleNumber": 525
+  },
+  {
+    "NytPuzzleId": 2180,
+    "PrintDate": "2022-11-27",
+    "PublicPuzzleNumber": 526
+  },
+  {
+    "NytPuzzleId": 2268,
+    "PrintDate": "2022-11-28",
+    "PublicPuzzleNumber": 527
+  },
+  {
+    "NytPuzzleId": 559,
+    "PrintDate": "2022-11-29",
+    "PublicPuzzleNumber": 528
+  },
+  {
+    "NytPuzzleId": 552,
+    "PrintDate": "2022-11-30",
+    "PublicPuzzleNumber": 529
+  },
+  {
+    "NytPuzzleId": 2276,
+    "PrintDate": "2022-12-01",
+    "PublicPuzzleNumber": 530
+  },
+  {
+    "NytPuzzleId": 1311,
+    "PrintDate": "2022-12-02",
+    "PublicPuzzleNumber": 531
+  },
+  {
+    "NytPuzzleId": 2265,
+    "PrintDate": "2022-12-03",
+    "PublicPuzzleNumber": 532
+  },
+  {
+    "NytPuzzleId": 1106,
+    "PrintDate": "2022-12-04",
+    "PublicPuzzleNumber": 533
+  },
+  {
+    "NytPuzzleId": 849,
+    "PrintDate": "2022-12-05",
+    "PublicPuzzleNumber": 534
+  },
+  {
+    "NytPuzzleId": 2008,
+    "PrintDate": "2022-12-06",
+    "PublicPuzzleNumber": 535
+  },
+  {
+    "NytPuzzleId": 1246,
+    "PrintDate": "2022-12-07",
+    "PublicPuzzleNumber": 536
+  },
+  {
+    "NytPuzzleId": 1149,
+    "PrintDate": "2022-12-08",
+    "PublicPuzzleNumber": 537
+  },
+  {
+    "NytPuzzleId": 840,
+    "PrintDate": "2022-12-09",
+    "PublicPuzzleNumber": 538
+  },
+  {
+    "NytPuzzleId": 2256,
+    "PrintDate": "2022-12-10",
+    "PublicPuzzleNumber": 539
+  },
+  {
+    "NytPuzzleId": 923,
+    "PrintDate": "2022-12-11",
+    "PublicPuzzleNumber": 540
+  },
+  {
+    "NytPuzzleId": 1168,
+    "PrintDate": "2022-12-12",
+    "PublicPuzzleNumber": 541
+  },
+  {
+    "NytPuzzleId": 895,
+    "PrintDate": "2022-12-13",
+    "PublicPuzzleNumber": 542
+  },
+  {
+    "NytPuzzleId": 621,
+    "PrintDate": "2022-12-14",
+    "PublicPuzzleNumber": 543
+  },
+  {
+    "NytPuzzleId": 2278,
+    "PrintDate": "2022-12-15",
+    "PublicPuzzleNumber": 544
+  },
+  {
+    "NytPuzzleId": 1591,
+    "PrintDate": "2022-12-16",
+    "PublicPuzzleNumber": 545
+  },
+  {
+    "NytPuzzleId": 801,
+    "PrintDate": "2022-12-17",
+    "PublicPuzzleNumber": 546
+  },
+  {
+    "NytPuzzleId": 962,
+    "PrintDate": "2022-12-18",
+    "PublicPuzzleNumber": 547
+  },
+  {
+    "NytPuzzleId": 853,
+    "PrintDate": "2022-12-19",
+    "PublicPuzzleNumber": 548
+  },
+  {
+    "NytPuzzleId": 1045,
+    "PrintDate": "2022-12-20",
+    "PublicPuzzleNumber": 549
+  },
+  {
+    "NytPuzzleId": 694,
+    "PrintDate": "2022-12-21",
+    "PublicPuzzleNumber": 550
+  },
+  {
+    "NytPuzzleId": 952,
+    "PrintDate": "2022-12-22",
+    "PublicPuzzleNumber": 551
+  },
+  {
+    "NytPuzzleId": 2281,
+    "PrintDate": "2022-12-23",
+    "PublicPuzzleNumber": 552
+  },
+  {
+    "NytPuzzleId": 1155,
+    "PrintDate": "2022-12-24",
+    "PublicPuzzleNumber": 553
+  },
+  {
+    "NytPuzzleId": 2257,
+    "PrintDate": "2022-12-25",
+    "PublicPuzzleNumber": 554
+  },
+  {
+    "NytPuzzleId": 2283,
+    "PrintDate": "2022-12-26",
+    "PublicPuzzleNumber": 555
+  },
+  {
+    "NytPuzzleId": 2258,
+    "PrintDate": "2022-12-27",
+    "PublicPuzzleNumber": 556
+  },
+  {
+    "NytPuzzleId": 2208,
+    "PrintDate": "2022-12-28",
+    "PublicPuzzleNumber": 557
+  },
+  {
+    "NytPuzzleId": 1279,
+    "PrintDate": "2022-12-29",
+    "PublicPuzzleNumber": 558
+  },
+  {
+    "NytPuzzleId": 771,
+    "PrintDate": "2022-12-30",
+    "PublicPuzzleNumber": 559
+  },
+  {
+    "NytPuzzleId": 2251,
+    "PrintDate": "2022-12-31",
+    "PublicPuzzleNumber": 560
+  },
+  {
+    "NytPuzzleId": 2191,
+    "PrintDate": "2023-01-01",
+    "PublicPuzzleNumber": 561
+  },
+  {
+    "NytPuzzleId": 2263,
+    "PrintDate": "2023-01-02",
+    "PublicPuzzleNumber": 562
+  },
+  {
+    "NytPuzzleId": 2117,
+    "PrintDate": "2023-01-03",
+    "PublicPuzzleNumber": 563
+  },
+  {
+    "NytPuzzleId": 818,
+    "PrintDate": "2023-01-04",
+    "PublicPuzzleNumber": 564
+  },
+  {
+    "NytPuzzleId": 2269,
+    "PrintDate": "2023-01-05",
+    "PublicPuzzleNumber": 565
+  },
+  {
+    "NytPuzzleId": 1847,
+    "PrintDate": "2023-01-06",
+    "PublicPuzzleNumber": 566
+  },
+  {
+    "NytPuzzleId": 2110,
+    "PrintDate": "2023-01-07",
+    "PublicPuzzleNumber": 567
+  },
+  {
+    "NytPuzzleId": 1969,
+    "PrintDate": "2023-01-08",
+    "PublicPuzzleNumber": 568
+  },
+  {
+    "NytPuzzleId": 1132,
+    "PrintDate": "2023-01-09",
+    "PublicPuzzleNumber": 569
+  },
+  {
+    "NytPuzzleId": 2026,
+    "PrintDate": "2023-01-10",
+    "PublicPuzzleNumber": 570
+  },
+  {
+    "NytPuzzleId": 560,
+    "PrintDate": "2023-01-11",
+    "PublicPuzzleNumber": 571
+  },
+  {
+    "NytPuzzleId": 1836,
+    "PrintDate": "2023-01-12",
+    "PublicPuzzleNumber": 572
+  },
+  {
+    "NytPuzzleId": 570,
+    "PrintDate": "2023-01-13",
+    "PublicPuzzleNumber": 573
+  },
+  {
+    "NytPuzzleId": 1343,
+    "PrintDate": "2023-01-14",
+    "PublicPuzzleNumber": 574
+  },
+  {
+    "NytPuzzleId": 1277,
+    "PrintDate": "2023-01-15",
+    "PublicPuzzleNumber": 575
+  },
+  {
+    "NytPuzzleId": 1062,
+    "PrintDate": "2023-01-16",
+    "PublicPuzzleNumber": 576
+  },
+  {
+    "NytPuzzleId": 965,
+    "PrintDate": "2023-01-17",
+    "PublicPuzzleNumber": 577
+  },
+  {
+    "NytPuzzleId": 1686,
+    "PrintDate": "2023-01-18",
+    "PublicPuzzleNumber": 578
+  },
+  {
+    "NytPuzzleId": 1332,
+    "PrintDate": "2023-01-19",
+    "PublicPuzzleNumber": 579
+  },
+  {
+    "NytPuzzleId": 1483,
+    "PrintDate": "2023-01-20",
+    "PublicPuzzleNumber": 580
+  },
+  {
+    "NytPuzzleId": 1049,
+    "PrintDate": "2023-01-21",
+    "PublicPuzzleNumber": 581
+  },
+  {
+    "NytPuzzleId": 825,
+    "PrintDate": "2023-01-22",
+    "PublicPuzzleNumber": 582
+  },
+  {
+    "NytPuzzleId": 713,
+    "PrintDate": "2023-01-23",
+    "PublicPuzzleNumber": 583
+  },
+  {
+    "NytPuzzleId": 546,
+    "PrintDate": "2023-01-24",
+    "PublicPuzzleNumber": 584
+  },
+  {
+    "NytPuzzleId": 1517,
+    "PrintDate": "2023-01-25",
+    "PublicPuzzleNumber": 585
+  },
+  {
+    "NytPuzzleId": 1384,
+    "PrintDate": "2023-01-26",
+    "PublicPuzzleNumber": 586
+  },
+  {
+    "NytPuzzleId": 1074,
+    "PrintDate": "2023-01-27",
+    "PublicPuzzleNumber": 587
+  },
+  {
+    "NytPuzzleId": 1211,
+    "PrintDate": "2023-01-28",
+    "PublicPuzzleNumber": 588
+  },
+  {
+    "NytPuzzleId": 1159,
+    "PrintDate": "2023-01-29",
+    "PublicPuzzleNumber": 589
+  },
+  {
+    "NytPuzzleId": 525,
+    "PrintDate": "2023-01-30",
+    "PublicPuzzleNumber": 590
+  },
+  {
+    "NytPuzzleId": 1007,
+    "PrintDate": "2023-01-31",
+    "PublicPuzzleNumber": 591
+  },
+  {
+    "NytPuzzleId": 1502,
+    "PrintDate": "2023-02-01",
+    "PublicPuzzleNumber": 592
+  },
+  {
+    "NytPuzzleId": 1182,
+    "PrintDate": "2023-02-02",
+    "PublicPuzzleNumber": 593
+  },
+  {
+    "NytPuzzleId": 1075,
+    "PrintDate": "2023-02-03",
+    "PublicPuzzleNumber": 594
+  },
+  {
+    "NytPuzzleId": 2301,
+    "PrintDate": "2023-02-04",
+    "PublicPuzzleNumber": 595
+  },
+  {
+    "NytPuzzleId": 1556,
+    "PrintDate": "2023-02-05",
+    "PublicPuzzleNumber": 596
+  },
+  {
+    "NytPuzzleId": 1245,
+    "PrintDate": "2023-02-06",
+    "PublicPuzzleNumber": 597
+  },
+  {
+    "NytPuzzleId": 590,
+    "PrintDate": "2023-02-07",
+    "PublicPuzzleNumber": 598
+  },
+  {
+    "NytPuzzleId": 1927,
+    "PrintDate": "2023-02-08",
+    "PublicPuzzleNumber": 599
+  },
+  {
+    "NytPuzzleId": 730,
+    "PrintDate": "2023-02-09",
+    "PublicPuzzleNumber": 600
+  },
+  {
+    "NytPuzzleId": 1129,
+    "PrintDate": "2023-02-10",
+    "PublicPuzzleNumber": 601
+  },
+  {
+    "NytPuzzleId": 1873,
+    "PrintDate": "2023-02-11",
+    "PublicPuzzleNumber": 602
+  },
+  {
+    "NytPuzzleId": 1717,
+    "PrintDate": "2023-02-12",
+    "PublicPuzzleNumber": 603
+  },
+  {
+    "NytPuzzleId": 1154,
+    "PrintDate": "2023-02-13",
+    "PublicPuzzleNumber": 604
+  },
+  {
+    "NytPuzzleId": 838,
+    "PrintDate": "2023-02-14",
+    "PublicPuzzleNumber": 605
+  },
+  {
+    "NytPuzzleId": 1584,
+    "PrintDate": "2023-02-15",
+    "PublicPuzzleNumber": 606
+  },
+  {
+    "NytPuzzleId": 776,
+    "PrintDate": "2023-02-16",
+    "PublicPuzzleNumber": 607
+  },
+  {
+    "NytPuzzleId": 1312,
+    "PrintDate": "2023-02-17",
+    "PublicPuzzleNumber": 608
+  },
+  {
+    "NytPuzzleId": 1207,
+    "PrintDate": "2023-02-18",
+    "PublicPuzzleNumber": 609
+  },
+  {
+    "NytPuzzleId": 815,
+    "PrintDate": "2023-02-19",
+    "PublicPuzzleNumber": 610
+  },
+  {
+    "NytPuzzleId": 1104,
+    "PrintDate": "2023-02-20",
+    "PublicPuzzleNumber": 611
+  },
+  {
+    "NytPuzzleId": 1439,
+    "PrintDate": "2023-02-21",
+    "PublicPuzzleNumber": 612
+  },
+  {
+    "NytPuzzleId": 1528,
+    "PrintDate": "2023-02-22",
+    "PublicPuzzleNumber": 613
+  },
+  {
+    "NytPuzzleId": 1881,
+    "PrintDate": "2023-02-23",
+    "PublicPuzzleNumber": 614
+  },
+  {
+    "NytPuzzleId": 805,
+    "PrintDate": "2023-02-24",
+    "PublicPuzzleNumber": 615
+  },
+  {
+    "NytPuzzleId": 1715,
+    "PrintDate": "2023-02-25",
+    "PublicPuzzleNumber": 616
+  },
+  {
+    "NytPuzzleId": 1462,
+    "PrintDate": "2023-02-26",
+    "PublicPuzzleNumber": 617
+  },
+  {
+    "NytPuzzleId": 1805,
+    "PrintDate": "2023-02-27",
+    "PublicPuzzleNumber": 618
+  },
+  {
+    "NytPuzzleId": 2261,
+    "PrintDate": "2023-02-28",
+    "PublicPuzzleNumber": 619
+  },
+  {
+    "NytPuzzleId": 2116,
+    "PrintDate": "2023-03-01",
+    "PublicPuzzleNumber": 620
+  },
+  {
+    "NytPuzzleId": 1852,
+    "PrintDate": "2023-03-02",
+    "PublicPuzzleNumber": 621
+  },
+  {
+    "NytPuzzleId": 1240,
+    "PrintDate": "2023-03-03",
+    "PublicPuzzleNumber": 622
+  },
+  {
+    "NytPuzzleId": 1834,
+    "PrintDate": "2023-03-04",
+    "PublicPuzzleNumber": 623
+  },
+  {
+    "NytPuzzleId": 1795,
+    "PrintDate": "2023-03-05",
+    "PublicPuzzleNumber": 624
+  },
+  {
+    "NytPuzzleId": 1879,
+    "PrintDate": "2023-03-06",
+    "PublicPuzzleNumber": 625
+  },
+  {
+    "NytPuzzleId": 1977,
+    "PrintDate": "2023-03-07",
+    "PublicPuzzleNumber": 626
+  },
+  {
+    "NytPuzzleId": 975,
+    "PrintDate": "2023-03-08",
+    "PublicPuzzleNumber": 627
+  },
+  {
+    "NytPuzzleId": 1052,
+    "PrintDate": "2023-03-09",
+    "PublicPuzzleNumber": 628
+  },
+  {
+    "NytPuzzleId": 1867,
+    "PrintDate": "2023-03-10",
+    "PublicPuzzleNumber": 629
+  },
+  {
+    "NytPuzzleId": 2168,
+    "PrintDate": "2023-03-11",
+    "PublicPuzzleNumber": 630
+  },
+  {
+    "NytPuzzleId": 1754,
+    "PrintDate": "2023-03-12",
+    "PublicPuzzleNumber": 631
+  },
+  {
+    "NytPuzzleId": 2239,
+    "PrintDate": "2023-03-13",
+    "PublicPuzzleNumber": 632
+  },
+  {
+    "NytPuzzleId": 1718,
+    "PrintDate": "2023-03-14",
+    "PublicPuzzleNumber": 633
+  },
+  {
+    "NytPuzzleId": 883,
+    "PrintDate": "2023-03-15",
+    "PublicPuzzleNumber": 634
+  },
+  {
+    "NytPuzzleId": 1342,
+    "PrintDate": "2023-03-16",
+    "PublicPuzzleNumber": 635
+  },
+  {
+    "NytPuzzleId": 1922,
+    "PrintDate": "2023-03-17",
+    "PublicPuzzleNumber": 636
+  },
+  {
+    "NytPuzzleId": 2022,
+    "PrintDate": "2023-03-18",
+    "PublicPuzzleNumber": 637
+  },
+  {
+    "NytPuzzleId": 1172,
+    "PrintDate": "2023-03-19",
+    "PublicPuzzleNumber": 638
+  },
+  {
+    "NytPuzzleId": 839,
+    "PrintDate": "2023-03-20",
+    "PublicPuzzleNumber": 639
+  },
+  {
+    "NytPuzzleId": 566,
+    "PrintDate": "2023-03-21",
+    "PublicPuzzleNumber": 640
+  },
+  {
+    "NytPuzzleId": 1344,
+    "PrintDate": "2023-03-22",
+    "PublicPuzzleNumber": 641
+  },
+  {
+    "NytPuzzleId": 2221,
+    "PrintDate": "2023-03-23",
+    "PublicPuzzleNumber": 642
+  },
+  {
+    "NytPuzzleId": 1471,
+    "PrintDate": "2023-03-24",
+    "PublicPuzzleNumber": 643
+  },
+  {
+    "NytPuzzleId": 1738,
+    "PrintDate": "2023-03-25",
+    "PublicPuzzleNumber": 644
+  },
+  {
+    "NytPuzzleId": 2279,
+    "PrintDate": "2023-03-26",
+    "PublicPuzzleNumber": 645
+  },
+  {
+    "NytPuzzleId": 2312,
+    "PrintDate": "2023-03-27",
+    "PublicPuzzleNumber": 646
+  },
+  {
+    "NytPuzzleId": 2104,
+    "PrintDate": "2023-03-28",
+    "PublicPuzzleNumber": 647
+  },
+  {
+    "NytPuzzleId": 773,
+    "PrintDate": "2023-03-29",
+    "PublicPuzzleNumber": 648
+  },
+  {
+    "NytPuzzleId": 1002,
+    "PrintDate": "2023-03-30",
+    "PublicPuzzleNumber": 649
+  },
+  {
+    "NytPuzzleId": 977,
+    "PrintDate": "2023-03-31",
+    "PublicPuzzleNumber": 650
+  },
+  {
+    "NytPuzzleId": 803,
+    "PrintDate": "2023-04-01",
+    "PublicPuzzleNumber": 651
+  },
+  {
+    "NytPuzzleId": 1305,
+    "PrintDate": "2023-04-02",
+    "PublicPuzzleNumber": 652
+  },
+  {
+    "NytPuzzleId": 1412,
+    "PrintDate": "2023-04-03",
+    "PublicPuzzleNumber": 653
+  },
+  {
+    "NytPuzzleId": 1809,
+    "PrintDate": "2023-04-04",
+    "PublicPuzzleNumber": 654
+  },
+  {
+    "NytPuzzleId": 1229,
+    "PrintDate": "2023-04-05",
+    "PublicPuzzleNumber": 655
+  },
+  {
+    "NytPuzzleId": 887,
+    "PrintDate": "2023-04-06",
+    "PublicPuzzleNumber": 656
+  },
+  {
+    "NytPuzzleId": 1307,
+    "PrintDate": "2023-04-07",
+    "PublicPuzzleNumber": 657
+  },
+  {
+    "NytPuzzleId": 1895,
+    "PrintDate": "2023-04-08",
+    "PublicPuzzleNumber": 658
+  },
+  {
+    "NytPuzzleId": 2317,
+    "PrintDate": "2023-04-09",
+    "PublicPuzzleNumber": 659
+  },
+  {
+    "NytPuzzleId": 1648,
+    "PrintDate": "2023-04-10",
+    "PublicPuzzleNumber": 660
+  },
+  {
+    "NytPuzzleId": 726,
+    "PrintDate": "2023-04-11",
+    "PublicPuzzleNumber": 661
+  },
+  {
+    "NytPuzzleId": 699,
+    "PrintDate": "2023-04-12",
+    "PublicPuzzleNumber": 662
+  },
+  {
+    "NytPuzzleId": 2010,
+    "PrintDate": "2023-04-13",
+    "PublicPuzzleNumber": 663
+  },
+  {
+    "NytPuzzleId": 1271,
+    "PrintDate": "2023-04-14",
+    "PublicPuzzleNumber": 664
+  },
+  {
+    "NytPuzzleId": 1025,
+    "PrintDate": "2023-04-15",
+    "PublicPuzzleNumber": 665
+  },
+  {
+    "NytPuzzleId": 852,
+    "PrintDate": "2023-04-16",
+    "PublicPuzzleNumber": 666
+  },
+  {
+    "NytPuzzleId": 1522,
+    "PrintDate": "2023-04-17",
+    "PublicPuzzleNumber": 667
+  },
+  {
+    "NytPuzzleId": 2233,
+    "PrintDate": "2023-04-18",
+    "PublicPuzzleNumber": 668
+  },
+  {
+    "NytPuzzleId": 798,
+    "PrintDate": "2023-04-19",
+    "PublicPuzzleNumber": 669
+  },
+  {
+    "NytPuzzleId": 1216,
+    "PrintDate": "2023-04-20",
+    "PublicPuzzleNumber": 670
+  },
+  {
+    "NytPuzzleId": 2075,
+    "PrintDate": "2023-04-21",
+    "PublicPuzzleNumber": 671
+  },
+  {
+    "NytPuzzleId": 1782,
+    "PrintDate": "2023-04-22",
+    "PublicPuzzleNumber": 672
+  },
+  {
+    "NytPuzzleId": 955,
+    "PrintDate": "2023-04-23",
+    "PublicPuzzleNumber": 673
+  },
+  {
+    "NytPuzzleId": 618,
+    "PrintDate": "2023-04-24",
+    "PublicPuzzleNumber": 674
+  },
+  {
+    "NytPuzzleId": 875,
+    "PrintDate": "2023-04-25",
+    "PublicPuzzleNumber": 675
+  },
+  {
+    "NytPuzzleId": 2081,
+    "PrintDate": "2023-04-26",
+    "PublicPuzzleNumber": 676
+  },
+  {
+    "NytPuzzleId": 1316,
+    "PrintDate": "2023-04-27",
+    "PublicPuzzleNumber": 677
+  },
+  {
+    "NytPuzzleId": 1978,
+    "PrintDate": "2023-04-28",
+    "PublicPuzzleNumber": 678
+  },
+  {
+    "NytPuzzleId": 1297,
+    "PrintDate": "2023-04-29",
+    "PublicPuzzleNumber": 679
+  },
+  {
+    "NytPuzzleId": 1894,
+    "PrintDate": "2023-04-30",
+    "PublicPuzzleNumber": 680
+  },
+  {
+    "NytPuzzleId": 785,
+    "PrintDate": "2023-05-01",
+    "PublicPuzzleNumber": 681
+  },
+  {
+    "NytPuzzleId": 1333,
+    "PrintDate": "2023-05-02",
+    "PublicPuzzleNumber": 682
+  },
+  {
+    "NytPuzzleId": 1300,
+    "PrintDate": "2023-05-03",
+    "PublicPuzzleNumber": 683
+  },
+  {
+    "NytPuzzleId": 2121,
+    "PrintDate": "2023-05-04",
+    "PublicPuzzleNumber": 684
+  },
+  {
+    "NytPuzzleId": 1389,
+    "PrintDate": "2023-05-05",
+    "PublicPuzzleNumber": 685
+  },
+  {
+    "NytPuzzleId": 2165,
+    "PrintDate": "2023-05-06",
+    "PublicPuzzleNumber": 686
+  },
+  {
+    "NytPuzzleId": 1663,
+    "PrintDate": "2023-05-07",
+    "PublicPuzzleNumber": 687
+  },
+  {
+    "NytPuzzleId": 1265,
+    "PrintDate": "2023-05-08",
+    "PublicPuzzleNumber": 688
+  },
+  {
+    "NytPuzzleId": 1530,
+    "PrintDate": "2023-05-09",
+    "PublicPuzzleNumber": 689
+  },
+  {
+    "NytPuzzleId": 1660,
+    "PrintDate": "2023-05-10",
+    "PublicPuzzleNumber": 690
+  },
+  {
+    "NytPuzzleId": 1476,
+    "PrintDate": "2023-05-11",
+    "PublicPuzzleNumber": 691
+  },
+  {
+    "NytPuzzleId": 1858,
+    "PrintDate": "2023-05-12",
+    "PublicPuzzleNumber": 692
+  },
+  {
+    "NytPuzzleId": 1128,
+    "PrintDate": "2023-05-13",
+    "PublicPuzzleNumber": 693
+  },
+  {
+    "NytPuzzleId": 1441,
+    "PrintDate": "2023-05-14",
+    "PublicPuzzleNumber": 694
+  },
+  {
+    "NytPuzzleId": 567,
+    "PrintDate": "2023-05-15",
+    "PublicPuzzleNumber": 695
+  },
+  {
+    "NytPuzzleId": 2142,
+    "PrintDate": "2023-05-16",
+    "PublicPuzzleNumber": 696
+  },
+  {
+    "NytPuzzleId": 1636,
+    "PrintDate": "2023-05-17",
+    "PublicPuzzleNumber": 697
+  },
+  {
+    "NytPuzzleId": 2106,
+    "PrintDate": "2023-05-18",
+    "PublicPuzzleNumber": 698
+  },
+  {
+    "NytPuzzleId": 1050,
+    "PrintDate": "2023-05-19",
+    "PublicPuzzleNumber": 699
+  },
+  {
+    "NytPuzzleId": 2038,
+    "PrintDate": "2023-05-20",
+    "PublicPuzzleNumber": 700
+  },
+  {
+    "NytPuzzleId": 1392,
+    "PrintDate": "2023-05-21",
+    "PublicPuzzleNumber": 701
+  },
+  {
+    "NytPuzzleId": 1450,
+    "PrintDate": "2023-05-22",
+    "PublicPuzzleNumber": 702
+  },
+  {
+    "NytPuzzleId": 1657,
+    "PrintDate": "2023-05-23",
+    "PublicPuzzleNumber": 703
+  },
+  {
+    "NytPuzzleId": 1493,
+    "PrintDate": "2023-05-24",
+    "PublicPuzzleNumber": 704
+  },
+  {
+    "NytPuzzleId": 1682,
+    "PrintDate": "2023-05-25",
+    "PublicPuzzleNumber": 705
+  },
+  {
+    "NytPuzzleId": 562,
+    "PrintDate": "2023-05-26",
+    "PublicPuzzleNumber": 706
+  },
+  {
+    "NytPuzzleId": 1146,
+    "PrintDate": "2023-05-27",
+    "PublicPuzzleNumber": 707
+  },
+  {
+    "NytPuzzleId": 528,
+    "PrintDate": "2023-05-28",
+    "PublicPuzzleNumber": 708
+  },
+  {
+    "NytPuzzleId": 1331,
+    "PrintDate": "2023-05-29",
+    "PublicPuzzleNumber": 709
+  },
+  {
+    "NytPuzzleId": 755,
+    "PrintDate": "2023-05-30",
+    "PublicPuzzleNumber": 710
+  },
+  {
+    "NytPuzzleId": 1222,
+    "PrintDate": "2023-05-31",
+    "PublicPuzzleNumber": 711
+  },
+  {
+    "NytPuzzleId": 1714,
+    "PrintDate": "2023-06-01",
+    "PublicPuzzleNumber": 712
+  },
+  {
+    "NytPuzzleId": 657,
+    "PrintDate": "2023-06-02",
+    "PublicPuzzleNumber": 713
+  },
+  {
+    "NytPuzzleId": 613,
+    "PrintDate": "2023-06-03",
+    "PublicPuzzleNumber": 714
+  },
+  {
+    "NytPuzzleId": 1491,
+    "PrintDate": "2023-06-04",
+    "PublicPuzzleNumber": 715
+  },
+  {
+    "NytPuzzleId": 817,
+    "PrintDate": "2023-06-05",
+    "PublicPuzzleNumber": 716
+  },
+  {
+    "NytPuzzleId": 1877,
+    "PrintDate": "2023-06-06",
+    "PublicPuzzleNumber": 717
+  },
+  {
+    "NytPuzzleId": 682,
+    "PrintDate": "2023-06-07",
+    "PublicPuzzleNumber": 718
+  },
+  {
+    "NytPuzzleId": 1459,
+    "PrintDate": "2023-06-08",
+    "PublicPuzzleNumber": 719
+  },
+  {
+    "NytPuzzleId": 2310,
+    "PrintDate": "2023-06-09",
+    "PublicPuzzleNumber": 720
+  },
+  {
+    "NytPuzzleId": 1480,
+    "PrintDate": "2023-06-10",
+    "PublicPuzzleNumber": 721
+  },
+  {
+    "NytPuzzleId": 2246,
+    "PrintDate": "2023-06-11",
+    "PublicPuzzleNumber": 722
+  },
+  {
+    "NytPuzzleId": 1536,
+    "PrintDate": "2023-06-12",
+    "PublicPuzzleNumber": 723
+  },
+  {
+    "NytPuzzleId": 1218,
+    "PrintDate": "2023-06-13",
+    "PublicPuzzleNumber": 724
+  },
+  {
+    "NytPuzzleId": 1875,
+    "PrintDate": "2023-06-14",
+    "PublicPuzzleNumber": 725
+  },
+  {
+    "NytPuzzleId": 1823,
+    "PrintDate": "2023-06-15",
+    "PublicPuzzleNumber": 726
+  },
+  {
+    "NytPuzzleId": 1117,
+    "PrintDate": "2023-06-16",
+    "PublicPuzzleNumber": 727
+  },
+  {
+    "NytPuzzleId": 2108,
+    "PrintDate": "2023-06-17",
+    "PublicPuzzleNumber": 728
+  },
+  {
+    "NytPuzzleId": 1268,
+    "PrintDate": "2023-06-18",
+    "PublicPuzzleNumber": 729
+  },
+  {
+    "NytPuzzleId": 2313,
+    "PrintDate": "2023-06-19",
+    "PublicPuzzleNumber": 730
+  },
+  {
+    "NytPuzzleId": 1888,
+    "PrintDate": "2023-06-20",
+    "PublicPuzzleNumber": 731
+  },
+  {
+    "NytPuzzleId": 1704,
+    "PrintDate": "2023-06-21",
+    "PublicPuzzleNumber": 732
+  },
+  {
+    "NytPuzzleId": 1694,
+    "PrintDate": "2023-06-22",
+    "PublicPuzzleNumber": 733
+  },
+  {
+    "NytPuzzleId": 569,
+    "PrintDate": "2023-06-23",
+    "PublicPuzzleNumber": 734
+  },
+  {
+    "NytPuzzleId": 2083,
+    "PrintDate": "2023-06-24",
+    "PublicPuzzleNumber": 735
+  },
+  {
+    "NytPuzzleId": 2245,
+    "PrintDate": "2023-06-25",
+    "PublicPuzzleNumber": 736
+  },
+  {
+    "NytPuzzleId": 976,
+    "PrintDate": "2023-06-26",
+    "PublicPuzzleNumber": 737
+  },
+  {
+    "NytPuzzleId": 703,
+    "PrintDate": "2023-06-27",
+    "PublicPuzzleNumber": 738
+  },
+  {
+    "NytPuzzleId": 1992,
+    "PrintDate": "2023-06-28",
+    "PublicPuzzleNumber": 739
+  },
+  {
+    "NytPuzzleId": 633,
+    "PrintDate": "2023-06-29",
+    "PublicPuzzleNumber": 740
+  },
+  {
+    "NytPuzzleId": 1041,
+    "PrintDate": "2023-06-30",
+    "PublicPuzzleNumber": 741
+  },
+  {
+    "NytPuzzleId": 2171,
+    "PrintDate": "2023-07-01",
+    "PublicPuzzleNumber": 742
+  },
+  {
+    "NytPuzzleId": 2220,
+    "PrintDate": "2023-07-02",
+    "PublicPuzzleNumber": 743
+  },
+  {
+    "NytPuzzleId": 1546,
+    "PrintDate": "2023-07-03",
+    "PublicPuzzleNumber": 744
+  },
+  {
+    "NytPuzzleId": 847,
+    "PrintDate": "2023-07-04",
+    "PublicPuzzleNumber": 745
+  },
+  {
+    "NytPuzzleId": 674,
+    "PrintDate": "2023-07-05",
+    "PublicPuzzleNumber": 746
+  },
+  {
+    "NytPuzzleId": 1447,
+    "PrintDate": "2023-07-06",
+    "PublicPuzzleNumber": 747
+  },
+  {
+    "NytPuzzleId": 988,
+    "PrintDate": "2023-07-07",
+    "PublicPuzzleNumber": 748
+  },
+  {
+    "NytPuzzleId": 1931,
+    "PrintDate": "2023-07-08",
+    "PublicPuzzleNumber": 749
+  },
+  {
+    "NytPuzzleId": 963,
+    "PrintDate": "2023-07-09",
+    "PublicPuzzleNumber": 750
+  },
+  {
+    "NytPuzzleId": 515,
+    "PrintDate": "2023-07-10",
+    "PublicPuzzleNumber": 751
+  },
+  {
+    "NytPuzzleId": 959,
+    "PrintDate": "2023-07-11",
+    "PublicPuzzleNumber": 752
+  },
+  {
+    "NytPuzzleId": 2162,
+    "PrintDate": "2023-07-12",
+    "PublicPuzzleNumber": 753
+  },
+  {
+    "NytPuzzleId": 824,
+    "PrintDate": "2023-07-13",
+    "PublicPuzzleNumber": 754
+  },
+  {
+    "NytPuzzleId": 1315,
+    "PrintDate": "2023-07-14",
+    "PublicPuzzleNumber": 755
+  },
+  {
+    "NytPuzzleId": 2218,
+    "PrintDate": "2023-07-15",
+    "PublicPuzzleNumber": 756
+  },
+  {
+    "NytPuzzleId": 1194,
+    "PrintDate": "2023-07-16",
+    "PublicPuzzleNumber": 757
+  },
+  {
+    "NytPuzzleId": 1215,
+    "PrintDate": "2023-07-17",
+    "PublicPuzzleNumber": 758
+  },
+  {
+    "NytPuzzleId": 765,
+    "PrintDate": "2023-07-18",
+    "PublicPuzzleNumber": 759
+  },
+  {
+    "NytPuzzleId": 1948,
+    "PrintDate": "2023-07-19",
+    "PublicPuzzleNumber": 760
+  },
+  {
+    "NytPuzzleId": 1252,
+    "PrintDate": "2023-07-20",
+    "PublicPuzzleNumber": 761
+  },
+  {
+    "NytPuzzleId": 1378,
+    "PrintDate": "2023-07-21",
+    "PublicPuzzleNumber": 762
+  },
+  {
+    "NytPuzzleId": 2113,
+    "PrintDate": "2023-07-22",
+    "PublicPuzzleNumber": 763
+  },
+  {
+    "NytPuzzleId": 1454,
+    "PrintDate": "2023-07-23",
+    "PublicPuzzleNumber": 764
+  },
+  {
+    "NytPuzzleId": 1490,
+    "PrintDate": "2023-07-24",
+    "PublicPuzzleNumber": 765
+  },
+  {
+    "NytPuzzleId": 1190,
+    "PrintDate": "2023-07-25",
+    "PublicPuzzleNumber": 766
+  },
+  {
+    "NytPuzzleId": 631,
+    "PrintDate": "2023-07-26",
+    "PublicPuzzleNumber": 767
+  },
+  {
+    "NytPuzzleId": 1051,
+    "PrintDate": "2023-07-27",
+    "PublicPuzzleNumber": 768
+  },
+  {
+    "NytPuzzleId": 1486,
+    "PrintDate": "2023-07-28",
+    "PublicPuzzleNumber": 769
+  },
+  {
+    "NytPuzzleId": 1296,
+    "PrintDate": "2023-07-29",
+    "PublicPuzzleNumber": 770
+  },
+  {
+    "NytPuzzleId": 926,
+    "PrintDate": "2023-07-30",
+    "PublicPuzzleNumber": 771
+  },
+  {
+    "NytPuzzleId": 2115,
+    "PrintDate": "2023-07-31",
+    "PublicPuzzleNumber": 772
+  },
+  {
+    "NytPuzzleId": 2056,
+    "PrintDate": "2023-08-01",
+    "PublicPuzzleNumber": 773
+  },
+  {
+    "NytPuzzleId": 1189,
+    "PrintDate": "2023-08-02",
+    "PublicPuzzleNumber": 774
+  },
+  {
+    "NytPuzzleId": 1091,
+    "PrintDate": "2023-08-03",
+    "PublicPuzzleNumber": 775
+  },
+  {
+    "NytPuzzleId": 1784,
+    "PrintDate": "2023-08-04",
+    "PublicPuzzleNumber": 776
+  },
+  {
+    "NytPuzzleId": 1874,
+    "PrintDate": "2023-08-05",
+    "PublicPuzzleNumber": 777
+  },
+  {
+    "NytPuzzleId": 958,
+    "PrintDate": "2023-08-06",
+    "PublicPuzzleNumber": 778
+  },
+  {
+    "NytPuzzleId": 1713,
+    "PrintDate": "2023-08-07",
+    "PublicPuzzleNumber": 779
+  },
+  {
+    "NytPuzzleId": 1199,
+    "PrintDate": "2023-08-08",
+    "PublicPuzzleNumber": 780
+  },
+  {
+    "NytPuzzleId": 553,
+    "PrintDate": "2023-08-09",
+    "PublicPuzzleNumber": 781
+  },
+  {
+    "NytPuzzleId": 1354,
+    "PrintDate": "2023-08-10",
+    "PublicPuzzleNumber": 782
+  },
+  {
+    "NytPuzzleId": 2252,
+    "PrintDate": "2023-08-11",
+    "PublicPuzzleNumber": 783
+  },
+  {
+    "NytPuzzleId": 578,
+    "PrintDate": "2023-08-12",
+    "PublicPuzzleNumber": 784
+  },
+  {
+    "NytPuzzleId": 1914,
+    "PrintDate": "2023-08-13",
+    "PublicPuzzleNumber": 785
+  },
+  {
+    "NytPuzzleId": 1241,
+    "PrintDate": "2023-08-14",
+    "PublicPuzzleNumber": 786
+  },
+  {
+    "NytPuzzleId": 723,
+    "PrintDate": "2023-08-15",
+    "PublicPuzzleNumber": 787
+  },
+  {
+    "NytPuzzleId": 992,
+    "PrintDate": "2023-08-16",
+    "PublicPuzzleNumber": 788
+  },
+  {
+    "NytPuzzleId": 1837,
+    "PrintDate": "2023-08-17",
+    "PublicPuzzleNumber": 789
+  },
+  {
+    "NytPuzzleId": 2128,
+    "PrintDate": "2023-08-18",
+    "PublicPuzzleNumber": 790
+  },
+  {
+    "NytPuzzleId": 2154,
+    "PrintDate": "2023-08-19",
+    "PublicPuzzleNumber": 791
+  },
+  {
+    "NytPuzzleId": 1674,
+    "PrintDate": "2023-08-20",
+    "PublicPuzzleNumber": 792
+  },
+  {
+    "NytPuzzleId": 1054,
+    "PrintDate": "2023-08-21",
+    "PublicPuzzleNumber": 793
+  },
+  {
+    "NytPuzzleId": 1398,
+    "PrintDate": "2023-08-22",
+    "PublicPuzzleNumber": 794
+  },
+  {
+    "NytPuzzleId": 792,
+    "PrintDate": "2023-08-23",
+    "PublicPuzzleNumber": 795
+  },
+  {
+    "NytPuzzleId": 1786,
+    "PrintDate": "2023-08-24",
+    "PublicPuzzleNumber": 796
+  },
+  {
+    "NytPuzzleId": 845,
+    "PrintDate": "2023-08-25",
+    "PublicPuzzleNumber": 797
+  },
+  {
+    "NytPuzzleId": 893,
+    "PrintDate": "2023-08-26",
+    "PublicPuzzleNumber": 798
+  },
+  {
+    "NytPuzzleId": 2272,
+    "PrintDate": "2023-08-27",
+    "PublicPuzzleNumber": 799
+  },
+  {
+    "NytPuzzleId": 668,
+    "PrintDate": "2023-08-28",
+    "PublicPuzzleNumber": 800
+  },
+  {
+    "NytPuzzleId": 1201,
+    "PrintDate": "2023-08-29",
+    "PublicPuzzleNumber": 801
+  },
+  {
+    "NytPuzzleId": 1564,
+    "PrintDate": "2023-08-30",
+    "PublicPuzzleNumber": 802
+  },
+  {
+    "NytPuzzleId": 1487,
+    "PrintDate": "2023-08-31",
+    "PublicPuzzleNumber": 803
+  },
+  {
+    "NytPuzzleId": 1206,
+    "PrintDate": "2023-09-01",
+    "PublicPuzzleNumber": 804
+  },
+  {
+    "NytPuzzleId": 635,
+    "PrintDate": "2023-09-02",
+    "PublicPuzzleNumber": 805
+  },
+  {
+    "NytPuzzleId": 2209,
+    "PrintDate": "2023-09-03",
+    "PublicPuzzleNumber": 806
+  },
+  {
+    "NytPuzzleId": 1954,
+    "PrintDate": "2023-09-04",
+    "PublicPuzzleNumber": 807
+  },
+  {
+    "NytPuzzleId": 688,
+    "PrintDate": "2023-09-05",
+    "PublicPuzzleNumber": 808
+  },
+  {
+    "NytPuzzleId": 2097,
+    "PrintDate": "2023-09-06",
+    "PublicPuzzleNumber": 809
+  },
+  {
+    "NytPuzzleId": 1224,
+    "PrintDate": "2023-09-07",
+    "PublicPuzzleNumber": 810
+  },
+  {
+    "NytPuzzleId": 862,
+    "PrintDate": "2023-09-08",
+    "PublicPuzzleNumber": 811
+  },
+  {
+    "NytPuzzleId": 689,
+    "PrintDate": "2023-09-09",
+    "PublicPuzzleNumber": 812
+  },
+  {
+    "NytPuzzleId": 1958,
+    "PrintDate": "2023-09-10",
+    "PublicPuzzleNumber": 813
+  },
+  {
+    "NytPuzzleId": 1668,
+    "PrintDate": "2023-09-11",
+    "PublicPuzzleNumber": 814
+  },
+  {
+    "NytPuzzleId": 786,
+    "PrintDate": "2023-09-12",
+    "PublicPuzzleNumber": 815
+  },
+  {
+    "NytPuzzleId": 1338,
+    "PrintDate": "2023-09-13",
+    "PublicPuzzleNumber": 816
+  },
+  {
+    "NytPuzzleId": 2262,
+    "PrintDate": "2023-09-14",
+    "PublicPuzzleNumber": 817
+  },
+  {
+    "NytPuzzleId": 1983,
+    "PrintDate": "2023-09-15",
+    "PublicPuzzleNumber": 818
+  },
+  {
+    "NytPuzzleId": 1819,
+    "PrintDate": "2023-09-16",
+    "PublicPuzzleNumber": 819
+  },
+  {
+    "NytPuzzleId": 2169,
+    "PrintDate": "2023-09-17",
+    "PublicPuzzleNumber": 820
+  },
+  {
+    "NytPuzzleId": 1995,
+    "PrintDate": "2023-09-18",
+    "PublicPuzzleNumber": 821
+  },
+  {
+    "NytPuzzleId": 2055,
+    "PrintDate": "2023-09-19",
+    "PublicPuzzleNumber": 822
+  },
+  {
+    "NytPuzzleId": 696,
+    "PrintDate": "2023-09-20",
+    "PublicPuzzleNumber": 823
+  },
+  {
+    "NytPuzzleId": 1885,
+    "PrintDate": "2023-09-21",
+    "PublicPuzzleNumber": 824
+  },
+  {
+    "NytPuzzleId": 1703,
+    "PrintDate": "2023-09-22",
+    "PublicPuzzleNumber": 825
+  },
+  {
+    "NytPuzzleId": 1366,
+    "PrintDate": "2023-09-23",
+    "PublicPuzzleNumber": 826
+  },
+  {
+    "NytPuzzleId": 2001,
+    "PrintDate": "2023-09-24",
+    "PublicPuzzleNumber": 827
+  },
+  {
+    "NytPuzzleId": 1274,
+    "PrintDate": "2023-09-25",
+    "PublicPuzzleNumber": 828
+  },
+  {
+    "NytPuzzleId": 1210,
+    "PrintDate": "2023-09-26",
+    "PublicPuzzleNumber": 829
+  },
+  {
+    "NytPuzzleId": 641,
+    "PrintDate": "2023-09-27",
+    "PublicPuzzleNumber": 830
+  },
+  {
+    "NytPuzzleId": 601,
+    "PrintDate": "2023-09-28",
+    "PublicPuzzleNumber": 831
+  },
+  {
+    "NytPuzzleId": 835,
+    "PrintDate": "2023-09-29",
+    "PublicPuzzleNumber": 832
+  },
+  {
+    "NytPuzzleId": 533,
+    "PrintDate": "2023-09-30",
+    "PublicPuzzleNumber": 833
+  },
+  {
+    "NytPuzzleId": 1963,
+    "PrintDate": "2023-10-01",
+    "PublicPuzzleNumber": 834
+  },
+  {
+    "NytPuzzleId": 1926,
+    "PrintDate": "2023-10-02",
+    "PublicPuzzleNumber": 835
+  },
+  {
+    "NytPuzzleId": 1166,
+    "PrintDate": "2023-10-03",
+    "PublicPuzzleNumber": 836
+  },
+  {
+    "NytPuzzleId": 1569,
+    "PrintDate": "2023-10-04",
+    "PublicPuzzleNumber": 837
+  },
+  {
+    "NytPuzzleId": 2144,
+    "PrintDate": "2023-10-05",
+    "PublicPuzzleNumber": 838
+  },
+  {
+    "NytPuzzleId": 2133,
+    "PrintDate": "2023-10-06",
+    "PublicPuzzleNumber": 839
+  },
+  {
+    "NytPuzzleId": 1039,
+    "PrintDate": "2023-10-07",
+    "PublicPuzzleNumber": 840
+  },
+  {
+    "NytPuzzleId": 1833,
+    "PrintDate": "2023-10-08",
+    "PublicPuzzleNumber": 841
+  },
+  {
+    "NytPuzzleId": 2129,
+    "PrintDate": "2023-10-09",
+    "PublicPuzzleNumber": 842
+  },
+  {
+    "NytPuzzleId": 745,
+    "PrintDate": "2023-10-10",
+    "PublicPuzzleNumber": 843
+  },
+  {
+    "NytPuzzleId": 1339,
+    "PrintDate": "2023-10-11",
+    "PublicPuzzleNumber": 844
+  },
+  {
+    "NytPuzzleId": 1870,
+    "PrintDate": "2023-10-12",
+    "PublicPuzzleNumber": 845
+  },
+  {
+    "NytPuzzleId": 1284,
+    "PrintDate": "2023-10-13",
+    "PublicPuzzleNumber": 846
+  },
+  {
+    "NytPuzzleId": 1599,
+    "PrintDate": "2023-10-14",
+    "PublicPuzzleNumber": 847
+  },
+  {
+    "NytPuzzleId": 584,
+    "PrintDate": "2023-10-15",
+    "PublicPuzzleNumber": 848
+  },
+  {
+    "NytPuzzleId": 1755,
+    "PrintDate": "2023-10-16",
+    "PublicPuzzleNumber": 849
+  },
+  {
+    "NytPuzzleId": 2282,
+    "PrintDate": "2023-10-17",
+    "PublicPuzzleNumber": 850
+  },
+  {
+    "NytPuzzleId": 2267,
+    "PrintDate": "2023-10-18",
+    "PublicPuzzleNumber": 851
+  },
+  {
+    "NytPuzzleId": 764,
+    "PrintDate": "2023-10-19",
+    "PublicPuzzleNumber": 852
+  },
+  {
+    "NytPuzzleId": 2087,
+    "PrintDate": "2023-10-20",
+    "PublicPuzzleNumber": 853
+  },
+  {
+    "NytPuzzleId": 1535,
+    "PrintDate": "2023-10-21",
+    "PublicPuzzleNumber": 854
+  },
+  {
+    "NytPuzzleId": 580,
+    "PrintDate": "2023-10-22",
+    "PublicPuzzleNumber": 855
+  },
+  {
+    "NytPuzzleId": 1214,
+    "PrintDate": "2023-10-23",
+    "PublicPuzzleNumber": 856
+  },
+  {
+    "NytPuzzleId": 1263,
+    "PrintDate": "2023-10-24",
+    "PublicPuzzleNumber": 857
+  },
+  {
+    "NytPuzzleId": 1417,
+    "PrintDate": "2023-10-25",
+    "PublicPuzzleNumber": 858
+  },
+  {
+    "NytPuzzleId": 532,
+    "PrintDate": "2023-10-26",
+    "PublicPuzzleNumber": 859
+  },
+  {
+    "NytPuzzleId": 1485,
+    "PrintDate": "2023-10-27",
+    "PublicPuzzleNumber": 860
+  },
+  {
+    "NytPuzzleId": 767,
+    "PrintDate": "2023-10-28",
+    "PublicPuzzleNumber": 861
+  },
+  {
+    "NytPuzzleId": 1405,
+    "PrintDate": "2023-10-29",
+    "PublicPuzzleNumber": 862
+  },
+  {
+    "NytPuzzleId": 2059,
+    "PrintDate": "2023-10-30",
+    "PublicPuzzleNumber": 863
+  },
+  {
+    "NytPuzzleId": 1294,
+    "PrintDate": "2023-10-31",
+    "PublicPuzzleNumber": 864
+  },
+  {
+    "NytPuzzleId": 1964,
+    "PrintDate": "2023-11-01",
+    "PublicPuzzleNumber": 865
+  },
+  {
+    "NytPuzzleId": 961,
+    "PrintDate": "2023-11-02",
+    "PublicPuzzleNumber": 866
+  },
+  {
+    "NytPuzzleId": 612,
+    "PrintDate": "2023-11-03",
+    "PublicPuzzleNumber": 867
+  },
+  {
+    "NytPuzzleId": 683,
+    "PrintDate": "2023-11-04",
+    "PublicPuzzleNumber": 868
+  },
+  {
+    "NytPuzzleId": 1972,
+    "PrintDate": "2023-11-05",
+    "PublicPuzzleNumber": 869
+  },
+  {
+    "NytPuzzleId": 1077,
+    "PrintDate": "2023-11-06",
+    "PublicPuzzleNumber": 870
+  },
+  {
+    "NytPuzzleId": 1630,
+    "PrintDate": "2023-11-07",
+    "PublicPuzzleNumber": 871
+  },
+  {
+    "NytPuzzleId": 625,
+    "PrintDate": "2023-11-08",
+    "PublicPuzzleNumber": 872
+  },
+  {
+    "NytPuzzleId": 2072,
+    "PrintDate": "2023-11-09",
+    "PublicPuzzleNumber": 873
+  },
+  {
+    "NytPuzzleId": 1554,
+    "PrintDate": "2023-11-10",
+    "PublicPuzzleNumber": 874
+  },
+  {
+    "NytPuzzleId": 1649,
+    "PrintDate": "2023-11-11",
+    "PublicPuzzleNumber": 875
+  },
+  {
+    "NytPuzzleId": 906,
+    "PrintDate": "2023-11-12",
+    "PublicPuzzleNumber": 876
+  },
+  {
+    "NytPuzzleId": 1698,
+    "PrintDate": "2023-11-13",
+    "PublicPuzzleNumber": 877
+  },
+  {
+    "NytPuzzleId": 1053,
+    "PrintDate": "2023-11-14",
+    "PublicPuzzleNumber": 878
+  },
+  {
+    "NytPuzzleId": 1781,
+    "PrintDate": "2023-11-15",
+    "PublicPuzzleNumber": 879
+  },
+  {
+    "NytPuzzleId": 2003,
+    "PrintDate": "2023-11-16",
+    "PublicPuzzleNumber": 880
+  },
+  {
+    "NytPuzzleId": 1107,
+    "PrintDate": "2023-11-17",
+    "PublicPuzzleNumber": 881
+  },
+  {
+    "NytPuzzleId": 1808,
+    "PrintDate": "2023-11-18",
+    "PublicPuzzleNumber": 882
+  },
+  {
+    "NytPuzzleId": 774,
+    "PrintDate": "2023-11-19",
+    "PublicPuzzleNumber": 883
+  },
+  {
+    "NytPuzzleId": 800,
+    "PrintDate": "2023-11-20",
+    "PublicPuzzleNumber": 884
+  },
+  {
+    "NytPuzzleId": 1140,
+    "PrintDate": "2023-11-21",
+    "PublicPuzzleNumber": 885
+  },
+  {
+    "NytPuzzleId": 1544,
+    "PrintDate": "2023-11-22",
+    "PublicPuzzleNumber": 886
+  },
+  {
+    "NytPuzzleId": 956,
+    "PrintDate": "2023-11-23",
+    "PublicPuzzleNumber": 887
+  },
+  {
+    "NytPuzzleId": 1608,
+    "PrintDate": "2023-11-24",
+    "PublicPuzzleNumber": 888
+  },
+  {
+    "NytPuzzleId": 1645,
+    "PrintDate": "2023-11-25",
+    "PublicPuzzleNumber": 889
+  },
+  {
+    "NytPuzzleId": 855,
+    "PrintDate": "2023-11-26",
+    "PublicPuzzleNumber": 890
+  },
+  {
+    "NytPuzzleId": 1436,
+    "PrintDate": "2023-11-27",
+    "PublicPuzzleNumber": 891
+  },
+  {
+    "NytPuzzleId": 841,
+    "PrintDate": "2023-11-28",
+    "PublicPuzzleNumber": 892
+  },
+  {
+    "NytPuzzleId": 793,
+    "PrintDate": "2023-11-29",
+    "PublicPuzzleNumber": 893
+  },
+  {
+    "NytPuzzleId": 1541,
+    "PrintDate": "2023-11-30",
+    "PublicPuzzleNumber": 894
+  },
+  {
+    "NytPuzzleId": 1731,
+    "PrintDate": "2023-12-01",
+    "PublicPuzzleNumber": 895
+  },
+  {
+    "NytPuzzleId": 543,
+    "PrintDate": "2023-12-02",
+    "PublicPuzzleNumber": 896
+  },
+  {
+    "NytPuzzleId": 2259,
+    "PrintDate": "2023-12-03",
+    "PublicPuzzleNumber": 897
+  },
+  {
+    "NytPuzzleId": 882,
+    "PrintDate": "2023-12-04",
+    "PublicPuzzleNumber": 898
+  },
+  {
+    "NytPuzzleId": 1113,
+    "PrintDate": "2023-12-05",
+    "PublicPuzzleNumber": 899
+  },
+  {
+    "NytPuzzleId": 2156,
+    "PrintDate": "2023-12-06",
+    "PublicPuzzleNumber": 900
+  },
+  {
+    "NytPuzzleId": 611,
+    "PrintDate": "2023-12-07",
+    "PublicPuzzleNumber": 901
+  },
+  {
+    "NytPuzzleId": 1401,
+    "PrintDate": "2023-12-08",
+    "PublicPuzzleNumber": 902
+  },
+  {
+    "NytPuzzleId": 1175,
+    "PrintDate": "2023-12-09",
+    "PublicPuzzleNumber": 903
+  },
+  {
+    "NytPuzzleId": 2088,
+    "PrintDate": "2023-12-10",
+    "PublicPuzzleNumber": 904
+  },
+  {
+    "NytPuzzleId": 698,
+    "PrintDate": "2023-12-11",
+    "PublicPuzzleNumber": 905
+  },
+  {
+    "NytPuzzleId": 1494,
+    "PrintDate": "2023-12-12",
+    "PublicPuzzleNumber": 906
+  },
+  {
+    "NytPuzzleId": 1525,
+    "PrintDate": "2023-12-13",
+    "PublicPuzzleNumber": 907
+  },
+  {
+    "NytPuzzleId": 1021,
+    "PrintDate": "2023-12-14",
+    "PublicPuzzleNumber": 908
+  },
+  {
+    "NytPuzzleId": 1701,
+    "PrintDate": "2023-12-15",
+    "PublicPuzzleNumber": 909
+  },
+  {
+    "NytPuzzleId": 860,
+    "PrintDate": "2023-12-16",
+    "PublicPuzzleNumber": 910
+  },
+  {
+    "NytPuzzleId": 1900,
+    "PrintDate": "2023-12-17",
+    "PublicPuzzleNumber": 911
+  },
+  {
+    "NytPuzzleId": 556,
+    "PrintDate": "2023-12-18",
+    "PublicPuzzleNumber": 912
+  },
+  {
+    "NytPuzzleId": 1534,
+    "PrintDate": "2023-12-19",
+    "PublicPuzzleNumber": 913
+  },
+  {
+    "NytPuzzleId": 1724,
+    "PrintDate": "2023-12-20",
+    "PublicPuzzleNumber": 914
+  },
+  {
+    "NytPuzzleId": 648,
+    "PrintDate": "2023-12-21",
+    "PublicPuzzleNumber": 915
+  },
+  {
+    "NytPuzzleId": 1092,
+    "PrintDate": "2023-12-22",
+    "PublicPuzzleNumber": 916
+  },
+  {
+    "NytPuzzleId": 1291,
+    "PrintDate": "2023-12-23",
+    "PublicPuzzleNumber": 917
+  },
+  {
+    "NytPuzzleId": 617,
+    "PrintDate": "2023-12-24",
+    "PublicPuzzleNumber": 918
+  },
+  {
+    "NytPuzzleId": 642,
+    "PrintDate": "2023-12-25",
+    "PublicPuzzleNumber": 919
+  },
+  {
+    "NytPuzzleId": 1814,
+    "PrintDate": "2023-12-26",
+    "PublicPuzzleNumber": 920
+  },
+  {
+    "NytPuzzleId": 912,
+    "PrintDate": "2023-12-27",
+    "PublicPuzzleNumber": 921
+  },
+  {
+    "NytPuzzleId": 1253,
+    "PrintDate": "2023-12-28",
+    "PublicPuzzleNumber": 922
+  },
+  {
+    "NytPuzzleId": 964,
+    "PrintDate": "2023-12-29",
+    "PublicPuzzleNumber": 923
+  },
+  {
+    "NytPuzzleId": 1179,
+    "PrintDate": "2023-12-30",
+    "PublicPuzzleNumber": 924
+  },
+  {
+    "NytPuzzleId": 1563,
+    "PrintDate": "2023-12-31",
+    "PublicPuzzleNumber": 925
+  },
+  {
+    "NytPuzzleId": 1705,
+    "PrintDate": "2024-01-01",
+    "PublicPuzzleNumber": 926
+  },
+  {
+    "NytPuzzleId": 536,
+    "PrintDate": "2024-01-02",
+    "PublicPuzzleNumber": 927
+  },
+  {
+    "NytPuzzleId": 781,
+    "PrintDate": "2024-01-03",
+    "PublicPuzzleNumber": 928
+  },
+  {
+    "NytPuzzleId": 1855,
+    "PrintDate": "2024-01-04",
+    "PublicPuzzleNumber": 929
+  },
+  {
+    "NytPuzzleId": 1205,
+    "PrintDate": "2024-01-05",
+    "PublicPuzzleNumber": 930
+  },
+  {
+    "NytPuzzleId": 1901,
+    "PrintDate": "2024-01-06",
+    "PublicPuzzleNumber": 931
+  },
+  {
+    "NytPuzzleId": 953,
+    "PrintDate": "2024-01-07",
+    "PublicPuzzleNumber": 932
+  },
+  {
+    "NytPuzzleId": 593,
+    "PrintDate": "2024-01-08",
+    "PublicPuzzleNumber": 933
+  },
+  {
+    "NytPuzzleId": 1561,
+    "PrintDate": "2024-01-09",
+    "PublicPuzzleNumber": 934
+  },
+  {
+    "NytPuzzleId": 520,
+    "PrintDate": "2024-01-10",
+    "PublicPuzzleNumber": 935
+  },
+  {
+    "NytPuzzleId": 1328,
+    "PrintDate": "2024-01-11",
+    "PublicPuzzleNumber": 936
+  },
+  {
+    "NytPuzzleId": 1400,
+    "PrintDate": "2024-01-12",
+    "PublicPuzzleNumber": 937
+  },
+  {
+    "NytPuzzleId": 1818,
+    "PrintDate": "2024-01-13",
+    "PublicPuzzleNumber": 938
+  },
+  {
+    "NytPuzzleId": 768,
+    "PrintDate": "2024-01-14",
+    "PublicPuzzleNumber": 939
+  },
+  {
+    "NytPuzzleId": 572,
+    "PrintDate": "2024-01-15",
+    "PublicPuzzleNumber": 940
+  },
+  {
+    "NytPuzzleId": 816,
+    "PrintDate": "2024-01-16",
+    "PublicPuzzleNumber": 941
+  },
+  {
+    "NytPuzzleId": 1815,
+    "PrintDate": "2024-01-17",
+    "PublicPuzzleNumber": 942
+  },
+  {
+    "NytPuzzleId": 1193,
+    "PrintDate": "2024-01-18",
+    "PublicPuzzleNumber": 943
+  },
+  {
+    "NytPuzzleId": 2102,
+    "PrintDate": "2024-01-19",
+    "PublicPuzzleNumber": 944
+  },
+  {
+    "NytPuzzleId": 1023,
+    "PrintDate": "2024-01-20",
+    "PublicPuzzleNumber": 945
+  },
+  {
+    "NytPuzzleId": 1853,
+    "PrintDate": "2024-01-21",
+    "PublicPuzzleNumber": 946
+  },
+  {
+    "NytPuzzleId": 1896,
+    "PrintDate": "2024-01-22",
+    "PublicPuzzleNumber": 947
+  },
+  {
+    "NytPuzzleId": 677,
+    "PrintDate": "2024-01-23",
+    "PublicPuzzleNumber": 948
+  },
+  {
+    "NytPuzzleId": 2183,
+    "PrintDate": "2024-01-24",
+    "PublicPuzzleNumber": 949
+  },
+  {
+    "NytPuzzleId": 905,
+    "PrintDate": "2024-01-25",
+    "PublicPuzzleNumber": 950
+  },
+  {
+    "NytPuzzleId": 1780,
+    "PrintDate": "2024-01-26",
+    "PublicPuzzleNumber": 951
+  },
+  {
+    "NytPuzzleId": 1565,
+    "PrintDate": "2024-01-27",
+    "PublicPuzzleNumber": 952
+  },
+  {
+    "NytPuzzleId": 1351,
+    "PrintDate": "2024-01-28",
+    "PublicPuzzleNumber": 953
+  },
+  {
+    "NytPuzzleId": 1934,
+    "PrintDate": "2024-01-29",
+    "PublicPuzzleNumber": 954
+  },
+  {
+    "NytPuzzleId": 1849,
+    "PrintDate": "2024-01-30",
+    "PublicPuzzleNumber": 955
+  },
+  {
+    "NytPuzzleId": 1975,
+    "PrintDate": "2024-01-31",
+    "PublicPuzzleNumber": 956
+  },
+  {
+    "NytPuzzleId": 867,
+    "PrintDate": "2024-02-01",
+    "PublicPuzzleNumber": 957
+  },
+  {
+    "NytPuzzleId": 1887,
+    "PrintDate": "2024-02-02",
+    "PublicPuzzleNumber": 958
+  },
+  {
+    "NytPuzzleId": 1250,
+    "PrintDate": "2024-02-03",
+    "PublicPuzzleNumber": 959
+  },
+  {
+    "NytPuzzleId": 1637,
+    "PrintDate": "2024-02-04",
+    "PublicPuzzleNumber": 960
+  },
+  {
+    "NytPuzzleId": 2145,
+    "PrintDate": "2024-02-05",
+    "PublicPuzzleNumber": 961
+  },
+  {
+    "NytPuzzleId": 1017,
+    "PrintDate": "2024-02-06",
+    "PublicPuzzleNumber": 962
+  },
+  {
+    "NytPuzzleId": 1349,
+    "PrintDate": "2024-02-07",
+    "PublicPuzzleNumber": 963
+  },
+  {
+    "NytPuzzleId": 719,
+    "PrintDate": "2024-02-08",
+    "PublicPuzzleNumber": 964
+  },
+  {
+    "NytPuzzleId": 1893,
+    "PrintDate": "2024-02-09",
+    "PublicPuzzleNumber": 965
+  },
+  {
+    "NytPuzzleId": 2023,
+    "PrintDate": "2024-02-10",
+    "PublicPuzzleNumber": 966
+  },
+  {
+    "NytPuzzleId": 1329,
+    "PrintDate": "2024-02-11",
+    "PublicPuzzleNumber": 967
+  },
+  {
+    "NytPuzzleId": 1776,
+    "PrintDate": "2024-02-12",
+    "PublicPuzzleNumber": 968
+  },
+  {
+    "NytPuzzleId": 2250,
+    "PrintDate": "2024-02-13",
+    "PublicPuzzleNumber": 969
+  },
+  {
+    "NytPuzzleId": 1868,
+    "PrintDate": "2024-02-14",
+    "PublicPuzzleNumber": 970
+  },
+  {
+    "NytPuzzleId": 1032,
+    "PrintDate": "2024-02-15",
+    "PublicPuzzleNumber": 971
+  },
+  {
+    "NytPuzzleId": 2201,
+    "PrintDate": "2024-02-16",
+    "PublicPuzzleNumber": 972
+  },
+  {
+    "NytPuzzleId": 1148,
+    "PrintDate": "2024-02-17",
+    "PublicPuzzleNumber": 973
+  },
+  {
+    "NytPuzzleId": 738,
+    "PrintDate": "2024-02-18",
+    "PublicPuzzleNumber": 974
+  },
+  {
+    "NytPuzzleId": 604,
+    "PrintDate": "2024-02-19",
+    "PublicPuzzleNumber": 975
+  },
+  {
+    "NytPuzzleId": 2266,
+    "PrintDate": "2024-02-20",
+    "PublicPuzzleNumber": 976
+  },
+  {
+    "NytPuzzleId": 1139,
+    "PrintDate": "2024-02-21",
+    "PublicPuzzleNumber": 977
+  },
+  {
+    "NytPuzzleId": 1513,
+    "PrintDate": "2024-02-22",
+    "PublicPuzzleNumber": 978
+  },
+  {
+    "NytPuzzleId": 1666,
+    "PrintDate": "2024-02-23",
+    "PublicPuzzleNumber": 979
+  },
+  {
+    "NytPuzzleId": 1500,
+    "PrintDate": "2024-02-24",
+    "PublicPuzzleNumber": 980
+  },
+  {
+    "NytPuzzleId": 2065,
+    "PrintDate": "2024-02-25",
+    "PublicPuzzleNumber": 981
+  },
+  {
+    "NytPuzzleId": 872,
+    "PrintDate": "2024-02-26",
+    "PublicPuzzleNumber": 982
+  },
+  {
+    "NytPuzzleId": 1716,
+    "PrintDate": "2024-02-27",
+    "PublicPuzzleNumber": 983
+  },
+  {
+    "NytPuzzleId": 1959,
+    "PrintDate": "2024-02-28",
+    "PublicPuzzleNumber": 984
+  },
+  {
+    "NytPuzzleId": 2125,
+    "PrintDate": "2024-02-29",
+    "PublicPuzzleNumber": 985
+  },
+  {
+    "NytPuzzleId": 1282,
+    "PrintDate": "2024-03-01",
+    "PublicPuzzleNumber": 986
+  },
+  {
+    "NytPuzzleId": 1035,
+    "PrintDate": "2024-03-02",
+    "PublicPuzzleNumber": 987
+  },
+  {
+    "NytPuzzleId": 2031,
+    "PrintDate": "2024-03-03",
+    "PublicPuzzleNumber": 988
+  },
+  {
+    "NytPuzzleId": 1778,
+    "PrintDate": "2024-03-04",
+    "PublicPuzzleNumber": 989
+  },
+  {
+    "NytPuzzleId": 1543,
+    "PrintDate": "2024-03-05",
+    "PublicPuzzleNumber": 990
+  },
+  {
+    "NytPuzzleId": 1783,
+    "PrintDate": "2024-03-06",
+    "PublicPuzzleNumber": 991
+  },
+  {
+    "NytPuzzleId": 2060,
+    "PrintDate": "2024-03-07",
+    "PublicPuzzleNumber": 992
+  },
+  {
+    "NytPuzzleId": 1574,
+    "PrintDate": "2024-03-08",
+    "PublicPuzzleNumber": 993
+  },
+  {
+    "NytPuzzleId": 1681,
+    "PrintDate": "2024-03-09",
+    "PublicPuzzleNumber": 994
+  },
+  {
+    "NytPuzzleId": 2032,
+    "PrintDate": "2024-03-10",
+    "PublicPuzzleNumber": 995
+  },
+  {
+    "NytPuzzleId": 1482,
+    "PrintDate": "2024-03-11",
+    "PublicPuzzleNumber": 996
+  },
+  {
+    "NytPuzzleId": 1999,
+    "PrintDate": "2024-03-12",
+    "PublicPuzzleNumber": 997
+  },
+  {
+    "NytPuzzleId": 1076,
+    "PrintDate": "2024-03-13",
+    "PublicPuzzleNumber": 998
+  },
+  {
+    "NytPuzzleId": 876,
+    "PrintDate": "2024-03-14",
+    "PublicPuzzleNumber": 999
+  },
+  {
+    "NytPuzzleId": 602,
+    "PrintDate": "2024-03-15",
+    "PublicPuzzleNumber": 1000
+  },
+  {
+    "NytPuzzleId": 705,
+    "PrintDate": "2024-03-16",
+    "PublicPuzzleNumber": 1001
+  },
+  {
+    "NytPuzzleId": 1367,
+    "PrintDate": "2024-03-17",
+    "PublicPuzzleNumber": 1002
+  },
+  {
+    "NytPuzzleId": 600,
+    "PrintDate": "2024-03-18",
+    "PublicPuzzleNumber": 1003
+  },
+  {
+    "NytPuzzleId": 1038,
+    "PrintDate": "2024-03-19",
+    "PublicPuzzleNumber": 1004
+  },
+  {
+    "NytPuzzleId": 1293,
+    "PrintDate": "2024-03-20",
+    "PublicPuzzleNumber": 1005
+  },
+  {
+    "NytPuzzleId": 632,
+    "PrintDate": "2024-03-21",
+    "PublicPuzzleNumber": 1006
+  },
+  {
+    "NytPuzzleId": 731,
+    "PrintDate": "2024-03-22",
+    "PublicPuzzleNumber": 1007
+  },
+  {
+    "NytPuzzleId": 582,
+    "PrintDate": "2024-03-23",
+    "PublicPuzzleNumber": 1008
+  },
+  {
+    "NytPuzzleId": 1387,
+    "PrintDate": "2024-03-24",
+    "PublicPuzzleNumber": 1009
+  },
+  {
+    "NytPuzzleId": 1449,
+    "PrintDate": "2024-03-25",
+    "PublicPuzzleNumber": 1010
+  },
+  {
+    "NytPuzzleId": 1151,
+    "PrintDate": "2024-03-26",
+    "PublicPuzzleNumber": 1011
+  },
+  {
+    "NytPuzzleId": 812,
+    "PrintDate": "2024-03-27",
+    "PublicPuzzleNumber": 1012
+  },
+  {
+    "NytPuzzleId": 2214,
+    "PrintDate": "2024-03-28",
+    "PublicPuzzleNumber": 1013
+  },
+  {
+    "NytPuzzleId": 1119,
+    "PrintDate": "2024-03-29",
+    "PublicPuzzleNumber": 1014
+  },
+  {
+    "NytPuzzleId": 1594,
+    "PrintDate": "2024-03-30",
+    "PublicPuzzleNumber": 1015
+  },
+  {
+    "NytPuzzleId": 1956,
+    "PrintDate": "2024-03-31",
+    "PublicPuzzleNumber": 1016
+  },
+  {
+    "NytPuzzleId": 1116,
+    "PrintDate": "2024-04-01",
+    "PublicPuzzleNumber": 1017
+  },
+  {
+    "NytPuzzleId": 1178,
+    "PrintDate": "2024-04-02",
+    "PublicPuzzleNumber": 1018
+  },
+  {
+    "NytPuzzleId": 2194,
+    "PrintDate": "2024-04-03",
+    "PublicPuzzleNumber": 1019
+  },
+  {
+    "NytPuzzleId": 1654,
+    "PrintDate": "2024-04-04",
+    "PublicPuzzleNumber": 1020
+  },
+  {
+    "NytPuzzleId": 858,
+    "PrintDate": "2024-04-05",
+    "PublicPuzzleNumber": 1021
+  },
+  {
+    "NytPuzzleId": 1078,
+    "PrintDate": "2024-04-06",
+    "PublicPuzzleNumber": 1022
+  },
+  {
+    "NytPuzzleId": 1747,
+    "PrintDate": "2024-04-07",
+    "PublicPuzzleNumber": 1023
+  },
+  {
+    "NytPuzzleId": 1309,
+    "PrintDate": "2024-04-08",
+    "PublicPuzzleNumber": 1024
+  },
+  {
+    "NytPuzzleId": 1360,
+    "PrintDate": "2024-04-09",
+    "PublicPuzzleNumber": 1025
+  },
+  {
+    "NytPuzzleId": 2149,
+    "PrintDate": "2024-04-10",
+    "PublicPuzzleNumber": 1026
+  },
+  {
+    "NytPuzzleId": 516,
+    "PrintDate": "2024-04-11",
+    "PublicPuzzleNumber": 1027
+  },
+  {
+    "NytPuzzleId": 1507,
+    "PrintDate": "2024-04-12",
+    "PublicPuzzleNumber": 1028
+  },
+  {
+    "NytPuzzleId": 1067,
+    "PrintDate": "2024-04-13",
+    "PublicPuzzleNumber": 1029
+  },
+  {
+    "NytPuzzleId": 1313,
+    "PrintDate": "2024-04-14",
+    "PublicPuzzleNumber": 1030
+  },
+  {
+    "NytPuzzleId": 565,
+    "PrintDate": "2024-04-15",
+    "PublicPuzzleNumber": 1031
+  },
+  {
+    "NytPuzzleId": 1014,
+    "PrintDate": "2024-04-16",
+    "PublicPuzzleNumber": 1032
+  },
+  {
+    "NytPuzzleId": 1473,
+    "PrintDate": "2024-04-17",
+    "PublicPuzzleNumber": 1033
+  },
+  {
+    "NytPuzzleId": 1558,
+    "PrintDate": "2024-04-18",
+    "PublicPuzzleNumber": 1034
+  },
+  {
+    "NytPuzzleId": 1643,
+    "PrintDate": "2024-04-19",
+    "PublicPuzzleNumber": 1035
+  },
+  {
+    "NytPuzzleId": 1771,
+    "PrintDate": "2024-04-20",
+    "PublicPuzzleNumber": 1036
+  },
+  {
+    "NytPuzzleId": 859,
+    "PrintDate": "2024-04-21",
+    "PublicPuzzleNumber": 1037
+  },
+  {
+    "NytPuzzleId": 2321,
+    "PrintDate": "2024-04-22",
+    "PublicPuzzleNumber": 1038
+  },
+  {
+    "NytPuzzleId": 843,
+    "PrintDate": "2024-04-23",
+    "PublicPuzzleNumber": 1039
+  },
+  {
+    "NytPuzzleId": 1150,
+    "PrintDate": "2024-04-24",
+    "PublicPuzzleNumber": 1040
+  },
+  {
+    "NytPuzzleId": 2243,
+    "PrintDate": "2024-04-25",
+    "PublicPuzzleNumber": 1041
+  },
+  {
+    "NytPuzzleId": 1097,
+    "PrintDate": "2024-04-26",
+    "PublicPuzzleNumber": 1042
+  },
+  {
+    "NytPuzzleId": 1985,
+    "PrintDate": "2024-04-27",
+    "PublicPuzzleNumber": 1043
+  },
+  {
+    "NytPuzzleId": 1723,
+    "PrintDate": "2024-04-28",
+    "PublicPuzzleNumber": 1044
+  },
+  {
+    "NytPuzzleId": 1767,
+    "PrintDate": "2024-04-29",
+    "PublicPuzzleNumber": 1045
+  },
+  {
+    "NytPuzzleId": 1270,
+    "PrintDate": "2024-04-30",
+    "PublicPuzzleNumber": 1046
+  },
+  {
+    "NytPuzzleId": 1125,
+    "PrintDate": "2024-05-01",
+    "PublicPuzzleNumber": 1047
+  },
+  {
+    "NytPuzzleId": 1602,
+    "PrintDate": "2024-05-02",
+    "PublicPuzzleNumber": 1048
+  },
+  {
+    "NytPuzzleId": 1741,
+    "PrintDate": "2024-05-03",
+    "PublicPuzzleNumber": 1049
+  },
+  {
+    "NytPuzzleId": 1397,
+    "PrintDate": "2024-05-04",
+    "PublicPuzzleNumber": 1050
+  },
+  {
+    "NytPuzzleId": 1419,
+    "PrintDate": "2024-05-05",
+    "PublicPuzzleNumber": 1051
+  },
+  {
+    "NytPuzzleId": 2287,
+    "PrintDate": "2024-05-06",
+    "PublicPuzzleNumber": 1052
+  },
+  {
+    "NytPuzzleId": 531,
+    "PrintDate": "2024-05-07",
+    "PublicPuzzleNumber": 1053
+  },
+  {
+    "NytPuzzleId": 2325,
+    "PrintDate": "2024-05-08",
+    "PublicPuzzleNumber": 1054
+  },
+  {
+    "NytPuzzleId": 1382,
+    "PrintDate": "2024-05-09",
+    "PublicPuzzleNumber": 1055
+  },
+  {
+    "NytPuzzleId": 1335,
+    "PrintDate": "2024-05-10",
+    "PublicPuzzleNumber": 1056
+  },
+  {
+    "NytPuzzleId": 1444,
+    "PrintDate": "2024-05-11",
+    "PublicPuzzleNumber": 1057
+  },
+  {
+    "NytPuzzleId": 931,
+    "PrintDate": "2024-05-12",
+    "PublicPuzzleNumber": 1058
+  },
+  {
+    "NytPuzzleId": 1304,
+    "PrintDate": "2024-05-13",
+    "PublicPuzzleNumber": 1059
+  },
+  {
+    "NytPuzzleId": 1044,
+    "PrintDate": "2024-05-14",
+    "PublicPuzzleNumber": 1060
+  },
+  {
+    "NytPuzzleId": 2223,
+    "PrintDate": "2024-05-15",
+    "PublicPuzzleNumber": 1061
+  },
+  {
+    "NytPuzzleId": 1915,
+    "PrintDate": "2024-05-16",
+    "PublicPuzzleNumber": 1062
+  },
+  {
+    "NytPuzzleId": 1047,
+    "PrintDate": "2024-05-17",
+    "PublicPuzzleNumber": 1063
+  },
+  {
+    "NytPuzzleId": 1671,
+    "PrintDate": "2024-05-18",
+    "PublicPuzzleNumber": 1064
+  },
+  {
+    "NytPuzzleId": 1112,
+    "PrintDate": "2024-05-19",
+    "PublicPuzzleNumber": 1065
+  },
+  {
+    "NytPuzzleId": 700,
+    "PrintDate": "2024-05-20",
+    "PublicPuzzleNumber": 1066
+  },
+  {
+    "NytPuzzleId": 998,
+    "PrintDate": "2024-05-21",
+    "PublicPuzzleNumber": 1067
+  },
+  {
+    "NytPuzzleId": 702,
+    "PrintDate": "2024-05-22",
+    "PublicPuzzleNumber": 1068
+  },
+  {
+    "NytPuzzleId": 1285,
+    "PrintDate": "2024-05-23",
+    "PublicPuzzleNumber": 1069
+  },
+  {
+    "NytPuzzleId": 1153,
+    "PrintDate": "2024-05-24",
+    "PublicPuzzleNumber": 1070
+  },
+  {
+    "NytPuzzleId": 1770,
+    "PrintDate": "2024-05-25",
+    "PublicPuzzleNumber": 1071
+  },
+  {
+    "NytPuzzleId": 1288,
+    "PrintDate": "2024-05-26",
+    "PublicPuzzleNumber": 1072
+  },
+  {
+    "NytPuzzleId": 1937,
+    "PrintDate": "2024-05-27",
+    "PublicPuzzleNumber": 1073
+  },
+  {
+    "NytPuzzleId": 1768,
+    "PrintDate": "2024-05-28",
+    "PublicPuzzleNumber": 1074
+  },
+  {
+    "NytPuzzleId": 1928,
+    "PrintDate": "2024-05-29",
+    "PublicPuzzleNumber": 1075
+  },
+  {
+    "NytPuzzleId": 2179,
+    "PrintDate": "2024-05-30",
+    "PublicPuzzleNumber": 1076
+  },
+  {
+    "NytPuzzleId": 568,
+    "PrintDate": "2024-05-31",
+    "PublicPuzzleNumber": 1077
+  },
+  {
+    "NytPuzzleId": 802,
+    "PrintDate": "2024-06-01",
+    "PublicPuzzleNumber": 1078
+  },
+  {
+    "NytPuzzleId": 811,
+    "PrintDate": "2024-06-02",
+    "PublicPuzzleNumber": 1079
+  },
+  {
+    "NytPuzzleId": 1952,
+    "PrintDate": "2024-06-03",
+    "PublicPuzzleNumber": 1080
+  },
+  {
+    "NytPuzzleId": 1110,
+    "PrintDate": "2024-06-04",
+    "PublicPuzzleNumber": 1081
+  },
+  {
+    "NytPuzzleId": 2254,
+    "PrintDate": "2024-06-05",
+    "PublicPuzzleNumber": 1082
+  },
+  {
+    "NytPuzzleId": 1161,
+    "PrintDate": "2024-06-06",
+    "PublicPuzzleNumber": 1083
+  },
+  {
+    "NytPuzzleId": 1744,
+    "PrintDate": "2024-06-07",
+    "PublicPuzzleNumber": 1084
+  },
+  {
+    "NytPuzzleId": 2222,
+    "PrintDate": "2024-06-08",
+    "PublicPuzzleNumber": 1085
+  },
+  {
+    "NytPuzzleId": 804,
+    "PrintDate": "2024-06-09",
+    "PublicPuzzleNumber": 1086
+  },
+  {
+    "NytPuzzleId": 575,
+    "PrintDate": "2024-06-10",
+    "PublicPuzzleNumber": 1087
+  },
+  {
+    "NytPuzzleId": 1466,
+    "PrintDate": "2024-06-11",
+    "PublicPuzzleNumber": 1088
+  },
+  {
+    "NytPuzzleId": 551,
+    "PrintDate": "2024-06-12",
+    "PublicPuzzleNumber": 1089
+  },
+  {
+    "NytPuzzleId": 1100,
+    "PrintDate": "2024-06-13",
+    "PublicPuzzleNumber": 1090
+  },
+  {
+    "NytPuzzleId": 518,
+    "PrintDate": "2024-06-14",
+    "PublicPuzzleNumber": 1091
+  },
+  {
+    "NytPuzzleId": 1691,
+    "PrintDate": "2024-06-15",
+    "PublicPuzzleNumber": 1092
+  },
+  {
+    "NytPuzzleId": 585,
+    "PrintDate": "2024-06-16",
+    "PublicPuzzleNumber": 1093
+  },
+  {
+    "NytPuzzleId": 1869,
+    "PrintDate": "2024-06-17",
+    "PublicPuzzleNumber": 1094
+  },
+  {
+    "NytPuzzleId": 866,
+    "PrintDate": "2024-06-18",
+    "PublicPuzzleNumber": 1095
+  },
+  {
+    "NytPuzzleId": 1463,
+    "PrintDate": "2024-06-19",
+    "PublicPuzzleNumber": 1096
+  },
+  {
+    "NytPuzzleId": 1523,
+    "PrintDate": "2024-06-20",
+    "PublicPuzzleNumber": 1097
+  },
+  {
+    "NytPuzzleId": 1560,
+    "PrintDate": "2024-06-21",
+    "PublicPuzzleNumber": 1098
+  },
+  {
+    "NytPuzzleId": 780,
+    "PrintDate": "2024-06-22",
+    "PublicPuzzleNumber": 1099
+  },
+  {
+    "NytPuzzleId": 1435,
+    "PrintDate": "2024-06-23",
+    "PublicPuzzleNumber": 1100
+  },
+  {
+    "NytPuzzleId": 873,
+    "PrintDate": "2024-06-24",
+    "PublicPuzzleNumber": 1101
+  },
+  {
+    "NytPuzzleId": 1791,
+    "PrintDate": "2024-06-25",
+    "PublicPuzzleNumber": 1102
+  },
+  {
+    "NytPuzzleId": 2161,
+    "PrintDate": "2024-06-26",
+    "PublicPuzzleNumber": 1103
+  },
+  {
+    "NytPuzzleId": 1596,
+    "PrintDate": "2024-06-27",
+    "PublicPuzzleNumber": 1104
+  },
+  {
+    "NytPuzzleId": 1162,
+    "PrintDate": "2024-06-28",
+    "PublicPuzzleNumber": 1105
+  },
+  {
+    "NytPuzzleId": 823,
+    "PrintDate": "2024-06-29",
+    "PublicPuzzleNumber": 1106
+  },
+  {
+    "NytPuzzleId": 797,
+    "PrintDate": "2024-06-30",
+    "PublicPuzzleNumber": 1107
+  },
+  {
+    "NytPuzzleId": 1073,
+    "PrintDate": "2024-07-01",
+    "PublicPuzzleNumber": 1108
+  },
+  {
+    "NytPuzzleId": 708,
+    "PrintDate": "2024-07-02",
+    "PublicPuzzleNumber": 1109
+  },
+  {
+    "NytPuzzleId": 1970,
+    "PrintDate": "2024-07-03",
+    "PublicPuzzleNumber": 1110
+  },
+  {
+    "NytPuzzleId": 1595,
+    "PrintDate": "2024-07-04",
+    "PublicPuzzleNumber": 1111
+  },
+  {
+    "NytPuzzleId": 1988,
+    "PrintDate": "2024-07-05",
+    "PublicPuzzleNumber": 1112
+  },
+  {
+    "NytPuzzleId": 1726,
+    "PrintDate": "2024-07-06",
+    "PublicPuzzleNumber": 1113
+  },
+  {
+    "NytPuzzleId": 1174,
+    "PrintDate": "2024-07-07",
+    "PublicPuzzleNumber": 1114
+  },
+  {
+    "NytPuzzleId": 1188,
+    "PrintDate": "2024-07-08",
+    "PublicPuzzleNumber": 1115
+  },
+  {
+    "NytPuzzleId": 1588,
+    "PrintDate": "2024-07-09",
+    "PublicPuzzleNumber": 1116
+  },
+  {
+    "NytPuzzleId": 1081,
+    "PrintDate": "2024-07-10",
+    "PublicPuzzleNumber": 1117
+  },
+  {
+    "NytPuzzleId": 1647,
+    "PrintDate": "2024-07-11",
+    "PublicPuzzleNumber": 1118
+  },
+  {
+    "NytPuzzleId": 607,
+    "PrintDate": "2024-07-12",
+    "PublicPuzzleNumber": 1119
+  },
+  {
+    "NytPuzzleId": 1083,
+    "PrintDate": "2024-07-13",
+    "PublicPuzzleNumber": 1120
+  },
+  {
+    "NytPuzzleId": 1884,
+    "PrintDate": "2024-07-14",
+    "PublicPuzzleNumber": 1121
+  },
+  {
+    "NytPuzzleId": 1029,
+    "PrintDate": "2024-07-15",
+    "PublicPuzzleNumber": 1122
+  },
+  {
+    "NytPuzzleId": 1746,
+    "PrintDate": "2024-07-16",
+    "PublicPuzzleNumber": 1123
+  },
+  {
+    "NytPuzzleId": 1310,
+    "PrintDate": "2024-07-17",
+    "PublicPuzzleNumber": 1124
+  },
+  {
+    "NytPuzzleId": 1451,
+    "PrintDate": "2024-07-18",
+    "PublicPuzzleNumber": 1125
+  },
+  {
+    "NytPuzzleId": 1655,
+    "PrintDate": "2024-07-19",
+    "PublicPuzzleNumber": 1126
+  },
+  {
+    "NytPuzzleId": 734,
+    "PrintDate": "2024-07-20",
+    "PublicPuzzleNumber": 1127
+  },
+  {
+    "NytPuzzleId": 1086,
+    "PrintDate": "2024-07-21",
+    "PublicPuzzleNumber": 1128
+  },
+  {
+    "NytPuzzleId": 1828,
+    "PrintDate": "2024-07-22",
+    "PublicPuzzleNumber": 1129
+  },
+  {
+    "NytPuzzleId": 1065,
+    "PrintDate": "2024-07-23",
+    "PublicPuzzleNumber": 1130
+  },
+  {
+    "NytPuzzleId": 2189,
+    "PrintDate": "2024-07-24",
+    "PublicPuzzleNumber": 1131
+  },
+  {
+    "NytPuzzleId": 997,
+    "PrintDate": "2024-07-25",
+    "PublicPuzzleNumber": 1132
+  },
+  {
+    "NytPuzzleId": 1857,
+    "PrintDate": "2024-07-26",
+    "PublicPuzzleNumber": 1133
+  },
+  {
+    "NytPuzzleId": 1923,
+    "PrintDate": "2024-07-27",
+    "PublicPuzzleNumber": 1134
+  },
+  {
+    "NytPuzzleId": 1358,
+    "PrintDate": "2024-07-28",
+    "PublicPuzzleNumber": 1135
+  },
+  {
+    "NytPuzzleId": 1347,
+    "PrintDate": "2024-07-29",
+    "PublicPuzzleNumber": 1136
+  },
+  {
+    "NytPuzzleId": 2255,
+    "PrintDate": "2024-07-30",
+    "PublicPuzzleNumber": 1137
+  },
+  {
+    "NytPuzzleId": 1136,
+    "PrintDate": "2024-07-31",
+    "PublicPuzzleNumber": 1138
+  },
+  {
+    "NytPuzzleId": 1437,
+    "PrintDate": "2024-08-01",
+    "PublicPuzzleNumber": 1139
+  },
+  {
+    "NytPuzzleId": 1872,
+    "PrintDate": "2024-08-02",
+    "PublicPuzzleNumber": 1140
+  },
+  {
+    "NytPuzzleId": 1667,
+    "PrintDate": "2024-08-03",
+    "PublicPuzzleNumber": 1141
+  },
+  {
+    "NytPuzzleId": 1102,
+    "PrintDate": "2024-08-04",
+    "PublicPuzzleNumber": 1142
+  },
+  {
+    "NytPuzzleId": 878,
+    "PrintDate": "2024-08-05",
+    "PublicPuzzleNumber": 1143
+  },
+  {
+    "NytPuzzleId": 2146,
+    "PrintDate": "2024-08-06",
+    "PublicPuzzleNumber": 1144
+  },
+  {
+    "NytPuzzleId": 789,
+    "PrintDate": "2024-08-07",
+    "PublicPuzzleNumber": 1145
+  },
+  {
+    "NytPuzzleId": 1396,
+    "PrintDate": "2024-08-08",
+    "PublicPuzzleNumber": 1146
+  },
+  {
+    "NytPuzzleId": 1865,
+    "PrintDate": "2024-08-09",
+    "PublicPuzzleNumber": 1147
+  },
+  {
+    "NytPuzzleId": 1899,
+    "PrintDate": "2024-08-10",
+    "PublicPuzzleNumber": 1148
+  },
+  {
+    "NytPuzzleId": 1393,
+    "PrintDate": "2024-08-11",
+    "PublicPuzzleNumber": 1149
+  },
+  {
+    "NytPuzzleId": 1634,
+    "PrintDate": "2024-08-12",
+    "PublicPuzzleNumber": 1150
+  },
+  {
+    "NytPuzzleId": 1742,
+    "PrintDate": "2024-08-13",
+    "PublicPuzzleNumber": 1151
+  },
+  {
+    "NytPuzzleId": 2111,
+    "PrintDate": "2024-08-14",
+    "PublicPuzzleNumber": 1152
+  },
+  {
+    "NytPuzzleId": 678,
+    "PrintDate": "2024-08-15",
+    "PublicPuzzleNumber": 1153
+  },
+  {
+    "NytPuzzleId": 2092,
+    "PrintDate": "2024-08-16",
+    "PublicPuzzleNumber": 1154
+  },
+  {
+    "NytPuzzleId": 960,
+    "PrintDate": "2024-08-17",
+    "PublicPuzzleNumber": 1155
+  },
+  {
+    "NytPuzzleId": 710,
+    "PrintDate": "2024-08-18",
+    "PublicPuzzleNumber": 1156
+  },
+  {
+    "NytPuzzleId": 2148,
+    "PrintDate": "2024-08-19",
+    "PublicPuzzleNumber": 1157
+  },
+  {
+    "NytPuzzleId": 897,
+    "PrintDate": "2024-08-20",
+    "PublicPuzzleNumber": 1158
+  },
+  {
+    "NytPuzzleId": 542,
+    "PrintDate": "2024-08-21",
+    "PublicPuzzleNumber": 1159
+  },
+  {
+    "NytPuzzleId": 1933,
+    "PrintDate": "2024-08-22",
+    "PublicPuzzleNumber": 1160
+  },
+  {
+    "NytPuzzleId": 2054,
+    "PrintDate": "2024-08-23",
+    "PublicPuzzleNumber": 1161
+  },
+  {
+    "NytPuzzleId": 970,
+    "PrintDate": "2024-08-24",
+    "PublicPuzzleNumber": 1162
+  },
+  {
+    "NytPuzzleId": 1244,
+    "PrintDate": "2024-08-25",
+    "PublicPuzzleNumber": 1163
+  },
+  {
+    "NytPuzzleId": 1223,
+    "PrintDate": "2024-08-26",
+    "PublicPuzzleNumber": 1164
+  },
+  {
+    "NytPuzzleId": 1034,
+    "PrintDate": "2024-08-27",
+    "PublicPuzzleNumber": 1165
+  },
+  {
+    "NytPuzzleId": 1712,
+    "PrintDate": "2024-08-28",
+    "PublicPuzzleNumber": 1166
+  },
+  {
+    "NytPuzzleId": 1721,
+    "PrintDate": "2024-08-29",
+    "PublicPuzzleNumber": 1167
+  },
+  {
+    "NytPuzzleId": 1225,
+    "PrintDate": "2024-08-30",
+    "PublicPuzzleNumber": 1168
+  },
+  {
+    "NytPuzzleId": 791,
+    "PrintDate": "2024-08-31",
+    "PublicPuzzleNumber": 1169
+  },
+  {
+    "NytPuzzleId": 1750,
+    "PrintDate": "2024-09-01",
+    "PublicPuzzleNumber": 1170
+  },
+  {
+    "NytPuzzleId": 1816,
+    "PrintDate": "2024-09-02",
+    "PublicPuzzleNumber": 1171
+  },
+  {
+    "NytPuzzleId": 1369,
+    "PrintDate": "2024-09-03",
+    "PublicPuzzleNumber": 1172
+  },
+  {
+    "NytPuzzleId": 1272,
+    "PrintDate": "2024-09-04",
+    "PublicPuzzleNumber": 1173
+  },
+  {
+    "NytPuzzleId": 1600,
+    "PrintDate": "2024-09-05",
+    "PublicPuzzleNumber": 1174
+  },
+  {
+    "NytPuzzleId": 1673,
+    "PrintDate": "2024-09-06",
+    "PublicPuzzleNumber": 1175
+  },
+  {
+    "NytPuzzleId": 1350,
+    "PrintDate": "2024-09-07",
+    "PublicPuzzleNumber": 1176
+  },
+  {
+    "NytPuzzleId": 1678,
+    "PrintDate": "2024-09-08",
+    "PublicPuzzleNumber": 1177
+  },
+  {
+    "NytPuzzleId": 1242,
+    "PrintDate": "2024-09-09",
+    "PublicPuzzleNumber": 1178
+  },
+  {
+    "NytPuzzleId": 1251,
+    "PrintDate": "2024-09-10",
+    "PublicPuzzleNumber": 1179
+  },
+  {
+    "NytPuzzleId": 1633,
+    "PrintDate": "2024-09-11",
+    "PublicPuzzleNumber": 1180
+  },
+  {
+    "NytPuzzleId": 930,
+    "PrintDate": "2024-09-12",
+    "PublicPuzzleNumber": 1181
+  },
+  {
+    "NytPuzzleId": 1689,
+    "PrintDate": "2024-09-13",
+    "PublicPuzzleNumber": 1182
+  },
+  {
+    "NytPuzzleId": 1684,
+    "PrintDate": "2024-09-14",
+    "PublicPuzzleNumber": 1183
+  },
+  {
+    "NytPuzzleId": 1357,
+    "PrintDate": "2024-09-15",
+    "PublicPuzzleNumber": 1184
+  },
+  {
+    "NytPuzzleId": 592,
+    "PrintDate": "2024-09-16",
+    "PublicPuzzleNumber": 1185
+  },
+  {
+    "NytPuzzleId": 2318,
+    "PrintDate": "2024-09-17",
+    "PublicPuzzleNumber": 1186
+  },
+  {
+    "NytPuzzleId": 2079,
+    "PrintDate": "2024-09-18",
+    "PublicPuzzleNumber": 1187
+  },
+  {
+    "NytPuzzleId": 2210,
+    "PrintDate": "2024-09-19",
+    "PublicPuzzleNumber": 1188
+  },
+  {
+    "NytPuzzleId": 557,
+    "PrintDate": "2024-09-20",
+    "PublicPuzzleNumber": 1189
+  },
+  {
+    "NytPuzzleId": 1123,
+    "PrintDate": "2024-09-21",
+    "PublicPuzzleNumber": 1190
+  },
+  {
+    "NytPuzzleId": 1886,
+    "PrintDate": "2024-09-22",
+    "PublicPuzzleNumber": 1191
+  },
+  {
+    "NytPuzzleId": 1916,
+    "PrintDate": "2024-09-23",
+    "PublicPuzzleNumber": 1192
+  },
+  {
+    "NytPuzzleId": 616,
+    "PrintDate": "2024-09-24",
+    "PublicPuzzleNumber": 1193
+  },
+  {
+    "NytPuzzleId": 1478,
+    "PrintDate": "2024-09-25",
+    "PublicPuzzleNumber": 1194
+  },
+  {
+    "NytPuzzleId": 749,
+    "PrintDate": "2024-09-26",
+    "PublicPuzzleNumber": 1195
+  },
+  {
+    "NytPuzzleId": 2264,
+    "PrintDate": "2024-09-27",
+    "PublicPuzzleNumber": 1196
+  },
+  {
+    "NytPuzzleId": 796,
+    "PrintDate": "2024-09-28",
+    "PublicPuzzleNumber": 1197
+  },
+  {
+    "NytPuzzleId": 2172,
+    "PrintDate": "2024-09-29",
+    "PublicPuzzleNumber": 1198
+  },
+  {
+    "NytPuzzleId": 2052,
+    "PrintDate": "2024-09-30",
+    "PublicPuzzleNumber": 1199
+  },
+  {
+    "NytPuzzleId": 1943,
+    "PrintDate": "2024-10-01",
+    "PublicPuzzleNumber": 1200
+  },
+  {
+    "NytPuzzleId": 1020,
+    "PrintDate": "2024-10-02",
+    "PublicPuzzleNumber": 1201
+  },
+  {
+    "NytPuzzleId": 945,
+    "PrintDate": "2024-10-03",
+    "PublicPuzzleNumber": 1202
+  },
+  {
+    "NytPuzzleId": 813,
+    "PrintDate": "2024-10-04",
+    "PublicPuzzleNumber": 1203
+  },
+  {
+    "NytPuzzleId": 1697,
+    "PrintDate": "2024-10-05",
+    "PublicPuzzleNumber": 1204
+  },
+  {
+    "NytPuzzleId": 1407,
+    "PrintDate": "2024-10-06",
+    "PublicPuzzleNumber": 1205
+  },
+  {
+    "NytPuzzleId": 1371,
+    "PrintDate": "2024-10-07",
+    "PublicPuzzleNumber": 1206
+  },
+  {
+    "NytPuzzleId": 1510,
+    "PrintDate": "2024-10-08",
+    "PublicPuzzleNumber": 1207
+  },
+  {
+    "NytPuzzleId": 2322,
+    "PrintDate": "2024-10-09",
+    "PublicPuzzleNumber": 1208
+  },
+  {
+    "NytPuzzleId": 586,
+    "PrintDate": "2024-10-10",
+    "PublicPuzzleNumber": 1209
+  },
+  {
+    "NytPuzzleId": 564,
+    "PrintDate": "2024-10-11",
+    "PublicPuzzleNumber": 1210
+  },
+  {
+    "NytPuzzleId": 808,
+    "PrintDate": "2024-10-12",
+    "PublicPuzzleNumber": 1211
+  },
+  {
+    "NytPuzzleId": 629,
+    "PrintDate": "2024-10-13",
+    "PublicPuzzleNumber": 1212
+  },
+  {
+    "NytPuzzleId": 1465,
+    "PrintDate": "2024-10-14",
+    "PublicPuzzleNumber": 1213
+  },
+  {
+    "NytPuzzleId": 2011,
+    "PrintDate": "2024-10-15",
+    "PublicPuzzleNumber": 1214
+  },
+  {
+    "NytPuzzleId": 1898,
+    "PrintDate": "2024-10-16",
+    "PublicPuzzleNumber": 1215
+  },
+  {
+    "NytPuzzleId": 1068,
+    "PrintDate": "2024-10-17",
+    "PublicPuzzleNumber": 1216
+  },
+  {
+    "NytPuzzleId": 1165,
+    "PrintDate": "2024-10-18",
+    "PublicPuzzleNumber": 1217
+  },
+  {
+    "NytPuzzleId": 752,
+    "PrintDate": "2024-10-19",
+    "PublicPuzzleNumber": 1218
+  },
+  {
+    "NytPuzzleId": 1769,
+    "PrintDate": "2024-10-20",
+    "PublicPuzzleNumber": 1219
+  },
+  {
+    "NytPuzzleId": 1590,
+    "PrintDate": "2024-10-21",
+    "PublicPuzzleNumber": 1220
+  },
+  {
+    "NytPuzzleId": 1827,
+    "PrintDate": "2024-10-22",
+    "PublicPuzzleNumber": 1221
+  },
+  {
+    "NytPuzzleId": 2167,
+    "PrintDate": "2024-10-23",
+    "PublicPuzzleNumber": 1222
+  },
+  {
+    "NytPuzzleId": 1708,
+    "PrintDate": "2024-10-24",
+    "PublicPuzzleNumber": 1223
+  },
+  {
+    "NytPuzzleId": 654,
+    "PrintDate": "2024-10-25",
+    "PublicPuzzleNumber": 1224
+  },
+  {
+    "NytPuzzleId": 1866,
+    "PrintDate": "2024-10-26",
+    "PublicPuzzleNumber": 1225
+  },
+  {
+    "NytPuzzleId": 2036,
+    "PrintDate": "2024-10-27",
+    "PublicPuzzleNumber": 1226
+  },
+  {
+    "NytPuzzleId": 1402,
+    "PrintDate": "2024-10-28",
+    "PublicPuzzleNumber": 1227
+  },
+  {
+    "NytPuzzleId": 706,
+    "PrintDate": "2024-10-29",
+    "PublicPuzzleNumber": 1228
+  },
+  {
+    "NytPuzzleId": 1395,
+    "PrintDate": "2024-10-30",
+    "PublicPuzzleNumber": 1229
+  },
+  {
+    "NytPuzzleId": 1758,
+    "PrintDate": "2024-10-31",
+    "PublicPuzzleNumber": 1230
+  },
+  {
+    "NytPuzzleId": 1495,
+    "PrintDate": "2024-11-01",
+    "PublicPuzzleNumber": 1231
+  },
+  {
+    "NytPuzzleId": 1090,
+    "PrintDate": "2024-11-02",
+    "PublicPuzzleNumber": 1232
+  },
+  {
+    "NytPuzzleId": 1325,
+    "PrintDate": "2024-11-03",
+    "PublicPuzzleNumber": 1233
+  },
+  {
+    "NytPuzzleId": 1070,
+    "PrintDate": "2024-11-04",
+    "PublicPuzzleNumber": 1234
+  },
+  {
+    "NytPuzzleId": 581,
+    "PrintDate": "2024-11-05",
+    "PublicPuzzleNumber": 1235
+  },
+  {
+    "NytPuzzleId": 1281,
+    "PrintDate": "2024-11-06",
+    "PublicPuzzleNumber": 1236
+  },
+  {
+    "NytPuzzleId": 877,
+    "PrintDate": "2024-11-07",
+    "PublicPuzzleNumber": 1237
+  },
+  {
+    "NytPuzzleId": 1115,
+    "PrintDate": "2024-11-08",
+    "PublicPuzzleNumber": 1238
+  },
+  {
+    "NytPuzzleId": 1408,
+    "PrintDate": "2024-11-09",
+    "PublicPuzzleNumber": 1239
+  },
+  {
+    "NytPuzzleId": 983,
+    "PrintDate": "2024-11-10",
+    "PublicPuzzleNumber": 1240
+  },
+  {
+    "NytPuzzleId": 1381,
+    "PrintDate": "2024-11-11",
+    "PublicPuzzleNumber": 1241
+  },
+  {
+    "NytPuzzleId": 746,
+    "PrintDate": "2024-11-12",
+    "PublicPuzzleNumber": 1242
+  },
+  {
+    "NytPuzzleId": 2326,
+    "PrintDate": "2024-11-13",
+    "PublicPuzzleNumber": 1243
+  },
+  {
+    "NytPuzzleId": 2352,
+    "PrintDate": "2024-11-14",
+    "PublicPuzzleNumber": 1244
+  },
+  {
+    "NytPuzzleId": 1618,
+    "PrintDate": "2024-11-15",
+    "PublicPuzzleNumber": 1245
+  },
+  {
+    "NytPuzzleId": 2205,
+    "PrintDate": "2024-11-16",
+    "PublicPuzzleNumber": 1246
+  },
+  {
+    "NytPuzzleId": 1659,
+    "PrintDate": "2024-11-17",
+    "PublicPuzzleNumber": 1247
+  },
+  {
+    "NytPuzzleId": 1860,
+    "PrintDate": "2024-11-18",
+    "PublicPuzzleNumber": 1248
+  },
+  {
+    "NytPuzzleId": 2230,
+    "PrintDate": "2024-11-19",
+    "PublicPuzzleNumber": 1249
+  },
+  {
+    "NytPuzzleId": 1921,
+    "PrintDate": "2024-11-20",
+    "PublicPuzzleNumber": 1250
+  },
+  {
+    "NytPuzzleId": 1826,
+    "PrintDate": "2024-11-21",
+    "PublicPuzzleNumber": 1251
+  },
+  {
+    "NytPuzzleId": 995,
+    "PrintDate": "2024-11-22",
+    "PublicPuzzleNumber": 1252
+  },
+  {
+    "NytPuzzleId": 1098,
+    "PrintDate": "2024-11-23",
+    "PublicPuzzleNumber": 1253
+  },
+  {
+    "NytPuzzleId": 1891,
+    "PrintDate": "2024-11-24",
+    "PublicPuzzleNumber": 1254
+  },
+  {
+    "NytPuzzleId": 2198,
+    "PrintDate": "2024-11-25",
+    "PublicPuzzleNumber": 1255
+  },
+  {
+    "NytPuzzleId": 2143,
+    "PrintDate": "2024-11-26",
+    "PublicPuzzleNumber": 1256
+  },
+  {
+    "NytPuzzleId": 1169,
+    "PrintDate": "2024-11-27",
+    "PublicPuzzleNumber": 1257
+  },
+  {
+    "NytPuzzleId": 1882,
+    "PrintDate": "2024-11-28",
+    "PublicPuzzleNumber": 1258
+  },
+  {
+    "NytPuzzleId": 1431,
+    "PrintDate": "2024-11-29",
+    "PublicPuzzleNumber": 1259
+  },
+  {
+    "NytPuzzleId": 1422,
+    "PrintDate": "2024-11-30",
+    "PublicPuzzleNumber": 1260
+  },
+  {
+    "NytPuzzleId": 2020,
+    "PrintDate": "2024-12-01",
+    "PublicPuzzleNumber": 1261
+  },
+  {
+    "NytPuzzleId": 563,
+    "PrintDate": "2024-12-02",
+    "PublicPuzzleNumber": 1262
+  },
+  {
+    "NytPuzzleId": 1364,
+    "PrintDate": "2024-12-03",
+    "PublicPuzzleNumber": 1263
+  },
+  {
+    "NytPuzzleId": 1303,
+    "PrintDate": "2024-12-04",
+    "PublicPuzzleNumber": 1264
+  },
+  {
+    "NytPuzzleId": 2044,
+    "PrintDate": "2024-12-05",
+    "PublicPuzzleNumber": 1265
+  },
+  {
+    "NytPuzzleId": 1232,
+    "PrintDate": "2024-12-06",
+    "PublicPuzzleNumber": 1266
+  },
+  {
+    "NytPuzzleId": 1664,
+    "PrintDate": "2024-12-07",
+    "PublicPuzzleNumber": 1267
+  },
+  {
+    "NytPuzzleId": 1807,
+    "PrintDate": "2024-12-08",
+    "PublicPuzzleNumber": 1268
+  },
+  {
+    "NytPuzzleId": 2021,
+    "PrintDate": "2024-12-09",
+    "PublicPuzzleNumber": 1269
+  },
+  {
+    "NytPuzzleId": 655,
+    "PrintDate": "2024-12-10",
+    "PublicPuzzleNumber": 1270
+  },
+  {
+    "NytPuzzleId": 1797,
+    "PrintDate": "2024-12-11",
+    "PublicPuzzleNumber": 1271
+  },
+  {
+    "NytPuzzleId": 1428,
+    "PrintDate": "2024-12-12",
+    "PublicPuzzleNumber": 1272
+  },
+  {
+    "NytPuzzleId": 1203,
+    "PrintDate": "2024-12-13",
+    "PublicPuzzleNumber": 1273
+  },
+  {
+    "NytPuzzleId": 1301,
+    "PrintDate": "2024-12-14",
+    "PublicPuzzleNumber": 1274
+  },
+  {
+    "NytPuzzleId": 1793,
+    "PrintDate": "2024-12-15",
+    "PublicPuzzleNumber": 1275
+  },
+  {
+    "NytPuzzleId": 1909,
+    "PrintDate": "2024-12-16",
+    "PublicPuzzleNumber": 1276
+  },
+  {
+    "NytPuzzleId": 1859,
+    "PrintDate": "2024-12-17",
+    "PublicPuzzleNumber": 1277
+  },
+  {
+    "NytPuzzleId": 1503,
+    "PrintDate": "2024-12-18",
+    "PublicPuzzleNumber": 1278
+  },
+  {
+    "NytPuzzleId": 574,
+    "PrintDate": "2024-12-19",
+    "PublicPuzzleNumber": 1279
+  },
+  {
+    "NytPuzzleId": 1572,
+    "PrintDate": "2024-12-20",
+    "PublicPuzzleNumber": 1280
+  },
+  {
+    "NytPuzzleId": 2047,
+    "PrintDate": "2024-12-21",
+    "PublicPuzzleNumber": 1281
+  },
+  {
+    "NytPuzzleId": 685,
+    "PrintDate": "2024-12-22",
+    "PublicPuzzleNumber": 1282
+  },
+  {
+    "NytPuzzleId": 1055,
+    "PrintDate": "2024-12-23",
+    "PublicPuzzleNumber": 1283
+  },
+  {
+    "NytPuzzleId": 645,
+    "PrintDate": "2024-12-24",
+    "PublicPuzzleNumber": 1284
+  },
+  {
+    "NytPuzzleId": 979,
+    "PrintDate": "2024-12-25",
+    "PublicPuzzleNumber": 1285
+  },
+  {
+    "NytPuzzleId": 2014,
+    "PrintDate": "2024-12-26",
+    "PublicPuzzleNumber": 1286
+  },
+  {
+    "NytPuzzleId": 1982,
+    "PrintDate": "2024-12-27",
+    "PublicPuzzleNumber": 1287
+  },
+  {
+    "NytPuzzleId": 2202,
+    "PrintDate": "2024-12-28",
+    "PublicPuzzleNumber": 1288
+  },
+  {
+    "NytPuzzleId": 2000,
+    "PrintDate": "2024-12-29",
+    "PublicPuzzleNumber": 1289
+  },
+  {
+    "NytPuzzleId": 890,
+    "PrintDate": "2024-12-30",
+    "PublicPuzzleNumber": 1290
+  },
+  {
+    "NytPuzzleId": 1289,
+    "PrintDate": "2024-12-31",
+    "PublicPuzzleNumber": 1291
+  },
+  {
+    "NytPuzzleId": 732,
+    "PrintDate": "2025-01-01",
+    "PublicPuzzleNumber": 1292
+  },
+  {
+    "NytPuzzleId": 610,
+    "PrintDate": "2025-01-02",
+    "PublicPuzzleNumber": 1293
+  },
+  {
+    "NytPuzzleId": 1317,
+    "PrintDate": "2025-01-03",
+    "PublicPuzzleNumber": 1294
+  },
+  {
+    "NytPuzzleId": 865,
+    "PrintDate": "2025-01-04",
+    "PublicPuzzleNumber": 1295
+  },
+  {
+    "NytPuzzleId": 1105,
+    "PrintDate": "2025-01-05",
+    "PublicPuzzleNumber": 1296
+  },
+  {
+    "NytPuzzleId": 1825,
+    "PrintDate": "2025-01-06",
+    "PublicPuzzleNumber": 1297
+  },
+  {
+    "NytPuzzleId": 2362,
+    "PrintDate": "2025-01-07",
+    "PublicPuzzleNumber": 1298
+  },
+  {
+    "NytPuzzleId": 1290,
+    "PrintDate": "2025-01-08",
+    "PublicPuzzleNumber": 1299
+  },
+  {
+    "NytPuzzleId": 1854,
+    "PrintDate": "2025-01-09",
+    "PublicPuzzleNumber": 1300
+  },
+  {
+    "NytPuzzleId": 1639,
+    "PrintDate": "2025-01-10",
+    "PublicPuzzleNumber": 1301
+  },
+  {
+    "NytPuzzleId": 1798,
+    "PrintDate": "2025-01-11",
+    "PublicPuzzleNumber": 1302
+  },
+  {
+    "NytPuzzleId": 548,
+    "PrintDate": "2025-01-12",
+    "PublicPuzzleNumber": 1303
+  },
+  {
+    "NytPuzzleId": 1567,
+    "PrintDate": "2025-01-13",
+    "PublicPuzzleNumber": 1304
+  },
+  {
+    "NytPuzzleId": 993,
+    "PrintDate": "2025-01-14",
+    "PublicPuzzleNumber": 1305
+  },
+  {
+    "NytPuzzleId": 1593,
+    "PrintDate": "2025-01-15",
+    "PublicPuzzleNumber": 1306
+  },
+  {
+    "NytPuzzleId": 861,
+    "PrintDate": "2025-01-16",
+    "PublicPuzzleNumber": 1307
+  },
+  {
+    "NytPuzzleId": 748,
+    "PrintDate": "2025-01-17",
+    "PublicPuzzleNumber": 1308
+  },
+  {
+    "NytPuzzleId": 996,
+    "PrintDate": "2025-01-18",
+    "PublicPuzzleNumber": 1309
+  },
+  {
+    "NytPuzzleId": 2284,
+    "PrintDate": "2025-01-19",
+    "PublicPuzzleNumber": 1310
+  },
+  {
+    "NytPuzzleId": 2353,
+    "PrintDate": "2025-01-20",
+    "PublicPuzzleNumber": 1311
+  },
+  {
+    "NytPuzzleId": 742,
+    "PrintDate": "2025-01-21",
+    "PublicPuzzleNumber": 1312
+  },
+  {
+    "NytPuzzleId": 1352,
+    "PrintDate": "2025-01-22",
+    "PublicPuzzleNumber": 1313
+  },
+  {
+    "NytPuzzleId": 1413,
+    "PrintDate": "2025-01-23",
+    "PublicPuzzleNumber": 1314
+  },
+  {
+    "NytPuzzleId": 1592,
+    "PrintDate": "2025-01-24",
+    "PublicPuzzleNumber": 1315
+  },
+  {
+    "NytPuzzleId": 1675,
+    "PrintDate": "2025-01-25",
+    "PublicPuzzleNumber": 1316
+  },
+  {
+    "NytPuzzleId": 669,
+    "PrintDate": "2025-01-26",
+    "PublicPuzzleNumber": 1317
+  },
+  {
+    "NytPuzzleId": 879,
+    "PrintDate": "2025-01-27",
+    "PublicPuzzleNumber": 1318
+  },
+  {
+    "NytPuzzleId": 1844,
+    "PrintDate": "2025-01-28",
+    "PublicPuzzleNumber": 1319
+  },
+  {
+    "NytPuzzleId": 571,
+    "PrintDate": "2025-01-29",
+    "PublicPuzzleNumber": 1320
+  },
+  {
+    "NytPuzzleId": 1320,
+    "PrintDate": "2025-01-30",
+    "PublicPuzzleNumber": 1321
+  },
+  {
+    "NytPuzzleId": 1394,
+    "PrintDate": "2025-01-31",
+    "PublicPuzzleNumber": 1322
+  },
+  {
+    "NytPuzzleId": 555,
+    "PrintDate": "2025-02-01",
+    "PublicPuzzleNumber": 1323
+  },
+  {
+    "NytPuzzleId": 1195,
+    "PrintDate": "2025-02-02",
+    "PublicPuzzleNumber": 1324
+  },
+  {
+    "NytPuzzleId": 1650,
+    "PrintDate": "2025-02-03",
+    "PublicPuzzleNumber": 1325
+  },
+  {
+    "NytPuzzleId": 1160,
+    "PrintDate": "2025-02-04",
+    "PublicPuzzleNumber": 1326
+  },
+  {
+    "NytPuzzleId": 1440,
+    "PrintDate": "2025-02-05",
+    "PublicPuzzleNumber": 1327
+  },
+  {
+    "NytPuzzleId": 951,
+    "PrintDate": "2025-02-06",
+    "PublicPuzzleNumber": 1328
+  },
+  {
+    "NytPuzzleId": 1164,
+    "PrintDate": "2025-02-07",
+    "PublicPuzzleNumber": 1329
+  },
+  {
+    "NytPuzzleId": 1221,
+    "PrintDate": "2025-02-08",
+    "PublicPuzzleNumber": 1330
+  },
+  {
+    "NytPuzzleId": 1134,
+    "PrintDate": "2025-02-09",
+    "PublicPuzzleNumber": 1331
+  },
+  {
+    "NytPuzzleId": 653,
+    "PrintDate": "2025-02-10",
+    "PublicPuzzleNumber": 1332
+  },
+  {
+    "NytPuzzleId": 821,
+    "PrintDate": "2025-02-11",
+    "PublicPuzzleNumber": 1333
+  },
+  {
+    "NytPuzzleId": 2163,
+    "PrintDate": "2025-02-12",
+    "PublicPuzzleNumber": 1334
+  },
+  {
+    "NytPuzzleId": 1550,
+    "PrintDate": "2025-02-13",
+    "PublicPuzzleNumber": 1335
+  },
+  {
+    "NytPuzzleId": 1295,
+    "PrintDate": "2025-02-14",
+    "PublicPuzzleNumber": 1336
+  },
+  {
+    "NytPuzzleId": 735,
+    "PrintDate": "2025-02-15",
+    "PublicPuzzleNumber": 1337
+  },
+  {
+    "NytPuzzleId": 1464,
+    "PrintDate": "2025-02-16",
+    "PublicPuzzleNumber": 1338
+  },
+  {
+    "NytPuzzleId": 1920,
+    "PrintDate": "2025-02-17",
+    "PublicPuzzleNumber": 1339
+  },
+  {
+    "NytPuzzleId": 2366,
+    "PrintDate": "2025-02-18",
+    "PublicPuzzleNumber": 1340
+  },
+  {
+    "NytPuzzleId": 2150,
+    "PrintDate": "2025-02-19",
+    "PublicPuzzleNumber": 1341
+  },
+  {
+    "NytPuzzleId": 1111,
+    "PrintDate": "2025-02-20",
+    "PublicPuzzleNumber": 1342
+  },
+  {
+    "NytPuzzleId": 1082,
+    "PrintDate": "2025-02-21",
+    "PublicPuzzleNumber": 1343
+  },
+  {
+    "NytPuzzleId": 620,
+    "PrintDate": "2025-02-22",
+    "PublicPuzzleNumber": 1344
+  },
+  {
+    "NytPuzzleId": 984,
+    "PrintDate": "2025-02-23",
+    "PublicPuzzleNumber": 1345
+  },
+  {
+    "NytPuzzleId": 1965,
+    "PrintDate": "2025-02-24",
+    "PublicPuzzleNumber": 1346
+  },
+  {
+    "NytPuzzleId": 1124,
+    "PrintDate": "2025-02-25",
+    "PublicPuzzleNumber": 1347
+  },
+  {
+    "NytPuzzleId": 650,
+    "PrintDate": "2025-02-26",
+    "PublicPuzzleNumber": 1348
+  },
+  {
+    "NytPuzzleId": 1142,
+    "PrintDate": "2025-02-27",
+    "PublicPuzzleNumber": 1349
+  },
+  {
+    "NytPuzzleId": 1624,
+    "PrintDate": "2025-02-28",
+    "PublicPuzzleNumber": 1350
+  },
+  {
+    "NytPuzzleId": 1365,
+    "PrintDate": "2025-03-01",
+    "PublicPuzzleNumber": 1351
+  },
+  {
+    "NytPuzzleId": 1283,
+    "PrintDate": "2025-03-02",
+    "PublicPuzzleNumber": 1352
+  },
+  {
+    "NytPuzzleId": 2131,
+    "PrintDate": "2025-03-03",
+    "PublicPuzzleNumber": 1353
+  },
+  {
+    "NytPuzzleId": 928,
+    "PrintDate": "2025-03-04",
+    "PublicPuzzleNumber": 1354
+  },
+  {
+    "NytPuzzleId": 1812,
+    "PrintDate": "2025-03-05",
+    "PublicPuzzleNumber": 1355
+  },
+  {
+    "NytPuzzleId": 1538,
+    "PrintDate": "2025-03-06",
+    "PublicPuzzleNumber": 1356
+  },
+  {
+    "NytPuzzleId": 1612,
+    "PrintDate": "2025-03-07",
+    "PublicPuzzleNumber": 1357
+  },
+  {
+    "NytPuzzleId": 1568,
+    "PrintDate": "2025-03-08",
+    "PublicPuzzleNumber": 1358
+  },
+  {
+    "NytPuzzleId": 1946,
+    "PrintDate": "2025-03-09",
+    "PublicPuzzleNumber": 1359
+  },
+  {
+    "NytPuzzleId": 526,
+    "PrintDate": "2025-03-10",
+    "PublicPuzzleNumber": 1360
+  },
+  {
+    "NytPuzzleId": 756,
+    "PrintDate": "2025-03-11",
+    "PublicPuzzleNumber": 1361
+  },
+  {
+    "NytPuzzleId": 1549,
+    "PrintDate": "2025-03-12",
+    "PublicPuzzleNumber": 1362
+  },
+  {
+    "NytPuzzleId": 627,
+    "PrintDate": "2025-03-13",
+    "PublicPuzzleNumber": 1363
+  },
+  {
+    "NytPuzzleId": 2238,
+    "PrintDate": "2025-03-14",
+    "PublicPuzzleNumber": 1364
+  },
+  {
+    "NytPuzzleId": 1765,
+    "PrintDate": "2025-03-15",
+    "PublicPuzzleNumber": 1365
+  },
+  {
+    "NytPuzzleId": 675,
+    "PrintDate": "2025-03-16",
+    "PublicPuzzleNumber": 1366
+  },
+  {
+    "NytPuzzleId": 1516,
+    "PrintDate": "2025-03-17",
+    "PublicPuzzleNumber": 1367
+  },
+  {
+    "NytPuzzleId": 1176,
+    "PrintDate": "2025-03-18",
+    "PublicPuzzleNumber": 1368
+  },
+  {
+    "NytPuzzleId": 1846,
+    "PrintDate": "2025-03-19",
+    "PublicPuzzleNumber": 1369
+  },
+  {
+    "NytPuzzleId": 2037,
+    "PrintDate": "2025-03-20",
+    "PublicPuzzleNumber": 1370
+  },
+  {
+    "NytPuzzleId": 947,
+    "PrintDate": "2025-03-21",
+    "PublicPuzzleNumber": 1371
+  },
+  {
+    "NytPuzzleId": 1000,
+    "PrintDate": "2025-03-22",
+    "PublicPuzzleNumber": 1372
+  },
+  {
+    "NytPuzzleId": 2130,
+    "PrintDate": "2025-03-23",
+    "PublicPuzzleNumber": 1373
+  },
+  {
+    "NytPuzzleId": 624,
+    "PrintDate": "2025-03-24",
+    "PublicPuzzleNumber": 1374
+  },
+  {
+    "NytPuzzleId": 1141,
+    "PrintDate": "2025-03-25",
+    "PublicPuzzleNumber": 1375
+  },
+  {
+    "NytPuzzleId": 1458,
+    "PrintDate": "2025-03-26",
+    "PublicPuzzleNumber": 1376
+  },
+  {
+    "NytPuzzleId": 991,
+    "PrintDate": "2025-03-27",
+    "PublicPuzzleNumber": 1377
+  },
+  {
+    "NytPuzzleId": 782,
+    "PrintDate": "2025-03-28",
+    "PublicPuzzleNumber": 1378
+  },
+  {
+    "NytPuzzleId": 676,
+    "PrintDate": "2025-03-29",
+    "PublicPuzzleNumber": 1379
+  },
+  {
+    "NytPuzzleId": 938,
+    "PrintDate": "2025-03-30",
+    "PublicPuzzleNumber": 1380
+  },
+  {
+    "NytPuzzleId": 1890,
+    "PrintDate": "2025-03-31",
+    "PublicPuzzleNumber": 1381
+  },
+  {
+    "NytPuzzleId": 1452,
+    "PrintDate": "2025-04-01",
+    "PublicPuzzleNumber": 1382
+  },
+  {
+    "NytPuzzleId": 1690,
+    "PrintDate": "2025-04-02",
+    "PublicPuzzleNumber": 1383
+  },
+  {
+    "NytPuzzleId": 1010,
+    "PrintDate": "2025-04-03",
+    "PublicPuzzleNumber": 1384
+  },
+  {
+    "NytPuzzleId": 1804,
+    "PrintDate": "2025-04-04",
+    "PublicPuzzleNumber": 1385
+  },
+  {
+    "NytPuzzleId": 1794,
+    "PrintDate": "2025-04-05",
+    "PublicPuzzleNumber": 1386
+  },
+  {
+    "NytPuzzleId": 1013,
+    "PrintDate": "2025-04-06",
+    "PublicPuzzleNumber": 1387
+  },
+  {
+    "NytPuzzleId": 857,
+    "PrintDate": "2025-04-07",
+    "PublicPuzzleNumber": 1388
+  },
+  {
+    "NytPuzzleId": 1613,
+    "PrintDate": "2025-04-08",
+    "PublicPuzzleNumber": 1389
+  },
+  {
+    "NytPuzzleId": 1929,
+    "PrintDate": "2025-04-09",
+    "PublicPuzzleNumber": 1390
+  },
+  {
+    "NytPuzzleId": 2212,
+    "PrintDate": "2025-04-10",
+    "PublicPuzzleNumber": 1391
+  },
+  {
+    "NytPuzzleId": 1749,
+    "PrintDate": "2025-04-11",
+    "PublicPuzzleNumber": 1392
+  },
+  {
+    "NytPuzzleId": 697,
+    "PrintDate": "2025-04-12",
+    "PublicPuzzleNumber": 1393
+  },
+  {
+    "NytPuzzleId": 903,
+    "PrintDate": "2025-04-13",
+    "PublicPuzzleNumber": 1394
+  },
+  {
+    "NytPuzzleId": 1103,
+    "PrintDate": "2025-04-14",
+    "PublicPuzzleNumber": 1395
+  },
+  {
+    "NytPuzzleId": 1079,
+    "PrintDate": "2025-04-15",
+    "PublicPuzzleNumber": 1396
+  },
+  {
+    "NytPuzzleId": 1732,
+    "PrintDate": "2025-04-16",
+    "PublicPuzzleNumber": 1397
+  },
+  {
+    "NytPuzzleId": 894,
+    "PrintDate": "2025-04-17",
+    "PublicPuzzleNumber": 1398
+  },
+  {
+    "NytPuzzleId": 1298,
+    "PrintDate": "2025-04-18",
+    "PublicPuzzleNumber": 1399
+  },
+  {
+    "NytPuzzleId": 1980,
+    "PrintDate": "2025-04-19",
+    "PublicPuzzleNumber": 1400
+  },
+  {
+    "NytPuzzleId": 1625,
+    "PrintDate": "2025-04-20",
+    "PublicPuzzleNumber": 1401
+  },
+  {
+    "NytPuzzleId": 2328,
+    "PrintDate": "2025-04-21",
+    "PublicPuzzleNumber": 1402
+  },
+  {
+    "NytPuzzleId": 2285,
+    "PrintDate": "2025-04-22",
+    "PublicPuzzleNumber": 1403
+  },
+  {
+    "NytPuzzleId": 769,
+    "PrintDate": "2025-04-23",
+    "PublicPuzzleNumber": 1404
+  },
+  {
+    "NytPuzzleId": 837,
+    "PrintDate": "2025-04-24",
+    "PublicPuzzleNumber": 1405
+  },
+  {
+    "NytPuzzleId": 2153,
+    "PrintDate": "2025-04-25",
+    "PublicPuzzleNumber": 1406
+  },
+  {
+    "NytPuzzleId": 1604,
+    "PrintDate": "2025-04-26",
+    "PublicPuzzleNumber": 1407
+  },
+  {
+    "NytPuzzleId": 1576,
+    "PrintDate": "2025-04-27",
+    "PublicPuzzleNumber": 1408
+  },
+  {
+    "NytPuzzleId": 1475,
+    "PrintDate": "2025-04-28",
+    "PublicPuzzleNumber": 1409
+  },
+  {
+    "NytPuzzleId": 870,
+    "PrintDate": "2025-04-29",
+    "PublicPuzzleNumber": 1410
+  },
+  {
+    "NytPuzzleId": 1163,
+    "PrintDate": "2025-04-30",
+    "PublicPuzzleNumber": 1411
+  },
+  {
+    "NytPuzzleId": 1191,
+    "PrintDate": "2025-05-01",
+    "PublicPuzzleNumber": 1412
+  },
+  {
+    "NytPuzzleId": 2211,
+    "PrintDate": "2025-05-02",
+    "PublicPuzzleNumber": 1413
+  },
+  {
+    "NytPuzzleId": 1280,
+    "PrintDate": "2025-05-03",
+    "PublicPuzzleNumber": 1414
+  },
+  {
+    "NytPuzzleId": 957,
+    "PrintDate": "2025-05-04",
+    "PublicPuzzleNumber": 1415
+  },
+  {
+    "NytPuzzleId": 1533,
+    "PrintDate": "2025-05-05",
+    "PublicPuzzleNumber": 1416
+  },
+  {
+    "NytPuzzleId": 1679,
+    "PrintDate": "2025-05-06",
+    "PublicPuzzleNumber": 1417
+  },
+  {
+    "NytPuzzleId": 1632,
+    "PrintDate": "2025-05-07",
+    "PublicPuzzleNumber": 1418
+  },
+  {
+    "NytPuzzleId": 1571,
+    "PrintDate": "2025-05-08",
+    "PublicPuzzleNumber": 1419
+  },
+  {
+    "NytPuzzleId": 1801,
+    "PrintDate": "2025-05-09",
+    "PublicPuzzleNumber": 1420
+  },
+  {
+    "NytPuzzleId": 1337,
+    "PrintDate": "2025-05-10",
+    "PublicPuzzleNumber": 1421
+  },
+  {
+    "NytPuzzleId": 637,
+    "PrintDate": "2025-05-11",
+    "PublicPuzzleNumber": 1422
+  },
+  {
+    "NytPuzzleId": 1802,
+    "PrintDate": "2025-05-12",
+    "PublicPuzzleNumber": 1423
+  },
+  {
+    "NytPuzzleId": 1173,
+    "PrintDate": "2025-05-13",
+    "PublicPuzzleNumber": 1424
+  },
+  {
+    "NytPuzzleId": 833,
+    "PrintDate": "2025-05-14",
+    "PublicPuzzleNumber": 1425
+  },
+  {
+    "NytPuzzleId": 1753,
+    "PrintDate": "2025-05-15",
+    "PublicPuzzleNumber": 1426
+  },
+  {
+    "NytPuzzleId": 2070,
+    "PrintDate": "2025-05-16",
+    "PublicPuzzleNumber": 1427
+  },
+  {
+    "NytPuzzleId": 1299,
+    "PrintDate": "2025-05-17",
+    "PublicPuzzleNumber": 1428
+  },
+  {
+    "NytPuzzleId": 1951,
+    "PrintDate": "2025-05-18",
+    "PublicPuzzleNumber": 1429
+  },
+  {
+    "NytPuzzleId": 949,
+    "PrintDate": "2025-05-19",
+    "PublicPuzzleNumber": 1430
+  },
+  {
+    "NytPuzzleId": 2005,
+    "PrintDate": "2025-05-20",
+    "PublicPuzzleNumber": 1431
+  },
+  {
+    "NytPuzzleId": 1496,
+    "PrintDate": "2025-05-21",
+    "PublicPuzzleNumber": 1432
+  },
+  {
+    "NytPuzzleId": 2174,
+    "PrintDate": "2025-05-22",
+    "PublicPuzzleNumber": 1433
+  },
+  {
+    "NytPuzzleId": 1302,
+    "PrintDate": "2025-05-23",
+    "PublicPuzzleNumber": 1434
+  },
+  {
+    "NytPuzzleId": 2351,
+    "PrintDate": "2025-05-24",
+    "PublicPuzzleNumber": 1435
+  },
+  {
+    "NytPuzzleId": 2344,
+    "PrintDate": "2025-05-25",
+    "PublicPuzzleNumber": 1436
+  },
+  {
+    "NytPuzzleId": 1906,
+    "PrintDate": "2025-05-26",
+    "PublicPuzzleNumber": 1437
+  },
+  {
+    "NytPuzzleId": 778,
+    "PrintDate": "2025-05-27",
+    "PublicPuzzleNumber": 1438
+  },
+  {
+    "NytPuzzleId": 1545,
+    "PrintDate": "2025-05-28",
+    "PublicPuzzleNumber": 1439
+  },
+  {
+    "NytPuzzleId": 2177,
+    "PrintDate": "2025-05-29",
+    "PublicPuzzleNumber": 1440
+  },
+  {
+    "NytPuzzleId": 1492,
+    "PrintDate": "2025-05-30",
+    "PublicPuzzleNumber": 1441
+  },
+  {
+    "NytPuzzleId": 1707,
+    "PrintDate": "2025-05-31",
+    "PublicPuzzleNumber": 1442
+  },
+  {
+    "NytPuzzleId": 1762,
+    "PrintDate": "2025-06-01",
+    "PublicPuzzleNumber": 1443
+  },
+  {
+    "NytPuzzleId": 1287,
+    "PrintDate": "2025-06-02",
+    "PublicPuzzleNumber": 1444
+  },
+  {
+    "NytPuzzleId": 1628,
+    "PrintDate": "2025-06-03",
+    "PublicPuzzleNumber": 1445
+  },
+  {
+    "NytPuzzleId": 1752,
+    "PrintDate": "2025-06-04",
+    "PublicPuzzleNumber": 1446
+  },
+  {
+    "NytPuzzleId": 1138,
+    "PrintDate": "2025-06-05",
+    "PublicPuzzleNumber": 1447
+  },
+  {
+    "NytPuzzleId": 660,
+    "PrintDate": "2025-06-06",
+    "PublicPuzzleNumber": 1448
+  },
+  {
+    "NytPuzzleId": 1955,
+    "PrintDate": "2025-06-07",
+    "PublicPuzzleNumber": 1449
+  },
+  {
+    "NytPuzzleId": 1578,
+    "PrintDate": "2025-06-08",
+    "PublicPuzzleNumber": 1450
+  },
+  {
+    "NytPuzzleId": 1897,
+    "PrintDate": "2025-06-09",
+    "PublicPuzzleNumber": 1451
+  },
+  {
+    "NytPuzzleId": 1777,
+    "PrintDate": "2025-06-10",
+    "PublicPuzzleNumber": 1452
+  },
+  {
+    "NytPuzzleId": 1474,
+    "PrintDate": "2025-06-11",
+    "PublicPuzzleNumber": 1453
+  },
+  {
+    "NytPuzzleId": 919,
+    "PrintDate": "2025-06-12",
+    "PublicPuzzleNumber": 1454
+  },
+  {
+    "NytPuzzleId": 898,
+    "PrintDate": "2025-06-13",
+    "PublicPuzzleNumber": 1455
+  },
+  {
+    "NytPuzzleId": 692,
+    "PrintDate": "2025-06-14",
+    "PublicPuzzleNumber": 1456
+  },
+  {
+    "NytPuzzleId": 2024,
+    "PrintDate": "2025-06-15",
+    "PublicPuzzleNumber": 1457
+  },
+  {
+    "NytPuzzleId": 2192,
+    "PrintDate": "2025-06-16",
+    "PublicPuzzleNumber": 1458
+  },
+  {
+    "NytPuzzleId": 1158,
+    "PrintDate": "2025-06-17",
+    "PublicPuzzleNumber": 1459
+  },
+  {
+    "NytPuzzleId": 2099,
+    "PrintDate": "2025-06-18",
+    "PublicPuzzleNumber": 1460
+  },
+  {
+    "NytPuzzleId": 1562,
+    "PrintDate": "2025-06-19",
+    "PublicPuzzleNumber": 1461
+  },
+  {
+    "NytPuzzleId": 2329,
+    "PrintDate": "2025-06-20",
+    "PublicPuzzleNumber": 1462
+  },
+  {
+    "NytPuzzleId": 1524,
+    "PrintDate": "2025-06-21",
+    "PublicPuzzleNumber": 1463
+  },
+  {
+    "NytPuzzleId": 2199,
+    "PrintDate": "2025-06-22",
+    "PublicPuzzleNumber": 1464
+  },
+  {
+    "NytPuzzleId": 1472,
+    "PrintDate": "2025-06-23",
+    "PublicPuzzleNumber": 1465
+  },
+  {
+    "NytPuzzleId": 658,
+    "PrintDate": "2025-06-24",
+    "PublicPuzzleNumber": 1466
+  },
+  {
+    "NytPuzzleId": 1256,
+    "PrintDate": "2025-06-25",
+    "PublicPuzzleNumber": 1467
+  },
+  {
+    "NytPuzzleId": 1122,
+    "PrintDate": "2025-06-26",
+    "PublicPuzzleNumber": 1468
+  },
+  {
+    "NytPuzzleId": 1669,
+    "PrintDate": "2025-06-27",
+    "PublicPuzzleNumber": 1469
+  },
+  {
+    "NytPuzzleId": 1577,
+    "PrintDate": "2025-06-28",
+    "PublicPuzzleNumber": 1470
+  },
+  {
+    "NytPuzzleId": 1579,
+    "PrintDate": "2025-06-29",
+    "PublicPuzzleNumber": 1471
+  },
+  {
+    "NytPuzzleId": 724,
+    "PrintDate": "2025-06-30",
+    "PublicPuzzleNumber": 1472
+  },
+  {
+    "NytPuzzleId": 753,
+    "PrintDate": "2025-07-01",
+    "PublicPuzzleNumber": 1473
+  },
+  {
+    "NytPuzzleId": 547,
+    "PrintDate": "2025-07-02",
+    "PublicPuzzleNumber": 1474
+  },
+  {
+    "NytPuzzleId": 750,
+    "PrintDate": "2025-07-03",
+    "PublicPuzzleNumber": 1475
+  },
+  {
+    "NytPuzzleId": 2141,
+    "PrintDate": "2025-07-04",
+    "PublicPuzzleNumber": 1476
+  },
+  {
+    "NytPuzzleId": 1851,
+    "PrintDate": "2025-07-05",
+    "PublicPuzzleNumber": 1477
+  },
+  {
+    "NytPuzzleId": 2386,
+    "PrintDate": "2025-07-06",
+    "PublicPuzzleNumber": 1478
+  },
+  {
+    "NytPuzzleId": 989,
+    "PrintDate": "2025-07-07",
+    "PublicPuzzleNumber": 1479
+  },
+  {
+    "NytPuzzleId": 1359,
+    "PrintDate": "2025-07-08",
+    "PublicPuzzleNumber": 1480
+  },
+  {
+    "NytPuzzleId": 1379,
+    "PrintDate": "2025-07-09",
+    "PublicPuzzleNumber": 1481
+  },
+  {
+    "NytPuzzleId": 1939,
+    "PrintDate": "2025-07-10",
+    "PublicPuzzleNumber": 1482
+  },
+  {
+    "NytPuzzleId": 1796,
+    "PrintDate": "2025-07-11",
+    "PublicPuzzleNumber": 1483
+  },
+  {
+    "NytPuzzleId": 687,
+    "PrintDate": "2025-07-12",
+    "PublicPuzzleNumber": 1484
+  },
+  {
+    "NytPuzzleId": 740,
+    "PrintDate": "2025-07-13",
+    "PublicPuzzleNumber": 1485
+  },
+  {
+    "NytPuzzleId": 2242,
+    "PrintDate": "2025-07-14",
+    "PublicPuzzleNumber": 1486
+  },
+  {
+    "NytPuzzleId": 1646,
+    "PrintDate": "2025-07-15",
+    "PublicPuzzleNumber": 1487
+  },
+  {
+    "NytPuzzleId": 2324,
+    "PrintDate": "2025-07-16",
+    "PublicPuzzleNumber": 1488
+  },
+  {
+    "NytPuzzleId": 1080,
+    "PrintDate": "2025-07-17",
+    "PublicPuzzleNumber": 1489
+  },
+  {
+    "NytPuzzleId": 2365,
+    "PrintDate": "2025-07-18",
+    "PublicPuzzleNumber": 1490
+  },
+  {
+    "NytPuzzleId": 1547,
+    "PrintDate": "2025-07-19",
+    "PublicPuzzleNumber": 1491
+  },
+  {
+    "NytPuzzleId": 1012,
+    "PrintDate": "2025-07-20",
+    "PublicPuzzleNumber": 1492
+  },
+  {
+    "NytPuzzleId": 2331,
+    "PrintDate": "2025-07-21",
+    "PublicPuzzleNumber": 1493
+  },
+  {
+    "NytPuzzleId": 915,
+    "PrintDate": "2025-07-22",
+    "PublicPuzzleNumber": 1494
+  },
+  {
+    "NytPuzzleId": 1626,
+    "PrintDate": "2025-07-23",
+    "PublicPuzzleNumber": 1495
+  },
+  {
+    "NytPuzzleId": 1509,
+    "PrintDate": "2025-07-24",
+    "PublicPuzzleNumber": 1496
+  },
+  {
+    "NytPuzzleId": 2387,
+    "PrintDate": "2025-07-25",
+    "PublicPuzzleNumber": 1497
+  },
+  {
+    "NytPuzzleId": 1370,
+    "PrintDate": "2025-07-26",
+    "PublicPuzzleNumber": 1498
+  },
+  {
+    "NytPuzzleId": 1542,
+    "PrintDate": "2025-07-27",
+    "PublicPuzzleNumber": 1499
+  },
+  {
+    "NytPuzzleId": 704,
+    "PrintDate": "2025-07-28",
+    "PublicPuzzleNumber": 1500
+  },
+  {
+    "NytPuzzleId": 1629,
+    "PrintDate": "2025-07-29",
+    "PublicPuzzleNumber": 1501
+  },
+  {
+    "NytPuzzleId": 844,
+    "PrintDate": "2025-07-30",
+    "PublicPuzzleNumber": 1502
+  },
+  {
+    "NytPuzzleId": 1856,
+    "PrintDate": "2025-07-31",
+    "PublicPuzzleNumber": 1503
+  },
+  {
+    "NytPuzzleId": 2084,
+    "PrintDate": "2025-08-01",
+    "PublicPuzzleNumber": 1504
+  },
+  {
+    "NytPuzzleId": 2206,
+    "PrintDate": "2025-08-02",
+    "PublicPuzzleNumber": 1505
+  },
+  {
+    "NytPuzzleId": 1627,
+    "PrintDate": "2025-08-03",
+    "PublicPuzzleNumber": 1506
+  },
+  {
+    "NytPuzzleId": 1319,
+    "PrintDate": "2025-08-04",
+    "PublicPuzzleNumber": 1507
+  },
+  {
+    "NytPuzzleId": 925,
+    "PrintDate": "2025-08-05",
+    "PublicPuzzleNumber": 1508
+  },
+  {
+    "NytPuzzleId": 583,
+    "PrintDate": "2025-08-06",
+    "PublicPuzzleNumber": 1509
+  },
+  {
+    "NytPuzzleId": 1145,
+    "PrintDate": "2025-08-07",
+    "PublicPuzzleNumber": 1510
+  },
+  {
+    "NytPuzzleId": 1878,
+    "PrintDate": "2025-08-08",
+    "PublicPuzzleNumber": 1511
+  },
+  {
+    "NytPuzzleId": 2089,
+    "PrintDate": "2025-08-09",
+    "PublicPuzzleNumber": 1512
+  },
+  {
+    "NytPuzzleId": 596,
+    "PrintDate": "2025-08-10",
+    "PublicPuzzleNumber": 1513
+  },
+  {
+    "NytPuzzleId": 1096,
+    "PrintDate": "2025-08-11",
+    "PublicPuzzleNumber": 1514
+  },
+  {
+    "NytPuzzleId": 1429,
+    "PrintDate": "2025-08-12",
+    "PublicPuzzleNumber": 1515
+  },
+  {
+    "NytPuzzleId": 2378,
+    "PrintDate": "2025-08-13",
+    "PublicPuzzleNumber": 1516
+  },
+  {
+    "NytPuzzleId": 2346,
+    "PrintDate": "2025-08-14",
+    "PublicPuzzleNumber": 1517
+  },
+  {
+    "NytPuzzleId": 986,
+    "PrintDate": "2025-08-15",
+    "PublicPuzzleNumber": 1518
+  },
+  {
+    "NytPuzzleId": 2348,
+    "PrintDate": "2025-08-16",
+    "PublicPuzzleNumber": 1519
+  },
+  {
+    "NytPuzzleId": 1640,
+    "PrintDate": "2025-08-17",
+    "PublicPuzzleNumber": 1520
+  },
+  {
+    "NytPuzzleId": 1406,
+    "PrintDate": "2025-08-18",
+    "PublicPuzzleNumber": 1521
+  },
+  {
+    "NytPuzzleId": 1323,
+    "PrintDate": "2025-08-19",
+    "PublicPuzzleNumber": 1522
+  },
+  {
+    "NytPuzzleId": 783,
+    "PrintDate": "2025-08-20",
+    "PublicPuzzleNumber": 1523
+  },
+  {
+    "NytPuzzleId": 1488,
+    "PrintDate": "2025-08-21",
+    "PublicPuzzleNumber": 1524
+  },
+  {
+    "NytPuzzleId": 2185,
+    "PrintDate": "2025-08-22",
+    "PublicPuzzleNumber": 1525
+  },
+  {
+    "NytPuzzleId": 2122,
+    "PrintDate": "2025-08-23",
+    "PublicPuzzleNumber": 1526
+  },
+  {
+    "NytPuzzleId": 980,
+    "PrintDate": "2025-08-24",
+    "PublicPuzzleNumber": 1527
+  },
+  {
+    "NytPuzzleId": 2051,
+    "PrintDate": "2025-08-25",
+    "PublicPuzzleNumber": 1528
+  },
+  {
+    "NytPuzzleId": 1622,
+    "PrintDate": "2025-08-26",
+    "PublicPuzzleNumber": 1529
+  },
+  {
+    "NytPuzzleId": 1842,
+    "PrintDate": "2025-08-27",
+    "PublicPuzzleNumber": 1530
+  },
+  {
+    "NytPuzzleId": 1838,
+    "PrintDate": "2025-08-28",
+    "PublicPuzzleNumber": 1531
+  },
+  {
+    "NytPuzzleId": 2035,
+    "PrintDate": "2025-08-29",
+    "PublicPuzzleNumber": 1532
+  },
+  {
+    "NytPuzzleId": 1540,
+    "PrintDate": "2025-08-30",
+    "PublicPuzzleNumber": 1533
+  },
+  {
+    "NytPuzzleId": 1820,
+    "PrintDate": "2025-08-31",
+    "PublicPuzzleNumber": 1534
+  },
+  {
+    "NytPuzzleId": 1260,
+    "PrintDate": "2025-09-01",
+    "PublicPuzzleNumber": 1535
+  },
+  {
+    "NytPuzzleId": 661,
+    "PrintDate": "2025-09-02",
+    "PublicPuzzleNumber": 1536
+  },
+  {
+    "NytPuzzleId": 1262,
+    "PrintDate": "2025-09-03",
+    "PublicPuzzleNumber": 1537
+  },
+  {
+    "NytPuzzleId": 1583,
+    "PrintDate": "2025-09-04",
+    "PublicPuzzleNumber": 1538
+  },
+  {
+    "NytPuzzleId": 1861,
+    "PrintDate": "2025-09-05",
+    "PublicPuzzleNumber": 1539
+  },
+  {
+    "NytPuzzleId": 1790,
+    "PrintDate": "2025-09-06",
+    "PublicPuzzleNumber": 1540
+  },
+  {
+    "NytPuzzleId": 1803,
+    "PrintDate": "2025-09-07",
+    "PublicPuzzleNumber": 1541
+  },
+  {
+    "NytPuzzleId": 2188,
+    "PrintDate": "2025-09-08",
+    "PublicPuzzleNumber": 1542
+  },
+  {
+    "NytPuzzleId": 1046,
+    "PrintDate": "2025-09-09",
+    "PublicPuzzleNumber": 1543
+  },
+  {
+    "NytPuzzleId": 1821,
+    "PrintDate": "2025-09-10",
+    "PublicPuzzleNumber": 1544
+  },
+  {
+    "NytPuzzleId": 1372,
+    "PrintDate": "2025-09-11",
+    "PublicPuzzleNumber": 1545
+  },
+  {
+    "NytPuzzleId": 1822,
+    "PrintDate": "2025-09-12",
+    "PublicPuzzleNumber": 1546
+  },
+  {
+    "NytPuzzleId": 1254,
+    "PrintDate": "2025-09-13",
+    "PublicPuzzleNumber": 1547
+  },
+  {
+    "NytPuzzleId": 1537,
+    "PrintDate": "2025-09-14",
+    "PublicPuzzleNumber": 1548
+  },
+  {
+    "NytPuzzleId": 1236,
+    "PrintDate": "2025-09-15",
+    "PublicPuzzleNumber": 1549
+  },
+  {
+    "NytPuzzleId": 577,
+    "PrintDate": "2025-09-16",
+    "PublicPuzzleNumber": 1550
+  },
+  {
+    "NytPuzzleId": 1598,
+    "PrintDate": "2025-09-17",
+    "PublicPuzzleNumber": 1551
+  },
+  {
+    "NytPuzzleId": 1030,
+    "PrintDate": "2025-09-18",
+    "PublicPuzzleNumber": 1552
+  },
+  {
+    "NytPuzzleId": 848,
+    "PrintDate": "2025-09-19",
+    "PublicPuzzleNumber": 1553
+  },
+  {
+    "NytPuzzleId": 1424,
+    "PrintDate": "2025-09-20",
+    "PublicPuzzleNumber": 1554
+  },
+  {
+    "NytPuzzleId": 1911,
+    "PrintDate": "2025-09-21",
+    "PublicPuzzleNumber": 1555
+  },
+  {
+    "NytPuzzleId": 1006,
+    "PrintDate": "2025-09-22",
+    "PublicPuzzleNumber": 1556
+  },
+  {
+    "NytPuzzleId": 2232,
+    "PrintDate": "2025-09-23",
+    "PublicPuzzleNumber": 1557
+  },
+  {
+    "NytPuzzleId": 1183,
+    "PrintDate": "2025-09-24",
+    "PublicPuzzleNumber": 1558
+  },
+  {
+    "NytPuzzleId": 2069,
+    "PrintDate": "2025-09-25",
+    "PublicPuzzleNumber": 1559
+  },
+  {
+    "NytPuzzleId": 809,
+    "PrintDate": "2025-09-26",
+    "PublicPuzzleNumber": 1560
+  },
+  {
+    "NytPuzzleId": 779,
+    "PrintDate": "2025-09-27",
+    "PublicPuzzleNumber": 1561
+  },
+  {
+    "NytPuzzleId": 2090,
+    "PrintDate": "2025-09-28",
+    "PublicPuzzleNumber": 1562
+  },
+  {
+    "NytPuzzleId": 863,
+    "PrintDate": "2025-09-29",
+    "PublicPuzzleNumber": 1563
+  },
+  {
+    "NytPuzzleId": 2049,
+    "PrintDate": "2025-09-30",
+    "PublicPuzzleNumber": 1564
+  },
+  {
+    "NytPuzzleId": 630,
+    "PrintDate": "2025-10-01",
+    "PublicPuzzleNumber": 1565
+  },
+  {
+    "NytPuzzleId": 1840,
+    "PrintDate": "2025-10-02",
+    "PublicPuzzleNumber": 1566
+  },
+  {
+    "NytPuzzleId": 1998,
+    "PrintDate": "2025-10-03",
+    "PublicPuzzleNumber": 1567
+  },
+  {
+    "NytPuzzleId": 1037,
+    "PrintDate": "2025-10-04",
+    "PublicPuzzleNumber": 1568
+  },
+  {
+    "NytPuzzleId": 1033,
+    "PrintDate": "2025-10-05",
+    "PublicPuzzleNumber": 1569
+  },
+  {
+    "NytPuzzleId": 1026,
+    "PrintDate": "2025-10-06",
+    "PublicPuzzleNumber": 1570
+  },
+  {
+    "NytPuzzleId": 1924,
+    "PrintDate": "2025-10-07",
+    "PublicPuzzleNumber": 1571
+  },
+  {
+    "NytPuzzleId": 1292,
+    "PrintDate": "2025-10-08",
+    "PublicPuzzleNumber": 1572
+  },
+  {
+    "NytPuzzleId": 909,
+    "PrintDate": "2025-10-09",
+    "PublicPuzzleNumber": 1573
+  },
+  {
+    "NytPuzzleId": 2123,
+    "PrintDate": "2025-10-10",
+    "PublicPuzzleNumber": 1574
+  },
+  {
+    "NytPuzzleId": 609,
+    "PrintDate": "2025-10-11",
+    "PublicPuzzleNumber": 1575
+  },
+  {
+    "NytPuzzleId": 1973,
+    "PrintDate": "2025-10-12",
+    "PublicPuzzleNumber": 1576
+  },
+  {
+    "NytPuzzleId": 1226,
+    "PrintDate": "2025-10-13",
+    "PublicPuzzleNumber": 1577
+  },
+  {
+    "NytPuzzleId": 1905,
+    "PrintDate": "2025-10-14",
+    "PublicPuzzleNumber": 1578
+  },
+  {
+    "NytPuzzleId": 1581,
+    "PrintDate": "2025-10-15",
+    "PublicPuzzleNumber": 1579
+  },
+  {
+    "NytPuzzleId": 2274,
+    "PrintDate": "2025-10-16",
+    "PublicPuzzleNumber": 1580
+  },
+  {
+    "NytPuzzleId": 1944,
+    "PrintDate": "2025-10-17",
+    "PublicPuzzleNumber": 1581
+  },
+  {
+    "NytPuzzleId": 939,
+    "PrintDate": "2025-10-18",
+    "PublicPuzzleNumber": 1582
+  },
+  {
+    "NytPuzzleId": 899,
+    "PrintDate": "2025-10-19",
+    "PublicPuzzleNumber": 1583
+  },
+  {
+    "NytPuzzleId": 1862,
+    "PrintDate": "2025-10-20",
+    "PublicPuzzleNumber": 1584
+  },
+  {
+    "NytPuzzleId": 1373,
+    "PrintDate": "2025-10-21",
+    "PublicPuzzleNumber": 1585
+  },
+  {
+    "NytPuzzleId": 1192,
+    "PrintDate": "2025-10-22",
+    "PublicPuzzleNumber": 1586
+  },
+  {
+    "NytPuzzleId": 1800,
+    "PrintDate": "2025-10-23",
+    "PublicPuzzleNumber": 1587
+  },
+  {
+    "NytPuzzleId": 1009,
+    "PrintDate": "2025-10-24",
+    "PublicPuzzleNumber": 1588
+  },
+  {
+    "NytPuzzleId": 2138,
+    "PrintDate": "2025-10-25",
+    "PublicPuzzleNumber": 1589
+  },
+  {
+    "NytPuzzleId": 1925,
+    "PrintDate": "2025-10-26",
+    "PublicPuzzleNumber": 1590
+  },
+  {
+    "NytPuzzleId": 795,
+    "PrintDate": "2025-10-27",
+    "PublicPuzzleNumber": 1591
+  },
+  {
+    "NytPuzzleId": 1418,
+    "PrintDate": "2025-10-28",
+    "PublicPuzzleNumber": 1592
+  },
+  {
+    "NytPuzzleId": 1231,
+    "PrintDate": "2025-10-29",
+    "PublicPuzzleNumber": 1593
+  },
+  {
+    "NytPuzzleId": 2009,
+    "PrintDate": "2025-10-30",
+    "PublicPuzzleNumber": 1594
+  },
+  {
+    "NytPuzzleId": 2045,
+    "PrintDate": "2025-10-31",
+    "PublicPuzzleNumber": 1595
+  },
+  {
+    "NytPuzzleId": 1864,
+    "PrintDate": "2025-11-01",
+    "PublicPuzzleNumber": 1596
+  },
+  {
+    "NytPuzzleId": 747,
+    "PrintDate": "2025-11-02",
+    "PublicPuzzleNumber": 1597
+  },
+  {
+    "NytPuzzleId": 684,
+    "PrintDate": "2025-11-03",
+    "PublicPuzzleNumber": 1598
+  },
+  {
+    "NytPuzzleId": 1120,
+    "PrintDate": "2025-11-04",
+    "PublicPuzzleNumber": 1599
+  },
+  {
+    "NytPuzzleId": 1208,
+    "PrintDate": "2025-11-05",
+    "PublicPuzzleNumber": 1600
+  },
+  {
+    "NytPuzzleId": 2061,
+    "PrintDate": "2025-11-06",
+    "PublicPuzzleNumber": 1601
+  },
+  {
+    "NytPuzzleId": 2237,
+    "PrintDate": "2025-11-07",
+    "PublicPuzzleNumber": 1602
+  },
+  {
+    "NytPuzzleId": 535,
+    "PrintDate": "2025-11-08",
+    "PublicPuzzleNumber": 1603
+  },
+  {
+    "NytPuzzleId": 1457,
+    "PrintDate": "2025-11-09",
+    "PublicPuzzleNumber": 1604
+  },
+  {
+    "NytPuzzleId": 1631,
+    "PrintDate": "2025-11-10",
+    "PublicPuzzleNumber": 1605
+  },
+  {
+    "NytPuzzleId": 2343,
+    "PrintDate": "2025-11-11",
+    "PublicPuzzleNumber": 1606
+  },
+  {
+    "NytPuzzleId": 2030,
+    "PrintDate": "2025-11-12",
+    "PublicPuzzleNumber": 1607
+  },
+  {
+    "NytPuzzleId": 2330,
+    "PrintDate": "2025-11-13",
+    "PublicPuzzleNumber": 1608
+  },
+  {
+    "NytPuzzleId": 1066,
+    "PrintDate": "2025-11-14",
+    "PublicPuzzleNumber": 1609
+  },
+  {
+    "NytPuzzleId": 725,
+    "PrintDate": "2025-11-15",
+    "PublicPuzzleNumber": 1610
+  },
+  {
+    "NytPuzzleId": 1514,
+    "PrintDate": "2025-11-16",
+    "PublicPuzzleNumber": 1611
+  },
+  {
+    "NytPuzzleId": 1792,
+    "PrintDate": "2025-11-17",
+    "PublicPuzzleNumber": 1612
+  },
+  {
+    "NytPuzzleId": 1693,
+    "PrintDate": "2025-11-18",
+    "PublicPuzzleNumber": 1613
+  },
+  {
+    "NytPuzzleId": 1709,
+    "PrintDate": "2025-11-19",
+    "PublicPuzzleNumber": 1614
+  },
+  {
+    "NytPuzzleId": 522,
+    "PrintDate": "2025-11-20",
+    "PublicPuzzleNumber": 1615
+  },
+  {
+    "NytPuzzleId": 739,
+    "PrintDate": "2025-11-21",
+    "PublicPuzzleNumber": 1616
+  },
+  {
+    "NytPuzzleId": 1585,
+    "PrintDate": "2025-11-22",
+    "PublicPuzzleNumber": 1617
+  },
+  {
+    "NytPuzzleId": 1187,
+    "PrintDate": "2025-11-23",
+    "PublicPuzzleNumber": 1618
+  },
+  {
+    "NytPuzzleId": 943,
+    "PrintDate": "2025-11-24",
+    "PublicPuzzleNumber": 1619
+  },
+  {
+    "NytPuzzleId": 2096,
+    "PrintDate": "2025-11-25",
+    "PublicPuzzleNumber": 1620
+  },
+  {
+    "NytPuzzleId": 787,
+    "PrintDate": "2025-11-26",
+    "PublicPuzzleNumber": 1621
+  },
+  {
+    "NytPuzzleId": 1257,
+    "PrintDate": "2025-11-27",
+    "PublicPuzzleNumber": 1622
+  },
+  {
+    "NytPuzzleId": 2390,
+    "PrintDate": "2025-11-28",
+    "PublicPuzzleNumber": 1623
+  },
+  {
+    "NytPuzzleId": 1258,
+    "PrintDate": "2025-11-29",
+    "PublicPuzzleNumber": 1624
+  },
+  {
+    "NytPuzzleId": 2323,
+    "PrintDate": "2025-11-30",
+    "PublicPuzzleNumber": 1625
+  },
+  {
+    "NytPuzzleId": 2231,
+    "PrintDate": "2025-12-01",
+    "PublicPuzzleNumber": 1626
+  },
+  {
+    "NytPuzzleId": 1617,
+    "PrintDate": "2025-12-02",
+    "PublicPuzzleNumber": 1627
+  },
+  {
+    "NytPuzzleId": 1597,
+    "PrintDate": "2025-12-03",
+    "PublicPuzzleNumber": 1628
+  },
+  {
+    "NytPuzzleId": 916,
+    "PrintDate": "2025-12-04",
+    "PublicPuzzleNumber": 1629
+  },
+  {
+    "NytPuzzleId": 1018,
+    "PrintDate": "2025-12-05",
+    "PublicPuzzleNumber": 1630
+  },
+  {
+    "NytPuzzleId": 1276,
+    "PrintDate": "2025-12-06",
+    "PublicPuzzleNumber": 1631
+  },
+  {
+    "NytPuzzleId": 1430,
+    "PrintDate": "2025-12-07",
+    "PublicPuzzleNumber": 1632
+  },
+  {
+    "NytPuzzleId": 1306,
+    "PrintDate": "2025-12-08",
+    "PublicPuzzleNumber": 1633
+  },
+  {
+    "NytPuzzleId": 1036,
+    "PrintDate": "2025-12-09",
+    "PublicPuzzleNumber": 1634
+  },
+  {
+    "NytPuzzleId": 1497,
+    "PrintDate": "2025-12-10",
+    "PublicPuzzleNumber": 1635
+  },
+  {
+    "NytPuzzleId": 1683,
+    "PrintDate": "2025-12-11",
+    "PublicPuzzleNumber": 1636
+  },
+  {
+    "NytPuzzleId": 2074,
+    "PrintDate": "2025-12-12",
+    "PublicPuzzleNumber": 1637
+  },
+  {
+    "NytPuzzleId": 2050,
+    "PrintDate": "2025-12-13",
+    "PublicPuzzleNumber": 1638
+  },
+  {
+    "NytPuzzleId": 1692,
+    "PrintDate": "2025-12-14",
+    "PublicPuzzleNumber": 1639
+  },
+  {
+    "NytPuzzleId": 1830,
+    "PrintDate": "2025-12-15",
+    "PublicPuzzleNumber": 1640
+  },
+  {
+    "NytPuzzleId": 1345,
+    "PrintDate": "2025-12-16",
+    "PublicPuzzleNumber": 1641
+  },
+  {
+    "NytPuzzleId": 1420,
+    "PrintDate": "2025-12-17",
+    "PublicPuzzleNumber": 1642
+  },
+  {
+    "NytPuzzleId": 1237,
+    "PrintDate": "2025-12-18",
+    "PublicPuzzleNumber": 1643
+  },
+  {
+    "NytPuzzleId": 1839,
+    "PrintDate": "2025-12-19",
+    "PublicPuzzleNumber": 1644
+  },
+  {
+    "NytPuzzleId": 1974,
+    "PrintDate": "2025-12-20",
+    "PublicPuzzleNumber": 1645
+  },
+  {
+    "NytPuzzleId": 1388,
+    "PrintDate": "2025-12-21",
+    "PublicPuzzleNumber": 1646
+  },
+  {
+    "NytPuzzleId": 1213,
+    "PrintDate": "2025-12-22",
+    "PublicPuzzleNumber": 1647
+  },
+  {
+    "NytPuzzleId": 972,
+    "PrintDate": "2025-12-23",
+    "PublicPuzzleNumber": 1648
+  },
+  {
+    "NytPuzzleId": 1619,
+    "PrintDate": "2025-12-24",
+    "PublicPuzzleNumber": 1649
+  },
+  {
+    "NytPuzzleId": 1526,
+    "PrintDate": "2025-12-25",
+    "PublicPuzzleNumber": 1650
+  },
+  {
+    "NytPuzzleId": 1355,
+    "PrintDate": "2025-12-26",
+    "PublicPuzzleNumber": 1651
+  },
+  {
+    "NytPuzzleId": 2137,
+    "PrintDate": "2025-12-27",
+    "PublicPuzzleNumber": 1652
+  },
+  {
+    "NytPuzzleId": 1672,
+    "PrintDate": "2025-12-28",
+    "PublicPuzzleNumber": 1653
+  },
+  {
+    "NytPuzzleId": 1989,
+    "PrintDate": "2025-12-29",
+    "PublicPuzzleNumber": 1654
+  },
+  {
+    "NytPuzzleId": 1489,
+    "PrintDate": "2025-12-30",
+    "PublicPuzzleNumber": 1655
+  },
+  {
+    "NytPuzzleId": 647,
+    "PrintDate": "2025-12-31",
+    "PublicPuzzleNumber": 1656
+  },
+  {
+    "NytPuzzleId": 1566,
+    "PrintDate": "2026-01-01",
+    "PublicPuzzleNumber": 1657
+  },
+  {
+    "NytPuzzleId": 1817,
+    "PrintDate": "2026-01-02",
+    "PublicPuzzleNumber": 1658
+  },
+  {
+    "NytPuzzleId": 2388,
+    "PrintDate": "2026-01-03",
+    "PublicPuzzleNumber": 1659
+  },
+  {
+    "NytPuzzleId": 1327,
+    "PrintDate": "2026-01-04",
+    "PublicPuzzleNumber": 1660
+  },
+  {
+    "NytPuzzleId": 1552,
+    "PrintDate": "2026-01-05",
+    "PublicPuzzleNumber": 1661
+  },
+  {
+    "NytPuzzleId": 2397,
+    "PrintDate": "2026-01-06",
+    "PublicPuzzleNumber": 1662
+  },
+  {
+    "NytPuzzleId": 2057,
+    "PrintDate": "2026-01-07",
+    "PublicPuzzleNumber": 1663
+  },
+  {
+    "NytPuzzleId": 573,
+    "PrintDate": "2026-01-08",
+    "PublicPuzzleNumber": 1664
+  },
+  {
+    "NytPuzzleId": 874,
+    "PrintDate": "2026-01-09",
+    "PublicPuzzleNumber": 1665
+  },
+  {
+    "NytPuzzleId": 1587,
+    "PrintDate": "2026-01-10",
+    "PublicPuzzleNumber": 1666
+  },
+  {
+    "NytPuzzleId": 1377,
+    "PrintDate": "2026-01-11",
+    "PublicPuzzleNumber": 1667
+  },
+  {
+    "NytPuzzleId": 1411,
+    "PrintDate": "2026-01-12",
+    "PublicPuzzleNumber": 1668
+  },
+  {
+    "NytPuzzleId": 1696,
+    "PrintDate": "2026-01-13",
+    "PublicPuzzleNumber": 1669
+  },
+  {
+    "NytPuzzleId": 1957,
+    "PrintDate": "2026-01-14",
+    "PublicPuzzleNumber": 1670
+  },
+  {
+    "NytPuzzleId": 1699,
+    "PrintDate": "2026-01-15",
+    "PublicPuzzleNumber": 1671
+  },
+  {
+    "NytPuzzleId": 1269,
+    "PrintDate": "2026-01-16",
+    "PublicPuzzleNumber": 1672
+  },
+  {
+    "NytPuzzleId": 1334,
+    "PrintDate": "2026-01-17",
+    "PublicPuzzleNumber": 1673
+  },
+  {
+    "NytPuzzleId": 987,
+    "PrintDate": "2026-01-18",
+    "PublicPuzzleNumber": 1674
+  },
+  {
+    "NytPuzzleId": 1380,
+    "PrintDate": "2026-01-19",
+    "PublicPuzzleNumber": 1675
+  },
+  {
+    "NytPuzzleId": 2225,
+    "PrintDate": "2026-01-20",
+    "PublicPuzzleNumber": 1676
+  },
+  {
+    "NytPuzzleId": 1642,
+    "PrintDate": "2026-01-21",
+    "PublicPuzzleNumber": 1677
+  },
+  {
+    "NytPuzzleId": 728,
+    "PrintDate": "2026-01-22",
+    "PublicPuzzleNumber": 1678
+  },
+  {
+    "NytPuzzleId": 1843,
+    "PrintDate": "2026-01-23",
+    "PublicPuzzleNumber": 1679
+  },
+  {
+    "NytPuzzleId": 775,
+    "PrintDate": "2026-01-24",
+    "PublicPuzzleNumber": 1680
+  },
+  {
+    "NytPuzzleId": 914,
+    "PrintDate": "2026-01-25",
+    "PublicPuzzleNumber": 1681
+  },
+  {
+    "NytPuzzleId": 1016,
+    "PrintDate": "2026-01-26",
+    "PublicPuzzleNumber": 1682
+  },
+  {
+    "NytPuzzleId": 1710,
+    "PrintDate": "2026-01-27",
+    "PublicPuzzleNumber": 1683
+  },
+  {
+    "NytPuzzleId": 1442,
+    "PrintDate": "2026-01-28",
+    "PublicPuzzleNumber": 1684
+  },
+  {
+    "NytPuzzleId": 2098,
+    "PrintDate": "2026-01-29",
+    "PublicPuzzleNumber": 1685
+  },
+  {
+    "NytPuzzleId": 1204,
+    "PrintDate": "2026-01-30",
+    "PublicPuzzleNumber": 1686
+  },
+  {
+    "NytPuzzleId": 2073,
+    "PrintDate": "2026-01-31",
+    "PublicPuzzleNumber": 1687
+  },
+  {
+    "NytPuzzleId": 743,
+    "PrintDate": "2026-02-01",
+    "PublicPuzzleNumber": 1688
+  },
+  {
+    "NytPuzzleId": 2398,
+    "PrintDate": "2026-02-02",
+    "PublicPuzzleNumber": 1689
+  },
+  {
+    "NytPuzzleId": 1763,
+    "PrintDate": "2026-02-03",
+    "PublicPuzzleNumber": 1690
+  },
+  {
+    "NytPuzzleId": 1739,
+    "PrintDate": "2026-02-04",
+    "PublicPuzzleNumber": 1691
+  },
+  {
+    "NytPuzzleId": 1779,
+    "PrintDate": "2026-02-05",
+    "PublicPuzzleNumber": 1692
+  },
+  {
+    "NytPuzzleId": 944,
+    "PrintDate": "2026-02-06",
+    "PublicPuzzleNumber": 1693
+  },
+  {
+    "NytPuzzleId": 1443,
+    "PrintDate": "2026-02-07",
+    "PublicPuzzleNumber": 1694
+  },
+  {
+    "NytPuzzleId": 3035,
+    "PrintDate": "2026-02-08",
+    "PublicPuzzleNumber": 1695
+  },
+  {
+    "NytPuzzleId": 1871,
+    "PrintDate": "2026-02-09",
+    "PublicPuzzleNumber": 1696
+  },
+  {
+    "NytPuzzleId": 2152,
+    "PrintDate": "2026-02-10",
+    "PublicPuzzleNumber": 1697
+  },
+  {
+    "NytPuzzleId": 2119,
+    "PrintDate": "2026-02-11",
+    "PublicPuzzleNumber": 1698
+  },
+  {
+    "NytPuzzleId": 1984,
+    "PrintDate": "2026-02-12",
+    "PublicPuzzleNumber": 1699
+  },
+  {
+    "NytPuzzleId": 2396,
+    "PrintDate": "2026-02-13",
+    "PublicPuzzleNumber": 1700
+  },
+  {
+    "NytPuzzleId": 846,
+    "PrintDate": "2026-02-14",
+    "PublicPuzzleNumber": 1701
+  },
+  {
+    "NytPuzzleId": 1404,
+    "PrintDate": "2026-02-15",
+    "PublicPuzzleNumber": 1702
+  },
+  {
+    "NytPuzzleId": 2155,
+    "PrintDate": "2026-02-16",
+    "PublicPuzzleNumber": 1703
+  },
+  {
+    "NytPuzzleId": 4216,
+    "PrintDate": "2026-02-17",
+    "PublicPuzzleNumber": 1704
+  },
+  {
+    "NytPuzzleId": 1261,
+    "PrintDate": "2026-02-18",
+    "PublicPuzzleNumber": 1705
+  },
+  {
+    "NytPuzzleId": 981,
+    "PrintDate": "2026-02-19",
+    "PublicPuzzleNumber": 1706
+  },
+  {
+    "NytPuzzleId": 619,
+    "PrintDate": "2026-02-20",
+    "PublicPuzzleNumber": 1707
+  },
+  {
+    "NytPuzzleId": 2531,
+    "PrintDate": "2026-02-21",
+    "PublicPuzzleNumber": 1708
+  },
+  {
+    "NytPuzzleId": 2184,
+    "PrintDate": "2026-02-22",
+    "PublicPuzzleNumber": 1709
+  },
+  {
+    "NytPuzzleId": 2229,
+    "PrintDate": "2026-02-23",
+    "PublicPuzzleNumber": 1710
+  },
+  {
+    "NytPuzzleId": 1069,
+    "PrintDate": "2026-02-24",
+    "PublicPuzzleNumber": 1711
+  },
+  {
+    "NytPuzzleId": 2327,
+    "PrintDate": "2026-02-25",
+    "PublicPuzzleNumber": 1712
+  },
+  {
+    "NytPuzzleId": 644,
+    "PrintDate": "2026-02-26",
+    "PublicPuzzleNumber": 1713
+  },
+  {
+    "NytPuzzleId": 1711,
+    "PrintDate": "2026-02-27",
+    "PublicPuzzleNumber": 1714
+  },
+  {
+    "NytPuzzleId": 2359,
+    "PrintDate": "2026-02-28",
+    "PublicPuzzleNumber": 1715
+  },
+  {
+    "NytPuzzleId": 1196,
+    "PrintDate": "2026-03-01",
+    "PublicPuzzleNumber": 1716
+  },
+  {
+    "NytPuzzleId": 971,
+    "PrintDate": "2026-03-02",
+    "PublicPuzzleNumber": 1717
+  },
+  {
+    "NytPuzzleId": 3493,
+    "PrintDate": "2026-03-03",
+    "PublicPuzzleNumber": 1718
+  },
+  {
+    "NytPuzzleId": 2105,
+    "PrintDate": "2026-03-04",
+    "PublicPuzzleNumber": 1719
+  },
+  {
+    "NytPuzzleId": 2017,
+    "PrintDate": "2026-03-05",
+    "PublicPuzzleNumber": 1720
+  },
+  {
+    "NytPuzzleId": 4616,
+    "PrintDate": "2026-03-06",
+    "PublicPuzzleNumber": 1721
+  },
+  {
+    "NytPuzzleId": 1733,
+    "PrintDate": "2026-03-07",
+    "PublicPuzzleNumber": 1722
+  },
+  {
+    "NytPuzzleId": 720,
+    "PrintDate": "2026-03-08",
+    "PublicPuzzleNumber": 1723
+  },
+  {
+    "NytPuzzleId": 2293,
+    "PrintDate": "2026-03-09",
+    "PublicPuzzleNumber": 1724
+  },
+  {
+    "NytPuzzleId": 924,
+    "PrintDate": "2026-03-10",
+    "PublicPuzzleNumber": 1725
+  },
+  {
+    "NytPuzzleId": 2224,
+    "PrintDate": "2026-03-11",
+    "PublicPuzzleNumber": 1726
+  },
+  {
+    "NytPuzzleId": 1072,
+    "PrintDate": "2026-03-12",
+    "PublicPuzzleNumber": 1727
+  },
+  {
+    "NytPuzzleId": 784,
+    "PrintDate": "2026-03-13",
+    "PublicPuzzleNumber": 1728
+  },
+  {
+    "NytPuzzleId": 1748,
+    "PrintDate": "2026-03-14",
+    "PublicPuzzleNumber": 1729
+  },
+  {
+    "NytPuzzleId": 3257,
+    "PrintDate": "2026-03-15",
+    "PublicPuzzleNumber": 1730
+  },
+  {
+    "NytPuzzleId": 1806,
+    "PrintDate": "2026-03-16",
+    "PublicPuzzleNumber": 1731
+  },
+  {
+    "NytPuzzleId": 900,
+    "PrintDate": "2026-03-17",
+    "PublicPuzzleNumber": 1732
+  },
+  {
+    "NytPuzzleId": 770,
+    "PrintDate": "2026-03-18",
+    "PublicPuzzleNumber": 1733
+  },
+  {
+    "NytPuzzleId": 788,
+    "PrintDate": "2026-03-19",
+    "PublicPuzzleNumber": 1734
+  },
+  {
+    "NytPuzzleId": 2377,
+    "PrintDate": "2026-03-20",
+    "PublicPuzzleNumber": 1735
+  },
+  {
+    "NytPuzzleId": 597,
+    "PrintDate": "2026-03-21",
+    "PublicPuzzleNumber": 1736
+  },
+  {
+    "NytPuzzleId": 1811,
+    "PrintDate": "2026-03-22",
+    "PublicPuzzleNumber": 1737
+  },
+  {
+    "NytPuzzleId": 2068,
+    "PrintDate": "2026-03-23",
+    "PublicPuzzleNumber": 1738
+  },
+  {
+    "NytPuzzleId": 1008,
+    "PrintDate": "2026-03-24",
+    "PublicPuzzleNumber": 1739
+  },
+  {
+    "NytPuzzleId": 2203,
+    "PrintDate": "2026-03-25",
+    "PublicPuzzleNumber": 1740
+  },
+  {
+    "NytPuzzleId": 2570,
+    "PrintDate": "2026-03-26",
+    "PublicPuzzleNumber": 1741
+  },
+  {
+    "NytPuzzleId": 3406,
+    "PrintDate": "2026-03-27",
+    "PublicPuzzleNumber": 1742
+  },
+  {
+    "NytPuzzleId": 1197,
+    "PrintDate": "2026-03-28",
+    "PublicPuzzleNumber": 1743
+  },
+  {
+    "NytPuzzleId": 709,
+    "PrintDate": "2026-03-29",
+    "PublicPuzzleNumber": 1744
+  },
+  {
+    "NytPuzzleId": 2824,
+    "PrintDate": "2026-03-30",
+    "PublicPuzzleNumber": 1745
+  },
+  {
+    "NytPuzzleId": 1235,
+    "PrintDate": "2026-03-31",
+    "PublicPuzzleNumber": 1746
+  },
+  {
+    "NytPuzzleId": 1981,
+    "PrintDate": "2026-04-01",
+    "PublicPuzzleNumber": 1747
+  },
+  {
+    "NytPuzzleId": 1425,
+    "PrintDate": "2026-04-02",
+    "PublicPuzzleNumber": 1748
+  },
+  {
+    "NytPuzzleId": 603,
+    "PrintDate": "2026-04-03",
+    "PublicPuzzleNumber": 1749
+  },
+  {
+    "NytPuzzleId": 3978,
+    "PrintDate": "2026-04-04",
+    "PublicPuzzleNumber": 1750
+  },
+  {
+    "NytPuzzleId": 1326,
+    "PrintDate": "2026-04-05",
+    "PublicPuzzleNumber": 1751
+  },
+  {
+    "NytPuzzleId": 950,
+    "PrintDate": "2026-04-06",
+    "PublicPuzzleNumber": 1752
+  },
+  {
+    "NytPuzzleId": 1200,
+    "PrintDate": "2026-04-07",
+    "PublicPuzzleNumber": 1753
+  },
+  {
+    "NytPuzzleId": 2217,
+    "PrintDate": "2026-04-08",
+    "PublicPuzzleNumber": 1754
+  },
+  {
+    "NytPuzzleId": 656,
+    "PrintDate": "2026-04-09",
+    "PublicPuzzleNumber": 1755
+  },
+  {
+    "NytPuzzleId": 2728,
+    "PrintDate": "2026-04-10",
+    "PublicPuzzleNumber": 1756
+  },
+  {
+    "NytPuzzleId": 1512,
+    "PrintDate": "2026-04-11",
+    "PublicPuzzleNumber": 1757
+  },
+  {
+    "NytPuzzleId": 884,
+    "PrintDate": "2026-04-12",
+    "PublicPuzzleNumber": 1758
+  },
+  {
+    "NytPuzzleId": 1740,
+    "PrintDate": "2026-04-13",
+    "PublicPuzzleNumber": 1759
+  },
+  {
+    "NytPuzzleId": 714,
+    "PrintDate": "2026-04-14",
+    "PublicPuzzleNumber": 1760
+  },
+  {
+    "NytPuzzleId": 834,
+    "PrintDate": "2026-04-15",
+    "PublicPuzzleNumber": 1761
+  },
+  {
+    "NytPuzzleId": 2363,
+    "PrintDate": "2026-04-16",
+    "PublicPuzzleNumber": 1762
+  },
+  {
+    "NytPuzzleId": 1986,
+    "PrintDate": "2026-04-17",
+    "PublicPuzzleNumber": 1763
+  },
+  {
+    "NytPuzzleId": 2385,
+    "PrintDate": "2026-04-18",
+    "PublicPuzzleNumber": 1764
+  },
+  {
+    "NytPuzzleId": 4230,
+    "PrintDate": "2026-04-19",
+    "PublicPuzzleNumber": 1765
+  },
+  {
+    "NytPuzzleId": 4545,
+    "PrintDate": "2026-04-20",
+    "PublicPuzzleNumber": 1766
+  },
+  {
+    "NytPuzzleId": 2234,
+    "PrintDate": "2026-04-21",
+    "PublicPuzzleNumber": 1767
+  },
+  {
+    "NytPuzzleId": 2226,
+    "PrintDate": "2026-04-22",
+    "PublicPuzzleNumber": 1768
+  },
+  {
+    "NytPuzzleId": 1275,
+    "PrintDate": "2026-04-23",
+    "PublicPuzzleNumber": 1769
+  },
+  {
+    "NytPuzzleId": 1064,
+    "PrintDate": "2026-04-24",
+    "PublicPuzzleNumber": 1770
+  },
+  {
+    "NytPuzzleId": 1907,
+    "PrintDate": "2026-04-25",
+    "PublicPuzzleNumber": 1771
+  },
+  {
+    "NytPuzzleId": 1961,
+    "PrintDate": "2026-04-26",
+    "PublicPuzzleNumber": 1772
+  },
+  {
+    "NytPuzzleId": 595,
+    "PrintDate": "2026-04-27",
+    "PublicPuzzleNumber": 1773
+  },
+  {
+    "NytPuzzleId": 1239,
+    "PrintDate": "2026-04-28",
+    "PublicPuzzleNumber": 1774
+  },
+  {
+    "NytPuzzleId": 2286,
+    "PrintDate": "2026-04-29",
+    "PublicPuzzleNumber": 1775
+  },
+  {
+    "NytPuzzleId": 667,
+    "PrintDate": "2026-04-30",
+    "PublicPuzzleNumber": 1776
+  },
+  {
+    "NytPuzzleId": 544,
+    "PrintDate": "2026-05-01",
+    "PublicPuzzleNumber": 1777
+  },
+  {
+    "NytPuzzleId": 2672,
+    "PrintDate": "2026-05-02",
+    "PublicPuzzleNumber": 1778
+  },
+  {
+    "NytPuzzleId": 1551,
+    "PrintDate": "2026-05-03",
+    "PublicPuzzleNumber": 1779
+  },
+  {
+    "NytPuzzleId": 2270,
+    "PrintDate": "2026-05-04",
+    "PublicPuzzleNumber": 1780
+  },
+  {
+    "NytPuzzleId": 1414,
+    "PrintDate": "2026-05-05",
+    "PublicPuzzleNumber": 1781
+  },
+  {
+    "NytPuzzleId": 1960,
+    "PrintDate": "2026-05-06",
+    "PublicPuzzleNumber": 1782
+  },
+  {
+    "NytPuzzleId": 751,
+    "PrintDate": "2026-05-07",
+    "PublicPuzzleNumber": 1783
+  },
+  {
+    "NytPuzzleId": 1941,
+    "PrintDate": "2026-05-08",
+    "PublicPuzzleNumber": 1784
+  },
+  {
+    "NytPuzzleId": 1947,
+    "PrintDate": "2026-05-09",
+    "PublicPuzzleNumber": 1785
+  },
+  {
+    "NytPuzzleId": 1949,
+    "PrintDate": "2026-05-10",
+    "PublicPuzzleNumber": 1786
+  },
+  {
+    "NytPuzzleId": 2181,
+    "PrintDate": "2026-05-11",
+    "PublicPuzzleNumber": 1787
+  },
+  {
+    "NytPuzzleId": 2805,
+    "PrintDate": "2026-05-12",
+    "PublicPuzzleNumber": 1788
+  },
+  {
+    "NytPuzzleId": 754,
+    "PrintDate": "2026-05-13",
+    "PublicPuzzleNumber": 1789
+  },
+  {
+    "NytPuzzleId": 1845,
+    "PrintDate": "2026-05-14",
+    "PublicPuzzleNumber": 1790
+  },
+  {
+    "NytPuzzleId": 885,
+    "PrintDate": "2026-05-15",
+    "PublicPuzzleNumber": 1791
+  },
+  {
+    "NytPuzzleId": 1423,
+    "PrintDate": "2026-05-16",
+    "PublicPuzzleNumber": 1792
+  },
+  {
+    "NytPuzzleId": 1177,
+    "PrintDate": "2026-05-17",
+    "PublicPuzzleNumber": 1793
+  },
+  {
+    "NytPuzzleId": 670,
+    "PrintDate": "2026-05-18",
+    "PublicPuzzleNumber": 1794
+  },
+  {
+    "NytPuzzleId": 1448,
+    "PrintDate": "2026-05-19",
+    "PublicPuzzleNumber": 1795
+  },
+  {
+    "NytPuzzleId": 851,
+    "PrintDate": "2026-05-20",
+    "PublicPuzzleNumber": 1796
+  },
+  {
+    "NytPuzzleId": 2441,
+    "PrintDate": "2026-05-21",
+    "PublicPuzzleNumber": 1797
+  },
+  {
+    "NytPuzzleId": 871,
+    "PrintDate": "2026-05-22",
+    "PublicPuzzleNumber": 1798
+  },
+  {
+    "NytPuzzleId": 1157,
+    "PrintDate": "2026-05-23",
+    "PublicPuzzleNumber": 1799
+  },
+  {
+    "NytPuzzleId": 614,
+    "PrintDate": "2026-05-24",
+    "PublicPuzzleNumber": 1800
+  },
+  {
+    "NytPuzzleId": 663,
+    "PrintDate": "2026-05-25",
+    "PublicPuzzleNumber": 1801
+  },
+  {
+    "NytPuzzleId": 638,
+    "PrintDate": "2026-05-26",
+    "PublicPuzzleNumber": 1802
+  },
+  {
+    "NytPuzzleId": 2170,
+    "PrintDate": "2026-05-27",
+    "PublicPuzzleNumber": 1803
+  },
+  {
+    "NytPuzzleId": 2389,
+    "PrintDate": "2026-05-28",
+    "PublicPuzzleNumber": 1804
+  },
+  {
+    "NytPuzzleId": 2164,
+    "PrintDate": "2026-05-29",
+    "PublicPuzzleNumber": 1805
+  },
+  {
+    "NytPuzzleId": 4134,
+    "PrintDate": "2026-05-30",
+    "PublicPuzzleNumber": 1806
+  },
+  {
+    "NytPuzzleId": 1976,
+    "PrintDate": "2026-05-31",
+    "PublicPuzzleNumber": 1807
+  },
+  {
+    "NytPuzzleId": 1559,
+    "PrintDate": "2026-06-01",
+    "PublicPuzzleNumber": 1808
+  },
+  {
+    "NytPuzzleId": 1635,
+    "PrintDate": "2026-06-02",
+    "PublicPuzzleNumber": 1809
+  },
+  {
+    "NytPuzzleId": 1109,
+    "PrintDate": "2026-06-03",
+    "PublicPuzzleNumber": 1810
+  },
+  {
+    "NytPuzzleId": 2015,
+    "PrintDate": "2026-06-04",
+    "PublicPuzzleNumber": 1811
+  },
+  {
+    "NytPuzzleId": 1353,
+    "PrintDate": "2026-06-05",
+    "PublicPuzzleNumber": 1812
+  },
+  {
+    "NytPuzzleId": 1616,
+    "PrintDate": "2026-06-06",
+    "PublicPuzzleNumber": 1813
+  },
+  {
+    "NytPuzzleId": 4375,
+    "PrintDate": "2026-06-07",
+    "PublicPuzzleNumber": 1814
+  },
+  {
+    "NytPuzzleId": 1093,
+    "PrintDate": "2026-06-08",
+    "PublicPuzzleNumber": 1815
+  },
+  {
+    "NytPuzzleId": 4552,
+    "PrintDate": "2026-06-09",
+    "PublicPuzzleNumber": 1816
+  },
+  {
+    "NytPuzzleId": 1114,
+    "PrintDate": "2026-06-10",
+    "PublicPuzzleNumber": 1817
+  },
+  {
+    "NytPuzzleId": 2077,
+    "PrintDate": "2026-06-11",
+    "PublicPuzzleNumber": 1818
+  },
+  {
+    "NytPuzzleId": 2664,
+    "PrintDate": "2026-06-12",
+    "PublicPuzzleNumber": 1819
+  },
+  {
+    "NytPuzzleId": 758,
+    "PrintDate": "2026-06-13",
+    "PublicPuzzleNumber": 1820
+  },
+  {
+    "NytPuzzleId": 999,
+    "PrintDate": "2026-06-14",
+    "PublicPuzzleNumber": 1821
+  },
+  {
+    "NytPuzzleId": 1230,
+    "PrintDate": "2026-06-15",
+    "PublicPuzzleNumber": 1822
+  },
+  {
+    "NytPuzzleId": 856,
+    "PrintDate": "2026-06-16",
+    "PublicPuzzleNumber": 1823
+  },
+  {
+    "NytPuzzleId": 1735,
+    "PrintDate": "2026-06-17",
+    "PublicPuzzleNumber": 1824
+  },
+  {
+    "NytPuzzleId": 1736,
+    "PrintDate": "2026-06-18",
+    "PublicPuzzleNumber": 1825
+  },
+  {
+    "NytPuzzleId": 2354,
+    "PrintDate": "2026-06-19",
+    "PublicPuzzleNumber": 1826
+  },
+  {
+    "NytPuzzleId": 1467,
+    "PrintDate": "2026-06-20",
+    "PublicPuzzleNumber": 1827
+  },
+  {
+    "NytPuzzleId": 2190,
+    "PrintDate": "2026-06-21",
+    "PublicPuzzleNumber": 1828
+  },
+  {
+    "NytPuzzleId": 1557,
+    "PrintDate": "2026-06-22",
+    "PublicPuzzleNumber": 1829
+  },
+  {
+    "NytPuzzleId": 2082,
+    "PrintDate": "2026-06-23",
+    "PublicPuzzleNumber": 1830
+  },
+  {
+    "NytPuzzleId": 673,
+    "PrintDate": "2026-06-24",
+    "PublicPuzzleNumber": 1831
+  },
+  {
+    "NytPuzzleId": 1609,
+    "PrintDate": "2026-06-25",
+    "PublicPuzzleNumber": 1832
+  },
+  {
+    "NytPuzzleId": 2416,
+    "PrintDate": "2026-06-26",
+    "PublicPuzzleNumber": 1833
+  },
+  {
+    "NytPuzzleId": 1653,
+    "PrintDate": "2026-06-27",
+    "PublicPuzzleNumber": 1834
+  },
+  {
+    "NytPuzzleId": 1094,
+    "PrintDate": "2026-06-28",
+    "PublicPuzzleNumber": 1835
+  },
+  {
+    "NytPuzzleId": 1665,
+    "PrintDate": "2026-06-29",
+    "PublicPuzzleNumber": 1836
+  },
+  {
+    "NytPuzzleId": 1184,
+    "PrintDate": "2026-06-30",
+    "PublicPuzzleNumber": 1837
+  },
+  {
+    "NytPuzzleId": 937,
+    "PrintDate": "2026-07-01",
+    "PublicPuzzleNumber": 1838
+  },
+  {
+    "NytPuzzleId": 2395,
+    "PrintDate": "2026-07-02",
+    "PublicPuzzleNumber": 1839
+  },
+  {
+    "NytPuzzleId": 2559,
+    "PrintDate": "2026-07-03",
+    "PublicPuzzleNumber": 1840
+  },
+  {
+    "NytPuzzleId": 1212,
+    "PrintDate": "2026-07-04",
+    "PublicPuzzleNumber": 1841
+  },
+  {
+    "NytPuzzleId": 1108,
+    "PrintDate": "2026-07-05",
+    "PublicPuzzleNumber": 1842
+  },
+  {
+    "NytPuzzleId": 1910,
+    "PrintDate": "2026-07-06",
+    "PublicPuzzleNumber": 1843
+  },
+  {
+    "NytPuzzleId": 1967,
+    "PrintDate": "2026-07-07",
+    "PublicPuzzleNumber": 1844
+  },
+  {
+    "NytPuzzleId": 1620,
+    "PrintDate": "2026-07-08",
+    "PublicPuzzleNumber": 1845
+  },
+  {
+    "NytPuzzleId": 1137,
+    "PrintDate": "2026-07-09",
+    "PublicPuzzleNumber": 1846
+  },
+  {
+    "NytPuzzleId": 1506,
+    "PrintDate": "2026-07-10",
+    "PublicPuzzleNumber": 1847
+  }
+]

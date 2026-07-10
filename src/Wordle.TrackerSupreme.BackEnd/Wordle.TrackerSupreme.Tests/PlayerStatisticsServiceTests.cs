@@ -204,6 +204,34 @@ public class PlayerStatisticsServiceTests
     }
 
     [Fact]
+    public void Calculate_treats_imported_archive_attempts_as_practice()
+    {
+        var player = CreatePlayer();
+        var regularImport = CreateAttempt(player, new DateOnly(2025, 2, 5), AttemptStatus.Solved, true, 2);
+        regularImport.NytImportSessionId = Guid.NewGuid();
+        var archiveImport = CreateAttempt(player, new DateOnly(2025, 2, 6), AttemptStatus.Solved, true, 3);
+        archiveImport.NytImportSessionId = Guid.NewGuid();
+        archiveImport.IsImportedArchive = true;
+        player.Attempts = [regularImport, archiveImport];
+
+        var service = new PlayerStatisticsService();
+        var stats = service.Calculate(player, new PlayerStatisticsFilter { IncludeImportedNyt = true }, _ => false);
+
+        stats.TotalAttempts.Should().Be(1);
+        stats.PracticeAttempts.Should().Be(1);
+        stats.CurrentStreak.Should().Be(1);
+        stats.LongestStreak.Should().Be(1);
+        stats.GuessDistribution.Should().BeEquivalentTo(new Dictionary<int, int> { [2] = 1 });
+
+        var includingPractice = service.Calculate(player,
+            new PlayerStatisticsFilter { IncludeImportedNyt = true, CountPracticeAttempts = true }, _ => false);
+        includingPractice.TotalAttempts.Should().Be(2);
+        includingPractice.Wins.Should().Be(2);
+        includingPractice.PracticeAttempts.Should().Be(1);
+        includingPractice.CurrentStreak.Should().Be(1);
+    }
+
+    [Fact]
     public void Calculate_returns_guess_distribution_for_solved_attempts()
     {
         var player = CreatePlayer();
